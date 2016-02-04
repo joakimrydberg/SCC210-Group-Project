@@ -53,7 +53,9 @@ class Test {
 	private ArrayList<Actor> actors = new ArrayList<Actor>( );
         
         private Message[] m = new Message[6];
-        
+        private Actor charMenu;
+        private Actor mainMenu;
+              
          
 	public abstract class Actor {
 		Transformable obj;   // Base object
@@ -131,6 +133,12 @@ class Test {
 		void draw(RenderWindow w) {
 			w.draw((Drawable)obj);
 		}
+                void load(){
+                    
+                }
+                void unload(){
+                    
+                }
 	}
 
 	public class Message extends Actor {
@@ -318,7 +326,7 @@ class Test {
             private String name;
             
             private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
-            
+            private Actor menu;
             public Button(int x, int y, int height, int width, Color c, int transparency, String textt) {
                 
                 super(x,y,height,width,c,transparency);
@@ -358,7 +366,7 @@ class Test {
             void performMove( ) {
 		for (Transformable tra : objs) {
                     if(tra instanceof Text){
-                        tra.setPosition(x+50,y+20);
+                        tra.setPosition(x+(widthh),y + (heightt /4));
                     }
                     else{
                         tra.setPosition(x,y);
@@ -373,7 +381,9 @@ class Test {
                     //int g = (this.x + (xSize / 2));
                     //int h = (this.y - (ySize / 2));
                     //int k = (this.y + (ySize / 2));
-                    if(this.x < v.x && v.x < this.x+widthh && this.y < v.y && v.y < this.y+heightt){ //NEEDSS MASSIVE WORK
+                    //System.out.format("X : %d  Y : %d  This but x : %d   This but y : %d \n", v.x, v.y, this.x, this.y);
+                    //System.out.format("Height : %d, Width : %d \n", heightt, widthh);
+                    if(this.x < v.x && v.x < this.x+(heightt )&& this.y < v.y && v.y < this.y+(widthh)){ //NEEDSS MASSIVE WORK
                         
                         return true;
                     }
@@ -383,20 +393,104 @@ class Test {
                 }
                         
             void clicked(){
-                switch(name){
-                    case "CREATE": System.out.println("Create clicked");
+                
+                
+                
+                if(name.equals("NEW GAME")){
+                    mainMenu.unload(); charMenu.load(); System.out.println("NEW GAME clicked");
+                }
+                else if(name.equals("CREATE")){
+                    System.out.println("Create clicked");
                 }
             }
+            
+        }
+        
+        private class MainMenu extends Actor {
+            
+            public int loaded = 0;
+            private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
+            public ArrayList<Actor> act = new ArrayList<Actor>( );
+            
+            public MainMenu(){
+                
+                add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
+                Button b = new Button((screenWidth / 2) - 100, screenHeight / 2, 250, 100, Color.WHITE, 100, "NEW GAME");
+                add(b);
+            }
+            
+            
+            public void add(Actor a){
+                objs.add(a.obj);
+                act.add(a);
+            }
+            
+            void draw(RenderWindow w) {
+                for (Actor a : act) {
+                    if(loaded==1){
+                        a.draw(w);
+                    }
+                }
+            }
+            void performMove(){
+                for(Actor a : act){
+                    a.performMove();
+                }
+            }
+            
+            void load(){
+                loaded++;
+            }
+            void unload(){
+                loaded--;
+            } 
             
         }
         private class CharMenu extends Actor{
             
             private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
             public ArrayList<Actor> act = new ArrayList<Actor>( );
+            private String[] hairCols = new String[3];
+            private int i;
             
-            private int loaded = 0;
+            public int loaded = 0;
             
             public CharMenu(){
+                add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
+               add(new Rect(550, 50, 350, 700, Color.WHITE, 128));
+                add(new Rect(550, 450, 350, 150, Color.WHITE, 128));
+                Button b = new Button(685, 650, 100, 50, Color.WHITE, 100, "CREATE");
+                URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+                try{
+                    File myfile = new File(url.toURI());
+                    File dir = myfile.getParentFile().getParentFile(); // strip off .jar file
+                    String a = (dir.toString() + "\\assets\\art\\magic.png");
+                    String d = (dir.toString() + "\\assets\\art\\ranged.png");
+                    String e = (dir.toString() + "\\assets\\art\\Strength.png");
+                    add(new Image(600, 100, 0, a));
+                    add(new Image(725, 100, 0, e));
+                    add(new Image(850, 100, 0, d));
+                } catch (URISyntaxException e) { }
+                add(b);
+                //System.out.println(getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png"));
+                m[0] = (new Message(575, 430, 0, "Stats", Color.BLACK, 20));
+                m[1] = (new Message(675, 475, 0, "Attack power : 5", Color.BLACK, 12));
+                m[2] = (new Message(675, 500, 0, "Intellect : 0", Color.BLACK, 12));
+                m[3] = (new Message(675, 525, 0, "Agility : 0", Color.BLACK, 12));
+                m[4] = (new Message(675, 550, 0, "Endurance : 5", Color.BLACK, 12));
+                m[5] = (new Message(675, 575, 0, "Vitality : 5", Color.BLACK, 12));
+                
+                add(m[0]);
+                add(m[1]);
+                add(m[2]);
+                add(m[3]);
+                add(m[4]);
+                add(m[5]);
+                
+                hairCols[0] = "Red";
+                hairCols[1] = "Blue";
+                hairCols[2] = "Green";
+                
                 
             }
             public void add(Actor a){
@@ -417,10 +511,10 @@ class Test {
                 }
             }
             void load(){
-                loaded = 1;
+                loaded++;
             }
             void unload(){
-                loaded = 0;
+                loaded--;
             } 
             
         }
@@ -462,38 +556,13 @@ class Test {
                
                 
                CharMenu c = new CharMenu();
-               c.add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
-               c.add(new Rect(550, 50, 350, 700, Color.WHITE, 128));
-                c.add(new Rect(550, 450, 350, 150, Color.WHITE, 128));
-                Button b = new Button(685, 650, 100, 50, Color.WHITE, 100, "CREATE");
-                URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
-                try{
-                    File myfile = new File(url.toURI());
-                    File dir = myfile.getParentFile().getParentFile(); // strip off .jar file
-                    String a = (dir.toString() + "\\assets\\art\\magic.png");
-                    String d = (dir.toString() + "\\assets\\art\\ranged.png");
-                    String e = (dir.toString() + "\\assets\\art\\Strength.png");
-                    c.add(new Image(600, 100, 0, a));
-                    c.add(new Image(725, 100, 0, e));
-                    c.add(new Image(850, 100, 0, d));
-                } catch (URISyntaxException e) { }
-                c.add(b);
-                //System.out.println(getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png"));
-                m[0] = (new Message(575, 430, 0, "Stats", Color.BLACK, 20));
-                m[1] = (new Message(675, 475, 0, "Attack power : 5", Color.BLACK, 12));
-                m[2] = (new Message(675, 500, 0, "Intellect : 0", Color.BLACK, 12));
-                m[3] = (new Message(675, 525, 0, "Agility : 0", Color.BLACK, 12));
-                m[4] = (new Message(675, 550, 0, "Endurance : 5", Color.BLACK, 12));
-                m[5] = (new Message(675, 575, 0, "Vitality : 5", Color.BLACK, 12));
-                
-                c.add(m[0]);
-                c.add(m[1]);
-                c.add(m[2]);
-                c.add(m[3]);
-                c.add(m[4]);
-                c.add(m[5]);
-                c.load();
+               MainMenu m = new MainMenu();
+               charMenu = c;
+               mainMenu = m;
+               //c.load();
+               m.load();
                actors.add(c);
+               actors.add(m);
                // b.addActionListener(this);
 		//
 		// Main loop
@@ -520,11 +589,22 @@ class Test {
 				}
                                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
                                  //   if(event.asMouseButtonEvent()){
-                                    for (Actor actor : c.act){
-                                        if(actor.newWithin(event)){
-                                            actor.clicked();
-                                        }
+                                    if(c.loaded != 0){
+                                        for (Actor actor : c.act){
+                                            if(actor.newWithin(event)){
+                                                actor.clicked();
+                                            }
                                     
+                                        }
+                                    }
+                                    
+                                    if(m.loaded != 0){
+                                        for (Actor actor : m.act){
+                                            if(actor.newWithin(event)){
+                                                actor.clicked();
+                                            }
+                                    
+                                        }
                                     }
                                     //Vector2i v = event.position;
                                 }
