@@ -389,42 +389,7 @@ class Test {
             }
             
         }
-        private class CharMenu extends Actor{
-            
-            private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
-            public ArrayList<Actor> act = new ArrayList<Actor>( );
-            
-            private int loaded = 0;
-            
-            public CharMenu(){
-                
-            }
-            public void add(Actor a){
-                objs.add(a.obj);
-                act.add(a);
-            }
-            
-            void draw(RenderWindow w) {
-                for (Actor a : act) {
-                    if(loaded==1){
-                        a.draw(w);
-                    }
-                }
-            }
-            void performMove(){
-                for(Actor a : act){
-                    a.performMove();
-                }
-            }
-            void load(){
-                loaded = 1;
-            }
-            void unload(){
-                loaded = 0;
-            } 
-            
-        }
-            
+
 	public void run ( ) {
 
 		//
@@ -461,10 +426,9 @@ class Test {
                 
                
                 
-               CharMenu c = new CharMenu();
-               c.add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
-               c.add(new Rect(550, 50, 350, 700, Color.WHITE, 128));
-                c.add(new Rect(550, 450, 350, 150, Color.WHITE, 128));
+                actors.add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
+                actors.add(new Rect(550, 50, 350, 700, Color.WHITE, 128));
+                actors.add(new Rect(550, 450, 350, 150, Color.WHITE, 128));
                 Button b = new Button(685, 650, 100, 50, Color.WHITE, 100, "CREATE");
                 URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
                 try{
@@ -472,12 +436,14 @@ class Test {
                     File dir = myfile.getParentFile().getParentFile(); // strip off .jar file
                     String a = (dir.toString() + "\\assets\\art\\magic.png");
                     String d = (dir.toString() + "\\assets\\art\\ranged.png");
-                    String e = (dir.toString() + "\\assets\\art\\Strength.png");
-                    c.add(new Image(600, 100, 0, a));
-                    c.add(new Image(725, 100, 0, e));
-                    c.add(new Image(850, 100, 0, d));
+                    String c = (dir.toString() + "\\assets\\art\\Strength.png");
+                    actors.add(new Image(600, 100, 0, a));
+                    actors.add(new Image(725, 100, 0, c));
+                    actors.add(new Image(850, 100, 0, d));
                 } catch (URISyntaxException e) { }
-                c.add(b);
+                
+                
+                actors.add(b);
                 //System.out.println(getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png"));
                 m[0] = (new Message(575, 430, 0, "Stats", Color.BLACK, 20));
                 m[1] = (new Message(675, 475, 0, "Attack power : 5", Color.BLACK, 12));
@@ -486,14 +452,12 @@ class Test {
                 m[4] = (new Message(675, 550, 0, "Endurance : 5", Color.BLACK, 12));
                 m[5] = (new Message(675, 575, 0, "Vitality : 5", Color.BLACK, 12));
                 
-                c.add(m[0]);
-                c.add(m[1]);
-                c.add(m[2]);
-                c.add(m[3]);
-                c.add(m[4]);
-                c.add(m[5]);
-                c.load();
-               actors.add(c);
+                actors.add(m[0]);
+                actors.add(m[1]);
+                actors.add(m[2]);
+                actors.add(m[3]);
+                actors.add(m[4]);
+                actors.add(m[5]);
                // b.addActionListener(this);
 		//
 		// Main loop
@@ -520,7 +484,7 @@ class Test {
 				}
                                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
                                  //   if(event.asMouseButtonEvent()){
-                                    for (Actor actor : c.act){
+                                    for (Actor actor : actors){
                                         if(actor.newWithin(event)){
                                             actor.clicked();
                                         }
