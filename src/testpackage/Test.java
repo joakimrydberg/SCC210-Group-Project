@@ -139,6 +139,12 @@ class Test {
                 void unload(){
                     
                 }
+                void moveRight(int i){
+                    
+                }
+                void moveLeft(int i){
+                    
+                }
 	}
 
 	public class Message extends Actor {
@@ -327,7 +333,10 @@ class Test {
             
             private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
             private Actor menu;
-            public Button(int x, int y, int height, int width, Color c, int transparency, String textt) {
+            
+            private int i = 0;
+            
+            public Button(int x, int y, int height, int width, Color c, int transparency, String textt, int size) {
                 
                 super(x,y,height,width,c,transparency);
                 Font sansRegular = new Font( );
@@ -338,7 +347,7 @@ class Test {
 				ex.printStackTrace( );
 			}
 
-			Text text = new Text (textt, sansRegular, 11);
+			Text text = new Text (textt, sansRegular, size);
 			text.setColor(Color.BLACK);
 			//text.setStyle(Text.BOLD | Text.UNDERLINED);
 
@@ -366,7 +375,7 @@ class Test {
             void performMove( ) {
 		for (Transformable tra : objs) {
                     if(tra instanceof Text){
-                        tra.setPosition(x+(widthh),y + (heightt /4));
+                        tra.setPosition(x+(heightt / 2),y + (widthh /2));
                     }
                     else{
                         tra.setPosition(x,y);
@@ -383,7 +392,7 @@ class Test {
                     //int k = (this.y + (ySize / 2));
                     //System.out.format("X : %d  Y : %d  This but x : %d   This but y : %d \n", v.x, v.y, this.x, this.y);
                     //System.out.format("Height : %d, Width : %d \n", heightt, widthh);
-                    if(this.x < v.x && v.x < this.x+(heightt )&& this.y < v.y && v.y < this.y+(widthh)){ //NEEDSS MASSIVE WORK
+                    if(this.x < v.x && v.x < this.x+(heightt)&& this.y < v.y && v.y < this.y+(widthh)){ //NEEDSS MASSIVE WORK
                         
                         return true;
                     }
@@ -396,11 +405,26 @@ class Test {
                 
                 
                 
+                
                 if(name.equals("NEW GAME")){
                     mainMenu.unload(); charMenu.load(); System.out.println("NEW GAME clicked");
                 }
                 else if(name.equals("CREATE")){
                     System.out.println("Create clicked");
+                }
+                else if(name.equals(">>")){
+                    System.out.format("%d", this.i);
+                    if(this.i < 2){
+                        this.i++;
+                        charMenu.moveRight(i);
+                    }
+                }
+                else if(name.equals("<<")){
+                    System.out.format("%d", this.i);
+                    if(this.i > 0){
+                        this.i--;
+                        charMenu.moveLeft(i);
+                    }
                 }
             }
             
@@ -415,7 +439,7 @@ class Test {
             public MainMenu(){
                 
                 add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
-                Button b = new Button((screenWidth / 2) - 100, screenHeight / 2, 250, 100, Color.WHITE, 100, "NEW GAME");
+                Button b = new Button((screenWidth / 2) - 100, screenHeight / 2, 250, 100, Color.WHITE, 100, "NEW GAME", 22);
                 add(b);
             }
             
@@ -451,7 +475,8 @@ class Test {
             private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
             public ArrayList<Actor> act = new ArrayList<Actor>( );
             private String[] hairCols = new String[3];
-            private int i;
+            
+            private Message hairCol = new Message(725, 260, 0, "Red", Color.BLACK, 11);
             
             public int loaded = 0;
             
@@ -459,7 +484,7 @@ class Test {
                 add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
                add(new Rect(550, 50, 350, 700, Color.WHITE, 128));
                 add(new Rect(550, 450, 350, 150, Color.WHITE, 128));
-                Button b = new Button(685, 650, 100, 50, Color.WHITE, 100, "CREATE");
+                Button b = new Button(685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
                 URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
                 try{
                     File myfile = new File(url.toURI());
@@ -479,7 +504,6 @@ class Test {
                 m[3] = (new Message(675, 525, 0, "Agility : 0", Color.BLACK, 12));
                 m[4] = (new Message(675, 550, 0, "Endurance : 5", Color.BLACK, 12));
                 m[5] = (new Message(675, 575, 0, "Vitality : 5", Color.BLACK, 12));
-                
                 add(m[0]);
                 add(m[1]);
                 add(m[2]);
@@ -491,6 +515,9 @@ class Test {
                 hairCols[1] = "Blue";
                 hairCols[2] = "Green";
                 
+                add(new Button(775, 250, 25, 25, Color.WHITE, 100 , ">>", 9 ));
+                add(new Button(650, 250, 25, 25, Color.WHITE, 100 , "<<", 9 ));
+                add(hairCol);
                 
             }
             public void add(Actor a){
@@ -517,6 +544,14 @@ class Test {
                 loaded--;
             } 
             
+            void moveRight(int i){
+                hairCol.t.setString(hairCols[i]);
+              
+            }
+            
+            void moveLeft(int i){
+                System.out.println("move left");
+            }
         }
             
 	public void run ( ) {
