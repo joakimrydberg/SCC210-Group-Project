@@ -480,7 +480,7 @@ class Test {
 
         public int loaded = 0;
 
-        // testing
+        // testing yay
 
         public CharMenu(){
             add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
