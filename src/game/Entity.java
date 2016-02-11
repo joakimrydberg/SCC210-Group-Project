@@ -47,6 +47,7 @@ public class Entity  {
     public Entity(RenderWindow window, String name) {
         super();
 
+        setWindow(window);
         setName(name);
     }
 
