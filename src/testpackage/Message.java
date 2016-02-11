@@ -5,6 +5,7 @@
  */
 package testpackage;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import org.jsfml.graphics.Color;
@@ -35,7 +36,11 @@ public class Message extends Actor {
     ////////////////////////////////////////////////////////////////////////////////
     
     public Message(int x, int y, int r, String message, Color c , int size) {
-			
+        if ((new File(JreFontPath)).exists( ))
+            FontPath = JreFontPath;
+        else
+            FontPath = JdkFontPath;
+
         // Load the font		
         Font sansRegular = new Font( );	
         try {		
