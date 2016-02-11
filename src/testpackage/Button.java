@@ -5,6 +5,7 @@
  */
 package testpackage;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,7 +30,16 @@ public class Button extends Rect {
             
             private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
             private Actor menu;
-            
+
+    private static String JavaVersion =
+            Runtime.class.getPackage( ).getImplementationVersion( );
+    private static String JdkFontPath =
+            "C:\\Program Files\\Java\\jdk" + JavaVersion +
+                    "\\jre\\lib\\fonts\\";
+    private static String JreFontPath =
+            "C:\\Program Files\\Java\\jre" + JavaVersion +
+                    "\\lib\\fonts\\";
+
             private static String FontFile  = "LucidaSansRegular.ttf";
             private String FontPath; // Where fonts were found
             
@@ -38,6 +48,13 @@ public class Button extends Rect {
             public Button(int x, int y, int height, int width, Color c, int transparency, String textt, int size) {
                 
                 super(x, y, height, width, c, transparency);
+
+                if ((new File(JreFontPath)).exists( ))
+                    FontPath = JreFontPath;
+                else
+                    FontPath = JdkFontPath;
+
+
                 Font sansRegular = new Font( );
 			try {
 				sansRegular.loadFromFile(

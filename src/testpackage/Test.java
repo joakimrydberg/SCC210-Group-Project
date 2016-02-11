@@ -56,7 +56,7 @@ class Test {
     private Actor charMenu;
     private Actor mainMenu;
     private Actor mapMenu;
-
+/*
     public abstract class Actor {
         Transformable obj;   // Base object
 
@@ -563,15 +563,13 @@ class Test {
         private Bubble[] nodes = new Bubble[10];
         public int loaded = 0;
 
-        /**
-         *
-         */
+
         public MapMenu(){
 
             System.out.println("Opening map");
 
             //add(new Rect(0, 0, 1024, 768, Color.BLACK, 128));
-                /*read and display map*/
+                //read and display map
             URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
             try{
                 File myfile = new File(url.toURI());
@@ -588,21 +586,22 @@ class Test {
             // back button
             add(new Button(10, 10, 100, 50, Color.WHITE, 200 , "BACK", 15 ));
                 
-                /*creating the nodes*/
-            nodes[0] = new Bubble(200, 600, 10, Color.BLACK, 300);
-            nodes[1] = new Bubble(200, 500, 10, Color.BLACK, 300);
-            nodes[2] = new Bubble(500, 500, 10, Color.BLACK, 300);
-            nodes[3] = new Bubble(550, 400, 10, Color.BLACK, 300);
-            nodes[4] = new Bubble(350, 300, 10, Color.BLACK, 300);
-            nodes[5] = new Bubble(500, 100, 10, Color.BLACK, 300);
-            nodes[6] = new Bubble(700, 200, 10, Color.BLACK, 300);
-            nodes[7] = new Bubble(700, 400, 10, Color.BLACK, 300);
-            nodes[8] = new Bubble(800, 300, 10, Color.BLACK, 300);
-            nodes[9] = new Bubble(100, 300, 10, Color.BLACK, 300);
-            for(int i = 0; i < 10; i++){
-                add(nodes[i]);
+            //creating the nodes
+
+            //nodes[0] = new Bubble(200, 600, 10, Color.BLACK, 300);
+            //nodes[1] = new Bubble(200, 500, 10, Color.BLACK, 300);
+            //nodes[2] = new Bubble(500, 500, 10, Color.BLACK, 300);
+            //nodes[3] = new Bubble(550, 400, 10, Color.BLACK, 300);
+            //nodes[4] = new Bubble(350, 300, 10, Color.BLACK, 300);
+            //nodes[5] = new Bubble(500, 100, 10, Color.BLACK, 300);
+//            //nodes[6] = new Bubble(700, 200, 10, Color.BLACK, 300);
+//            //nodes[7] = new Bubble(700, 400, 10, Color.BLACK, 300);
+//            //nodes[8] = new Bubble(800, 300, 10, Color.BLACK, 300);
+//            //nodes[9] = new Bubble(100, 300, 10, Color.BLACK, 300);
+            //for(int i = 0; i < 10; i++){
+                //add(nodes[i]);
             }
-        }
+        //}
 
         public void add(Actor a){
             objs.add(a.obj);
@@ -644,7 +643,7 @@ class Test {
             return(randomNumber);
         }
     }
-//*/
+*/
     public void run ( ) {
 
         //
