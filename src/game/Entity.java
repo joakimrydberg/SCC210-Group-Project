@@ -1,8 +1,5 @@
 package game;
 
-//HELLO
-
-
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2i;
 
