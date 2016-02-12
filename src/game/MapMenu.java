@@ -46,28 +46,38 @@ public class MapMenu extends EntityHolder {
             e.printStackTrace();
         }
 
-        add(new Button(w, 10, 10, 100, 50, Color.WHITE, 200 , "BACK", 15 ));
+        add(new Rect(w, null, 10, 10, 50, 30, Color.WHITE, 300));
+        add(new Button(w, 15, 15, 100, 50, Color.WHITE, 200 , "BACK", 15 ));
 
         //creating the nodes
-        nodes[0] = new Bubble(w, null, 200, 600, 10, Color.BLACK, 300);
-        nodes[1] = new Bubble(w, null, 200, 500, 10, Color.BLACK, 300);
-        nodes[2] = new Bubble(w, null, 500, 500, 10, Color.BLACK, 300);
-        nodes[3] = new Bubble(w, null, 550, 400, 10, Color.BLACK, 300);
-        nodes[4] = new Bubble(w, null, 350, 300, 10, Color.BLACK, 300);
-        nodes[5] = new Bubble(w, null, 500, 100, 10, Color.BLACK, 300);
-        nodes[6] = new Bubble(w, null, 700, 200, 10, Color.BLACK, 300);
-        nodes[7] = new Bubble(w, null, 700, 400, 10, Color.BLACK, 300);
-        nodes[8] = new Bubble(w, null, 800, 300, 10, Color.BLACK, 300);
-        nodes[9] = new Bubble(w, null, 100, 300, 10, Color.BLACK, 300);
+        nodes[0] = new Bubble(w, null, 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[1] = new Bubble(w, null, 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[2] = new Bubble(w, null, 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[3] = new Bubble(w, null, 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[4] = new Bubble(w, null, 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[5] = new Bubble(w, null, 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[6] = new Bubble(w, null, 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[7] = new Bubble(w, null, 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[8] = new Bubble(w, null, 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[9] = new Bubble(w, null, 800, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+
+        //draw lines connecting the nodes
+        drawLine(w, nodes[0], nodes[1], Color.BLACK);
 
         //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
             add(nodes[i]);
         }
 
-        Rect line = new Rect(w, null, 0, 0, 150, 5, Color.BLACK, 300);
-        add(line);
-        line.rotate(45);
+        try{
+            File myfile = new File(url.toURI());
+            File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
+            String b = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "lock.png");
+
+            add(new Image(w, 200, 600, 0, b));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public void add(Entity a){
@@ -83,21 +93,52 @@ public class MapMenu extends EntityHolder {
         }
     }
 
-/*  //Do we need this
-    public void performMove(){
-        for(Actor a : act){
-            a.performMove();
-        }
-    }*/
+    /*
+     * This method uses trigonometry to draw a solid line between two nodes
+     */
+    public void drawLine(RenderWindow w, Bubble p1, Bubble p2, Color c){
+        //find the length the line should be using pythagoras theurum
+        double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2));
 
+        //create the line from the starting node
+        Rect line = new Rect(w, null, p1.getCenterX(), p1.getCenterY(), (int)length, 5, c, 300);
+        add(line);
+
+        //rotate the line to point at the second node
+        if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x
+            line.rotate(270); //rotate the line to point upwards
+        }
+        else {
+            float trigAngle = (float)Math.toDegrees(Math.atan((p2.getCenterY() - p1.getCenterY()) / (p2.getCenterX() - p1.getCenterX())));
+            System.out.println("Rotating by: " + trigAngle);
+
+            // EDITING NEEDED TO ACCOUNT FOR NODES THAT ARE NOT BETWEEN NORTH - EAST OF P1
+            /*if (p2.getCenterX() < p1.getCenterX() && p2.getCenterY() <= p1.getCenterY()){
+                line.rotate(trigAngle + 180);
+            }
+            else if (p2.getCenterX() >= p1.getCenterX() && p2.getCenterY() < p1.getCenterY()){
+                line.rotate(trigAngle);
+            }*/
+
+            line.rotate(trigAngle);
+        }
+    }
+
+    /*
+     *
+     */
     public void load(){
         loaded++;
     }
 
+    /*
+     *
+     */
     public void unload(){
         loaded--;
     }
 
+    //a random int between two integers, i may still need this, wi/l wait and see (Ross)
     private int randomInt(int aStart, int aEnd){
         Random rand = new Random();
         if (aStart > aEnd) {

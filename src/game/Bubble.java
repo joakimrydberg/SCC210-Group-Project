@@ -16,11 +16,13 @@ import org.jsfml.window.event.Event;
  */
 public class Bubble extends Entity implements CollidingEntity {
 
-    public Bubble(RenderWindow w, String name, int x, int y, int radius, Color c, int transparency) {
+    public Bubble(RenderWindow w, String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(w, name);
 
         CircleShape circle = new CircleShape(radius);
-        circle.setFillColor(new Color(c, transparency));
+        circle.setFillColor(new Color(fillC, transparency));
+        circle.setOutlineColor(lineC);
+        circle.setOutlineThickness(pt);
         circle.setOrigin(radius, radius);
 
         super.setTransformable(circle);
