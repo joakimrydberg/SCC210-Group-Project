@@ -1,5 +1,8 @@
 package game;
 
+//HELLO
+
+
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2i;
 
@@ -245,7 +248,7 @@ public class Entity  {
     }
 
     private void updateOrigin() {
-        transformable.setOrigin(w / 2, h / 2);
+        transformable.setOrigin(0, 0);
     }
 
     /**
