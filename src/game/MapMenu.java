@@ -8,6 +8,7 @@ package game;
 import org.jsfml.graphics.*;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -33,6 +34,10 @@ public class MapMenu extends EntityHolder {
     public MapMenu(RenderWindow w) {
         super(w, "Map");
 
+        final Vector2i windowSize = w.getSize();
+        final int centerX = windowSize.x / 2,
+                centerY = windowSize.y / 2;
+
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
         //adding the map image to the screen
@@ -41,25 +46,25 @@ public class MapMenu extends EntityHolder {
             File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
             String a = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "game-map.png");
 
-            add(new Image(w, 0, 0, 0, a));
+            addEntity(new Image(w, centerX, centerY, 0, a));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        add(new Rect(w, null, 10, 10, 50, 30, Color.WHITE, 300));
-        add(new Button(w, 15, 15, 100, 50, Color.WHITE, 200 , "BACK", 15 ));
+        addEntity(new Rect(w, null, 10 + centerX, 10 + centerY, 50, 30, Color.WHITE, 300));
+        addEntity(new Button(w, 15, 15, 100, 50, Color.WHITE, 200 , "BACK", 15 ));
 
         //creating the nodes
-        nodes[0] = new Bubble(w, null, 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[1] = new Bubble(w, null, 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[2] = new Bubble(w, null, 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[3] = new Bubble(w, null, 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[4] = new Bubble(w, null, 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[5] = new Bubble(w, null, 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[6] = new Bubble(w, null, 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[7] = new Bubble(w, null, 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[8] = new Bubble(w, null, 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[9] = new Bubble(w, null, 800, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[0] = new Bubble(w, null, 200 + centerX, 600 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[1] = new Bubble(w, null, 200 + centerX, 500 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[2] = new Bubble(w, null, 100 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[3] = new Bubble(w, null, 500 + centerX, 500 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[4] = new Bubble(w, null, 550 + centerX, 400 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[5] = new Bubble(w, null, 350 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[6] = new Bubble(w, null, 500 + centerX, 100 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[7] = new Bubble(w, null, 700 + centerX, 400 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[8] = new Bubble(w, null, 700 + centerX, 200 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[9] = new Bubble(w, null, 800 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         // ***CURRENTLY ISSUES WITH LINE ANGLING THEREFORE CONNECTIONS ARE COMMENTED OUT FOR NOW****
         //draw lines connecting the nodes
@@ -80,7 +85,7 @@ public class MapMenu extends EntityHolder {
 
         //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
-            add(nodes[i]);
+            addEntity(nodes[i]);
         }
 
         // ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
@@ -91,19 +96,14 @@ public class MapMenu extends EntityHolder {
             String b = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "lock.png");
 
             for(int i = 0; i < 10; i++){
-                Image img = new Image(w, 0, 0, 0, b);
+                Image img = new Image(w, 0 , 0 , 0, b);
                 img.setCenterX(nodes[i].getCenterX());
                 img.setCenterY(nodes[i].getCenterY());
-                add(img);
+                addEntity(img);
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-    }
-
-    public void add(Entity a){
-        objs.add(a.getTransformable());
-        addEntity(a);
     }
 
     public void draw() {
@@ -123,7 +123,7 @@ public class MapMenu extends EntityHolder {
 
         //create the line from the starting node
         Rect line = new Rect(w, null, p1.getCenterX(), p1.getCenterY(), (int)length, 5, c, 300);
-        add(line);
+        addEntity(line);
 
         //rotate the line to point at the second node
         if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x

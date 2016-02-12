@@ -19,7 +19,6 @@ import java.util.ArrayList;
  * @author newby
  */
 public class Button extends Rect implements CollidingEntity {
-    private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
     private Entity menu;
 
     private static String FontFile  = "LucidaSansRegular.ttf";
@@ -27,8 +26,8 @@ public class Button extends Rect implements CollidingEntity {
 
     private int i = 0;
 
-    public Button(RenderWindow w, int x, int y, int height, int width, Color c, int transparency, String text, int size) {
-        super(w, text, x, y, height, width, c, transparency);
+    public Button(RenderWindow w, int x, int y, int width, int height, Color c, int transparency, String text, int size) {
+        super(w, text, x, y, width, height, c, transparency);
 
         if ((new File(Constants.JRE_FONT_PATH)).exists( ))
             FontPath = Constants.JRE_FONT_PATH;
@@ -48,33 +47,10 @@ public class Button extends Rect implements CollidingEntity {
         textObj.setColor(Color.BLACK);
         //text.setStyle(Text.BOLD | Text.UNDERLINED);
 
-        FloatRect textBounds = textObj.getLocalBounds( );
-        // Find middle and set as origin/ reference point
-        textObj.setOrigin(textBounds.width / 2,
-                textBounds.height / 2);
+        final FloatRect textBounds = textObj.getLocalBounds();
 
-        super.setTransformable(textObj);
-        objs.add(super.getTransformable());
+        addTransformable(textObj, width / 2, height / 2, (int)textBounds.width, (int)textBounds.height);
     }
-
-    void draw(RenderWindow w) {
-        for (Transformable tra : objs) {
-            w.draw((Drawable)tra);
-        }
-    }
-
-/*  Needed?
-    void performMove( ) {
-        for (Transformable tra : objs) {
-            if(tra instanceof Text){
-                tra.setPosition(getCenterX(), getCenterY());
-            }
-            else{
-                tra.setPosition(getTopLeftX(), getTopLeftY());
-            }
-        }
-    }
-*/
 
     @Override
     public boolean colliding(Event e){
@@ -84,13 +60,6 @@ public class Button extends Rect implements CollidingEntity {
 
     @Override
     public boolean colliding(int x, int y) {
-        //int j = (this.x - (xSize / 2));
-        //int g = (this.x + (xSize / 2));
-        //int h = (this.y - (ySize / 2));
-        //int k = (this.y + (ySize / 2));
-        System.out.format("X : %d  Y : %d  This but x : %d   This but y : %d \n", x, y, getTopLeftX(), getTopLeftY());
-        //System.out.format("Height : %d, Width : %d \n", heightt, widthh);
-
         return ( getTopLeftX() < x && x < getTopLeftX() + (getHeight()) && getTopLeftY() < y && y < getTopLeftY()+(getWidth())); //TODO NEEDSS MASSIVE WORK
     }
 

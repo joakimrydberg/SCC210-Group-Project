@@ -38,6 +38,8 @@ public class Message extends Entity {
         setTopLeftX(x);
         setTopLeftY(y);
 
-        setTransformable(text);
+        final FloatRect textBounds = text.getLocalBounds();
+
+        addTransformable(text, 0, 0, (int)textBounds.width, (int)textBounds.height);
     }
 }

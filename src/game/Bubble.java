@@ -25,11 +25,11 @@ public class Bubble extends Entity implements CollidingEntity {
         circle.setOutlineThickness(pt);
         circle.setOrigin(radius, radius);
 
-        super.setTransformable(circle);
-
         super.setWidthHeight(radius * 2, radius * 2);
         super.setCenterX(x);
         super.setCenterY(y);
+
+        super.addTransformable(circle, 0, 0, radius, radius);
     }
 
     // Default method typically assumes a rectangle,

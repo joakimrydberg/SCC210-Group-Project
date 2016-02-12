@@ -22,9 +22,9 @@ public class MainMenu extends EntityHolder {
         super(window, "Main Menu");
 
         final Vector2i windowSize = window.getSize();
-        final int centerX = windowSize.y / 2, centerY = windowSize.x / 2;
-
-        addEntity(new Rect(window, null, 0, 0, windowSize.x, windowSize.y, Color.BLACK, 128));
+        final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
+        DebugPrinter.debugPrint(this, centerX + " " + centerY);
+        addEntity(new Rect(window, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
         addEntity(new Button(window, centerX, centerY, 250, 100, Color.WHITE, 100, "NEW GAME", 22));
     }
 

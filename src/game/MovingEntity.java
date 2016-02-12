@@ -24,8 +24,8 @@ public abstract class MovingEntity extends Entity {
      * @param height - int height
      * @param transformable - Transformable obj
      */
-    public MovingEntity(RenderWindow window, String name, int topLeftX, int topLeftY, int width, int height, Transformable transformable) {
-        super(window, name, topLeftX, topLeftY, width, height, transformable);
+    public MovingEntity(RenderWindow window, String name, int topLeftX, int topLeftY, int width, int height) {
+        super(window, name, topLeftX, topLeftY, width, height);
 
     }
 

@@ -46,7 +46,7 @@ public class Image extends Entity implements CollidingEntity {
 
         String split[] = textureFile.split(".");
 
-        setTransformable(img);
+        addTransformable(img, 0, 0, getWidth(), getHeight());
     }
 
     @Override

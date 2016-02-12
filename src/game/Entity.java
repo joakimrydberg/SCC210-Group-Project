@@ -2,8 +2,7 @@ package game;
 
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2i;
-
-import java.text.RuleBasedCollator;
+import java.util.ArrayList;
 
 /**
  * This class represents an Entity in the game. Something that will appear on the screen.
@@ -14,7 +13,7 @@ public class Entity  {
     private String name = "";
     private int x = 0, y = 0;   //current x and y coordinates
     private int w = -1, h = -1; // current width and height of the Entity
-    private Transformable transformable = null;
+    private ArrayList<TransformableHolder> transformables = new ArrayList<>();
     private RenderWindow window = null;
 
     /**
@@ -26,9 +25,8 @@ public class Entity  {
      * @param centerY - int Y position of the center of the entity
      * @param width - int width
      * @param height - int height
-     * @param transformable - Transformable obj
      */
-    public Entity(RenderWindow window, String name, int centerX, int centerY, int width, int height, Transformable transformable) {
+    public Entity(RenderWindow window, String name, int centerX, int centerY, int width, int height) {
         super();
 
         setWindow(window);
@@ -36,7 +34,6 @@ public class Entity  {
         setWidthHeight(width, height);
         setCenterX(centerX);
         setCenterY(centerY);
-        setTransformable(transformable);
     }
 
     /**
@@ -48,8 +45,8 @@ public class Entity  {
     public Entity(RenderWindow window, String name) {
         super();
 
-        setWindow(window);
-        setName(name);
+        this.window = window;
+        this.name = name;
     }
 
     /**
@@ -57,9 +54,9 @@ public class Entity  {
      *
      */
     public void draw() {
-        if (transformable != null) {
-            DebugPrinter.debugPrint(this, "drawing: x:" + getTopLeftX() + " y:" + getTopLeftY() + " w:" + getWidth() + " h:" + getHeight());
-            window.draw((Drawable) transformable);
+        for (TransformableHolder transformableHolder : transformables) {
+            //DebugPrinter.debugPrint(this, "drawing: x:" + getTopLeftX() + " y:" + getTopLeftY() + " w:" + getWidth() + " h:" + getHeight());
+            window.draw((Drawable) transformableHolder.transformable);
         }
     }
 
@@ -70,7 +67,9 @@ public class Entity  {
      * @param v - float
      */
     public void rotate(float v) {
-        transformable.rotate(v);
+        for (TransformableHolder transformableHolder : transformables) {
+            transformableHolder.transformable.rotate(v);
+        }
     }
 
     @Override
@@ -152,8 +151,7 @@ public class Entity  {
      * @param x - new X position
      */
     public void setTopLeftX(int x) {
-        if (getTransformable() != null)
-            getTransformable().setPosition(x, getTopLeftY());
+        update();
 
         this.x = x;
     }
@@ -164,12 +162,16 @@ public class Entity  {
      * @param y - new Y position
      */
     public void setTopLeftY(int y) {
-        if (getTransformable() != null)
-            getTransformable().setPosition(getTopLeftX(), y);
+        update();
 
         this.y = y;
     }
 
+    private void update() {
+        for (TransformableHolder transformableHolder : transformables) {
+            transformableHolder.update();
+        }
+    }
     /**
      * Gets the current X coordinate of the center of the entity on the screen
      *
@@ -243,12 +245,7 @@ public class Entity  {
         this.h = h;
         this.w = w;
 
-        if (transformable != null)
-            updateOrigin();
-    }
-
-    private void updateOrigin() {
-        transformable.setOrigin(0, 0);
+        update();
     }
 
     /**
@@ -256,13 +253,8 @@ public class Entity  {
      *
      * @param transformable - Transformable obj
      */
-    public void setTransformable(Transformable transformable) {
-        this.transformable = transformable;
-
-        this.transformable.setPosition(getTopLeftX(), getTopLeftY());
-
-        if (w != -1 || h != -1)
-            updateOrigin();
+    public void addTransformable(Transformable transformable, int relX, int relY, int w, int h) {
+        transformables.add(new TransformableHolder(this, transformable, relX, relY, w, h));
     }
 
     /**
@@ -270,10 +262,64 @@ public class Entity  {
      *
      * @return Transformable obj
      */
-    public Transformable getTransformable() {
-        return this.transformable;
+    public Transformable getTransformable(int i) {
+        return transformables.get(i).transformable;
     }
 
+    private class TransformableHolder {
+        private Entity entity;
+        private Transformable transformable;
+        private int relX, relY;
+        private int width, height;
 
+        public TransformableHolder(Entity e, Transformable t, int relX, int relY, int w, int h) {
+            this.entity = e;
+            this.transformable = t;
+            this.relX = relX;
+            this.relY = relY;
+            this.width = w;
+            this.height = h;
 
+            update();
+        }
+
+        public void update() {
+            final int tempX = entity.getTopLeftX() + relX;
+            final int tempY = entity.getTopLeftY() + relY;
+
+            transformable.setPosition(tempX, tempY);
+
+            int width = this.width,
+                    height = this.height;
+
+            width = (width != -1) ? width : 0;
+            height = (height != -1) ? height : 0;
+
+            transformable.setOrigin(width / 2,  height / 2);
+        }
+
+        public void setRelX(int relX) {
+            this.relX = relX;
+
+            update();
+        }
+
+        public void setRelY(int relY) {
+            this.relY = relY;
+
+            update();
+        }
+
+        public void setWidth(int w) {
+            this.width = w;
+
+            update();
+        }
+
+        public void setHeight(int h) {
+            this.height = h;
+
+            update();
+        }
+    }
 }

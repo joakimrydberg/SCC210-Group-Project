@@ -9,6 +9,8 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Transformable;
+import org.jsfml.system.Vector2i;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,7 +22,6 @@ import java.util.ArrayList;
  */
 public class CharMenu extends EntityHolder {
     private final static String SEP = Constants.SEP;
-    private ArrayList<Transformable> objs = new ArrayList<>( );
 
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
@@ -32,11 +33,14 @@ public class CharMenu extends EntityHolder {
     public CharMenu(RenderWindow w) {
         super(w, "Character creation menu");
 
-        hairCol = new Message(w, 725, 260, 0, "Red", Color.BLACK, 11);
+        final Vector2i windowSize = w.getSize();
+        final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
-        add(new Rect(w, null, 0, 0, 1024, 768, Color.BLACK, 128));
-        add(new Rect(w, null, 550, 50, 350, 700, Color.WHITE, 128));
-        add(new Rect(w, null, 550, 450, 350, 150, Color.WHITE, 128));
+        hairCol = new Message(w, 700, 242, 0, "Red", Color.BLACK, 11);
+
+        add(new Rect(w, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
+        add(new Rect(w, null, 725,  375, 350, 700, Color.WHITE, 128));
+        add(new Rect(w, null, 725, 500, 350, 150, Color.WHITE, 128));
         Button createButton = new Button(w, 685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
 
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -83,7 +87,6 @@ public class CharMenu extends EntityHolder {
 
     }
     public void add(Entity a){
-        objs.add(a.getTransformable());
         addEntity(a);
     }
 
@@ -112,7 +115,7 @@ public class CharMenu extends EntityHolder {
     }
 
     public void moveRight(int i){
-        ((Text)hairCol.getTransformable()).setString(hairCols[i]);
+        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
     }
 
     public void moveLeft(int i){
@@ -120,10 +123,10 @@ public class CharMenu extends EntityHolder {
     }
 
     public void setStats(int a, int b, int c , int d, int e){
-        ((Text)messages[1].getTransformable()).setString("Attack power : " + a);
-        ((Text)messages[2].getTransformable()).setString("Intellect : " + b);
-        ((Text)messages[3].getTransformable()).setString("Agility : " + c);
-        ((Text)messages[4].getTransformable()).setString("Endurance : " + d);
-        ((Text)messages[5].getTransformable()).setString("Vitality : " + e);
+        ((Text)messages[1].getTransformable(0)).setString("Attack power : " + a);
+        ((Text)messages[2].getTransformable(0)).setString("Intellect : " + b);
+        ((Text)messages[3].getTransformable(0)).setString("Agility : " + c);
+        ((Text)messages[4].getTransformable(0)).setString("Endurance : " + d);
+        ((Text)messages[5].getTransformable(0)).setString("Vitality : " + e);
     }
 }

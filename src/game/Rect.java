@@ -24,10 +24,10 @@ public class Rect extends Entity {
 		rect.setFillColor(new Color(c, transparency));
 
 		this.setWidthHeight(width, height);
-		this.setTopLeftX(x);
-		this.setTopLeftY(y);
+		this.setCenterX(x);
+		this.setCenterY(y);
 
-		this.setTransformable(rect);
+		this.addTransformable(rect, width/2, height/2, width, height);
 	}
 
 }
