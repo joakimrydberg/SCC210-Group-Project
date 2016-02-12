@@ -39,7 +39,7 @@ public class Image extends Entity implements CollidingEntity {
         img.setOrigin(Vector2f.div(
                 new Vector2f(imgTexture.getSize()), 2));
 
-        setWidthHeight(imgTexture.getSize().y, imgTexture.getSize().y);
+        setWidthHeight(imgTexture.getSize().x, imgTexture.getSize().y);
 
         setTopLeftX(x);
         setTopLeftY(y);

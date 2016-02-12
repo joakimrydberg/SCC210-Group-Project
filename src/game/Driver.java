@@ -81,12 +81,13 @@ public class Driver {
         mainMenu = new MainMenu(window);
         mapMenu = new MapMenu(window);
 
-        //c.load();
+        //mapMenu.load();
+        //charMenu.load();
         mainMenu.load();
+
         entities.add(charMenu);
         entities.add(mainMenu);
         entities.add(mapMenu);
-
 
         // Main loop
         while (window.isOpen()) {

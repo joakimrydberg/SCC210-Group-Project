@@ -5,10 +5,12 @@
  */
 package game;
 
+import org.jsfml.graphics.*;
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Transformable;
+import org.jsfml.system.Vector2f;
 
+import java.awt.*;
+import java.awt.geom.Line2D;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -17,7 +19,7 @@ import java.util.Random;
 
 /**
  *
- * @author newby
+ * @author Ross Newby
  */
 public class MapMenu extends EntityHolder {
     private final static String SEP = Constants.SEP;
@@ -33,19 +35,20 @@ public class MapMenu extends EntityHolder {
 
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
+        //adding the map image to the screen
         try{
             File myfile = new File(url.toURI());
             File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
-            String a = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "game-map.jpg");
+            String a = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "game-map.png");
 
-            add(new Image(w, 1024 / 2, 768 / 2, 0, a));
+            add(new Image(w, 0, 0, 0, a));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
         add(new Button(w, 10, 10, 100, 50, Color.WHITE, 200 , "BACK", 15 ));
-                
-                /*creating the nodes*/
+
+        //creating the nodes
         nodes[0] = new Bubble(w, null, 200, 600, 10, Color.BLACK, 300);
         nodes[1] = new Bubble(w, null, 200, 500, 10, Color.BLACK, 300);
         nodes[2] = new Bubble(w, null, 500, 500, 10, Color.BLACK, 300);
@@ -57,9 +60,14 @@ public class MapMenu extends EntityHolder {
         nodes[8] = new Bubble(w, null, 800, 300, 10, Color.BLACK, 300);
         nodes[9] = new Bubble(w, null, 100, 300, 10, Color.BLACK, 300);
 
+        //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
             add(nodes[i]);
         }
+
+        Rect line = new Rect(w, null, 0, 0, 150, 5, Color.BLACK, 300);
+        add(line);
+        line.rotate(45);
     }
 
     public void add(Entity a){
