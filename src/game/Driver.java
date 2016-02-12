@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Driver {
     private ArrayList<Entity> entities = new ArrayList<>( );
     private int screenWidth = 1024,
-            screenHeight = 768;
+                screenHeight = 768;
 
     private String FontPath;
 
@@ -93,7 +93,6 @@ public class Driver {
             // Move all the entities around
             drawAll(entities);
 
-
             // Update the display with any changes
             window.display();
 
@@ -117,7 +116,6 @@ public class Driver {
         }
     }
 
-
     private void checkWithins(ArrayList<Entity> array, Event event) { //TODO rename to something remotely appropriate
         for (Entity entity : array)
             if (entity instanceof CollidingEntity
@@ -133,7 +131,6 @@ public class Driver {
 
         }
     }
-
 
     /**
      * Starts off the game
