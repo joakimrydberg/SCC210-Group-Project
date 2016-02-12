@@ -126,6 +126,7 @@ public class Driver {
             if (entity instanceof CollidingEntity
                     && ((CollidingEntity) entity).colliding(event))
                 entity.clicked(mainMenu, charMenu, mapMenu);
+        //s
     }
 
     private void drawAll(ArrayList<Entity> array) {  //TODO rename to something remotely appropriate
