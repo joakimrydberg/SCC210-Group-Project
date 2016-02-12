@@ -62,6 +62,22 @@ public class Image extends Entity implements CollidingEntity {
     }
 
     public void clicked(CharMenu menu){
+
+        if (this.getName().contains("magic")){
+            DebugPrinter.debugPrint(this, "magic selected");
+            menu.setStats(0, 10, 0, 3, 2);
+        }
+        else if (this.getName().contains("ranged")){
+            DebugPrinter.debugPrint(this, "ranged selected");
+            menu.setStats(0, 0, 5, 5, 5);
+        }
+        else if (this.getName().contains("Strength")){
+            DebugPrinter.debugPrint(this, "Strength selected");
+            menu.setStats(5, 0, 0, 5, 5);
+        }
+    }
+    public void clicked(MainMenu mainMenu, CharMenu menu, MapMenu map){
+
         if (this.getName().contains("magic")){
             DebugPrinter.debugPrint(this, "magic selected");
             menu.setStats(0, 10, 0, 3, 2);
