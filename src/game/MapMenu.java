@@ -57,24 +57,45 @@ public class MapMenu extends EntityHolder {
         nodes[4] = new Bubble(w, null, 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[5] = new Bubble(w, null, 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[6] = new Bubble(w, null, 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[7] = new Bubble(w, null, 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[8] = new Bubble(w, null, 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[7] = new Bubble(w, null, 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[8] = new Bubble(w, null, 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[9] = new Bubble(w, null, 800, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
+        // ***CURRENTLY ISSUES WITH LINE ANGLING THEREFORE CONNECTIONS ARE COMMENTED OUT FOR NOW****
         //draw lines connecting the nodes
         drawLine(w, nodes[0], nodes[1], Color.BLACK);
+
+        drawLine(w, nodes[1], nodes[2], Color.BLACK);
+        //drawLine(w, nodes[1], nodes[3], Color.BLACK);
+
+        //drawLine(w, nodes[3], nodes[4], Color.BLACK);
+
+        //drawLine(w, nodes[4], nodes[5], Color.BLACK);
+        //drawLine(w, nodes[4], nodes[7], Color.BLACK);
+
+        //drawLine(w, nodes[5], nodes[6], Color.BLACK);
+
+        //drawLine(w, nodes[7], nodes[8], Color.BLACK);
+        //drawLine(w, nodes[7], nodes[9], Color.BLACK);
 
         //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
             add(nodes[i]);
         }
 
+        // ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
+        //add locked images to each node
         try{
             File myfile = new File(url.toURI());
             File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
             String b = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "lock.png");
 
-            add(new Image(w, 200, 600, 0, b));
+            for(int i = 0; i < 10; i++){
+                Image img = new Image(w, 0, 0, 0, b);
+                img.setCenterX(nodes[i].getCenterX());
+                img.setCenterY(nodes[i].getCenterY());
+                add(img);
+            }
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
