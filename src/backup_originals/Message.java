@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testpackage;
+package backup_originals;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+
+import game.*;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.Font;
@@ -36,10 +38,10 @@ public class Message extends Actor {
     ////////////////////////////////////////////////////////////////////////////////
     
     public Message(int x, int y, int r, String message, Color c , int size) {
-        if ((new File(JreFontPath)).exists( ))
-            FontPath = JreFontPath;
+        if ((new File(game.Constants.JRE_FONT_PATH)).exists())
+            FontPath = game.Constants.JRE_FONT_PATH;
         else
-            FontPath = JdkFontPath;
+            FontPath = game.Constants.JDK_FONT_PATH;
 
         // Load the font		
         Font sansRegular = new Font( );	

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testpackage;
+package backup_originals;
 
 /**
  *
@@ -14,7 +14,6 @@ import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class Actor {
@@ -44,21 +43,21 @@ public abstract class Actor {
     }
 
     boolean newWithin(org.jsfml.window.event.Event event){
-        return false;    
+        return false;
     }
-                       
+
     void clicked(){
-           
+
     }
-    
+
     void clicked(MainMenu mainMenu, CharMenu charMenu, MapMenu mapMenu){
-        
+
     }
-    
+
     void clicked(Actor menu){
-        
+
     }
-                
+
     boolean mouseOn () {
         return false;
     }
@@ -98,21 +97,21 @@ public abstract class Actor {
     void draw(RenderWindow w) {
         w.draw((Drawable)obj);
     }
-    
+
     void load(){
-             
+
     }
-    
+
     void unload(){
-                  
+
     }
-    
+
     void moveRight(int i){
-                    
+
     }
-                
+
     void moveLeft(int i){
-                                 
+
     }
 
 }

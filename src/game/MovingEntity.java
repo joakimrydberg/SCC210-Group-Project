@@ -10,6 +10,8 @@ import org.jsfml.system.Vector2i;
  * @author Alexander J Mills
  */
 public abstract class MovingEntity extends Entity {
+    private Vector2i speed = new Vector2i(0, 0);
+    private float multiplier = 1;
 
     /**
      * Creates a new moving entity, with a given name
@@ -37,19 +39,18 @@ public abstract class MovingEntity extends Entity {
         super(window, name);
     }
 
+
     /**
      * Implementation of move function. Will check for collisions if child implements CollidingEntity and then move if possible
      *
-     * @param topLeftX - change in X coordinates (Top Left value)
-     * @param topLeftY - change in Y coordinates (Top Left value)
      */
-    public void move(int topLeftX, int topLeftY) {
-        final int newX = getTopLeftX() + topLeftX, newY = getTopLeftY() + topLeftY;
+    public void move() {
+        final int newX = getCenterX() + speed.x, newY = getCenterY() + speed.y;
 
         if (this instanceof CollidingEntity) {
             final CollidingEntity collidingThis = (CollidingEntity)this;
 
-            if (collidingThis.colliding(getTopLeftX(), getTopLeftY())) {
+            if (collidingThis.colliding(getCenterX(), getCenterY())) {
                 DebugPrinter.debugPrint(this, "Already colliding!!");
                 return;
             }
@@ -68,9 +69,42 @@ public abstract class MovingEntity extends Entity {
         }
 
         //updating X and Y coordinates
-        setTopLeftX(getTopLeftX() + topLeftX);
-        setTopLeftY(getTopLeftY() + topLeftY);
+        setCenterX(getCenterX() + speed.x);
+        setCenterY(getCenterY() + speed.y);
 
         draw();  //drawing to the screen
+    }
+
+    //======================== Getters and Setters ===================================
+
+    /**
+     * Set speed
+     *
+     * @param speed - Vector2i representing the speed of the entity in the x and y planes
+     *
+     */
+    public void setSpeed(Vector2i speed) {
+        this.speed = speed;
+    }
+
+    /**
+     * Get the entities speed
+     *
+     * @return Vector2i value representing the speed in two dimensional space
+     *
+     */
+    public Vector2i getSpeed() {
+        return this.speed;
+    }
+
+    /**
+     * Sets the speed multiplier for the Entity.
+     *
+     * This is used to scale the speed in both directions. Should probably only use on a class by class basis
+     *
+     * @param multiplier - float value
+     */
+    public void setSpeedMultiplier(float multiplier) {
+        this.multiplier = multiplier;
     }
 }
