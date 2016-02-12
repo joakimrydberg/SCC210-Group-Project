@@ -13,9 +13,6 @@ import java.util.ArrayList;
  *
  */
 public class Driver {
-    CharMenu charMenu;
-    MainMenu mainMenu;
-    MapMenu mapMenu;
     private ArrayList<Entity> entities = new ArrayList<>( );
     private int screenWidth = 1024,
             screenHeight = 768;
@@ -77,9 +74,9 @@ public class Driver {
 		entities.add(new Bubble(600, 500, 20, Color.BLACK,   128));
                 */
 
-        charMenu = new CharMenu(window);
-        mainMenu = new MainMenu(window);
-        mapMenu = new MapMenu(window);
+        CharMenu charMenu = new CharMenu(window);
+        MainMenu mainMenu = new MainMenu(window);
+        MapMenu mapMenu = new MapMenu(window);
 
         //c.load();
         mainMenu.load();
@@ -106,14 +103,12 @@ public class Driver {
                     window.close();
 
                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
-
                     //   if(event.asMouseButtonEvent()){
                     if (charMenu.loaded != 0)
                         checkWithins(charMenu.getEntities(), event);
 
                     if (mainMenu.loaded != 0)
                         checkWithins(mainMenu.getEntities(), event);
-
 
                     if (mapMenu.loaded != 0)
                         checkWithins(mapMenu.getEntities(), event);
@@ -125,11 +120,9 @@ public class Driver {
 
     private void checkWithins(ArrayList<Entity> array, Event event) { //TODO rename to something remotely appropriate
         for (Entity entity : array)
-            if (entity instanceof CollidingEntity && ((CollidingEntity) entity).colliding(event)) {
-                System.out.println("inside");
-                entity.clicked(mainMenu, charMenu, mapMenu);
-            }
-
+            if (entity instanceof CollidingEntity
+                    && ((CollidingEntity) entity).colliding(event))
+                entity.clicked(event.asMouseButtonEvent().position);
     }
 
     private void drawAll(ArrayList<Entity> array) {  //TODO rename to something remotely appropriate

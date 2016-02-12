@@ -37,10 +37,10 @@ public class Driver {
 
     private ArrayList<Actor> actors = new ArrayList<Actor>( );
 
-        private Message[] m = new Message[6];
-        private Actor charMenu;
-        private Actor mainMenu;
-        private Actor mapMenu;
+    private Message[] m = new Message[6];
+    private Actor charMenu;
+    private Actor mainMenu;
+    private Actor mapMenu;
 
     public Driver(int w, int h, String t){
         screenWidth = w;
