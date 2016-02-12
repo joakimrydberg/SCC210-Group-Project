@@ -13,6 +13,9 @@ import java.util.ArrayList;
  *
  */
 public class Driver {
+    MainMenu mainMenu;
+    CharMenu charMenu;
+    MapMenu mapMenu;
     private ArrayList<Entity> entities = new ArrayList<>( );
     private int screenWidth = 1024,
             screenHeight = 768;
@@ -74,16 +77,17 @@ public class Driver {
 		entities.add(new Bubble(600, 500, 20, Color.BLACK,   128));
                 */
 
-        CharMenu charMenu = new CharMenu(window);
-        MainMenu mainMenu = new MainMenu(window);
-        MapMenu mapMenu = new MapMenu(window);
+        charMenu = new CharMenu(window);
+        mainMenu = new MainMenu(window);
+        mapMenu = new MapMenu(window);
 
-        //c.load();
+        //mapMenu.load();
+        //charMenu.load();
         mainMenu.load();
+
         entities.add(charMenu);
         entities.add(mainMenu);
         entities.add(mapMenu);
-
 
         // Main loop
         while (window.isOpen()) {
@@ -122,7 +126,8 @@ public class Driver {
         for (Entity entity : array)
             if (entity instanceof CollidingEntity
                     && ((CollidingEntity) entity).colliding(event))
-                entity.clicked(event.asMouseButtonEvent().position);
+                entity.clicked(mainMenu, charMenu, mapMenu);
+        //s
     }
 
     private void drawAll(ArrayList<Entity> array) {  //TODO rename to something remotely appropriate

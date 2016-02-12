@@ -42,7 +42,7 @@ public class DebugPrinter {
      * @param output - String to print
      */
     public static void print(Object caller, String output) {
-        System.out.println("<" + caller.getClass().getSimpleName() + " | " + caller.toString() + "> " + output);
+        //System.out.println("<" + caller.getClass().getSimpleName() + " | " + caller.toString() + "> " + output);
     }
 
     /**
