@@ -27,8 +27,8 @@ public class Button extends Rect implements CollidingEntity {
 
     private int i = 0;
 
-    public Button(RenderWindow w, int x, int y, int height, int width, Color c, int transparency, String text, int size) {
-        super(w, text, x, y, height, width, c, transparency);
+    public Button(RenderWindow w, int x, int y, int width, int height, Color c, int transparency, String text, int size) {
+        super(w, text, x, y, width, height, c, transparency);
 
         if ((new File(Constants.JRE_FONT_PATH)).exists( ))
             FontPath = Constants.JRE_FONT_PATH;
@@ -48,18 +48,15 @@ public class Button extends Rect implements CollidingEntity {
         textObj.setColor(Color.BLACK);
         //text.setStyle(Text.BOLD | Text.UNDERLINED);
 
-        FloatRect textBounds = textObj.getLocalBounds( );
-        // Find middle and set as origin/ reference point
-        textObj.setOrigin(textBounds.width / 2,
-                textBounds.height / 2);
-
-        super.setTransformable(textObj);
         objs.add(super.getTransformable());
+        objs.add(textObj);
+
     }
 
-    void draw(RenderWindow w) {
+    @Override
+    public void draw() {
         for (Transformable tra : objs) {
-            w.draw((Drawable)tra);
+            getWindow().draw((Drawable) tra);
         }
     }
 
@@ -91,7 +88,7 @@ public class Button extends Rect implements CollidingEntity {
         //System.out.format("X : %d  Y : %d  This but x : %d   This but y : %d \n", v.x, v.y, this.x, this.y);
         //System.out.format("Height : %d, Width : %d \n", heightt, widthh);
 
-        return ( getTopLeftX() < x && x < getTopLeftX() + (getHeight()) && getTopLeftY() < y && y < getTopLeftY()+(getWidth())); //TODO NEEDSS MASSIVE WORK
+        return ( getTopLeftX() < x && x < getTopLeftX() + getHeight() && getTopLeftY() < y && y < getTopLeftY()+getWidth()); //TODO NEEDS MASSIVE WORK
     }
 
     void clicked(MainMenu mainMenu, CharMenu charMenu, MapMenu mapMenu){
