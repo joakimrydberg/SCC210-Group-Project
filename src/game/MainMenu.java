@@ -53,7 +53,7 @@ public class MainMenu extends EntityHolder {
     }
 
     public void unload(){
-        loaded--;
+        loaded = 0;
     }
 
 }

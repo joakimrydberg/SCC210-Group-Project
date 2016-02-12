@@ -88,16 +88,18 @@ public class Button extends Rect implements CollidingEntity {
         //int g = (this.x + (xSize / 2));
         //int h = (this.y - (ySize / 2));
         //int k = (this.y + (ySize / 2));
-        //System.out.format("X : %d  Y : %d  This but x : %d   This but y : %d \n", v.x, v.y, this.x, this.y);
+        System.out.format("X : %d  Y : %d  This but x : %d   This but y : %d \n", x, y, getTopLeftX(), getTopLeftY());
         //System.out.format("Height : %d, Width : %d \n", heightt, widthh);
 
         return ( getTopLeftX() < x && x < getTopLeftX() + (getHeight()) && getTopLeftY() < y && y < getTopLeftY()+(getWidth())); //TODO NEEDSS MASSIVE WORK
     }
 
-    void clicked(MainMenu mainMenu, CharMenu charMenu, MapMenu mapMenu){
+    public void clicked(MainMenu mainMenu, CharMenu charMenu, MapMenu mapMenu){
 
         if(getName().equals("NEW GAME")){
-            mainMenu.unload(); charMenu.load(); System.out.println("NEW GAME clicked");
+             mainMenu.unload();
+            charMenu.load();
+            System.out.println("NEW GAME clicked");
         }
         else if(getName().equals("CREATE")){
             charMenu.unload(); mapMenu.load(); System.out.println("Create clicked");
@@ -121,5 +123,7 @@ public class Button extends Rect implements CollidingEntity {
         }
     }
 
+    public void clicked(Vector2i v){
 
+    }
 }
