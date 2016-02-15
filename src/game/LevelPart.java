@@ -1,23 +1,27 @@
 package game;
 
+import java.io.Serializable;
+
 /**
  * @author Alexander J Mills
  * @date 15/02/16.
  */
-public class LevelPart {
+public class LevelPart implements Serializable {
     private String spriteFileName = "";
     private float rotation = 0;
     private short rowNo = 0, colNo = 0; // position on grid just in case
 
     public LevelPart(String fileName, float rotation, short rowNo, short colNo) {
-        if (rowNo < 0 || rowNo >= 11
-                && colNo < 0 || colNo >= 11)
-            throw new IllegalArgumentException("Invalid rowNo / colNo. Must be between 0 and 10 inc.");
+        super();
 
-        this.spriteFileName = fileName;
-        this.rotation = rotation;
-        this.rowNo = rowNo;
-        this.colNo = colNo;
+        setSpriteFileName(fileName);
+        setRotation(rotation);
+        setRowNo(rowNo);
+        setColNo(colNo);
+    }
+
+    public LevelPart() {
+        super();
     }
 
     public void setRowNo(int rowNo) {

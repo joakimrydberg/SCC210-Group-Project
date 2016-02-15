@@ -1,13 +1,11 @@
 package levelcreator;
 
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import game.Constants;
-import javafx.scene.control.ComboBox;
+import game.FileHandling;
+import game.LevelPart;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,32 +21,107 @@ public class LevelCreator extends JFrame {
     private javax.swing.JButton btnSave;
     private javax.swing.JTextField txtName;
     private HashMap<String, String> hashMap = new HashMap<>();
-    private final static String LEVEL_ID_FILE =  "assets" + Constants.SEP + "levels"  + Constants.SEP + "level_IDs.csv";
+    private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
 
     public LevelCreator() {
         create();
 
         addItems();
 
+        this.setSize(1400,600);
         this.setVisible(true);
     }
 
-    public void btnSaveActionPerformed(ActionEvent evt) {
+    /**
+     * Does some validation and saves the level
+     */
+    private void save() {
+        boolean valid = true;
 
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                if (comboBoxes[i][j].getSelectedItem() == null)
+                    valid = false;
+            }
+        }
+
+        if (txtName.getText().length() == 0) {
+            txtName.setText("Invalid Name. No '.'s");        //TODO make this MUCH better if we use this in the demo
+            valid = false;
+        }
+
+        String oldFileName = txtName.getText();
+        String newFileName = "";
+
+
+        //formats the file name a little also more validation
+        for (int i = 0; i < oldFileName.length(); i++) {
+            if (oldFileName.charAt(i) == '.') {
+                //TODO make this MUCH better if we use this in the demo
+                valid = false;
+                txtName.setText("Invalid Name. No '.'s");
+                break;
+            }
+            if ( oldFileName.charAt(i) == ' ')
+                newFileName += '_';
+            else
+                newFileName += oldFileName.charAt(i);
+        }
+
+        if (!valid) {
+            String[] selectedKeyBits;
+            LevelPart levelPart;
+            ArrayList<Object> levelPartArrayList = new ArrayList<>();
+
+            //populating arraylist with values in combo boxes
+            for (int i = 0; i < 11; i++) {
+                for (int j = 0; j < 11; j++) {
+                    selectedKeyBits = ((String) comboBoxes[i][j].getSelectedItem()).split(" - ");
+
+                    levelPart = new LevelPart();
+
+                    levelPart.setSpriteFileName(hashMap.get(selectedKeyBits[0]));
+                    levelPart.setRotation(Integer.parseInt(selectedKeyBits[1]));
+                    levelPart.setRowNo(i);
+                    levelPart.setColNo(j);
+
+                    levelPartArrayList.add(levelPart);
+                }
+            }
+
+            FileHandling.writeToFile(levelPartArrayList, LEVEL_ID_DIR + newFileName); //SAVING
+        }
     }
 
+
+    /**
+     * Adds the items to the combo boxes
+     *
+     */
     private void addItems() {
         readCSV();
 
         Object[] keys = hashMap.keySet().toArray();
 
-        for (int i = 0; i < 11; i++)
-            for (int j = 0; j < 11; j++)
-                for (Object key : keys)
-                    comboBoxes[i][j].addItem((String) key);
+        for (int i = 0; i < 11; i++){
+            for (int j = 0; j < 11; j++) {
+                comboBoxes[i][j].addItem(null);
+                for (Object key : keys) {
+                    comboBoxes[i][j].addItem((String) key + " - " + "0");
+                    comboBoxes[i][j].addItem((String) key + " - " + "90");
+                    comboBoxes[i][j].addItem((String) key + " - " + "180");
+                    comboBoxes[i][j].addItem((String) key + " - " + "270");
+                }
+                //comboBoxes[i][j].setSelectedItem(null);
+                comboBoxes[i][j].setSelectedIndex(1);
+            }
+        }
 
     }
 
+    /**
+     * Parses a CSV File, strangley allows for comments in case we want to add them in the CSV file
+     */
     private void readCSV() {
         HashMap<String, String> tempHashMap = new HashMap<>();
         BufferedReader br = null;
@@ -56,11 +129,14 @@ public class LevelCreator extends JFrame {
         String[] levelIDMap;
 
         try {
-
-            br = new BufferedReader(new FileReader(LEVEL_ID_FILE));
+            br = new BufferedReader(new FileReader(LEVEL_ID_DIR + "level_IDs.csv"));
             while ((line = br.readLine()) != null) {
-                levelIDMap = line.split(",");
-                tempHashMap.put(levelIDMap[0], levelIDMap[1]);
+                if (line.length() != 0
+                        && (line.charAt(0) != '/' && line.charAt(1) != '/')) { //allow for any 'comments'
+
+                    levelIDMap = line.split(",");
+                    tempHashMap.put(levelIDMap[0], levelIDMap[1]);
+                }
             }
 
         } catch (IOException e) {
@@ -77,6 +153,10 @@ public class LevelCreator extends JFrame {
         hashMap = tempHashMap;
     }
 
+    /**
+     * Don't even bother looking at this it's disgusting, it basically just creates the form.
+     *
+     */
     private void create() {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
@@ -87,6 +167,7 @@ public class LevelCreator extends JFrame {
                 e2.printStackTrace();
             }
         }
+
 
         JLabel jLabel1 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
@@ -214,6 +295,7 @@ public class LevelCreator extends JFrame {
         JComboBox<String> jComboBox119 = new javax.swing.JComboBox<>();
         JComboBox<String> jComboBox120 = new javax.swing.JComboBox<>();
         JComboBox<String> jComboBox121 = new javax.swing.JComboBox<>();
+        JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         btnPreview = new javax.swing.JButton();
 
         int i, j;
@@ -378,6 +460,8 @@ public class LevelCreator extends JFrame {
             }
         }
 
+        jScrollPane1.setViewportView(jPanel1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Level Name: ");
@@ -385,7 +469,7 @@ public class LevelCreator extends JFrame {
         btnSave.setText("Save Level");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                save();
             }
         });
 
@@ -400,17 +484,21 @@ public class LevelCreator extends JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1112, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(txtName))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addGap(0, 679, Short.MAX_VALUE)
                                                 .addComponent(btnSave)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 685, Short.MAX_VALUE)
                                                 .addComponent(btnPreview)))
                                 .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(22, 22, 22)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1481, Short.MAX_VALUE)
+                                        .addContainerGap()))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -419,13 +507,16 @@ public class LevelCreator extends JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel1)
                                         .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 548, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(btnSave)
                                         .addComponent(btnPreview))
                                 .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(50, 50, 50)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                                        .addGap(51, 51, 51)))
         );
 
         pack();

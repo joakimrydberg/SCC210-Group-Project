@@ -1,16 +1,6 @@
 package game;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.ClassNotFoundException;
-import java.lang.Object;
-import java.lang.String;
-import java.lang.System;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -96,7 +86,7 @@ public abstract class FileHandling {
 	private static void checkFileExists(String fileName) {
 		File file = new File(fileName);
 
-		if (file.exists())
+		if (!file.exists())
 			try {
 				if (file.createNewFile())
 					System.out.println(fileName + " not found, so created.");
