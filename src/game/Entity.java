@@ -85,6 +85,7 @@ public class Entity  {
     public void clicked(Vector2i clickPosition) {
         //does nothing at all, should probably override.
     }
+
     public void clicked(MainMenu mainMenu, CharMenu charMenu, MapMenu mapMenu){
         //override
     }

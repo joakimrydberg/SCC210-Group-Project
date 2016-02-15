@@ -51,10 +51,11 @@ public class MapMenu extends EntityHolder {
             e.printStackTrace();
         }
 
-        addEntity(new Rect(w, null, 10 + centerX, 10 + centerY, 50, 30, Color.WHITE, 300));
-        addEntity(new Button(w, 15, 15, 100, 50, Color.WHITE, 200 , "BACK", 15 ));
+        //addEntity(new Rect(w, null, 10 + centerX, 10 + centerY, 50, 30, Color.WHITE, 300));
+        addEntity(new Button(w, 50, 25, 80, 30, Color.WHITE, 200 , "BACK", 15 ));
 
-        //creating the nodes
+        //things josh added to the nodes .. how come ? it draws them at the wrong position
+        /*
         nodes[0] = new Bubble(w, null, 200 + centerX, 600 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[1] = new Bubble(w, null, 200 + centerX, 500 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[2] = new Bubble(w, null, 100 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
@@ -65,12 +66,25 @@ public class MapMenu extends EntityHolder {
         nodes[7] = new Bubble(w, null, 700 + centerX, 400 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[8] = new Bubble(w, null, 700 + centerX, 200 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[9] = new Bubble(w, null, 800 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
+        */
+
+        //creating the nodes
+        nodes[0] = new Bubble(w, null, 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[1] = new Bubble(w, null, 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[2] = new Bubble(w, null, 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[3] = new Bubble(w, null, 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[4] = new Bubble(w, null, 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[5] = new Bubble(w, null, 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[6] = new Bubble(w, null, 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[7] = new Bubble(w, null, 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[8] = new Bubble(w, null, 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[9] = new Bubble(w, null, 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         // ***CURRENTLY ISSUES WITH LINE ANGLING THEREFORE CONNECTIONS ARE COMMENTED OUT FOR NOW****
         //draw lines connecting the nodes
         drawLine(w, nodes[0], nodes[1], Color.BLACK);
 
-        drawLine(w, nodes[1], nodes[2], Color.BLACK);
+        //drawLine(w, nodes[1], nodes[2], Color.BLACK);
         //drawLine(w, nodes[1], nodes[3], Color.BLACK);
 
         //drawLine(w, nodes[3], nodes[4], Color.BLACK);
@@ -97,9 +111,21 @@ public class MapMenu extends EntityHolder {
 
             for(int i = 0; i < 10; i++){
                 Image img = new Image(w, 0 , 0 , 0, b);
+
+                //debugging
+                //System.out.println("node[" + i + "]: " + nodes[i].getCenterX() + ", " + nodes[i].getCenterY());
+
                 img.setCenterX(nodes[i].getCenterX());
                 img.setCenterY(nodes[i].getCenterY());
+
+                //debugging
+                //System.out.println("image " + i + ": " + img.getCenterX() + ", " + img.getCenterY());
+
                 addEntity(img);
+
+                //why on earth do I need these both before and afterwards to work ? I wont edit this out till i know entity is sorted
+                img.setCenterX(nodes[i].getCenterX());
+                img.setCenterY(nodes[i].getCenterY());
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -121,12 +147,25 @@ public class MapMenu extends EntityHolder {
         //find the length the line should be using pythagoras theurum
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2));
 
+        //debugging (remove)
+        System.out.println("node[0]: " + p1.getCenterX() + ", " + p1.getCenterY());
+        System.out.println("node[1]: " + p2.getCenterX() + ", " + p2.getCenterY());
+
         //create the line from the starting node
-        Rect line = new Rect(w, null, p1.getCenterX(), p1.getCenterY(), (int)length, 5, c, 300);
+        //new line for drawing Rect which puts the x and y parameters directly between the 2 nodes
+        Rect line = new Rect(w, null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300);
+
+        //line that no longer works as rect x param is now centre and not the top-left .. will this be chnaging again ?
+        //Rect line = new Rect(w, null, p1.getCenterX(), p1.getCenterY(), (int)length, 5, c, 300);
+
         addEntity(line);
 
+        //debugging
+        System.out.println("line centre: " + line.getCenterX() + ", " + line.getCenterY());
+        System.out.println("line left: " + line.getTopLeftX() + ", " + line.getTopLeftY());
+
         //rotate the line to point at the second node
-        if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x
+        if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x; points are directly above / below each other
             line.rotate(270); //rotate the line to point upwards
         }
         else {
@@ -141,8 +180,29 @@ public class MapMenu extends EntityHolder {
                 line.rotate(trigAngle);
             }*/
 
-            line.rotate(trigAngle);
+            //line.rotate(trigAngle);
         }
+
+        //
+        /*
+        if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x
+            line.rotate(270); //rotate the line to point upwards
+        }
+        else {
+            float trigAngle = (float)Math.toDegrees(Math.atan((p2.getCenterY() - p1.getCenterY()) / (p2.getCenterX() - p1.getCenterX())));
+            System.out.println("Rotating by: " + trigAngle);
+
+            // EDITING NEEDED TO ACCOUNT FOR NODES THAT ARE NOT BETWEEN NORTH - EAST OF P1
+            /*if (p2.getCenterX() < p1.getCenterX() && p2.getCenterY() <= p1.getCenterY()){
+                line.rotate(trigAngle + 180);
+            }
+            else if (p2.getCenterX() >= p1.getCenterX() && p2.getCenterY() < p1.getCenterY()){
+                line.rotate(trigAngle);
+            }
+
+            //line.rotate(trigAngle);
+        }
+        */
     }
 
     /*
