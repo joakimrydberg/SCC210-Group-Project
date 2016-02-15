@@ -84,18 +84,18 @@ public class MapMenu extends EntityHolder {
         //draw lines connecting the nodes
         drawLine(w, nodes[0], nodes[1], Color.BLACK);
 
-        //drawLine(w, nodes[1], nodes[2], Color.BLACK);
-        //drawLine(w, nodes[1], nodes[3], Color.BLACK);
+        drawLine(w, nodes[1], nodes[2], Color.BLACK);
+        drawLine(w, nodes[1], nodes[3], Color.BLACK);
 
-        //drawLine(w, nodes[3], nodes[4], Color.BLACK);
+        drawLine(w, nodes[3], nodes[4], Color.BLACK);
 
-        //drawLine(w, nodes[4], nodes[5], Color.BLACK);
-        //drawLine(w, nodes[4], nodes[7], Color.BLACK);
+        drawLine(w, nodes[4], nodes[5], Color.BLACK);
+        drawLine(w, nodes[4], nodes[7], Color.BLACK);
 
-        //drawLine(w, nodes[5], nodes[6], Color.BLACK);
+        drawLine(w, nodes[5], nodes[6], Color.BLACK);
 
-        //drawLine(w, nodes[7], nodes[8], Color.BLACK);
-        //drawLine(w, nodes[7], nodes[9], Color.BLACK);
+        drawLine(w, nodes[7], nodes[8], Color.BLACK);
+        drawLine(w, nodes[7], nodes[9], Color.BLACK);
 
         //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
@@ -147,10 +147,6 @@ public class MapMenu extends EntityHolder {
         //find the length the line should be using pythagoras theurum
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2));
 
-        //debugging (remove)
-        System.out.println("node[0]: " + p1.getCenterX() + ", " + p1.getCenterY());
-        System.out.println("node[1]: " + p2.getCenterX() + ", " + p2.getCenterY());
-
         //create the line from the starting node
         //new line for drawing Rect which puts the x and y parameters directly between the 2 nodes
         Rect line = new Rect(w, null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300);
@@ -160,49 +156,20 @@ public class MapMenu extends EntityHolder {
 
         addEntity(line);
 
-        //debugging
-        System.out.println("line centre: " + line.getCenterX() + ", " + line.getCenterY());
-        System.out.println("line left: " + line.getTopLeftX() + ", " + line.getTopLeftY());
-
         //rotate the line to point at the second node
         if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x; points are directly above / below each other
             line.rotate(270); //rotate the line to point upwards
         }
         else {
-            float trigAngle = (float)Math.toDegrees(Math.atan((p2.getCenterY() - p1.getCenterY()) / (p2.getCenterX() - p1.getCenterX())));
-            System.out.println("Rotating by: " + trigAngle);
+            int l1 = p2.getCenterY()- p1.getCenterY();
+            int l2 = p2.getCenterX() - p1.getCenterX();
 
-            // EDITING NEEDED TO ACCOUNT FOR NODES THAT ARE NOT BETWEEN NORTH - EAST OF P1
-            /*if (p2.getCenterX() < p1.getCenterX() && p2.getCenterY() <= p1.getCenterY()){
-                line.rotate(trigAngle + 180);
-            }
-            else if (p2.getCenterX() >= p1.getCenterX() && p2.getCenterY() < p1.getCenterY()){
-                line.rotate(trigAngle);
-            }*/
+            //float trigAngle = (float)Math.toDegrees(Math.atan((p2.getCenterY() - p1.getCenterY()) / (p2.getCenterX() - p1.getCenterX())));
+            //float trigAngle = (float)Math.toDegrees(Math.atan(l1 / l2));
+            float trigAngle = (float)Math.toDegrees(Math.atan2(l1, l2));
 
-            //line.rotate(trigAngle);
+            line.rotate(trigAngle);
         }
-
-        //
-        /*
-        if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x
-            line.rotate(270); //rotate the line to point upwards
-        }
-        else {
-            float trigAngle = (float)Math.toDegrees(Math.atan((p2.getCenterY() - p1.getCenterY()) / (p2.getCenterX() - p1.getCenterX())));
-            System.out.println("Rotating by: " + trigAngle);
-
-            // EDITING NEEDED TO ACCOUNT FOR NODES THAT ARE NOT BETWEEN NORTH - EAST OF P1
-            /*if (p2.getCenterX() < p1.getCenterX() && p2.getCenterY() <= p1.getCenterY()){
-                line.rotate(trigAngle + 180);
-            }
-            else if (p2.getCenterX() >= p1.getCenterX() && p2.getCenterY() < p1.getCenterY()){
-                line.rotate(trigAngle);
-            }
-
-            //line.rotate(trigAngle);
-        }
-        */
     }
 
     /*
@@ -219,7 +186,7 @@ public class MapMenu extends EntityHolder {
         loaded--;
     }
 
-    //a random int between two integers, i may still need this, wi/l wait and see (Ross)
+    //a random int between two integers, i may still need this, will wait and see (Ross)
     private int randomInt(int aStart, int aEnd){
         Random rand = new Random();
         if (aStart > aEnd) {

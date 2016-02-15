@@ -81,9 +81,9 @@ public class Driver {
         mainMenu = new MainMenu(window);
         mapMenu = new MapMenu(window);
 
-        //mapMenu.load();
+        mapMenu.load();
         //charMenu.load();
-        mainMenu.load();
+        //mainMenu.load();
 
         entities.add(charMenu);
         entities.add(mainMenu);
