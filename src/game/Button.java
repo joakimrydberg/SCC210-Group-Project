@@ -60,7 +60,10 @@ public class Button extends Rect implements CollidingEntity {
 
     @Override
     public boolean colliding(int x, int y) {
-        return ( getTopLeftX() < x && x < getTopLeftX() + (getHeight()) && getTopLeftY() < y && y < getTopLeftY()+(getWidth())); //TODO NEEDSS MASSIVE WORK
+        return  getTopLeftX() < x
+                && x < getTopLeftX() + getWidth()
+                && getTopLeftY() < y
+                && y < getTopLeftY() + getHeight();    //TODO NEEDSS MASSIVE WORK
     }
 
     public void clicked(MainMenu mainMenu, CharMenu charMenu, MapMenu mapMenu){

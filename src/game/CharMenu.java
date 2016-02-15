@@ -8,27 +8,23 @@ package game;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
-import org.jsfml.graphics.Transformable;
 import org.jsfml.system.Vector2i;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  *
  * @author ryan
  */
-public class CharMenu extends EntityHolder {
+public class CharMenu extends Menu {
     private final static String SEP = Constants.SEP;
 
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
 
     private Message hairCol = null;
-
-    public int loaded = 0;
 
     public CharMenu(RenderWindow w) {
         super(w, "Character creation menu");
@@ -38,9 +34,9 @@ public class CharMenu extends EntityHolder {
 
         hairCol = new Message(w, 700, 242, 0, "Red", Color.BLACK, 11);
 
-        add(new Rect(w, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
-        add(new Rect(w, null, 725,  375, 350, 700, Color.WHITE, 128));
-        add(new Rect(w, null, 725, 500, 350, 150, Color.WHITE, 128));
+        addEntity(new Rect(w, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
+        addEntity(new Rect(w, null, 725, 375, 350, 700, Color.WHITE, 128));
+        addEntity(new Rect(w, null, 725, 500, 350, 150, Color.WHITE, 128));
         Button createButton = new Button(w, 685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
 
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -53,14 +49,14 @@ public class CharMenu extends EntityHolder {
             final String d = (dir.toString() + SEP + "assets" + SEP + "art" + SEP +"ranged.png");
             final String e = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "strength.png");
 
-            add(new Image(w, 600, 100, 0, a));
-            add(new Image(w, 725, 100, 0, e));
-            add(new Image(w, 850, 100, 0, d));
+            addEntity(new Image(w, 600, 100, 0, a));
+            addEntity(new Image(w, 725, 100, 0, e));
+            addEntity(new Image(w, 850, 100, 0, d));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        add(createButton);
+        addEntity(createButton);
 
         // DebugPrinter.debugPrint(this, getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png").toString());
         messages[0] = (new Message(w, 575, 430, 0, "Stats", Color.BLACK, 20));
@@ -70,48 +66,21 @@ public class CharMenu extends EntityHolder {
         messages[4] = (new Message(w, 675, 550, 0, "Endurance : 5", Color.BLACK, 12));
         messages[5] = (new Message(w, 675, 575, 0, "Vitality : 5", Color.BLACK, 12));
 
-        add(messages[0]);
-        add(messages[1]);
-        add(messages[2]);
-        add(messages[3]);
-        add(messages[4]);
-        add(messages[5]);
+        addEntity(messages[0]);
+        addEntity(messages[1]);
+        addEntity(messages[2]);
+        addEntity(messages[3]);
+        addEntity(messages[4]);
+        addEntity(messages[5]);
 
         hairCols[0] = "Red";
         hairCols[1] = "Blue";
         hairCols[2] = "Green";
 
-        add(new Button(w, 775, 250, 25, 25, Color.WHITE, 100 , ">>", 9 ));
-        add(new Button(w, 650, 250, 25, 25, Color.WHITE, 100 , "<<", 9 ));
-        add(hairCol);
+        addEntity(new Button(w, 775, 250, 25, 25, Color.WHITE, 100, ">>", 9 ));
+        addEntity(new Button(w, 650, 250, 25, 25, Color.WHITE, 100, "<<", 9 ));
+        addEntity(hairCol);
 
-    }
-    public void add(Entity a){
-        addEntity(a);
-    }
-
-    @Override
-    public void draw() {
-        for (Entity a : getEntities())
-            if(loaded==1)
-                a.draw();
-    }
-
-    /* As far as I can tell no need for this in a menu
-
-        public void performMove(){
-            for(MovingEntity a : act){
-                a.move(0, 0);
-            }
-        }
-    */
-
-    public void load(){
-        loaded++;
-    }
-
-    public void unload(){
-        loaded--;
     }
 
     public void moveRight(int i){

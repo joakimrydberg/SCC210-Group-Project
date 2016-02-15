@@ -14,7 +14,7 @@ import org.jsfml.system.Vector2i;
  *
  * @author ryan
  */
-public class MainMenu extends EntityHolder {
+public class MainMenu extends Menu {
 
     public int loaded = 0;
 
@@ -27,33 +27,4 @@ public class MainMenu extends EntityHolder {
         addEntity(new Rect(window, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
         addEntity(new Button(window, centerX, centerY, 250, 100, Color.WHITE, 100, "NEW GAME", 22));
     }
-
-    @Override
-    public void draw() {
-        super.draw();
-
-        ArrayList<Entity> entities = getEntities();
-        for (Entity a : entities) {
-            if(loaded==1){
-                a.draw();
-            }
-        }
-    }
-
-   /*
-
-   void performMove(){
-        for(MovingEntity a : act){
-            a.move();
-        }
-    }*/
-
-    public void load(){
-        loaded++;
-    }
-
-    public void unload(){
-        loaded = 0;
-    }
-
 }

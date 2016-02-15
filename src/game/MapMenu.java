@@ -7,11 +7,8 @@ package game;
 
 import org.jsfml.graphics.*;
 import org.jsfml.graphics.Color;
-import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
-import java.awt.*;
-import java.awt.geom.Line2D;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -22,7 +19,7 @@ import java.util.Random;
  *
  * @author Ross Newby
  */
-public class MapMenu extends EntityHolder {
+public class MapMenu extends Menu {
     private final static String SEP = Constants.SEP;
     public int loaded = 0;
     private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
@@ -131,13 +128,6 @@ public class MapMenu extends EntityHolder {
         }
     }
 
-    public void draw() {
-        for (Entity a : getEntities()) {
-            if(loaded==1){
-                a.draw();
-            }
-        }
-    }
 
     /*
      * This method uses trigonometry to draw a solid line between two nodes
@@ -191,19 +181,6 @@ public class MapMenu extends EntityHolder {
         }
     }
 
-    /*
-     *
-     */
-    public void load(){
-        loaded++;
-    }
-
-    /*
-     *
-     */
-    public void unload(){
-        loaded--;
-    }
 
     //a random int between two integers, i may still need this, will wait and see (Ross)
     private int randomInt(int aStart, int aEnd){

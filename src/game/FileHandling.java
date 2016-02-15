@@ -22,7 +22,7 @@ public abstract class FileHandling {
 	/*
 	 * static constants for all the files necessary for the game
 	 */
-	public static final String EXAMPLEFILE = "example.txt",
+	public static final String LEVEL = "example.txt",
 			EXAMPLEFILE2 = "example2.txt";
 
 	/**

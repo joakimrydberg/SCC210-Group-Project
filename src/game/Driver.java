@@ -101,6 +101,7 @@ public class Driver {
             // Update the display with any changes
             window.display();
 
+
             // Handle any events
             for (Event event : window.pollEvents()) {
                 if (event.type == Event.Type.CLOSED)      // the user pressed the close button
@@ -108,37 +109,35 @@ public class Driver {
 
                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
                     //   if(event.asMouseButtonEvent()){
-                    if (charMenu.loaded != 0)
+                    if (charMenu.isLoaded())
                         checkWithins(charMenu.getEntities(), event);
 
-                    if (mainMenu.loaded != 0)
+                    if (mainMenu.isLoaded())
                         checkWithins(mainMenu.getEntities(), event);
 
-                    if (mapMenu.loaded != 0)
+                    if (mapMenu.isLoaded())
                         checkWithins(mapMenu.getEntities(), event);
                 }
             }
         }
     }
 
-
     private void checkWithins(ArrayList<Entity> array, Event event) { //TODO rename to something remotely appropriate
         for (Entity entity : array)
             if (entity instanceof CollidingEntity
                     && ((CollidingEntity) entity).colliding(event))
+
                 entity.clicked(mainMenu, charMenu, mapMenu);
-        //s
     }
 
     private void drawAll(ArrayList<Entity> array) {  //TODO rename to something remotely appropriate
         for (Entity entity : array) {
             if (entity instanceof MovingEntity)
                 ((MovingEntity) entity).move();
-            entity.draw();
 
+            entity.draw();
         }
     }
-
 
     /**
      * Starts off the game
