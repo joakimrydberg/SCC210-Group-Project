@@ -80,22 +80,21 @@ public class MapMenu extends EntityHolder {
         nodes[8] = new Bubble(w, null, 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[9] = new Bubble(w, null, 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
-        // ***CURRENTLY ISSUES WITH LINE ANGLING THEREFORE CONNECTIONS ARE COMMENTED OUT FOR NOW****
         //draw lines connecting the nodes
-        drawLine(w, nodes[0], nodes[1], Color.BLACK);
+        drawDottedLine(w, nodes[0], nodes[1], Color.BLACK);
 
-        drawLine(w, nodes[1], nodes[2], Color.BLACK);
-        drawLine(w, nodes[1], nodes[3], Color.BLACK);
+        drawDottedLine(w, nodes[1], nodes[2], Color.BLACK);
+        drawDottedLine(w, nodes[1], nodes[3], Color.BLACK);
 
-        drawLine(w, nodes[3], nodes[4], Color.BLACK);
+        drawDottedLine(w, nodes[3], nodes[4], Color.BLACK);
 
-        drawLine(w, nodes[4], nodes[5], Color.BLACK);
-        drawLine(w, nodes[4], nodes[7], Color.BLACK);
+        drawDottedLine(w, nodes[4], nodes[5], Color.BLACK);
+        drawDottedLine(w, nodes[4], nodes[7], Color.BLACK);
 
-        drawLine(w, nodes[5], nodes[6], Color.BLACK);
+        drawDottedLine(w, nodes[5], nodes[6], Color.BLACK);
 
-        drawLine(w, nodes[7], nodes[8], Color.BLACK);
-        drawLine(w, nodes[7], nodes[9], Color.BLACK);
+        drawDottedLine(w, nodes[7], nodes[8], Color.BLACK);
+        drawDottedLine(w, nodes[7], nodes[9], Color.BLACK);
 
         //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
@@ -144,31 +143,51 @@ public class MapMenu extends EntityHolder {
      * This method uses trigonometry to draw a solid line between two nodes
      */
     public void drawLine(RenderWindow w, Bubble p1, Bubble p2, Color c){
-        //find the length the line should be using pythagoras theurum
-        double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2));
-
-        //create the line from the starting node
-        //new line for drawing Rect which puts the x and y parameters directly between the 2 nodes
-        Rect line = new Rect(w, null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300);
+        double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
+        Rect line = new Rect(w, null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300); //create the line between the two nodes
 
         //line that no longer works as rect x param is now centre and not the top-left .. will this be chnaging again ?
         //Rect line = new Rect(w, null, p1.getCenterX(), p1.getCenterY(), (int)length, 5, c, 300);
 
         addEntity(line);
 
-        //rotate the line to point at the second node
-        if (p2.getCenterX() - p1.getCenterX() == 0){ //if there is no change in x; points are directly above / below each other
-            line.rotate(270); //rotate the line to point upwards
+        //rotate the line using trigonometry
+        int l1 = p2.getCenterY()- p1.getCenterY();
+        int l2 = p2.getCenterX() - p1.getCenterX();
+
+        float trigAngle = (float)Math.toDegrees(Math.atan2(l1, l2)); //uses trig method 'SOH CAH TOA'
+        line.rotate(trigAngle);
+    }
+
+    /*
+     * This method uses trigonometry to draw a dotted line between two nodes
+     */
+    public void drawDottedLine(RenderWindow w, Bubble p1, Bubble p2, Color c){
+        double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
+        int noOfLines = (int)length / 20; //has a line every 20p
+
+        Rect lines[] = new Rect[noOfLines];
+
+        double xInterval = (p2.getCenterX() - p1.getCenterX()) / noOfLines;
+        double yInterval = (p2.getCenterY() - p1.getCenterY()) / noOfLines;
+
+        //creating the lines at intervals between the 2 nodes
+        for(int i = 0, j = 1; i < noOfLines; i++, j++){
+            lines[i] = new Rect(w, null, (int)(p1.getCenterX() + (xInterval * j)), (int)(p1.getCenterY() + (yInterval * j)), 10, 5, c, 300);
         }
-        else {
-            int l1 = p2.getCenterY()- p1.getCenterY();
-            int l2 = p2.getCenterX() - p1.getCenterX();
 
-            //float trigAngle = (float)Math.toDegrees(Math.atan((p2.getCenterY() - p1.getCenterY()) / (p2.getCenterX() - p1.getCenterX())));
-            //float trigAngle = (float)Math.toDegrees(Math.atan(l1 / l2));
-            float trigAngle = (float)Math.toDegrees(Math.atan2(l1, l2));
+        //adding the lines to the screen in a loop
+        for(int i = 0; i < noOfLines; i++){
+            addEntity(lines[i]);
+        }
 
-            line.rotate(trigAngle);
+         //rotate the lines using trigonometry
+        int l1 = p2.getCenterY()- p1.getCenterY();
+        int l2 = p2.getCenterX() - p1.getCenterX();
+
+        float trigAngle = (float)Math.toDegrees(Math.atan2(l1, l2)); //uses trig method 'SOH CAH TOA'
+        for(int i = 0; i < noOfLines; i++){
+            lines[i].rotate(trigAngle);
         }
     }
 
