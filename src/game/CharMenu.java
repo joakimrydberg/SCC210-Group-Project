@@ -27,7 +27,7 @@ public class CharMenu extends Menu {
     private Image range;
     private Image mage;
 
-   //SpriteSheetLoader movingEnt = new SpriteSheetLoader(64, 128, 6, 4, 1, "assets/art/Warrior Male Sheet2.png");
+   //SpriteSheetLoad movingEnt = new SpriteSheetLoad(64, 128, 6, 4, 1, "assets/art/Warrior Male Sheet2.png");
    // BufferedImage[] warriorCharacter = movingEnt.returnSprites();
 
     private String[] hairCols = new String[3];
