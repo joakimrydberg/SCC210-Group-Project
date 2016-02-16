@@ -80,7 +80,7 @@ public class Image extends Entity implements InteractingEntity {
             DebugPrinter.debugPrint(this, "ranged selected");
             menu.setStats(0, 0, 5, 5, 5);
         }
-        else if (this.getName().contains("Strength")){
+        else if (this.getName().contains("strength")){
             DebugPrinter.debugPrint(this, "Strength selected");
             menu.setStats(5, 0, 0, 5, 5);
         }
