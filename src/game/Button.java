@@ -27,8 +27,8 @@ public class Button extends Rect implements Clickable {
     private String FontPath; // Where fonts were found
 
     public Button(RenderWindow w, int x, int y, int width, int height, Color c, int transparency, String text, int size) {
-        super(w, text, x, y, width, height, c, transparency);
-
+        super(w, text, x, y, width, height, c, 0);
+        //super(w, text, x, y, width, height, c, transparency);
 
         // Load image/ texture
         Texture imgTexture = new Texture( );
