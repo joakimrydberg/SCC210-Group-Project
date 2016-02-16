@@ -33,14 +33,27 @@ public class CharMenu extends Menu {
         final Vector2i windowSize = w.getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
+        URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+
+        //adding the map image to the screen
+        try{
+            File myfile = new File(url.toURI());
+            File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
+            String a = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "menu_background.png");
+
+            addEntity(new Image(w, centerX, centerY, windowSize.x, windowSize.y, a));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         hairCol = new Message(w, 700, 242, 0, "Red", Color.BLACK, 11);
 
-        addEntity(new Rect(w, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
+        //addEntity(new Rect(w, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
         addEntity(new Rect(w, null, 725, 375, 350, 700, Color.WHITE, 128));
         addEntity(new Rect(w, null, 725, 500, 350, 150, Color.WHITE, 128));
         Button createButton = new Button(w, 685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
 
-        URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+        //URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
         try{
             File myfile = new File(url.toURI());
