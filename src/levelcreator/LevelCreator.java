@@ -68,7 +68,7 @@ public class LevelCreator extends JFrame {
                 newFileName += oldFileName.charAt(i);
         }
 
-        if (!valid) {
+        if (valid) {
             String[] selectedKeyBits;
             LevelPart levelPart;
             ArrayList<Object> levelPartArrayList = new ArrayList<>();
