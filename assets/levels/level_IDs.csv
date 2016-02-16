@@ -1,3 +1,15 @@
-Blue Wall, example.jpg, Wall
-Green Window, example.png, Window
-Purple Door, example_2.jpg, Door
+Stone, dungeon_stone.png, Floor
+Brick, dungeon_brick.png, Floor
+Door, dungeon_door.png, Door
+Wall, dungeon_wall.png, Wall
+Torch, dungeon_wall_torch.png, Wall
+Corner, dungeon_corner.png, Wall
+Edge1, dungeon_edge_one.png, Wall
+Edge2, dungeon_edge_two.png, Wall
+Edge3, dungeon_edge_two_v2.png, Wall
+Edge4, dungeon_edge_three.png, Wall
+Edge5, dungeon_edge_four.png, Wall
+Edge6, dungeon_edge_corner_none.png, Wall
+Edge7, dungeon_edge_corner_one.png, Wall
+Edge8, dungeon_edge_corner_one_v2.png, Wall
+Edge9, dungeon_edge_corner_two.png, Wall

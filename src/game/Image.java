@@ -12,6 +12,7 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -58,6 +59,8 @@ public class Image extends Entity implements InteractingEntity {
     public Image(RenderWindow w, int x, int y, String textureFile) {
         this(w, x, y, -1, -1, textureFile);
     }
+
+
 
     @Override
     public boolean checkWithin(Event e) {
