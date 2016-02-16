@@ -47,57 +47,59 @@ public class SpriteSheetLoad{
     }
 
     //Given an array of numbers makes the room
-    public BufferedImage[] roomMake(int[] roomDesign){
-        BufferedImage[] tempRoom = new BufferedImage[169];
-        for(int i=0; i<169; i++)
+    public BufferedImage[][] roomMake(int[] roomDesign){
+        BufferedImage[][] tempRoom = new BufferedImage[13][13];
+        for(int i=0; i<13; i++)
         {
+            for(int j=0; i<13; i++)
+            {
             switch (roomDesign[i]) {
                 case 0:
-                    tempRoom[i] = sprites[0];
+                    tempRoom[i][j] = sprites[0];
                     break;
                 case 1:
-                    tempRoom[i] = sprites[1];
+                    tempRoom[i][j] = sprites[1];
                     break;
                 case 2:
-                    tempRoom[i] = sprites[2];
+                    tempRoom[i][j] = sprites[2];
                     break;
                 case 3:
-                    tempRoom[i] = sprites[3];
+                    tempRoom[i][j] = sprites[3];
                     break;
                 case 4:
-                    tempRoom[i] = sprites[4];
+                    tempRoom[i][j] = sprites[4];
                     break;
                 case 5:
-                    tempRoom[i] = sprites[5];
+                    tempRoom[i][j] = sprites[5];
                     break;
                 case 6:
-                    tempRoom[i] = sprites[6];
+                    tempRoom[i][j] = sprites[6];
                     break;
                 case 7:
-                    tempRoom[i] = sprites[7];
+                    tempRoom[i][j] = sprites[7];
                     break;
                 case 8:
-                    tempRoom[i] = sprites[8];
+                    tempRoom[i][j] = sprites[8];
                     break;
                 case 9:
-                    tempRoom[i] = sprites[9];
+                    tempRoom[i][j] = sprites[9];
                     break;
                 case 10:
-                    tempRoom[i] = sprites[10];
+                    tempRoom[i][j] = sprites[10];
                     break;
                 case 11:
-                    tempRoom[i] = sprites[11];
+                    tempRoom[i][j] = sprites[11];
                     break;
                 case 12:
-                    tempRoom[i] = sprites[12];
+                    tempRoom[i][j] = sprites[12];
                     break;
                 case 13:
-                    tempRoom[i] = sprites[13];
+                    tempRoom[i][j] = sprites[13];
                     break;
                 case 14:
-                    tempRoom[i] = sprites[14];
+                    tempRoom[i][j] = sprites[14];
                     break;
-            }
+            }}
         }
         return tempRoom;
     }
