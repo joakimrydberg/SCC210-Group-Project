@@ -5,17 +5,24 @@
  */
 package game;
 
+import interfaces.ClickListener;
+import interfaces.Clickable;
 import interfaces.InteractingEntity;
 import org.jsfml.graphics.CircleShape;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author newby
  */
-public class Bubble extends Entity implements InteractingEntity {
+public class Bubble extends Entity implements Clickable {
+
+    ArrayList<ClickListener> clickListeners = new ArrayList<>();
 
     public Bubble(RenderWindow w, String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(w, name);
@@ -48,11 +55,26 @@ public class Bubble extends Entity implements InteractingEntity {
 
     @Override
     public boolean checkWithin(Event e) {
-        return false;
+        Vector2i v = e.asMouseButtonEvent().position;
+        return checkWithin(v.x, v.y);
     }
 
+    @Override
+    public void clicked(Event e) {
+        for (ClickListener listener : clickListeners) {
+            listener.buttonClicked(this, null);
+        }
+    }
+
+    @Override
+    public void addClickListener(ClickListener clickListener) {
+        clickListeners.add(clickListener);
+    }
+
+    /*
     void clicked(){
         DebugPrinter.debugPrint(this, "Clicked Node");
     }
+    */
 }
 	

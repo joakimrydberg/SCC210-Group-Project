@@ -55,31 +55,17 @@ public class MapMenu extends Menu {
         backButton.addClickListener(this);
         addEntity(backButton);
 
-        //things josh added to the nodes .. how come ? it draws them at the wrong position
-        /*
-        nodes[0] = new Bubble(w, null, 200 + centerX, 600 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[1] = new Bubble(w, null, 200 + centerX, 500 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[2] = new Bubble(w, null, 100 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[3] = new Bubble(w, null, 500 + centerX, 500 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[4] = new Bubble(w, null, 550 + centerX, 400 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[5] = new Bubble(w, null, 350 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[6] = new Bubble(w, null, 500 + centerX, 100 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[7] = new Bubble(w, null, 700 + centerX, 400 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[8] = new Bubble(w, null, 700 + centerX, 200 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[9] = new Bubble(w, null, 800 + centerX, 300 + centerY, 10, Color.WHITE, Color.BLACK, 4, 300);
-        */
-
         //creating the nodes
-        nodes[0] = new Bubble(w, null, 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[1] = new Bubble(w, null, 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[2] = new Bubble(w, null, 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[3] = new Bubble(w, null, 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[4] = new Bubble(w, null, 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[5] = new Bubble(w, null, 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[6] = new Bubble(w, null, 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[7] = new Bubble(w, null, 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[8] = new Bubble(w, null, 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[9] = new Bubble(w, null, 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[0] = new Bubble(w, "1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[1] = new Bubble(w, "2", 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[2] = new Bubble(w, "3", 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[3] = new Bubble(w, "4", 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[4] = new Bubble(w, "5", 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[5] = new Bubble(w, "6", 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[6] = new Bubble(w, "7", 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[7] = new Bubble(w, "8", 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[8] = new Bubble(w, "9", 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[9] = new Bubble(w, "10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         //draw lines connecting the nodes
         drawDottedLine(w, nodes[0], nodes[1], Color.BLACK);
@@ -99,6 +85,7 @@ public class MapMenu extends Menu {
 
         //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
+            nodes[i].addClickListener(this);
             addEntity(nodes[i]);
         }
 
@@ -140,6 +127,39 @@ public class MapMenu extends Menu {
                 this.unload();
                 new CharMenu(getWindow()).load();
                 System.out.println("Create clicked");
+            }
+        }
+        else if (clickable instanceof  Bubble){
+            Entity button = (Bubble) clickable;
+            if (button.getName().equals("1")) {
+                System.out.println("node 1 clicked");
+            }
+            else if (button.getName().equals("2")) {
+                System.out.println("node 2 clicked");
+            }
+            else if (button.getName().equals("3")) {
+                System.out.println("node 3 clicked");
+            }
+            else if (button.getName().equals("4")) {
+                System.out.println("node 4 clicked");
+            }
+            else if (button.getName().equals("5")) {
+                System.out.println("node 5 clicked");
+            }
+            else if (button.getName().equals("6")) {
+                System.out.println("node 6 clicked");
+            }
+            else if (button.getName().equals("7")) {
+                System.out.println("node 7 clicked");
+            }
+            else if (button.getName().equals("8")) {
+                System.out.println("node 8 clicked");
+            }
+            else if (button.getName().equals("9")) {
+                System.out.println("node 9 clicked");
+            }
+            else if (button.getName().equals("10")) {
+                System.out.println("node 10 clicked");
             }
         }
     }

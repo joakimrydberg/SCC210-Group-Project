@@ -58,6 +58,14 @@ public class Driver {
 
         mainMenu = new MainMenu(window);
         mainMenu.load();
+/*
+        while(true) {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+
+            }
+        }*/
     }
 
 
