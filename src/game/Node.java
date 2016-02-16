@@ -20,11 +20,11 @@ import java.util.ArrayList;
  *
  * @author newby
  */
-public class Bubble extends Entity implements Clickable {
+public class Node extends Entity implements Clickable {
 
     ArrayList<ClickListener> clickListeners = new ArrayList<>();
 
-    public Bubble(RenderWindow w, String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
+    public Node(RenderWindow w, String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(w, name);
 
         CircleShape circle = new CircleShape(radius);

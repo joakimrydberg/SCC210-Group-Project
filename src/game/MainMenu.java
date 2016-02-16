@@ -24,7 +24,7 @@ public class MainMenu extends Menu {
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
         addEntity(new Image(window, centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "main_menu_background.png"));
-        //addEntity(new Image(window, 100, 100, "assets" + Constants.SEP + "art" + Constants.SEP + "game_button.png"));
+        //addEntity(new Image(window, 200, 500, 173, 40, "assets" + Constants.SEP + "art" + Constants.SEP + "game_button.png"));
 
         Button btnNewGame = new Button(window, centerX, centerY, 250, 100, Color.WHITE, 100, "NEW GAME", 22);
         btnNewGame.addClickListener(this);

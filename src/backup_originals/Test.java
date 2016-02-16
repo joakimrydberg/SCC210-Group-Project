@@ -251,11 +251,11 @@ class Test {
             }
         }
 
-        public class Bubble extends Actor {
+        public class Node extends Actor {
             private int radius;
 
 
-            public Bubble(int x, int y, int radius, Color c,
+            public Node(int x, int y, int radius, Color c,
                           int transparency) {
                 CircleShape circle = new CircleShape(radius);
                 circle.setFillColor(new Color(c, transparency));
@@ -549,7 +549,7 @@ class Test {
             private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
             public ArrayList<Actor> act = new ArrayList<Actor>( );
 
-            private Bubble[] nodes = new Bubble[10];
+            private Node[] nodes = new Node[10];
             public int loaded = 0;
 
 
@@ -577,16 +577,16 @@ class Test {
 
                 //creating the nodes
 
-                //nodes[0] = new Bubble(200, 600, 10, Color.BLACK, 300);
-                //nodes[1] = new Bubble(200, 500, 10, Color.BLACK, 300);
-                //nodes[2] = new Bubble(500, 500, 10, Color.BLACK, 300);
-                //nodes[3] = new Bubble(550, 400, 10, Color.BLACK, 300);
-                //nodes[4] = new Bubble(350, 300, 10, Color.BLACK, 300);
-                //nodes[5] = new Bubble(500, 100, 10, Color.BLACK, 300);
-    //            //nodes[6] = new Bubble(700, 200, 10, Color.BLACK, 300);
-    //            //nodes[7] = new Bubble(700, 400, 10, Color.BLACK, 300);
-    //            //nodes[8] = new Bubble(800, 300, 10, Color.BLACK, 300);
-    //            //nodes[9] = new Bubble(100, 300, 10, Color.BLACK, 300);
+                //nodes[0] = new Node(200, 600, 10, Color.BLACK, 300);
+                //nodes[1] = new Node(200, 500, 10, Color.BLACK, 300);
+                //nodes[2] = new Node(500, 500, 10, Color.BLACK, 300);
+                //nodes[3] = new Node(550, 400, 10, Color.BLACK, 300);
+                //nodes[4] = new Node(350, 300, 10, Color.BLACK, 300);
+                //nodes[5] = new Node(500, 100, 10, Color.BLACK, 300);
+    //            //nodes[6] = new Node(700, 200, 10, Color.BLACK, 300);
+    //            //nodes[7] = new Node(700, 400, 10, Color.BLACK, 300);
+    //            //nodes[8] = new Node(800, 300, 10, Color.BLACK, 300);
+    //            //nodes[9] = new Node(100, 300, 10, Color.BLACK, 300);
                 //for(int i = 0; i < 10; i++){
                     //add(nodes[i]);
                 }
@@ -661,10 +661,10 @@ class Test {
                 /*
 		actors.add(new Image(screenWidth / 4, screenHeight / 4,
 					10, ImageFile));
-		actors.add(new Bubble(500, 500, 20, Color.MAGENTA, 128));
-		actors.add(new Bubble(600, 600, 20, Color.YELLOW,  128));
-		actors.add(new Bubble(500, 600, 20, Color.BLUE,    128));
-		actors.add(new Bubble(600, 500, 20, Color.BLACK,   128));
+		actors.add(new Node(500, 500, 20, Color.MAGENTA, 128));
+		actors.add(new Node(600, 600, 20, Color.YELLOW,  128));
+		actors.add(new Node(500, 600, 20, Color.BLUE,    128));
+		actors.add(new Node(600, 500, 20, Color.BLACK,   128));
                 */
 
         CharMenu c = new CharMenu();

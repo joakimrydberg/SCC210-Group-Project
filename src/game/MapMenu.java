@@ -10,10 +10,6 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
 import org.jsfml.system.Vector2i;
-
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -25,7 +21,7 @@ public class MapMenu extends Menu {
     private final static String SEP = Constants.SEP;
     public int loaded = 0;
     private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
-    private Bubble[] nodes = new Bubble[10];
+    private Node[] nodes = new Node[10];
 
     /**
      *
@@ -34,38 +30,25 @@ public class MapMenu extends Menu {
         super(w, "Map");
 
         final Vector2i windowSize = w.getSize();
-        final int centerX = windowSize.x / 2,
-                centerY = windowSize.y / 2;
+        final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
-        URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+        addEntity(new Image(w, centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
 
-        //adding the map image to the screen
-        try{
-            File myfile = new File(url.toURI());
-            File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
-            String a = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "game-map.png");
-
-            addEntity(new Image(w, centerX, centerY, windowSize.x, windowSize.y, a));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        //addEntity(new Rect(w, null, 10 + centerX, 10 + centerY, 50, 30, Color.WHITE, 300));
         Button backButton = new Button(w, 50, 25, 80, 30, Color.WHITE, 200 , "BACK", 15 );
         backButton.addClickListener(this);
         addEntity(backButton);
 
         //creating the nodes
-        nodes[0] = new Bubble(w, "1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[1] = new Bubble(w, "2", 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[2] = new Bubble(w, "3", 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[3] = new Bubble(w, "4", 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[4] = new Bubble(w, "5", 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[5] = new Bubble(w, "6", 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[6] = new Bubble(w, "7", 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[7] = new Bubble(w, "8", 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[8] = new Bubble(w, "9", 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[9] = new Bubble(w, "10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[0] = new Node(w, "1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[1] = new Node(w, "2", 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[2] = new Node(w, "3", 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[3] = new Node(w, "4", 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[4] = new Node(w, "5", 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[5] = new Node(w, "6", 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[6] = new Node(w, "7", 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[7] = new Node(w, "8", 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[8] = new Node(w, "9", 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[9] = new Node(w, "10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         //draw lines connecting the nodes
         drawDottedLine(w, nodes[0], nodes[1], Color.BLACK);
@@ -91,31 +74,8 @@ public class MapMenu extends Menu {
 
         // ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
         //add locked images to each node
-        try{
-            File myfile = new File(url.toURI());
-            File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
-            String b = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "lock.png");
-
-            for(int i = 0; i < 10; i++){
-                Image img = new Image(w, 0, 0, b);
-
-                //debugging
-                //System.out.println("node[" + i + "]: " + nodes[i].getCenterX() + ", " + nodes[i].getCenterY());
-
-                img.setCenterX(nodes[i].getCenterX());
-                img.setCenterY(nodes[i].getCenterY());
-
-                //debugging
-                //System.out.println("image " + i + ": " + img.getCenterX() + ", " + img.getCenterY());
-
-                addEntity(img);
-
-                //why on earth do I need these both before and afterwards to work ? I wont edit this out till i know entity is sorted
-                img.setCenterX(nodes[i].getCenterX());
-                img.setCenterY(nodes[i].getCenterY());
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        for(int i = 0; i < 10; i++){
+            addEntity(new Image(w, nodes[i].getCenterX(), nodes[i].getCenterY(), "assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
         }
     }
 
@@ -129,8 +89,8 @@ public class MapMenu extends Menu {
                 System.out.println("Create clicked");
             }
         }
-        else if (clickable instanceof  Bubble){
-            Entity button = (Bubble) clickable;
+        else if (clickable instanceof Node){
+            Entity button = (Node) clickable;
             if (button.getName().equals("1")) {
                 System.out.println("node 1 clicked");
             }
@@ -167,7 +127,7 @@ public class MapMenu extends Menu {
     /*
      * This method uses trigonometry to draw a solid line between two nodes
      */
-    public void drawLine(RenderWindow w, Bubble p1, Bubble p2, Color c){
+    public void drawLine(RenderWindow w, Node p1, Node p2, Color c){
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
         Rect line = new Rect(w, null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300); //create the line between the two nodes
 
@@ -187,7 +147,7 @@ public class MapMenu extends Menu {
     /*
      * This method uses trigonometry to draw a dotted line between two nodes
      */
-    public void drawDottedLine(RenderWindow w, Bubble p1, Bubble p2, Color c){
+    public void drawDottedLine(RenderWindow w, Node p1, Node p2, Color c){
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
         int noOfLines = (int)length / 20; //has a line every 20p
 
