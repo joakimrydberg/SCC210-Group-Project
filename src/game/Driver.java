@@ -70,7 +70,7 @@ public class Driver {
             Iterable<Event> events = window.pollEvents();
 
             ListIterator<Drawer> it = drawers.listIterator();
-            if(it.hasNext()) {
+            while (it.hasNext()) {  //keep this as a while. trust me there are reasons
                 Drawer item = it.next();
 
                 item.update(events);
