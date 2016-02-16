@@ -1,7 +1,9 @@
 package game;
 
-import org.jsfml.graphics.*;
-import org.jsfml.system.Vector2i;
+import org.jsfml.graphics.Drawable;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Transformable;
+
 import java.util.ArrayList;
 
 /**
@@ -75,19 +77,6 @@ public class Entity  {
     @Override
     public String toString() {
         return name;
-    }
-
-    /**
-     * Called when clicked
-     *
-     * @param clickPosition - Vector2i containing the coordinates of the click event
-     */
-    public void clicked(Vector2i clickPosition) {
-        //does nothing at all, should probably override.
-    }
-
-    public void clicked(MainMenu mainMenu, CharMenu charMenu, MapMenu mapMenu){
-        //override
     }
 
     //=============================== Getters and Setters below ========================================================
@@ -271,7 +260,7 @@ public class Entity  {
         private Entity entity;
         private Transformable transformable;
         private int relX, relY;
-        private int width, height;
+        private int width = -1, height = -1;
 
         public TransformableHolder(Entity e, Transformable t, int relX, int relY, int w, int h) {
             this.entity = e;

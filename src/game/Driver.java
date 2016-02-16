@@ -1,10 +1,9 @@
 package game;
 
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
-import org.jsfml.window.event.Event;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -41,11 +40,6 @@ public class Driver {
     public Driver() {
         setUpPrinting();
 
-        run();
-    }
-
-
-    private void run() {
         //create window
         //
         // Check whether we're running from a JDK or JRE install
@@ -62,29 +56,25 @@ public class Driver {
 
         window.setFramerateLimit(30); // Avoid excessive updates
 
-        //
-        // Create some entities
-
-        //entities.add(new Message(screenWidth / 2, screenHeight / 2,
-        //			10, Message, Color.BLACK));
-
-                /*
-		entities.add(new Image(screenWidth / 4, screenHeight / 4,
-					10, ImageFile));
-		entities.add(new Bubble(500, 500, 20, Color.MAGENTA, 128));
-		entities.add(new Bubble(600, 600, 20, Color.YELLOW,  128));
-		entities.add(new Bubble(500, 600, 20, Color.BLUE,    128));
-		entities.add(new Bubble(600, 500, 20, Color.BLACK,   128));
-                */
-
-        charMenu = new CharMenu(window);
         mainMenu = new MainMenu(window);
-        mapMenu = new MapMenu(window);
-
-        //mapMenu.load();
-        //charMenu.load();
         mainMenu.load();
+    }
 
+
+    /**
+     * Starts off the game
+     *
+     * @param args - Arguments..
+     */
+    public static void main(String[] args) {
+        new Driver();
+    }
+
+}
+
+
+
+/*
         entities.add(charMenu);
         entities.add(mainMenu);
         entities.add(mapMenu);
@@ -120,17 +110,19 @@ public class Driver {
                 }
             }
         }
+
     }
 
-    private void checkWithins(ArrayList<Entity> array, Event event) { //TODO rename to something remotely appropriate
+    private void checkWithins(ArrayList<Entity> array, Event event) {
         for (Entity entity : array)
-            if (entity instanceof CollidingEntity
-                    && ((CollidingEntity) entity).colliding(event))
+            if (entity instanceof Clickable
+                    && ((Clickable) entity).checkWithin(event)) {
 
-                entity.clicked(mainMenu, charMenu, mapMenu);
+                ((Clickable) entity).clicked(event);
+            }
     }
 
-    private void drawAll(ArrayList<Entity> array) {  //TODO rename to something remotely appropriate
+    private void drawAll(ArrayList<Entity> array) {
         for (Entity entity : array) {
             if (entity instanceof MovingEntity)
                 ((MovingEntity) entity).move();
@@ -138,13 +130,4 @@ public class Driver {
             entity.draw();
         }
     }
-
-    /**
-     * Starts off the game
-     *
-     * @param args - Arguments..
-     */
-    public static void main(String[] args) {
-        new Driver();
-    }
-}
+    */

@@ -5,10 +5,10 @@
  */
 package game;
 
+import interfaces.InteractingEntity;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
-import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
@@ -19,9 +19,9 @@ import java.nio.file.Paths;
  *
  * @author newby
  */
-public class Image extends Entity implements CollidingEntity {
+public class Image extends Entity implements InteractingEntity {
 
-    public Image(RenderWindow w, int x, int y, int r, String textureFile) {
+    public Image(RenderWindow w, int x, int y, int width, int height,  String textureFile) {
         super(w, textureFile);
         //
         // Load image/ texture
@@ -36,27 +36,36 @@ public class Image extends Entity implements CollidingEntity {
         imgTexture.setSmooth(true);
 
         Sprite img = new Sprite(imgTexture);
-        img.setOrigin(Vector2f.div(
-                new Vector2f(imgTexture.getSize()), 2));
 
-        setWidthHeight(imgTexture.getSize().x, imgTexture.getSize().y);
+        Vector2i imgSize = imgTexture.getSize();
+        int widthTemp = (width < 0) ? imgSize.x : width;
+        int heightTemp = (height < 0) ? imgSize.y : height;
 
-        setTopLeftX(x);
-        setTopLeftY(y);
+        setWidthHeight(widthTemp, heightTemp);
 
-        String split[] = textureFile.split(".");
+        setCenterX(x);
+        setCenterY(y);
 
-        addTransformable(img, 0, 0, getWidth(), getHeight());
+        addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
+
+        if (width >= 0)
+            img.scale((float)(widthTemp / (imgSize.x/1.0)), (float)(heightTemp / (imgSize.y / 1.0)));
+
+
+    }
+
+    public Image(RenderWindow w, int x, int y, String textureFile) {
+        this(w, x, y, -1, -1, textureFile);
     }
 
     @Override
-    public boolean colliding(Event e) {
+    public boolean checkWithin(Event e) {
         Vector2i v = e.asMouseButtonEvent().position;
-        return colliding(v.x, v.y);
+        return checkWithin(v.x, v.y);
     }
 
     @Override
-    public boolean colliding(int x, int y) {
+    public boolean checkWithin(int x, int y) {
         return (getTopLeftX() < x && x < getTopLeftX() + getWidth()
                 && getTopLeftY() < y && y < getTopLeftY() + getHeight());
     }

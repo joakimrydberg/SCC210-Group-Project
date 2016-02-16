@@ -1,7 +1,7 @@
 package game;
 
+import interfaces.InteractingEntity;
 import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Transformable;
 import org.jsfml.system.Vector2i;
 
 /**
@@ -41,22 +41,22 @@ public abstract class MovingEntity extends Entity {
 
 
     /**
-     * Implementation of move function. Will check for collisions if child implements CollidingEntity and then move if possible
+     * Implementation of move function. Will check for collisions if child implements InteractingEntity and then move if possible
      *
      */
     public void move() {
         final int newX = getCenterX() + speed.x, newY = getCenterY() + speed.y;
 
-        if (this instanceof CollidingEntity) {
-            final CollidingEntity collidingThis = (CollidingEntity)this;
+        if (this instanceof InteractingEntity) {
+            final InteractingEntity collidingThis = (InteractingEntity)this;
 
-            if (collidingThis.colliding(getCenterX(), getCenterY())) {
-                DebugPrinter.debugPrint(this, "Already colliding!!");
+            if (collidingThis.checkWithin(getCenterX(), getCenterY())) {
+                DebugPrinter.debugPrint(this, "Already checkWithin!!");
                 return;
             }
 
-            if (collidingThis.colliding(newX, newY)) {
-                DebugPrinter.debugPrint(this, "Already colliding!!");
+            if (collidingThis.checkWithin(newX, newY)) {
+                DebugPrinter.debugPrint(this, "Already checkWithin!!");
                 return;
             }
         }

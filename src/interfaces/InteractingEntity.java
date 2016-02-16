@@ -1,4 +1,4 @@
-package game;
+package interfaces;
 
 import org.jsfml.window.event.Event;
 
@@ -7,7 +7,7 @@ import org.jsfml.window.event.Event;
  *
  * @author Alexander J Mills
  */
-public interface CollidingEntity {
+public interface InteractingEntity {
 
     /**
      * Checks whether the x and y parameters
@@ -15,16 +15,18 @@ public interface CollidingEntity {
      * @param x - X coordinate to check
      * @param y - Y coordinate to check
      *
-     * @return - true if colliding, false if not;
+     * @return - true if checkWithin, false if not;
      */
-    boolean colliding(int x, int y);
+    boolean checkWithin(int x, int y);
 
     /**
      * Checks whether the x and y parameters passed in an Event obj
      *
      * @param e - the Event that caused this method call
      *
-     * @return - true if colliding, false if not;
+     * @return - true if checkWithin, false if not;
      */
-    boolean colliding(Event e);
+    boolean checkWithin(Event e);
+
+
 }

@@ -5,8 +5,9 @@
  */
 package game;
 
-import org.jsfml.graphics.*;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Transformable;
 import org.jsfml.system.Vector2i;
 
 import java.io.File;
@@ -43,13 +44,15 @@ public class MapMenu extends Menu {
             File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
             String a = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "game-map.png");
 
-            addEntity(new Image(w, centerX, centerY, 0, a));
+            addEntity(new Image(w, centerX, centerY, windowSize.x, windowSize.y, a));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
         //addEntity(new Rect(w, null, 10 + centerX, 10 + centerY, 50, 30, Color.WHITE, 300));
-        addEntity(new Button(w, 50, 25, 80, 30, Color.WHITE, 200 , "BACK", 15 ));
+        Button backButton = new Button(w, 50, 25, 80, 30, Color.WHITE, 200 , "BACK", 15 );
+        backButton.addClickListener(this);
+        addEntity(backButton);
 
         //things josh added to the nodes .. how come ? it draws them at the wrong position
         /*
@@ -106,7 +109,7 @@ public class MapMenu extends Menu {
             String b = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "lock.png");
 
             for(int i = 0; i < 10; i++){
-                Image img = new Image(w, 0 , 0 , 0, b);
+                Image img = new Image(w, 0, 0, b);
 
                 //debugging
                 //System.out.println("node[" + i + "]: " + nodes[i].getCenterX() + ", " + nodes[i].getCenterY());
@@ -128,6 +131,14 @@ public class MapMenu extends Menu {
         }
     }
 
+    @Override
+    public void buttonClicked(Button button, Object[] args) {
+        if (button.getName().equals("BACK")) {
+            this.unload();
+            new CharMenu(getWindow()).load();
+            System.out.println("Create clicked");
+        }
+    }
 
     /*
      * This method uses trigonometry to draw a solid line between two nodes

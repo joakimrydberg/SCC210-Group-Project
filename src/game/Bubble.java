@@ -5,6 +5,7 @@
  */
 package game;
 
+import interfaces.InteractingEntity;
 import org.jsfml.graphics.CircleShape;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
@@ -14,7 +15,7 @@ import org.jsfml.window.event.Event;
  *
  * @author newby
  */
-public class Bubble extends Entity implements CollidingEntity {
+public class Bubble extends Entity implements InteractingEntity {
 
     public Bubble(RenderWindow w, String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(w, name);
@@ -35,7 +36,7 @@ public class Bubble extends Entity implements CollidingEntity {
     // Default method typically assumes a rectangle,
     // so do something a little different
     @Override
-    public boolean colliding(int px, int py) {
+    public boolean checkWithin(int px, int py) {
 
         // In this example, For simplicty...
         // - We just treat circle as a box
@@ -46,7 +47,7 @@ public class Bubble extends Entity implements CollidingEntity {
     }
 
     @Override
-    public boolean colliding(Event e) {
+    public boolean checkWithin(Event e) {
         return false;
     }
 

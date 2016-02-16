@@ -23,7 +23,7 @@ public class CharMenu extends Menu {
 
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
-
+    private int i; //TODO what even is this?
     private Message hairCol = null;
 
     public CharMenu(RenderWindow w) {
@@ -45,18 +45,19 @@ public class CharMenu extends Menu {
             File myfile = new File(url.toURI());
             File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
 
-            final String a = (dir.toString() + SEP +"assets" + SEP +"art" + SEP +"magic.png");
-            final String d = (dir.toString() + SEP + "assets" + SEP + "art" + SEP +"ranged.png");
+            final String a = (dir.toString() + SEP +"assets" + SEP +"art" + SEP + "magic.png");
+            final String d = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "ranged.png");
             final String e = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "strength.png");
 
-            addEntity(new Image(w, 600, 100, 0, a));
-            addEntity(new Image(w, 725, 100, 0, e));
-            addEntity(new Image(w, 850, 100, 0, d));
+            addEntity(new Image(w, 600, 100, a));
+            addEntity(new Image(w, 725, 100, e));
+            addEntity(new Image(w, 850, 100, d));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
         addEntity(createButton);
+        createButton.addClickListener(this);
 
         // DebugPrinter.debugPrint(this, getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png").toString());
         messages[0] = (new Message(w, 575, 430, 0, "Stats", Color.BLACK, 20));
@@ -77,18 +78,49 @@ public class CharMenu extends Menu {
         hairCols[1] = "Blue";
         hairCols[2] = "Green";
 
-        addEntity(new Button(w, 775, 250, 25, 25, Color.WHITE, 100, ">>", 9 ));
-        addEntity(new Button(w, 650, 250, 25, 25, Color.WHITE, 100, "<<", 9 ));
+        Button tempButton;
+
+        tempButton = new Button(w, 775, 250, 25, 25, Color.WHITE, 100, ">>", 9 );
+        tempButton.addClickListener(this);
+        addEntity(tempButton);
+
+        tempButton = new Button(w, 650, 250, 25, 25, Color.WHITE, 100, "<<", 9 );
+        tempButton.addClickListener(this);
+        addEntity(tempButton);
+
         addEntity(hairCol);
 
     }
 
-    public void moveRight(int i){
+    @Override
+    public void buttonClicked(Button button, Object[] args) {
+        if(button.getName().equals("CREATE")){
+            this.unload();
+            new MapMenu(getWindow()).load();
+        }
+        else if(button.getName().equals(">>")){
+            System.out.format("%d", this.i);
+            if(this.i < 2){
+                this.i++;
+                this.moveRight();
+            }
+        }
+        else if(button.getName().equals("<<")){
+            System.out.format("%d", this.i);
+            if(this.i > 0){
+                this.i--;
+                this.moveLeft();
+            }
+        }
+    }
+
+
+    public void moveRight(){
         (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
     }
 
-    public void moveLeft(int i){
-        System.out.println("move left");
+    public void moveLeft(){
+        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
     }
 
     public void setStats(int a, int b, int c , int d, int e){
