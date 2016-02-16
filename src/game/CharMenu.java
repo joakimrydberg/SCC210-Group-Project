@@ -11,6 +11,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2i;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,6 +27,8 @@ public class CharMenu extends Menu {
     private Image range;
     private Image mage;
 
+   //SpriteSheetLoader movingEnt = new SpriteSheetLoader(64, 128, 6, 4, 1, "assets/art/Warrior Male Sheet2.png");
+   // BufferedImage[] warriorCharacter = movingEnt.returnSprites();
 
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
@@ -91,6 +94,7 @@ public class CharMenu extends Menu {
             addEntity(mage);
             addEntity(range);
             addEntity(warr);
+
             warr.hide();
             range.hide();
             p = new Player(w, "");
@@ -117,6 +121,7 @@ public class CharMenu extends Menu {
         addEntity(messages[3]);
         addEntity(messages[4]);
         addEntity(messages[5]);
+
 
         hairCols[0] = "Red";
         hairCols[1] = "Blue";
