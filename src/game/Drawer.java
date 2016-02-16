@@ -22,8 +22,6 @@ public abstract class Drawer extends Entity implements Runnable {
 
     @Override
     public void run() {
-        int i;
-
         while (loaded) {
             getWindow().clear(Color.WHITE);
             drawAll();
@@ -55,7 +53,6 @@ public abstract class Drawer extends Entity implements Runnable {
 
     public void unload(){
         loaded = false;
-        //thread.interrupt(); causes errors
     }
 
     public boolean isLoaded() {
