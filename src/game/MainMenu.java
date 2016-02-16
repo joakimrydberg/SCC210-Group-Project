@@ -26,9 +26,22 @@ public class MainMenu extends Menu {
         addEntity(new Image(window, centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "main_menu_background.png"));
         //addEntity(new Image(window, 200, 500, 173, 40, "assets" + Constants.SEP + "art" + Constants.SEP + "game_button.png"));
 
-        Button btnNewGame = new Button(window, centerX, centerY, 250, 100, Color.WHITE, 100, "NEW GAME", 22);
+        Button btnNewGame = new Button(window, centerX, 250, 250, 60, Color.WHITE, 200, "NEW GAME", 20);
+        Button btnLoadGame = new Button(window, centerX, 330, 250, 60, Color.WHITE, 200, "LOAD GAME", 20);
+        Button btnOptions = new Button(window, centerX, 450, 250, 60, Color.WHITE, 200, "OPTIONS", 20);
+        Button btnCredits = new Button(window, centerX, 530, 250, 60, Color.WHITE, 200, "CREDITS", 20);
+        Button btnQuit = new Button(window, centerX, 650, 250, 60, Color.WHITE, 200, "QUIT", 20);
+
         btnNewGame.addClickListener(this);
         addEntity(btnNewGame);
+        //btnLoadGame.addClickListener(this);
+        addEntity(btnLoadGame);
+        //btnOptions.addClickListener(this);
+        addEntity(btnOptions);
+        //btnCredits.addClickListener(this);
+        addEntity(btnCredits);
+        //btnQuit.addClickListener(this);
+        addEntity(btnQuit);
     }
 
     @Override

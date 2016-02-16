@@ -29,6 +29,31 @@ public class Button extends Rect implements Clickable {
     public Button(RenderWindow w, int x, int y, int width, int height, Color c, int transparency, String text, int size) {
         super(w, text, x, y, width, height, c, transparency);
 
+
+        // Load image/ texture
+        Texture imgTexture = new Texture( );
+        try {
+            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "game_button.png"));
+        } catch (IOException ex) {
+            ex.printStackTrace( );
+        }
+        imgTexture.setSmooth(true);
+
+        Sprite img = new Sprite(imgTexture);
+
+        Vector2i imgSize = imgTexture.getSize();
+        int widthTemp = (width < 0) ? imgSize.x : width;
+        int heightTemp = (height < 0) ? imgSize.y : height;
+        setWidthHeight(widthTemp, heightTemp);
+
+        setCenterX(x);
+        setCenterY(y);
+        addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
+
+        if (width >= 0)
+            img.scale((float)(widthTemp / (imgSize.x/1.0)), (float)(heightTemp / (imgSize.y / 1.0)));
+
+        // Load text
         if ((new File(Constants.JRE_FONT_PATH)).exists( ))
             FontPath = Constants.JRE_FONT_PATH;
         else

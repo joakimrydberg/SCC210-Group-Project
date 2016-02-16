@@ -72,8 +72,7 @@ public class MapMenu extends Menu {
             addEntity(nodes[i]);
         }
 
-        // ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
-        //add locked images to each node
+        //add locked images to each node ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
         for(int i = 0; i < 10; i++){
             addEntity(new Image(w, nodes[i].getCenterX(), nodes[i].getCenterY(), "assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
         }

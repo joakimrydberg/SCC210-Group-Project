@@ -52,7 +52,7 @@ public class Driver {
         // Create a window
         //
         RenderWindow window = new RenderWindow();
-        window.create(new VideoMode(screenWidth, screenHeight), "Game Woo", WindowStyle.DEFAULT);
+        window.create(new VideoMode(screenWidth, screenHeight), "Dungeons but not Dragons", WindowStyle.DEFAULT);
 
         window.setFramerateLimit(30); // Avoid excessive updates
 
