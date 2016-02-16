@@ -50,7 +50,7 @@ public class CharMenu extends Menu {
 
         //addEntity(new Rect(w, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
         addEntity(new Rect(w, null, 725, 375, 350, 700, Color.WHITE, 128));
-        addEntity(new Rect(w, null, 725, 500, 350, 150, Color.WHITE, 128));
+        addEntity(new Rect(w, null, 725, 500, 350, 220, Color.WHITE, 128));
         Button createButton = new Button(w, 685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
 
         //URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
