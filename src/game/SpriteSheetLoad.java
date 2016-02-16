@@ -37,6 +37,14 @@ public class SpriteSheetLoad{
 
     public BufferedImage[] returnSprites(){return sprites;}
 
+    public BufferedImage move(int direction){
+        for(int i = 0; i<3; i++)
+        {
+            return sprites[direction+i];
+
+        }
+        return sprites[direction];
+    }
 
 
 }
