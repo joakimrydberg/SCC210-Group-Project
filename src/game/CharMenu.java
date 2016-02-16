@@ -22,11 +22,17 @@ import java.net.URL;
 public class CharMenu extends Menu {
     private final static String SEP = Constants.SEP;
 
+    private Image warr;
+    private Image range;
+    private Image mage;
+
+
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
     private int i; //TODO what even is this?
     private Message hairCol = null;
-
+    private Player p;
+    private String className;
     public CharMenu(RenderWindow w) {
         super(w, "Character creation menu");
 
@@ -43,6 +49,7 @@ public class CharMenu extends Menu {
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
         try{
+
             File myfile = new File(url.toURI());
             File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
 
@@ -62,6 +69,20 @@ public class CharMenu extends Menu {
             clickableImage.addClickListener(this);
             addEntity(clickableImage);
 
+            final String f = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "mage-front.png");
+            final String g = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "warr-front.png");
+            final String h = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "range-front.png");
+            mage = new Image(w, 350, 400, 100, 200, f);
+            range = new Image(w, 350, 400, 100, 200, h);
+            warr = new Image(w, 350, 400, 100, 200, g);
+            addEntity(mage);
+            addEntity(range);
+            addEntity(warr);
+            warr.hide();
+            range.hide();
+            p = new Player(w, "");
+
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -71,11 +92,11 @@ public class CharMenu extends Menu {
 
         // DebugPrinter.debugPrint(this, getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png").toString());
         messages[0] = (new Message(w, 575, 430, 0, "Stats", Color.BLACK, 20));
-        messages[1] = (new Message(w, 675, 475, 0, "Attack power : 5", Color.BLACK, 12));
-        messages[2] = (new Message(w, 675, 500, 0, "Intellect : 0", Color.BLACK, 12));
-        messages[3] = (new Message(w, 675, 525, 0, "Agility : 0", Color.BLACK, 12));
-        messages[4] = (new Message(w, 675, 550, 0, "Endurance : 5", Color.BLACK, 12));
-        messages[5] = (new Message(w, 675, 575, 0, "Vitality : 5", Color.BLACK, 12));
+        messages[1] = (new Message(w, 675, 450, 0, "Attack power : 5", Color.BLACK, 12));
+        messages[2] = (new Message(w, 675, 475, 0, "Intellect : 0", Color.BLACK, 12));
+        messages[3] = (new Message(w, 675, 500, 0, "Agility : 0", Color.BLACK, 12));
+        messages[4] = (new Message(w, 675, 525, 0, "Endurance : 5", Color.BLACK, 12));
+        messages[5] = (new Message(w, 675, 550, 0, "Vitality : 5", Color.BLACK, 12));
 
         addEntity(messages[0]);
         addEntity(messages[1]);
@@ -100,6 +121,8 @@ public class CharMenu extends Menu {
 
         addEntity(hairCol);
 
+
+
     }
 
     @Override
@@ -109,16 +132,19 @@ public class CharMenu extends Menu {
 
 
             if (button.getName().equals("CREATE")) {
+                p.setClass(className);
                 this.unload();
                 new MapMenu(getWindow()).load();
+
+
             } else if (button.getName().equals(">>")) {
-                System.out.format("%d", this.i);
+              //  System.out.format("%d", this.i);
                 if (this.i < 2) {
                     this.i++;
                     this.moveRight();
                 }
             } else if (button.getName().equals("<<")) {
-                System.out.format("%d", this.i);
+               // System.out.format("%d", this.i);
                 if (this.i > 0) {
                     this.i--;
                     this.moveLeft();
@@ -126,20 +152,37 @@ public class CharMenu extends Menu {
             }
 
         } else if (clickable instanceof  ClickableImage ) {
-            System.out.println("clicked");
+
             Entity button = (ClickableImage) clickable;
 
             if (button.getName().contains("magic")){
                 DebugPrinter.debugPrint(this, "magic selected");
                 this.setStats(0, 10, 0, 3, 2);
+                p.setStats(0, 10, 0, 3, 2);
+                range.hide();
+                warr.hide();
+                mage.show();
+
+                className = "mage";
             }
             else if (button.getName().contains("ranged")){
                 DebugPrinter.debugPrint(this, "ranged selected");
                 this.setStats(0, 0, 5, 5, 5);
+                p.setStats(0, 0, 5, 5, 5);
+                range.show();
+                warr.hide();
+                mage.hide();
+                className = "ranged";
             }
             else if (button.getName().contains("strength")){
                 DebugPrinter.debugPrint(this, "Strength selected");
                 this.setStats(5, 0, 0, 5, 5);
+                p.setStats(5, 0, 0, 5, 5);
+                range.hide();
+                warr.show();
+                mage.hide();
+                className = "warr";
+
             }
 
         }
