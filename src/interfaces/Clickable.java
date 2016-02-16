@@ -11,6 +11,7 @@ import org.jsfml.window.event.Event;
  * @date 15/02/16.
  */
 public interface Clickable extends InteractingEntity {
-
     void clicked(Event e);
+
+    void addClickListener(ClickListener clickListener);
 }

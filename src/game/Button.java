@@ -66,13 +66,14 @@ public class Button extends Rect implements Clickable {
                 && y < getTopLeftY() + getHeight();    //TODO NEEDSS MASSIVE WORK
     }
 
-
+    @Override
     public void clicked(Event e){
         for (ClickListener listener : clickListeners) {
             listener.buttonClicked(this, null);
         }
     }
 
+    @Override
     public void addClickListener(ClickListener clickListener) {
         clickListeners.add(clickListener);
     }
