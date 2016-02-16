@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class CSVReader {
 
-    public ArrayList<String[]> read() {
+    public static ArrayList<String[]> read() {
         ArrayList<String[]> arrayList = new ArrayList<>();
         BufferedReader br = null;
         String line = "";
