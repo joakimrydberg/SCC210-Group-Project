@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * This..
+ * This...
  * @author Ross Newby
  */
 public class MapMenu extends Menu {
