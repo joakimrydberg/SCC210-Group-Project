@@ -50,9 +50,18 @@ public class CharMenu extends Menu {
             final String d = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "ranged.png");
             final String e = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "strength.png");
 
-            addEntity(new ClickableImage(w, 600, 100, a));
-            addEntity(new ClickableImage(w, 725, 100, e));
-            addEntity(new ClickableImage(w, 850, 100, d));
+
+            ClickableImage clickableImage ;
+            clickableImage = new ClickableImage(w, 600, 100, a);
+            clickableImage.addClickListener(this);
+            addEntity(clickableImage);
+            clickableImage = new ClickableImage(w, 725, 100, e);
+            clickableImage.addClickListener(this);
+            addEntity(clickableImage);
+            clickableImage = new ClickableImage(w, 850, 100, d);
+            clickableImage.addClickListener(this);
+            addEntity(clickableImage);
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
