@@ -73,8 +73,8 @@ public abstract class Drawer extends Entity implements Runnable {
             for (Entity entity : getEntities()) {
                 if (entity instanceof MovingEntity)
                     ((MovingEntity) entity).move();
-
-                entity.draw();
+                if(!entity.hidden)
+                    entity.draw();
             }
         }
     }

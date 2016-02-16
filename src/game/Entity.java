@@ -17,7 +17,7 @@ public class Entity  {
     private int w = -1, h = -1; // current width and height of the Entity
     private ArrayList<TransformableHolder> transformables = new ArrayList<>();
     private RenderWindow window = null;
-
+    public boolean hidden = false;
     /**
      * Creates a new entity, with a given name
      *

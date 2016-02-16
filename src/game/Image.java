@@ -21,6 +21,7 @@ import java.nio.file.Paths;
  */
 public class Image extends Entity implements InteractingEntity {
 
+
     public Image(RenderWindow w, int x, int y, int width, int height,  String textureFile) {
         super(w, textureFile);
         //
@@ -90,6 +91,7 @@ public class Image extends Entity implements InteractingEntity {
         if (this.getName().contains("magic")){
             DebugPrinter.debugPrint(this, "magic selected");
             menu.setStats(0, 10, 0, 3, 2);
+
         }
         else if (this.getName().contains("ranged")){
             DebugPrinter.debugPrint(this, "ranged selected");
@@ -100,6 +102,21 @@ public class Image extends Entity implements InteractingEntity {
             menu.setStats(5, 0, 0, 5, 5);
         }
     }
+
+    public void hide(){
+
+
+            hidden = true;
+
+    }
+    public void show(){
+
+            hidden = false;
+
+    }
+
+
+
 
 
 }
