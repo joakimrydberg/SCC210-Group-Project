@@ -33,8 +33,8 @@ public class CharMenu extends Menu {
     private Message hairCol = null;
     private Player p;
     private String className;
-    public CharMenu(RenderWindow w) {
-        super(w, "Character creation menu");
+    public CharMenu(RenderWindow w, Driver driver) {
+        super(w, "Character creation menu", driver);
 
         final Vector2i windowSize = w.getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
@@ -147,7 +147,7 @@ public class CharMenu extends Menu {
             if (button.getName().equals("CREATE")) {
                 //p.setClass(className); //******RYAN, IVE JUST COMMENTED THIS OUT WHILE WORKING ON MAP MENU, IT RESULTED IN A NULL POINTER EXCEPTION ANS STOPPED MAP MENU LOADING*******
                 this.unload();
-                new MapMenu(getWindow()).load();
+                new MapMenu(getWindow(), getDriver()).load();
 
 
             } else if (button.getName().equals(">>")) {

@@ -16,8 +16,8 @@ public abstract class Menu extends Drawer implements ClickListener {
      * @param window
      * @param name
      */
-    public Menu(RenderWindow window, String name) {
-        super(window, name);
+    public Menu(RenderWindow window, String name, Driver driver) {
+        super(window, name, driver);
     }
 
 }

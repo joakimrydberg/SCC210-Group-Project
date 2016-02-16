@@ -17,8 +17,8 @@ import org.jsfml.system.Vector2i;
 public class MainMenu extends Menu {
     public int loaded = 0;
 
-    public MainMenu(RenderWindow window) {
-        super(window, "Main Menu");
+    public MainMenu(RenderWindow window, Driver driver) {
+        super(window, "Main Menu", driver);
 
         final Vector2i windowSize = window.getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
@@ -52,7 +52,7 @@ public class MainMenu extends Menu {
             if (button.getName().equals("NEW GAME")) {
                 this.unload();
 
-                new CharMenu(getWindow()).load();
+                new CharMenu(getWindow(), getDriver()).load();
 
                 System.out.println("NEW GAME clicked");
             }

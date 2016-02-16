@@ -1,11 +1,14 @@
 package game;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
+import org.jsfml.window.event.Event;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Acts as the Driver, shouldn't do much but set up debug printing etc
@@ -15,7 +18,7 @@ public class Driver {
     MainMenu mainMenu;
     CharMenu charMenu;
     MapMenu mapMenu;
-    private ArrayList<Entity> entities = new ArrayList<>( );
+    private ArrayList<Drawer> drawers = new ArrayList<>( );
     private int screenWidth = 1024,
             screenHeight = 768;
 
@@ -56,18 +59,34 @@ public class Driver {
 
         window.setFramerateLimit(30); // Avoid excessive updates
 
-        mainMenu = new MainMenu(window);
+        mainMenu = new MainMenu(window, this);
         mainMenu.load();
-/*
-        while(true) {
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
 
+        ArrayList<Drawer> tempDrawers = new ArrayList<>();
+
+        while (window.isOpen()) {
+            window.clear(Color.WHITE);
+
+            Iterable<Event> events = window.pollEvents();
+
+            ListIterator<Drawer> it = drawers.listIterator();
+            if(it.hasNext()) {
+                Drawer item = it.next();
+
+                item.update(events);
             }
-        }*/
+            window.display();
+        }
     }
 
+
+    public void addDrawer(Drawer drawer) {
+        drawers.add(drawer);
+    }
+
+    public void removeDrawer(Drawer drawer) {
+        drawers.remove(drawer);
+    }
 
     /**
      * Starts off the game

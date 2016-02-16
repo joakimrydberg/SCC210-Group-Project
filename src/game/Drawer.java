@@ -1,7 +1,6 @@
 package game;
 
 import interfaces.Clickable;
-import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.event.Event;
 
@@ -11,24 +10,22 @@ import java.util.ArrayList;
  * @author josh
  * @date 15/02/16.
  */
-public abstract class Drawer extends Entity implements Runnable {
+public abstract class Drawer extends Entity {
     private boolean loaded = false;
     private ArrayList<Entity> entities = new ArrayList<>();
-    Thread thread = new Thread(this);
+    private Driver driver;
 
-    public Drawer(RenderWindow w, String name) {
+    public Drawer(RenderWindow w, String name, Driver driver) {
         super(w, name);
+
+        this.driver = driver;
     }
 
-    @Override
-    public void run() {
-        while (loaded) {
-            getWindow().clear(Color.WHITE);
+    public void update(Iterable<Event> events) {
+        if (loaded) {
             drawAll();
-            // Update the display with any changes
-            getWindow().display();
 
-            for (Event event : getWindow().pollEvents()) {
+            for (Event event : events) {
                 if (event.type == Event.Type.CLOSED)      // the user pressed the close button
                     getWindow().close();
 
@@ -46,14 +43,14 @@ public abstract class Drawer extends Entity implements Runnable {
         }
     }
 
-    public void load(){
+    public void load() {
         loaded = true;
-        //thread.start();
-        this.run();
+        driver.addDrawer(this);
     }
 
-    public void unload(){
+    public void unload() {
         loaded = false;
+        driver.removeDrawer(this);
     }
 
     public boolean isLoaded() {
@@ -73,9 +70,13 @@ public abstract class Drawer extends Entity implements Runnable {
             for (Entity entity : getEntities()) {
                 if (entity instanceof MovingEntity)
                     ((MovingEntity) entity).move();
+
                 if(!entity.hidden)
                     entity.draw();
             }
         }
+    }
+    public Driver getDriver() {
+        return driver;
     }
 }

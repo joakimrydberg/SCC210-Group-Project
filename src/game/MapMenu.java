@@ -10,6 +10,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
 import org.jsfml.system.Vector2i;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -26,8 +27,8 @@ public class MapMenu extends Menu {
     /**
      *
      */
-    public MapMenu(RenderWindow w) {
-        super(w, "Map");
+    public MapMenu(RenderWindow w, Driver driver) {
+        super(w, "Map", driver);
 
         final Vector2i windowSize = w.getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
@@ -84,7 +85,7 @@ public class MapMenu extends Menu {
             Entity button = (Button) clickable;
             if (button.getName().equals("BACK")) {
                 this.unload();
-                new CharMenu(getWindow()).load();
+                new CharMenu(getWindow(), getDriver()).load();
                 System.out.println("Create clicked");
             }
         }
