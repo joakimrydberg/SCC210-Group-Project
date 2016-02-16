@@ -46,11 +46,11 @@ public class SpriteSheetLoad{
         return sprites[direction];
     }
 
-    public Image roomMake(int[] roomDesign){
+    //public Image roomMake(int[] roomDesign){
 
 
-        return wholeRoom;
-    }
+
+    //}
 
 
 }
