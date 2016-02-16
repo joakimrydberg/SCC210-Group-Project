@@ -5,6 +5,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * This class represents an Entity in the game. Something that will appear on the screen.
@@ -15,7 +16,7 @@ public class Entity  {
     private String name = "";
     private int x = 0, y = 0;   //current x and y coordinates
     private int w = -1, h = -1; // current width and height of the Entity
-    private ArrayList<TransformableHolder> transformables = new ArrayList<>();
+    private ArrayList<TransformableHolder> transformableHolders = new ArrayList<>();
     private RenderWindow window = null;
     public boolean hidden = false;
     /**
@@ -56,9 +57,10 @@ public class Entity  {
      *
      */
     public void draw() {
-        for (TransformableHolder transformableHolder : transformables) {
+        for (TransformableHolder transformableHolder : transformableHolders) {
             //DebugPrinter.debugPrint(this, "drawing: x:" + getTopLeftX() + " y:" + getTopLeftY() + " w:" + getWidth() + " h:" + getHeight());
-            window.draw((Drawable) transformableHolder.transformable);
+            if (!transformableHolder.hidden)
+                window.draw((Drawable) transformableHolder.transformable);
         }
     }
 
@@ -69,7 +71,7 @@ public class Entity  {
      * @param v - float
      */
     public void rotate(float v) {
-        for (TransformableHolder transformableHolder : transformables) {
+        for (TransformableHolder transformableHolder : transformableHolders) {
             transformableHolder.transformable.rotate(v);
         }
     }
@@ -158,7 +160,7 @@ public class Entity  {
     }
 
     private void update() {
-        for (TransformableHolder transformableHolder : transformables) {
+        for (TransformableHolder transformableHolder : transformableHolders) {
             transformableHolder.update();
         }
     }
@@ -244,8 +246,27 @@ public class Entity  {
      * @param transformable - Transformable obj
      */
     public void addTransformable(Transformable transformable, int relX, int relY, int w, int h) {
-        transformables.add(new TransformableHolder(this, transformable, relX, relY, w, h));
+        transformableHolders.add(new TransformableHolder(this, transformable, relX, relY, w, h));
     }
+    public void hideTransformable(Transformable transformable) {
+        ListIterator<TransformableHolder> it = transformableHolders.listIterator();
+        while (it.hasNext()) {
+            TransformableHolder transformableHolder = it.next();
+            if (transformableHolder.transformable.equals(transformable)) {
+                transformableHolder.hide();
+            }
+        }
+    }
+    public void showTransformable(Transformable transformable) {
+        ListIterator<TransformableHolder> it = transformableHolders.listIterator();
+        while (it.hasNext()) {
+            TransformableHolder transformableHolder = it.next();
+            if (transformableHolder.transformable.equals(transformable)) {
+                transformableHolder.show();
+            }
+        }
+    }
+
 
     /**
      * Get the entity's transformable obj
@@ -253,7 +274,7 @@ public class Entity  {
      * @return Transformable obj
      */
     public Transformable getTransformable(int i) {
-        return transformables.get(i).transformable;
+        return transformableHolders.get(i).transformable;
     }
 
     private class TransformableHolder {
@@ -261,6 +282,7 @@ public class Entity  {
         private Transformable transformable;
         private int relX, relY;
         private int width = -1, height = -1;
+        private boolean hidden = false;
 
         public TransformableHolder(Entity e, Transformable t, int relX, int relY, int w, int h) {
             this.entity = e;
@@ -271,6 +293,13 @@ public class Entity  {
             this.height = h;
 
             update();
+        }
+
+        public void hide() {
+            hidden = true;
+        }
+        public void show() {
+            hidden = false;
         }
 
         public void update() {

@@ -8,12 +8,12 @@ package game;
 import interfaces.ClickListener;
 import interfaces.Clickable;
 import interfaces.InteractingEntity;
-import org.jsfml.graphics.CircleShape;
-import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class Node extends Entity implements Clickable {
 
     ArrayList<ClickListener> clickListeners = new ArrayList<>();
+    private boolean locked = false;
+    private Sprite img;
 
     public Node(RenderWindow w, String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(w, name);
@@ -38,6 +40,42 @@ public class Node extends Entity implements Clickable {
         super.setCenterY(y);
 
         super.addTransformable(circle, 0, 0, radius, radius);
+
+        // Load image/ texture
+        Texture imgTexture = new Texture( );
+        try {
+            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
+        } catch (IOException ex) {
+            ex.printStackTrace( );
+        }
+        imgTexture.setSmooth(true);
+
+        img = new Sprite(imgTexture);
+
+        Vector2i imgSize = imgTexture.getSize();
+        /*
+        if (locked){
+            // Load image/ texture
+            Texture imgTexture = new Texture( );
+            try {
+                imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
+            } catch (IOException ex) {
+                ex.printStackTrace( );
+            }
+            imgTexture.setSmooth(true);
+
+            Sprite img = new Sprite(imgTexture);
+
+            Vector2i imgSize = imgTexture.getSize();
+            int widthTemp = (radius * 2 < 0) ? imgSize.x : radius * 2;
+            int heightTemp = (radius * 2 < 0) ? imgSize.y : radius * 2;
+            setWidthHeight(widthTemp, heightTemp);
+
+            setCenterX(x);
+            setCenterY(y);
+            addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
+        }
+        */
     }
 
     // Default method typically assumes a rectangle,
@@ -71,10 +109,19 @@ public class Node extends Entity implements Clickable {
         clickListeners.add(clickListener);
     }
 
-    /*
-    void clicked(){
-        DebugPrinter.debugPrint(this, "Clicked Node");
+    public void setLocked(boolean l){
+        locked = l;
+
+        if (locked){
+
+            //int widthTemp = (getWidth() * 2 < 0) ? imgSize.x : getWidth() * 2;
+            //int heightTemp = (getWidth() * 2 < 0) ? imgSize.y : getWidth() * 2;
+
+            addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
+        } else {
+            hideTransformable(img);
+
+        }
     }
-    */
 }
 	
