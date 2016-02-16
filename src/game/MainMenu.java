@@ -5,6 +5,7 @@
  */
 package game;
 
+import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
@@ -30,13 +31,17 @@ public class MainMenu extends Menu {
     }
 
     @Override
-    public void buttonClicked(Button button, Object[] args) {
-        if (button.getName().equals("NEW GAME")) {
-            this.unload();
+    public void buttonClicked(Clickable clickable, Object[] args) {
+        if (clickable instanceof  Button ) {
+            Entity button = (Button) clickable;
 
-            new CharMenu(getWindow()).load();
+            if (button.getName().equals("NEW GAME")) {
+                this.unload();
 
-            System.out.println("NEW GAME clicked");
+                new CharMenu(getWindow()).load();
+
+                System.out.println("NEW GAME clicked");
+            }
         }
     }
 

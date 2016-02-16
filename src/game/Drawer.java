@@ -50,7 +50,8 @@ public abstract class Drawer extends Entity implements Runnable {
 
     public void load(){
         loaded = true;
-        thread.start();
+        //thread.start();
+        this.run();
     }
 
     public void unload(){

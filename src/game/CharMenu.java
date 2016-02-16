@@ -5,6 +5,7 @@
  */
 package game;
 
+import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
@@ -49,9 +50,9 @@ public class CharMenu extends Menu {
             final String d = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "ranged.png");
             final String e = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "strength.png");
 
-            addEntity(new Image(w, 600, 100, a));
-            addEntity(new Image(w, 725, 100, e));
-            addEntity(new Image(w, 850, 100, d));
+            addEntity(new ClickableImage(w, 600, 100, a));
+            addEntity(new ClickableImage(w, 725, 100, e));
+            addEntity(new ClickableImage(w, 850, 100, d));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -93,24 +94,45 @@ public class CharMenu extends Menu {
     }
 
     @Override
-    public void buttonClicked(Button button, Object[] args) {
-        if(button.getName().equals("CREATE")){
-            this.unload();
-            new MapMenu(getWindow()).load();
-        }
-        else if(button.getName().equals(">>")){
-            System.out.format("%d", this.i);
-            if(this.i < 2){
-                this.i++;
-                this.moveRight();
+    public void buttonClicked(Clickable clickable, Object[] args) {
+        if (clickable instanceof  Button ) {
+            Entity button = (Button)clickable;
+
+
+            if (button.getName().equals("CREATE")) {
+                this.unload();
+                new MapMenu(getWindow()).load();
+            } else if (button.getName().equals(">>")) {
+                System.out.format("%d", this.i);
+                if (this.i < 2) {
+                    this.i++;
+                    this.moveRight();
+                }
+            } else if (button.getName().equals("<<")) {
+                System.out.format("%d", this.i);
+                if (this.i > 0) {
+                    this.i--;
+                    this.moveLeft();
+                }
             }
-        }
-        else if(button.getName().equals("<<")){
-            System.out.format("%d", this.i);
-            if(this.i > 0){
-                this.i--;
-                this.moveLeft();
+
+        } else if (clickable instanceof  ClickableImage ) {
+            System.out.println("clicked");
+            Entity button = (ClickableImage) clickable;
+
+            if (button.getName().contains("magic")){
+                DebugPrinter.debugPrint(this, "magic selected");
+                this.setStats(0, 10, 0, 3, 2);
             }
+            else if (button.getName().contains("ranged")){
+                DebugPrinter.debugPrint(this, "ranged selected");
+                this.setStats(0, 0, 5, 5, 5);
+            }
+            else if (button.getName().contains("strength")){
+                DebugPrinter.debugPrint(this, "Strength selected");
+                this.setStats(5, 0, 0, 5, 5);
+            }
+
         }
     }
 

@@ -11,5 +11,5 @@ import game.Button;
  */
 public interface ClickListener {
 
-     void buttonClicked(Button button, Object[] args);
+     void buttonClicked(Clickable button, Object[] args);
 }

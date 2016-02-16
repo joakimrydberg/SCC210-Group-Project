@@ -100,4 +100,6 @@ public class Image extends Entity implements InteractingEntity {
             menu.setStats(5, 0, 0, 5, 5);
         }
     }
+
+
 }

@@ -5,6 +5,7 @@
  */
 package game;
 
+import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
@@ -132,11 +133,14 @@ public class MapMenu extends Menu {
     }
 
     @Override
-    public void buttonClicked(Button button, Object[] args) {
-        if (button.getName().equals("BACK")) {
-            this.unload();
-            new CharMenu(getWindow()).load();
-            System.out.println("Create clicked");
+    public void buttonClicked(Clickable clickable, Object[] args) {
+        if (clickable instanceof  Button ) {
+            Entity button = (Button) clickable;
+            if (button.getName().equals("BACK")) {
+                this.unload();
+                new CharMenu(getWindow()).load();
+                System.out.println("Create clicked");
+            }
         }
     }
 
