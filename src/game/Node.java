@@ -113,15 +113,15 @@ public class Node extends Entity implements Clickable {
         locked = l;
 
         if (locked){
-
-            //int widthTemp = (getWidth() * 2 < 0) ? imgSize.x : getWidth() * 2;
-            //int heightTemp = (getWidth() * 2 < 0) ? imgSize.y : getWidth() * 2;
-
             addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
         } else {
             hideTransformable(img);
 
         }
+    }
+
+    public void lokc(){
+        //
     }
 }
 	
