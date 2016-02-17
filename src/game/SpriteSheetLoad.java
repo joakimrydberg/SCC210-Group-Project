@@ -1,46 +1,41 @@
 package game;
 
-import java.awt.*;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
-/**
- * Created by Michael on 16/02/2016.
- */
+
 public class SpriteSheetLoad{
-    BufferedImage spriteSheet;
-    int width;
-    int height;
-    int rows;
-    int columns;
-    int size;
-    private static BufferedImage[] sprites;
 
-    public SpriteSheetLoad(int width, int height, int rows, int columns, int size, String fileName) {
+    private static BufferedImage spriteSheet;
+    private static int width = 0;
+    private static int height = 0;
+
+    //On initialising state width and height of each sprite
+    public SpriteSheetLoad(int width, int height){
+        this.width = width;
+        this.height = height;
+    }
+
+    public static BufferedImage loadSprite(String file) {
+        BufferedImage sprite = null;
         try {
-            this.spriteSheet = ImageIO.read(new File(fileName));
-            this.width = width;
-            this.height = height;
-            this.rows = rows;
-            this.columns = columns;
-            this.size = size;
-
-            for (int x = 0; x < rows; x++) {
-                for (int y = 0; y < columns; y++) {
-                    sprites[(x * columns) + y] = spriteSheet.getSubimage(x * width, y * height, width, height);
-                }
-            }
-        }catch(IOException ioe){
-            System.out.println("Trouble reading from the file: " + ioe.getMessage());
+            sprite = ImageIO.read(new File("assets/art/" + file + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        return sprite;
     }
 
+    public static BufferedImage getSprite(int xGrid, int yGrid) {
 
-    public static BufferedImage getSprite(int value) {
-        return sprites[value];
+        if (spriteSheet == null) {
+            spriteSheet = loadSprite("WarriorMaleSheet");
+        }
+
+        return spriteSheet.getSubimage(xGrid * width, yGrid * height, width, height);
     }
-
 
 }

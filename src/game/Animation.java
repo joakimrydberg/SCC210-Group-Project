@@ -45,7 +45,6 @@ public class Animation {
         if (frames.size() == 0) {
             return;
         }
-
         stopped = true;
     }
 
