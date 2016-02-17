@@ -7,6 +7,8 @@ package game;
 
 import interfaces.ClickListener;
 import interfaces.Clickable;
+import org.jsfml.audio.Sound;
+import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
@@ -68,13 +70,14 @@ public class Button extends Rect implements Clickable {
             ex.printStackTrace( );
         }
 
+        //size = imgSize.y / 2;
         Text textObj = new Text (text, sansRegular, size);
-        textObj.setColor(Color.BLACK);
+        textObj.setColor(new Color(128, 0, 0));
         //text.setStyle(Text.BOLD | Text.UNDERLINED);
 
         final FloatRect textBounds = textObj.getLocalBounds();
 
-        addTransformable(textObj, width / 2, height / 2, (int)textBounds.width, (int)textBounds.height);
+        addTransformable(textObj, width / 2, height / 2 - 5, (int)textBounds.width, (int)textBounds.height);
     }
 
     @Override
@@ -93,6 +96,16 @@ public class Button extends Rect implements Clickable {
 
     @Override
     public void clicked(Event e){
+        SoundBuffer soundBuffer = new SoundBuffer();
+        try {
+            soundBuffer.loadFromFile(Paths.get("assets\\audio\\button_click.wav"));
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        Sound btnSound = new Sound();
+        btnSound.setBuffer(soundBuffer);
+        btnSound.play();
+
         for (ClickListener listener : clickListeners) {
             listener.buttonClicked(this, null);
         }

@@ -31,6 +31,7 @@ public class Node extends Entity implements Clickable {
     public Node(String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(name);
 
+        // Load circle for node
         CircleShape circle = new CircleShape(radius);
         circle.setFillColor(new Color(fillC, transparency));
         circle.setOutlineColor(lineC);
@@ -43,7 +44,7 @@ public class Node extends Entity implements Clickable {
 
         super.addTransformable(circle, 0, 0, radius, radius);
 
-        // Load image/ texture
+        // Load image / texture
         Texture imgTexture = new Texture( );
         try {
             imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
@@ -53,31 +54,8 @@ public class Node extends Entity implements Clickable {
         imgTexture.setSmooth(true);
 
         img = new Sprite(imgTexture);
-
-        Vector2i imgSize = imgTexture.getSize();
-        /*
-        if (locked){
-            // Load image/ texture
-            Texture imgTexture = new Texture( );
-            try {
-                imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
-            } catch (IOException ex) {
-                ex.printStackTrace( );
-            }
-            imgTexture.setSmooth(true);
-
-            Sprite img = new Sprite(imgTexture);
-
-            Vector2i imgSize = imgTexture.getSize();
-            int widthTemp = (radius * 2 < 0) ? imgSize.x : radius * 2;
-            int heightTemp = (radius * 2 < 0) ? imgSize.y : radius * 2;
-            setWidthHeight(widthTemp, heightTemp);
-
-            setCenterX(x);
-            setCenterY(y);
-            addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
-        }
-        */
+        addTransformable(img, 0, 0, radius, radius); //not supplying w and h so the origin will be 0
+        hideTransformable(img);
     }
 
     // Default method typically assumes a rectangle,
@@ -111,19 +89,12 @@ public class Node extends Entity implements Clickable {
         clickListeners.add(clickListener);
     }
 
-    public void setLocked(boolean l){
-        locked = l;
-
-        if (locked){
-            addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
-        } else {
-            hideTransformable(img);
-
-        }
+    public void lock(){
+        showTransformable(img);
     }
 
-    public void lokc(){
-        //
+    public void unlock(){
+        hideTransformable(img);
     }
 }
 	
