@@ -6,11 +6,15 @@
 package game;
 
 import interfaces.Clickable;
+import org.jsfml.audio.Sound;
+import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
 import org.jsfml.system.Vector2i;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -115,7 +119,31 @@ public class MapMenu extends Menu {
             Entity button = (Node) clickable;
             int i = Integer.parseInt(button.getName()) - 1;
 
-            System.out.println("node " + i + " clicked");
+            //debugging
+            System.out.println("Node " + i + " clicked");
+
+            if (!nodes[i].isLocked()){
+                if (nodeDesc[i].isLoaded()){
+                    nodeDesc[i].unload();
+                }
+                else {
+                    nodeDesc[i].load();
+                }
+            }
+            else {
+                //TODO test and fix this sound if needed, didnt have time atm
+                SoundBuffer soundBuffer = new SoundBuffer();
+                try {
+                    soundBuffer.loadFromFile(Paths.get("assets\\audio\\door_locked.wav"));
+                } catch(IOException ex) {
+                    ex.printStackTrace();
+                }
+                Sound btnSound = new Sound();
+                btnSound.setBuffer(soundBuffer);
+                btnSound.play();
+
+                System.out.println("Node is locked");
+            }
 
             /*
             if (button.getName().equals("1")) {
@@ -149,26 +177,6 @@ public class MapMenu extends Menu {
                 System.out.println("node 10 clicked");
             }
             */
-
-            //debugging
-            for(int j = 0; j < 10; j++){
-                if(nodes[j].isLocked()){
-                    System.out.println("Node Locked: nodes[" + j + "]");
-                }
-            }
-
-            if (!nodes[i].isLocked()){
-                System.out.println("node is unlocked");
-                if (nodeDesc[i].isLoaded()){
-                    nodeDesc[i].unload();
-                }
-                else {
-                    nodeDesc[i].load();
-                }
-            }
-            else {
-                System.out.println("node is locked");
-            }
         }
     }
 
