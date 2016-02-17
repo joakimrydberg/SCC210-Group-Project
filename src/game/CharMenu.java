@@ -10,6 +10,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2i;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -24,6 +25,10 @@ public class CharMenu extends Menu {
     private Image warr;
     private Image range;
     private Image mage;
+    SpriteSheetLoad warriorSpriteSheet = new SpriteSheetLoad(64, 128, 4, 6, 1, "/assets/art/WarriorMaleSheet.png");
+    private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(1), SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(2)};
+    private Animation warriorWalk = new Animation(warrior);
+    private Animation currAnimation = warriorWalk;
 
    //SpriteSheetLoad movingEnt = new SpriteSheetLoad(64, 128, 6, 4, 1, "assets/art/Warrior Male Sheet2.png");
    // BufferedImage[] warriorCharacter = movingEnt.returnSprites();
@@ -82,6 +87,8 @@ public class CharMenu extends Menu {
             clickableImage = new ClickableImage(850, 100, d);
             clickableImage.addClickListener(this);
             addEntity(clickableImage);
+
+
 
             final String f = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "mage-front.png");
             final String g = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "warr-front.png");
@@ -198,7 +205,8 @@ public class CharMenu extends Menu {
                 warr.show();
                 mage.hide();
                 className = "warr";
-
+                currAnimation = warriorWalk;
+                currAnimation.start();
             }
 
         }

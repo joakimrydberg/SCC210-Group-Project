@@ -12,7 +12,7 @@ public class Animation {
     private int currentFrame;
     private int totalFrames;                // total amount of frames for your animation
 
-    private boolean stopped;                // has animations stopped
+    private boolean stopped;                // have animations stopped
 
     private List<AnimationFrame> frames = new ArrayList<AnimationFrame>();    // Arraylist of frames
 

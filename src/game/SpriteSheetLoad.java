@@ -16,7 +16,7 @@ public class SpriteSheetLoad{
     int rows;
     int columns;
     int size;
-    BufferedImage[] sprites;
+    private static BufferedImage[] sprites;
 
     public SpriteSheetLoad(int width, int height, int rows, int columns, int size, String fileName) {
         try {
@@ -37,8 +37,8 @@ public class SpriteSheetLoad{
         }
     }
 
-    public BufferedImage getSprite(int value) {
-        return this.sprites[value];
+    public static BufferedImage getSprite(int value) {
+        return sprites[value];
     }
 
 

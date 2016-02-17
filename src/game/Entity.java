@@ -157,6 +157,7 @@ public class Entity  {
         for (TransformableHolder transformableHolder : transformableHolders) {
             transformableHolder.update();
         }
+
     }
     /**
      * Gets the current X coordinate of the center of the entity on the screen
