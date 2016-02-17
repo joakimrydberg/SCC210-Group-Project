@@ -37,6 +37,8 @@ public class SpriteSheetLoad{
 
     public BufferedImage[] returnSprites(){return sprites;}
 
+    //Only for moving sprites, for animation
+    //Direction refers to: 0-South, 6-West, 12-East, 18-North
     public BufferedImage move(int direction){
         for(int i=0; i<3; i++)
         {
