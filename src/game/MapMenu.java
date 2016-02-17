@@ -23,6 +23,7 @@ public class MapMenu extends Menu {
     public int loaded = 0;
     private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
     private Node[] nodes = new Node[10];
+    private NodeDescriptor[] nodeDesc = new NodeDescriptor[10];
     public final static String NAME = "Map Menu";
 
     /**
@@ -52,6 +53,18 @@ public class MapMenu extends Menu {
         nodes[7] = new Node("8", 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[8] = new Node("9", 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[9] = new Node("10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+
+        //creating node descriptors
+        nodeDesc[0] = new NodeDescriptor("d1", nodes[0], 100, 100);
+        nodeDesc[1] = new NodeDescriptor("d2", nodes[1], 100, 100);
+        nodeDesc[2] = new NodeDescriptor("d3", nodes[2], 100, 100);
+        nodeDesc[3] = new NodeDescriptor("d4", nodes[3], 100, 100);
+        nodeDesc[4] = new NodeDescriptor("d5", nodes[4], 100, 100);
+        nodeDesc[5] = new NodeDescriptor("d6", nodes[5], 100, 100);
+        nodeDesc[6] = new NodeDescriptor("d7", nodes[6], 100, 100);
+        nodeDesc[7] = new NodeDescriptor("d8", nodes[7], 100, 100);
+        nodeDesc[8] = new NodeDescriptor("d9", nodes[8], 100, 100);
+        nodeDesc[9] = new NodeDescriptor("d10", nodes[9], 100, 100);
 
         //draw lines connecting the nodes
         drawDottedLine(nodes[0], nodes[1], Color.BLACK);
@@ -100,6 +113,11 @@ public class MapMenu extends Menu {
         }
         else if (clickable instanceof Node){
             Entity button = (Node) clickable;
+            int i = Integer.parseInt(button.getName()) - 1;
+
+            System.out.println("node " + i + " clicked");
+
+            /*
             if (button.getName().equals("1")) {
                 System.out.println("node 1 clicked");
             }
@@ -129,6 +147,27 @@ public class MapMenu extends Menu {
             }
             else if (button.getName().equals("10")) {
                 System.out.println("node 10 clicked");
+            }
+            */
+
+            //debugging
+            for(int j = 0; j < 10; j++){
+                if(nodes[j].isLocked()){
+                    System.out.println("Node Locked: nodes[" + j + "]");
+                }
+            }
+
+            if (!nodes[i].isLocked()){
+                System.out.println("node is unlocked");
+                if (nodeDesc[i].isLoaded()){
+                    nodeDesc[i].unload();
+                }
+                else {
+                    nodeDesc[i].load();
+                }
+            }
+            else {
+                System.out.println("node is locked");
             }
         }
     }

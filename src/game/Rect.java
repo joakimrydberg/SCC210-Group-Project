@@ -15,11 +15,15 @@ import org.jsfml.system.Vector2f;
  */
 public class Rect extends Entity {
 
+	RectangleShape rect;
+	Vector2f vec;
+
 	public Rect(String name, int x, int y, int width, int height, Color c, int transparency) {
 		super(name);
 
-		Vector2f vec = new Vector2f(width, height);
-		RectangleShape rect = new RectangleShape(vec);
+		vec = new Vector2f(width, height);
+		rect = new RectangleShape(vec);
+
 		rect.setFillColor(new Color(c, transparency));
 
 		this.setWidthHeight(width, height);
@@ -29,4 +33,8 @@ public class Rect extends Entity {
 		this.addTransformable(rect, width/2, height/2, width, height);
 	}
 
+	public void setOtutline(Color c, float pt){
+		rect.setOutlineColor(c);
+		rect.setOutlineThickness(pt);
+	}
 }

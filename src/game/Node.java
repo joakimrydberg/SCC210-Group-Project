@@ -90,11 +90,17 @@ public class Node extends Entity implements Clickable {
     }
 
     public void lock(){
+        locked = true;
         showTransformable(img);
     }
 
     public void unlock(){
+        locked = false;
         hideTransformable(img);
+    }
+
+    public boolean isLocked(){
+        return locked;
     }
 }
 	
