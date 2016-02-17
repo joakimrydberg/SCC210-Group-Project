@@ -1,6 +1,9 @@
 package game;
 
+import levelcreator.CSVReader;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * @author Alexander J Mills
@@ -8,8 +11,9 @@ import java.io.Serializable;
  */
 public class LevelPart implements Serializable {
     private String spriteFileName = "";
-    private float rotation = 0;
-    private short rowNo = 0, colNo = 0; // position on grid just in case
+	private String type;
+	private float rotation = 0;
+	private short rowNo = 0, colNo = 0; // position on grid just in case
 
     public LevelPart(String fileName, float rotation, short rowNo, short colNo) {
         super();
@@ -18,6 +22,7 @@ public class LevelPart implements Serializable {
         setRotation(rotation);
         setRowNo(rowNo);
         setColNo(colNo);
+        setType();
     }
 
     public LevelPart() {
@@ -48,6 +53,13 @@ public class LevelPart implements Serializable {
         this.rotation = rotation;
     }
 
+    public void setType(){
+		ArrayList<String[]> arraylist = CSVReader.read();
+		for (String[] line : arraylist){
+			if(line[1].equals(spriteFileName)) { type = line[2]; }
+		}
+	}
+
     public String getSpriteFileName() {
         return spriteFileName;
     }
@@ -63,4 +75,6 @@ public class LevelPart implements Serializable {
     public int getColNo() {
         return colNo;
     }
+
+	public String getType() { return type; }
 }
