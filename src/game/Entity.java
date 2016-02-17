@@ -243,6 +243,7 @@ public class Entity  {
     public void addTransformable(Transformable transformable, int relX, int relY, int w, int h) {
         transformableHolders.add(new TransformableHolder(this, transformable, relX, relY, w, h));
     }
+
     public void hideTransformable(Transformable transformable) {
         ListIterator<TransformableHolder> it = transformableHolders.listIterator();
         while (it.hasNext()) {
@@ -252,6 +253,7 @@ public class Entity  {
             }
         }
     }
+
     public void showTransformable(Transformable transformable) {
         ListIterator<TransformableHolder> it = transformableHolders.listIterator();
         while (it.hasNext()) {

@@ -30,7 +30,7 @@ public class MainMenu extends Menu {
 
         addEntity(new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "main_menu_background.png"));
         //addEntity(new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "main_menu_background_wBoard.png"));
-        addEntity(new Image(centerX, 450, 360, 600, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png"));
+        //addEntity(new Image(centerX, 450, 360, 600, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png"));
 
         Button btnNewGame = new Button(centerX, 250, 250, 60, Color.WHITE, 200, "NEW GAME", 20);
         Button btnLoadGame = new Button( centerX, 330, 250, 60, Color.WHITE, 200, "LOAD GAME", 20);

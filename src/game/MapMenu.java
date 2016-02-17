@@ -120,7 +120,7 @@ public class MapMenu extends Menu {
             int i = Integer.parseInt(button.getName()) - 1;
 
             //debugging
-            System.out.println("Node " + i + " clicked");
+            System.out.println("Node " + (i + 1) + " clicked");
 
             if (!nodes[i].isLocked()){
                 if (nodeDesc[i].isLoaded()){
@@ -131,17 +131,6 @@ public class MapMenu extends Menu {
                 }
             }
             else {
-                //TODO test and fix this sound if needed, didnt have time atm
-                SoundBuffer soundBuffer = new SoundBuffer();
-                try {
-                    soundBuffer.loadFromFile(Paths.get("assets\\audio\\door_locked.wav"));
-                } catch(IOException ex) {
-                    ex.printStackTrace();
-                }
-                Sound btnSound = new Sound();
-                btnSound.setBuffer(soundBuffer);
-                btnSound.play();
-
                 System.out.println("Node is locked");
             }
 

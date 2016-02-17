@@ -7,6 +7,8 @@ package game;
 
 import interfaces.ClickListener;
 import interfaces.Clickable;
+import org.jsfml.audio.Sound;
+import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.CircleShape;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Sprite;
@@ -14,6 +16,9 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -42,7 +47,7 @@ public class Node extends Entity implements Clickable {
         super.setCenterX(x);
         super.setCenterY(y);
 
-        super.addTransformable(circle, 0, 0, radius, radius);
+        super.addTransformable(circle, radius, radius, radius * 2, radius * 2);
 
         // Load image / texture
         Texture imgTexture = new Texture( );
@@ -79,6 +84,27 @@ public class Node extends Entity implements Clickable {
 
     @Override
     public void clicked(Event e) {
+        SoundBuffer soundBuffer = new SoundBuffer();
+        Sound nodeSound = new Sound();
+
+        if (locked){
+            try {
+                soundBuffer.loadFromFile(Paths.get("assets\\audio\\locked.wav"));
+            } catch(IOException ex) {
+                ex.printStackTrace();
+            }
+            nodeSound.setBuffer(soundBuffer);
+            nodeSound.play();
+        } else {
+            try {
+                soundBuffer.loadFromFile(Paths.get("assets\\audio\\button_click.wav"));
+            } catch(IOException ex) {
+                ex.printStackTrace();
+            }
+            nodeSound.setBuffer(soundBuffer);
+            nodeSound.play();
+        }
+
         for (ClickListener listener : clickListeners) {
             listener.buttonClicked(this, null);
         }
