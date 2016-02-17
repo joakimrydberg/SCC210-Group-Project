@@ -1,7 +1,6 @@
 package game;
 
 import interfaces.InteractingEntity;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
 
 /**
@@ -16,27 +15,25 @@ public abstract class MovingEntity extends Entity {
     /**
      * Creates a new moving entity, with a given name
      *
-     * @param window - RenderWindow in which the Entity will be displayed
      * @param name - String name for the Entity
      * @param topLeftX - int X position of the top left of the entity
      * @param topLeftY - int Y position of the top left of the entity
      * @param width - int width
      * @param height - int height
-     * @param transformable - Transformable obj
+
      */
-    public MovingEntity(RenderWindow window, String name, int topLeftX, int topLeftY, int width, int height) {
-        super(window, name, topLeftX, topLeftY, width, height);
+    public MovingEntity( String name, int topLeftX, int topLeftY, int width, int height) {
+        super(name, topLeftX, topLeftY, width, height);
 
     }
 
     /**
      * Creates a new moving entity
      *
-     * @param window - RenderWindow in which the Entity will be displayed
      * @param name - String name for the Entity
      */
-    public MovingEntity(RenderWindow window, String name) {
-        super(window, name);
+    public MovingEntity( String name) {
+        super(name);
     }
 
 

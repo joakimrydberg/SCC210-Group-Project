@@ -6,7 +6,6 @@
 package game;
 
 import interfaces.InteractingEntity;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2i;
@@ -22,8 +21,8 @@ import java.nio.file.Paths;
 public class Image extends Entity implements InteractingEntity {
 
 
-    public Image(RenderWindow w, int x, int y, int width, int height,  String textureFile) {
-        super(w, textureFile);
+    public Image(int x, int y, int width, int height,  String textureFile) {
+        super(textureFile);
         //
         // Load image/ texture
         //
@@ -55,8 +54,8 @@ public class Image extends Entity implements InteractingEntity {
 
     }
 
-    public Image(RenderWindow w, int x, int y, String textureFile) {
-        this(w, x, y, -1, -1, textureFile);
+    public Image(int x, int y, String textureFile) {
+        this(x, y, -1, -1, textureFile);
     }
 
     @Override

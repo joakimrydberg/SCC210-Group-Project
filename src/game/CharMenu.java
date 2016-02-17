@@ -7,11 +7,9 @@ package game;
 
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Text;
 import org.jsfml.system.Vector2i;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -22,7 +20,7 @@ import java.net.URL;
  */
 public class CharMenu extends Menu {
     private final static String SEP = Constants.SEP;
-
+    public final static String NAME = "Character creation menu";
     private Image warr;
     private Image range;
     private Image mage;
@@ -36,10 +34,10 @@ public class CharMenu extends Menu {
     private Message hairCol = null;
     private Player p;
     private String className;
-    public CharMenu(RenderWindow w, Driver driver) {
-        super(w, "Character creation menu", driver);
+    public CharMenu() {
+        super(NAME);
 
-        final Vector2i windowSize = w.getSize();
+        final Vector2i windowSize = getWindow().getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -50,17 +48,17 @@ public class CharMenu extends Menu {
             File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
             String a = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "menu_background.png");
 
-            addEntity(new Image(w, centerX, centerY, windowSize.x, windowSize.y, a));
+            addEntity(new Image(centerX, centerY, windowSize.x, windowSize.y, a));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        hairCol = new Message(w, 700, 242, 0, "Red", Color.BLACK, 11);
+        hairCol = new Message(700, 242, 0, "Red", Color.BLACK, 11);
 
-        //addEntity(new Rect(w, null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
-        addEntity(new Rect(w, null, 725, 375, 350, 700, Color.WHITE, 128));
-        addEntity(new Rect(w, null, 725, 500, 350, 220, Color.WHITE, 128));
-        Button createButton = new Button(w, 685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
+        //addEntity(new Rect(null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
+        addEntity(new Rect(null, 725, 375, 350, 700, Color.WHITE, 128));
+        addEntity(new Rect(null, 725, 500, 350, 220, Color.WHITE, 128));
+        Button createButton = new Button(685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
 
         //URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
@@ -75,29 +73,29 @@ public class CharMenu extends Menu {
 
 
             ClickableImage clickableImage ;
-            clickableImage = new ClickableImage(w, 600, 100, a);
+            clickableImage = new ClickableImage(600, 100, a);
             clickableImage.addClickListener(this);
             addEntity(clickableImage);
-            clickableImage = new ClickableImage(w, 725, 100, e);
+            clickableImage = new ClickableImage(725, 100, e);
             clickableImage.addClickListener(this);
             addEntity(clickableImage);
-            clickableImage = new ClickableImage(w, 850, 100, d);
+            clickableImage = new ClickableImage(850, 100, d);
             clickableImage.addClickListener(this);
             addEntity(clickableImage);
 
             final String f = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "mage-front.png");
             final String g = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "warr-front.png");
             final String h = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "range-front.png");
-            mage = new Image(w, 350, 400, 100, 200, f);
-            range = new Image(w, 350, 400, 100, 200, h);
-            warr = new Image(w, 350, 400, 100, 200, g);
+            mage = new Image(350, 400, 100, 200, f);
+            range = new Image(350, 400, 100, 200, h);
+            warr = new Image(350, 400, 100, 200, g);
             addEntity(mage);
             addEntity(range);
             addEntity(warr);
 
             warr.hide();
             range.hide();
-            p = new Player(w, "");
+            p = new Player("");
 
 
         } catch (URISyntaxException e) {
@@ -108,12 +106,12 @@ public class CharMenu extends Menu {
         createButton.addClickListener(this);
 
         // DebugPrinter.debugPrint(this, getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png").toString());
-        messages[0] = (new Message(w, 575, 430, 0, "Stats", Color.BLACK, 20));
-        messages[1] = (new Message(w, 675, 450, 0, "Attack power : 5", Color.BLACK, 12));
-        messages[2] = (new Message(w, 675, 475, 0, "Intellect : 0", Color.BLACK, 12));
-        messages[3] = (new Message(w, 675, 500, 0, "Agility : 0", Color.BLACK, 12));
-        messages[4] = (new Message(w, 675, 525, 0, "Endurance : 5", Color.BLACK, 12));
-        messages[5] = (new Message(w, 675, 550, 0, "Vitality : 5", Color.BLACK, 12));
+        messages[0] = (new Message(575, 430, 0, "Stats", Color.BLACK, 20));
+        messages[1] = (new Message(675, 450, 0, "Attack power : 5", Color.BLACK, 12));
+        messages[2] = (new Message(675, 475, 0, "Intellect : 0", Color.BLACK, 12));
+        messages[3] = (new Message(675, 500, 0, "Agility : 0", Color.BLACK, 12));
+        messages[4] = (new Message(675, 525, 0, "Endurance : 5", Color.BLACK, 12));
+        messages[5] = (new Message(675, 550, 0, "Vitality : 5", Color.BLACK, 12));
 
         addEntity(messages[0]);
         addEntity(messages[1]);
@@ -129,11 +127,11 @@ public class CharMenu extends Menu {
 
         Button tempButton;
 
-        tempButton = new Button(w, 775, 250, 25, 25, Color.WHITE, 100, ">>", 9 );
+        tempButton = new Button(775, 250, 25, 25, Color.WHITE, 100, ">>", 9 );
         tempButton.addClickListener(this);
         addEntity(tempButton);
 
-        tempButton = new Button(w, 650, 250, 25, 25, Color.WHITE, 100, "<<", 9 );
+        tempButton = new Button(650, 250, 25, 25, Color.WHITE, 100, "<<", 9 );
         tempButton.addClickListener(this);
         addEntity(tempButton);
 
@@ -152,7 +150,7 @@ public class CharMenu extends Menu {
             if (button.getName().equals("CREATE")) {
                 //p.setClass(className); //******RYAN, IVE JUST COMMENTED THIS OUT WHILE WORKING ON MAP MENU, IT RESULTED IN A NULL POINTER EXCEPTION ANS STOPPED MAP MENU LOADING*******
                 this.unload();
-                new MapMenu(getWindow(), getDriver()).load();
+                new MapMenu().load();
 
 
             } else if (button.getName().equals(">>")) {

@@ -5,7 +5,10 @@
  */
 package game;
 
-import org.jsfml.graphics.*;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.FloatRect;
+import org.jsfml.graphics.Font;
+import org.jsfml.graphics.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +18,8 @@ public class Message extends Entity {
     private final static String FontFile  = "LucidaSansRegular.ttf";
     private String fontPath; // Where fonts were found
 
-    public Message(RenderWindow window, int x, int y, int r, String message, Color c , int size) {
-        super(window, message);
+    public Message(int x, int y, int r, String message, Color c , int size) {
+        super(message);
 
         if ((new File(Constants.JRE_FONT_PATH)).exists())
             fontPath = Constants.JRE_FONT_PATH;

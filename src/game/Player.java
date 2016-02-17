@@ -1,14 +1,5 @@
 package game;
 
-import interfaces.ClickListener;
-import interfaces.Clickable;
-import org.jsfml.graphics.RenderWindow;
-import org.jsfml.graphics.Text;
-import org.jsfml.window.event.Event;
-
-import javax.swing.*;
-import java.util.ArrayList;
-
 /**
  * Created by millsr3 on 16/02/2016.
  */
@@ -22,8 +13,8 @@ public class Player extends MovingEntity {
     public int Vitality = 0;
 
 
-    public Player(RenderWindow window, String name) {
-        super(window, name);
+    public Player(String name) {
+        super(name);
     }
 
     void setClass(String c){

@@ -7,8 +7,10 @@ package game;
 
 import interfaces.ClickListener;
 import interfaces.Clickable;
-import interfaces.InteractingEntity;
-import org.jsfml.graphics.*;
+import org.jsfml.graphics.CircleShape;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
@@ -26,8 +28,8 @@ public class Node extends Entity implements Clickable {
     private boolean locked = false;
     private Sprite img;
 
-    public Node(RenderWindow w, String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
-        super(w, name);
+    public Node(String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
+        super(name);
 
         CircleShape circle = new CircleShape(radius);
         circle.setFillColor(new Color(fillC, transparency));

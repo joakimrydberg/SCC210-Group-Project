@@ -1,7 +1,6 @@
 package game;
 
 import interfaces.ClickListener;
-import org.jsfml.graphics.RenderWindow;
 
 /**
  * Currently Useless
@@ -12,12 +11,11 @@ import org.jsfml.graphics.RenderWindow;
 public abstract class Menu extends Drawer implements ClickListener {
 
     /**
-     *
-     * @param window
+
      * @param name
      */
-    public Menu(RenderWindow window, String name, Driver driver) {
-        super(window, name, driver);
+    public Menu(String name) {
+        super( name);
     }
 
 }

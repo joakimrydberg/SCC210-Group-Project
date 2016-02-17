@@ -5,12 +5,15 @@ package backup_originals;
 //
 //		Andrew Scott, 2015
 //
+
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.VideoMode;
+import org.jsfml.window.WindowStyle;
+import org.jsfml.window.event.Event;
+
 import java.io.File;
 import java.util.ArrayList;
-
-import org.jsfml.window.*;
-import org.jsfml.window.event.*;
-import org.jsfml.graphics.*;
 
 class Test {
     private static int screenWidth  = 1024;
@@ -92,7 +95,7 @@ class Test {
                 // Check we've not hit screen bounds
                 // x and y would normally be the object's centre point
                 // rather than its top corner so we can more easily
-                // rotate objects and handle circular shapes
+                // setRotation objects and handle circular shapes
                 //
                 if (x <= minx || x >= maxx) { dx *= -1; x += dx; }
                 if (y <= miny || y >= maxy) { dy *= -1; y += dy; }
@@ -112,7 +115,7 @@ class Test {
             // Rotate and reposition the object
             //
             void performMove( ) {
-                obj.rotate(r);
+                obj.setRotation(r);
                 obj.setPosition(x,y);
             }
 

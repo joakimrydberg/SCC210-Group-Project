@@ -7,7 +7,6 @@ package game;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2f;
 
 /**
@@ -16,8 +15,8 @@ import org.jsfml.system.Vector2f;
  */
 public class Rect extends Entity {
 
-	public Rect(RenderWindow window, String name, int x, int y, int width, int height, Color c, int transparency) {
-		super(window, name);
+	public Rect(String name, int x, int y, int width, int height, Color c, int transparency) {
+		super(name);
 
 		Vector2f vec = new Vector2f(width, height);
 		RectangleShape rect = new RectangleShape(vec);

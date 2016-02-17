@@ -17,22 +17,20 @@ public class Entity  {
     private int x = 0, y = 0;   //current x and y coordinates
     private int w = -1, h = -1; // current width and height of the Entity
     private ArrayList<TransformableHolder> transformableHolders = new ArrayList<>();
-    private RenderWindow window = null;
+    //private RenderWindow window = null;
     public boolean hidden = false;
     /**
      * Creates a new entity, with a given name
      *
-     * @param window - RenderWindow in which the Entity will be displayed
      * @param name - String name for the Entity
      * @param centerX - int X position of the center of the entity
      * @param centerY - int Y position of the center of the entity
      * @param width - int width
      * @param height - int height
      */
-    public Entity(RenderWindow window, String name, int centerX, int centerY, int width, int height) {
+    public Entity(String name, int centerX, int centerY, int width, int height) {
         super();
 
-        setWindow(window);
         setName(name);
         setWidthHeight(width, height);
         setCenterX(centerX);
@@ -42,13 +40,11 @@ public class Entity  {
     /**
      * Creates a new entity
      *
-     * @param window - RenderWindow in which the Entity will be displayed
      * @param name - String name for the Entity
      */
-    public Entity(RenderWindow window, String name) {
+    public Entity(String name) {
         super();
 
-        this.window = window;
         this.name = name;
     }
 
@@ -60,7 +56,7 @@ public class Entity  {
         for (TransformableHolder transformableHolder : transformableHolders) {
             //DebugPrinter.debugPrint(this, "drawing: x:" + getTopLeftX() + " y:" + getTopLeftY() + " w:" + getWidth() + " h:" + getHeight());
             if (!transformableHolder.hidden)
-                window.draw((Drawable) transformableHolder.transformable);
+                getWindow().draw((Drawable) transformableHolder.transformable);
         }
     }
 
@@ -83,14 +79,12 @@ public class Entity  {
 
     //=============================== Getters and Setters below ========================================================
 
-    /**
-     * Sets the Entity's RenderWindow to be displayed on
-     *
-     * @param window - RenderWindow
-     */
+/*
+
     public void setWindow(RenderWindow window) {
         this.window = window;
     }
+*/
 
     /**
      * Gets the RenderWindow, on which this entity is displayed
@@ -98,7 +92,7 @@ public class Entity  {
      * @return RenderWindow
      */
     public RenderWindow getWindow() {
-        return window;
+        return Driver.getWindow();
     }
 
     /**

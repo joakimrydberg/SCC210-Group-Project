@@ -5,24 +5,21 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
+import other.ConcurrentSafeArrayList;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 /**
  * Acts as the Driver, shouldn't do much but set up debug printing etc
  *
  */
 public class Driver {
-    MainMenu mainMenu;
-    CharMenu charMenu;
-    MapMenu mapMenu;
-    private ArrayList<Drawer> drawers = new ArrayList<>( );
-    private int screenWidth = 1024,
+    private static ConcurrentSafeArrayList<Drawer> drawers = new ConcurrentSafeArrayList<>( );
+    private static int screenWidth = 1024,
             screenHeight = 768;
-
-    private String FontPath;
+    private static RenderWindow window;
+    private static String FontPath;
 
     /**
      * Set up for printing
@@ -37,10 +34,11 @@ public class Driver {
     }
 
     /**
-     * Initialises the game and then lets it run
+     * Starts off the game
      *
+     * @param args - Arguments..
      */
-    public Driver() {
+    public static void main(String[] args) {
         setUpPrinting();
 
         //create window
@@ -54,12 +52,12 @@ public class Driver {
         //
         // Create a window
         //
-        RenderWindow window = new RenderWindow();
+        window = new RenderWindow();
         window.create(new VideoMode(screenWidth, screenHeight), "Dungeons but not Dragons", WindowStyle.DEFAULT);
 
         window.setFramerateLimit(30); // Avoid excessive updates
 
-        mainMenu = new MainMenu(window, this);
+        MainMenu mainMenu = new MainMenu();
         mainMenu.load();
 
         ArrayList<Drawer> tempDrawers = new ArrayList<>();
@@ -69,34 +67,47 @@ public class Driver {
 
             Iterable<Event> events = window.pollEvents();
 
-            ListIterator<Drawer> it = drawers.listIterator();
-            while (it.hasNext()) {
-                Drawer item = it.next();
-
-                item.update(events);
+            for (int i = 0; i < drawers.size(); i++) {
+                drawers.get(i).update(events);
             }
             window.display();
         }
     }
 
 
-    public void addDrawer(Drawer drawer) {
+    public static void addDrawer(Drawer drawer) {
+        Drawer item;
+        for (int i = 0; i < drawers.size(); i++) {
+            item = drawers.get(i);
+            if (item.getName().equals(drawer.getName())) {
+                drawers.remove(item);
+            }
+        }
+
         drawers.add(drawer);
     }
 
-    public void removeDrawer(Drawer drawer) {
+    public static Drawer getDrawer(String name) {
+        Drawer drawer;
+        for (int i = 0; i < drawers.size(); i++) {
+            drawer = drawers.get(i);
+            if (drawer.getName().equals(name)) {
+                return drawer;
+            }
+        }
+
+        return null;
+    }
+
+/*  Doubt we will need this, with maybe if we are certain that the drawer will never be opened again
+
+    public static void removeDrawer(Drawer drawer) {
         drawers.remove(drawer);
-    }
+    }*/
 
-    /**
-     * Starts off the game
-     *
-     * @param args - Arguments..
-     */
-    public static void main(String[] args) {
-        new Driver();
+    public static RenderWindow getWindow() {
+        return window;
     }
-
 }
 
 

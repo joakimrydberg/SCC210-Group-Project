@@ -23,49 +23,51 @@ public class MapMenu extends Menu {
     public int loaded = 0;
     private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
     private Node[] nodes = new Node[10];
+    public final static String NAME = "Map Menu";
 
     /**
      *
      */
-    public MapMenu(RenderWindow w, Driver driver) {
-        super(w, "Map", driver);
+    public MapMenu() {
+        super(NAME);
 
+        RenderWindow w = getWindow();
         final Vector2i windowSize = w.getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
-        addEntity(new Image(w, centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
+        addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
 
-        Button backButton = new Button(w, 50, 25, 80, 30, Color.WHITE, 200 , "BACK", 15 );
+        Button backButton = new Button(50, 25, 80, 30, Color.WHITE, 200 , "BACK", 15 );
         backButton.addClickListener(this);
         addEntity(backButton);
 
         //creating the nodes
-        nodes[0] = new Node(w, "1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[1] = new Node(w, "2", 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[2] = new Node(w, "3", 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[3] = new Node(w, "4", 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[4] = new Node(w, "5", 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[5] = new Node(w, "6", 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[6] = new Node(w, "7", 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[7] = new Node(w, "8", 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[8] = new Node(w, "9", 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[9] = new Node(w, "10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[0] = new Node("1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[1] = new Node("2", 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[2] = new Node("3", 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[3] = new Node("4", 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[4] = new Node("5", 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[5] = new Node("6", 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[6] = new Node("7", 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[7] = new Node("8", 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[8] = new Node("9", 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
+        nodes[9] = new Node("10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         //draw lines connecting the nodes
-        drawDottedLine(w, nodes[0], nodes[1], Color.BLACK);
+        drawDottedLine(nodes[0], nodes[1], Color.BLACK);
 
-        drawDottedLine(w, nodes[1], nodes[2], Color.BLACK);
-        drawDottedLine(w, nodes[1], nodes[3], Color.BLACK);
+        drawDottedLine(nodes[1], nodes[2], Color.BLACK);
+        drawDottedLine(nodes[1], nodes[3], Color.BLACK);
 
-        drawDottedLine(w, nodes[3], nodes[4], Color.BLACK);
+        drawDottedLine(nodes[3], nodes[4], Color.BLACK);
 
-        drawDottedLine(w, nodes[4], nodes[5], Color.BLACK);
-        drawDottedLine(w, nodes[4], nodes[7], Color.BLACK);
+        drawDottedLine(nodes[4], nodes[5], Color.BLACK);
+        drawDottedLine(nodes[4], nodes[7], Color.BLACK);
 
-        drawDottedLine(w, nodes[5], nodes[6], Color.BLACK);
+        drawDottedLine(nodes[5], nodes[6], Color.BLACK);
 
-        drawDottedLine(w, nodes[7], nodes[8], Color.BLACK);
-        drawDottedLine(w, nodes[7], nodes[9], Color.BLACK);
+        drawDottedLine(nodes[7], nodes[8], Color.BLACK);
+        drawDottedLine(nodes[7], nodes[9], Color.BLACK);
 
         //adding the nodes to the screen in a loop
         for(int i = 0; i < 10; i++){
@@ -75,7 +77,7 @@ public class MapMenu extends Menu {
 
         //add locked images to each node ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
         for(int i = 0; i < 10; i++){
-            //addEntity(new Image(w, nodes[i].getCenterX(), nodes[i].getCenterY(), "assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
+            //addEntity(new Image(nodes[i].getCenterX(), nodes[i].getCenterY(), "assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
             nodes[i].setLocked(true);
         }
 
@@ -84,12 +86,18 @@ public class MapMenu extends Menu {
     }
 
     @Override
-    public void buttonClicked(Clickable clickable, Object[] args) {
+    public void buttonClicked(Clickable clickable, Object[] args) { //TODO should there actually be a back button? idk
         if (clickable instanceof  Button ) {
             Entity button = (Button) clickable;
             if (button.getName().equals("BACK")) {
                 this.unload();
-                new CharMenu(getWindow(), getDriver()).load();
+
+                Drawer charMenu = Driver.getDrawer(CharMenu.NAME);
+                if (charMenu == null)
+                    charMenu = new CharMenu();
+
+                charMenu.load();
+
                 System.out.println("Create clicked");
             }
         }
@@ -133,14 +141,14 @@ public class MapMenu extends Menu {
      */
     public void drawLine(RenderWindow w, Node p1, Node p2, Color c){
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
-        Rect line = new Rect(w, null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300); //create the line between the two nodes
+        Rect line = new Rect(null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300); //create the line between the two nodes
 
         //line that no longer works as rect x param is now centre and not the top-left .. will this be chnaging again ?
         //Rect line = new Rect(w, null, p1.getCenterX(), p1.getCenterY(), (int)length, 5, c, 300);
 
         addEntity(line);
 
-        //rotate the line using trigonometry
+        //setRotation the line using trigonometry
         int l1 = p2.getCenterY()- p1.getCenterY();
         int l2 = p2.getCenterX() - p1.getCenterX();
 
@@ -151,7 +159,7 @@ public class MapMenu extends Menu {
     /*
      * This method uses trigonometry to draw a dotted line between two nodes
      */
-    public void drawDottedLine(RenderWindow w, Node p1, Node p2, Color c){
+    public void drawDottedLine(Node p1, Node p2, Color c){
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
         int noOfLines = (int)length / 20; //has a line every 20p
 
@@ -162,7 +170,7 @@ public class MapMenu extends Menu {
 
         //creating the lines at intervals between the 2 nodes
         for(int i = 0, j = 1; i < noOfLines; i++, j++){
-            lines[i] = new Rect(w, null, (int)(p1.getCenterX() + (xInterval * j)), (int)(p1.getCenterY() + (yInterval * j)), 10, 5, c, 300);
+            lines[i] = new Rect(null, (int)(p1.getCenterX() + (xInterval * j)), (int)(p1.getCenterY() + (yInterval * j)), 10, 5, c, 300);
         }
 
         //adding the lines to the screen in a loop
@@ -170,7 +178,7 @@ public class MapMenu extends Menu {
             addEntity(lines[i]);
         }
 
-         //rotate the lines using trigonometry
+         //setRotation the lines using trigonometry
         int l1 = p2.getCenterY()- p1.getCenterY();
         int l2 = p2.getCenterX() - p1.getCenterX();
 

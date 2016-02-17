@@ -1,7 +1,6 @@
 package game;
 
 import interfaces.Clickable;
-import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.event.Event;
 
 import java.util.ArrayList;
@@ -13,12 +12,11 @@ import java.util.ArrayList;
 public abstract class Drawer extends Entity {
     private boolean loaded = false;
     private ArrayList<Entity> entities = new ArrayList<>();
-    private Driver driver;
 
-    public Drawer(RenderWindow w, String name, Driver driver) {
-        super(w, name);
+    public Drawer(String name) {
+        super(name);
 
-        this.driver = driver;
+        Driver.addDrawer(this);
     }
 
     public void update(Iterable<Event> events) {
@@ -45,12 +43,10 @@ public abstract class Drawer extends Entity {
 
     public void load() {
         loaded = true;
-        driver.addDrawer(this);
     }
 
     public void unload() {
         loaded = false;
-        driver.removeDrawer(this);
     }
 
     public boolean isLoaded() {
@@ -65,8 +61,10 @@ public abstract class Drawer extends Entity {
         entities.add(entity);
     }
 
-    private void drawAll() {  //TODO rename to something remotely appropriate
+    private void drawAll() {
         if (isLoaded()) {
+            draw();
+
             for (Entity entity : getEntities()) {
                 if (entity instanceof MovingEntity)
                     ((MovingEntity) entity).move();
@@ -76,7 +74,5 @@ public abstract class Drawer extends Entity {
             }
         }
     }
-    public Driver getDriver() {
-        return driver;
-    }
+
 }

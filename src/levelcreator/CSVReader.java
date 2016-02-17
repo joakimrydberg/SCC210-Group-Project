@@ -13,19 +13,26 @@ import java.util.ArrayList;
  */
 public class CSVReader {
 
-    public ArrayList<String[]> read() {
+    public static ArrayList<String[]> read() {
         ArrayList<String[]> arrayList = new ArrayList<>();
         BufferedReader br = null;
         String line = "";
         String[] levelIDMap;
 
         try {
-            br = new BufferedReader(new FileReader("assets" + Constants.SEP + "levels"  + Constants.SEP + "level_IDs.csv"));
+            br = new BufferedReader(new FileReader("assets" + Constants.SEP + "levelparts"  + Constants.SEP + "level_IDs.csv"));
             while ((line = br.readLine()) != null) {
                 if (line.length() != 0
                         && (line.charAt(0) != '/' && line.charAt(1) != '/')) { //allow for any 'comments'
 
                     levelIDMap = line.split(",");
+
+                    for (int i = 0; i < levelIDMap.length; i++) {
+                        if (levelIDMap[i].charAt(0) == ' ') {
+                            levelIDMap[i] = levelIDMap[i].substring(1);
+                        }
+                    }
+
                     arrayList.add(levelIDMap);
                 }
             }
