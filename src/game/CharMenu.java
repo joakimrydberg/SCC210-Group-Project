@@ -25,13 +25,18 @@ public class CharMenu extends Menu {
     private Image warr;
     private Image range;
     private Image mage;
-    SpriteSheetLoad warriorSpriteSheet = new SpriteSheetLoad(64, 128, 4, 6, 1, "/assets/art/WarriorMaleSheet.png");
-    private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(1), SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(2)};
-    private Animation warriorWalk = new Animation(warrior);
-    private Animation currAnimation = warriorWalk;
 
-   //SpriteSheetLoad movingEnt = new SpriteSheetLoad(64, 128, 6, 4, 1, "assets/art/Warrior Male Sheet2.png");
-   // BufferedImage[] warriorCharacter = movingEnt.returnSprites();
+    //SpriteSheet load
+    SpriteSheetLoad warriorSpriteSheet = new SpriteSheetLoad(64, 128, 4, 6, 1, "/assets/art/WarriorMaleSheet.png");
+    SpriteSheetLoad rangerSpriteSheet = new SpriteSheetLoad(64, 128, 4, 6, 1, "/assets/art/RangerMaleSheet.png");
+    SpriteSheetLoad mageSpriteSheet = new SpriteSheetLoad(64, 128, 4, 6, 1, "/assets/art/MageMaleSheet.png");
+    private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(1), SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(2)};
+    private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(1), SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(2)};
+    private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(1), SpriteSheetLoad.getSprite(0), SpriteSheetLoad.getSprite(2)};
+    private Animation warriorWalk = new Animation(warrior);
+    private Animation rangerWalk = new Animation(ranger);
+    private Animation mageWalk = new Animation(mageA);
+    private Animation currAnimation = warriorWalk;
 
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
@@ -187,6 +192,9 @@ public class CharMenu extends Menu {
                 mage.show();
 
                 className = "mage";
+                currAnimation.stop();
+                currAnimation = mageWalk;
+                currAnimation.start();
             }
             else if (button.getName().contains("ranged")){
                 DebugPrinter.debugPrint(this, "ranged selected");
@@ -196,6 +204,9 @@ public class CharMenu extends Menu {
                 warr.hide();
                 mage.hide();
                 className = "ranged";
+                currAnimation.stop();
+                currAnimation = rangerWalk;
+                currAnimation.start();
             }
             else if (button.getName().contains("strength")){
                 DebugPrinter.debugPrint(this, "Strength selected");
@@ -205,6 +216,7 @@ public class CharMenu extends Menu {
                 warr.show();
                 mage.hide();
                 className = "warr";
+                currAnimation.stop();
                 currAnimation = warriorWalk;
                 currAnimation.start();
             }
