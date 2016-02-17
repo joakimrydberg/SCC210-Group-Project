@@ -37,7 +37,7 @@ public class MapMenu extends Menu {
 
         addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
 
-        Button backButton = new Button(50, 25, 80, 30, Color.WHITE, 200 , "BACK", 15 );
+        Button backButton = new Button(50, 40, 80, 50, Color.WHITE, 200 , "BACK", 15 );
         backButton.addClickListener(this);
         addEntity(backButton);
 
@@ -77,12 +77,9 @@ public class MapMenu extends Menu {
 
         //add locked images to each node ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
         for(int i = 0; i < 10; i++){
-            //addEntity(new Image(nodes[i].getCenterX(), nodes[i].getCenterY(), "assets" + Constants.SEP + "art" + Constants.SEP + "lock.png"));
-            nodes[i].setLocked(true);
+            nodes[i].lock();
         }
-
-        nodes[0].setLocked(false);
-
+        nodes[0].unlock();
     }
 
     @Override
@@ -143,15 +140,11 @@ public class MapMenu extends Menu {
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
         Rect line = new Rect(null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300); //create the line between the two nodes
 
-        //line that no longer works as rect x param is now centre and not the top-left .. will this be chnaging again ?
-        //Rect line = new Rect(w, null, p1.getCenterX(), p1.getCenterY(), (int)length, 5, c, 300);
-
         addEntity(line);
 
         //setRotation the line using trigonometry
         int l1 = p2.getCenterY()- p1.getCenterY();
         int l2 = p2.getCenterX() - p1.getCenterX();
-
         float trigAngle = (float)Math.toDegrees(Math.atan2(l1, l2)); //uses trig method 'SOH CAH TOA'
         line.rotate(trigAngle);
     }

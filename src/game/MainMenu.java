@@ -6,8 +6,13 @@
 package game;
 
 import interfaces.Clickable;
+import org.jsfml.audio.Sound;
+import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2i;
+
+import java.io.IOException;
+import java.nio.file.Paths;
 
 /**
  *
@@ -24,7 +29,8 @@ public class MainMenu extends Menu {
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
         addEntity(new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "main_menu_background.png"));
-        //addEntity(new Image(window, 200, 500, 173, 40, "assets" + Constants.SEP + "art" + Constants.SEP + "game_button.png"));
+        //addEntity(new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "main_menu_background_wBoard.png"));
+        addEntity(new Image(centerX, 450, 360, 600, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png"));
 
         Button btnNewGame = new Button(centerX, 250, 250, 60, Color.WHITE, 200, "NEW GAME", 20);
         Button btnLoadGame = new Button( centerX, 330, 250, 60, Color.WHITE, 200, "LOAD GAME", 20);
@@ -34,14 +40,27 @@ public class MainMenu extends Menu {
 
         btnNewGame.addClickListener(this);
         addEntity(btnNewGame);
-        //btnLoadGame.addClickListener(this);
+        btnLoadGame.addClickListener(this);
         addEntity(btnLoadGame);
-        //btnOptions.addClickListener(this);
+        btnOptions.addClickListener(this);
         addEntity(btnOptions);
-        //btnCredits.addClickListener(this);
+        btnCredits.addClickListener(this);
         addEntity(btnCredits);
-        //btnQuit.addClickListener(this);
+        btnQuit.addClickListener(this);
         addEntity(btnQuit);
+
+        //Create the sound buffer and load a sound from a file
+        SoundBuffer soundBuffer = new SoundBuffer();
+        try {
+            soundBuffer.loadFromFile(Paths.get("assets\\audio\\main_menu_loop.wav"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        //Create a sound and set its buffer
+        Sound sound = new Sound();
+        sound.setBuffer(soundBuffer);
+        sound.play(); //TODO loop the sound if possible
     }
 
     @Override
@@ -51,10 +70,20 @@ public class MainMenu extends Menu {
 
             if (button.getName().equals("NEW GAME")) {
                 this.unload();
-
                 new CharMenu().load();
-
                 System.out.println("NEW GAME clicked");
+            }
+            else if (button.getName().equals("LOAD GAME")){
+                System.out.println("LOAD GAME clicked");
+            }
+            else if (button.getName().equals("OPTIONS")){
+                System.out.println("OPTIONS clicked");
+            }
+            else if (button.getName().equals("CREDITS")){
+                System.out.println("CREDITS clicked");
+            }
+            else if (button.getName().equals("QUIT")){
+                System.out.println("QUIT clicked");
             }
         }
     }
