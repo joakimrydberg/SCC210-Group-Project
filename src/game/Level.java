@@ -1,7 +1,5 @@
 package game;
 
-import org.jsfml.graphics.RenderWindow;
-
 import java.util.Random;
 
 /**
@@ -16,8 +14,8 @@ public class Level extends Drawer{
 	private Room endRoom;
 	private Room currentRoom;
 
-	public Level(RenderWindow window, String id, Driver driver) {
-		super(window, "Level " + id, driver);
+	public Level(String id) {  //TODO A trusty Josh comment.. Updated Drawer (and the rest) so that we don't need the
+		super("Level " + id);  //TODO RenderWindow / Driver in the constructor
 		this.levelID = id;
 
 		for (int i = 0; i < 10; i++){
