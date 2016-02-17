@@ -37,6 +37,7 @@ public class SpriteSheetLoad{
         }
     }
 
+
     public static BufferedImage getSprite(int value) {
         return sprites[value];
     }
