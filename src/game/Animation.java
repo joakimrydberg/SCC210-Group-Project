@@ -20,7 +20,7 @@ public class Animation {
         this.stopped = true;
 
         for (int i = 0; i < frames.length; i++) {
-            addFrame(frames[i], frameDelay);
+            addFrame(frames[i]);
         }
 
         this.frameCount = 0;
@@ -63,12 +63,7 @@ public class Animation {
         this.currentFrame = 0;
     }
 
-    private void addFrame(BufferedImage frame, int duration) {
-        if (duration <= 0) {
-            System.err.println("Invalid duration: " + duration);
-            throw new RuntimeException("Invalid duration: " + duration);
-        }
-
+    private void addFrame(BufferedImage frame) {
         frames.add(new AnimationFrame(frame));
         currentFrame = 0;
     }

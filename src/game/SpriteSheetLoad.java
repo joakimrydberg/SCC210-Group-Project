@@ -3,8 +3,11 @@ package game;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
+
+/**
+ * Created by Michael on 16/02/2016.
+ */
 
 public class SpriteSheetLoad{
 
@@ -30,11 +33,12 @@ public class SpriteSheetLoad{
     }
 
     public static BufferedImage getSprite(int xGrid, int yGrid) {
-
+        //Load the default sprite sheet if null
         if (spriteSheet == null) {
             spriteSheet = loadSprite("WarriorMaleSheet");
         }
 
+        //Get current sprite
         return spriteSheet.getSubimage(xGrid * width, yGrid * height, width, height);
     }
 
