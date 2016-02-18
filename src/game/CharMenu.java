@@ -106,7 +106,7 @@ public class CharMenu extends Menu {
 
 
 
-            final String f = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "mage-front.png");
+            /*final String f = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "mage-front.png");
             final String g = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "warr-front.png");
             final String h = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "range-front.png");
             mage = new Image(350, 400, 100, 200, f);
@@ -117,7 +117,7 @@ public class CharMenu extends Menu {
             addEntity(warr);
 
             warr.hide();
-            range.hide();
+            range.hide();*/
             p = new Player("");
 
 
@@ -204,9 +204,9 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "magic selected");
                 this.setStats(0, 10, 0, 3, 2);
                 p.setStats(0, 10, 0, 3, 2);
-                range.hide();
-                warr.hide();
-                mage.show();
+                //range.hide();
+                //warr.hide();
+                //mage.show();
 
                 className = "mage";
                 currAnimation.stop();
@@ -218,9 +218,9 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "ranged selected");
                 this.setStats(0, 0, 5, 5, 5);
                 p.setStats(0, 0, 5, 5, 5);
-                range.show();
-                warr.hide();
-                mage.hide();
+               // range.show();
+                //warr.hide();
+               // mage.hide();
                 className = "ranged";
                 currAnimation.stop();
                 currAnimation = rangerWalk;
@@ -231,9 +231,9 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "Strength selected");
                 this.setStats(5, 0, 0, 5, 5);
                 p.setStats(5, 0, 0, 5, 5);
-                range.hide();
-                warr.show();
-                mage.hide();
+                //range.hide();
+                //warr.show();
+                //mage.hide();
                 className = "warr";
                 currAnimation.stop();
                 currAnimation = warriorWalk;
