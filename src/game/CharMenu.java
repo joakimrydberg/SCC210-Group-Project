@@ -48,7 +48,6 @@ public class CharMenu extends Menu {
     private Message[] messages = new Message[6];
     private int i; //TODO what even is this?
     private Message hairCol = null;
-    private Message theClassName = null;
     private Player p;
     private String className;
 
@@ -79,7 +78,6 @@ public class CharMenu extends Menu {
         addEntity(backButton);
 
         hairCol = new Message(700, 242, 0, "Red", Color.BLACK, 11);
-        theClassName = new Message(280, 500, 0, "No class selected", Color.BLACK, 20);
 
         //addEntity(new Rect(null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
         addEntity(new Rect(null, 725, 375, 350, 700, Color.WHITE, 128));
@@ -164,7 +162,6 @@ public class CharMenu extends Menu {
         addEntity(tempButton);
 
         addEntity(hairCol);
-        addEntity(theClassName);
         addEntity(mageWalk);
         addEntity(rangerWalk);
         addEntity(warriorWalk);
@@ -219,8 +216,8 @@ public class CharMenu extends Menu {
                 //range.hide();
                 //warr.hide();
                 //mage.show();
+
                 className = "mage";
-                (((Text)theClassName.getTransformable(0))).setString("Mage");
                 currAnimation.stop();
                 currAnimation = mageWalk;
 
@@ -234,7 +231,6 @@ public class CharMenu extends Menu {
                 //warr.hide();
                // mage.hide();
                 className = "ranged";
-                (((Text)theClassName.getTransformable(0))).setString("Ranger");
                 currAnimation.stop();
                 currAnimation = rangerWalk;
                 currAnimation.start();
@@ -248,10 +244,9 @@ public class CharMenu extends Menu {
                 //warr.show();
                 //mage.hide();
                 className = "warr";
-                (((Text)theClassName.getTransformable(0))).setString("Warrior");
                 currAnimation.stop();
                 currAnimation = warriorWalk;
-                //tempWalk.start();
+                tempWalk.start();
                 tempWalk.increaseDelay(30);
                 currAnimation.start();
             }

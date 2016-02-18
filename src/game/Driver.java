@@ -5,6 +5,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
+import other.ConcurrentSafeArrayList;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  *
  */
 public class Driver {
-    private static ArrayList<Drawer> drawers = new ArrayList<>( );
+    private static ConcurrentSafeArrayList<Drawer> drawers = new ConcurrentSafeArrayList<>( );
     private static int screenWidth = 1024,
             screenHeight = 768;
     private static RenderWindow window;
@@ -59,21 +60,16 @@ public class Driver {
         MainMenu mainMenu = new MainMenu();
         mainMenu.load();
 
+        ArrayList<Drawer> tempDrawers = new ArrayList<>();
 
         while (window.isOpen()) {
             window.clear(Color.WHITE);
 
-            Iterable<Event> tempEvents = window.pollEvents();
-
-            ArrayList<Event> events = new ArrayList<>();
-            for (Event e : tempEvents){                       //necessary for reasons, see
-                events.add(e);
-            }
+            Iterable<Event> events = window.pollEvents();
 
             for (int i = 0; i < drawers.size(); i++) {
                 drawers.get(i).update(events);
             }
-
             window.display();
         }
     }
@@ -81,15 +77,14 @@ public class Driver {
 
     public static void addDrawer(Drawer drawer) {
         Drawer item;
-        Boolean found = false;
         for (int i = 0; i < drawers.size(); i++) {
             item = drawers.get(i);
             if (item.getName().equals(drawer.getName())) {
-				found = true;
-				i = drawers.size();
+                drawers.remove(item);
             }
         }
-        if (!found) drawers.add(drawer);
+
+        drawers.add(drawer);
     }
 
     public static Drawer getDrawer(String name) {
