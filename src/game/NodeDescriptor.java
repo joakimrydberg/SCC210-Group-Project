@@ -21,24 +21,41 @@ import java.util.ArrayList;
  */
 public class NodeDescriptor extends Menu {
 
-    private final static String SEP = Constants.SEP;
-    public int loaded = 0;
-    ArrayList<ClickListener> clickListeners = new ArrayList<>();
+//    private final static String SEP = Constants.SEP;
+//    public int loaded = 0;
+//    ArrayList<ClickListener> clickListeners = new ArrayList<>();
 
     public NodeDescriptor(String name, Node n, int width, int height) {
         super(name);
 
         RenderWindow w = getWindow();
         final Vector2i windowSize = new Vector2i(width, height);
-        final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
+        final int centerX = n.getCenterX() + (width / 2), centerY = n.getCenterY() - (height / 2);
 
-        //addEntity(new Rect("box", n.getCenterX() + (width / 2), n.getCenterY() + (height / 2), windowSize.x, windowSize.y, Color.WHITE, 300 ));
-        addEntity(new Image(n.getCenterX() + (width / 2), n.getCenterY() - (height / 2), windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png"));
+        addEntity(new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png"));
+
+        addEntity(new Message(centerX, centerY - 37, 0, name, Color.BLACK, 10));
+
+        Button btnClose = new Button(centerX - 50, centerY + 10, 30, 40, Color.WHITE, 200 , "X", 15 );
+        btnClose.addClickListener(this);
+        addEntity(btnClose);
+
+        Button btnPlay = new Button(centerX + 30, centerY + 10, 80, 40, Color.WHITE, 200 , "PLAY", 15 );
+        btnPlay.addClickListener(this);
+        addEntity(btnPlay);
     }
 
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) {
-        //nothing clickable
+        if (clickable instanceof  Button ) {
+            Entity button = (Button) clickable;
+            if (button.getName().equals("X")) {
+                this.unload();
+                System.out.println("Close clicked");
+            } else if (button.getName().equals("PLAY")) {
+                System.out.println("Play clicked");
+            }
+        }
     }
 }
 	

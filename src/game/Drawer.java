@@ -21,6 +21,13 @@ public abstract class Drawer extends Entity {
 
     public void update(Iterable<Event> events) {
         if (loaded) {
+
+/*            int f;
+            if (getName().equals("Level 1")) {
+                f =1;
+            }
+            */
+
             drawAll();
 
             for (Event event : events) {
@@ -29,9 +36,11 @@ public abstract class Drawer extends Entity {
 
                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
                     //   if(event.asMouseButtonEvent()){
+
                     for (Entity entity : getEntities()) {
                         if (entity instanceof Clickable
                                 && ((Clickable) entity).checkWithin(event)) {
+                            //int f;
 
                             ((Clickable) entity).clicked(event);
                         }
