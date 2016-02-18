@@ -284,6 +284,10 @@ public class Entity  {
         return transformableHolders.get(i).transformable;
     }
 
+    public int getTransformableCount() {
+        return transformableHolders.size();
+    }
+
     private class TransformableHolder {
         private Entity entity;
         private Transformable transformable;

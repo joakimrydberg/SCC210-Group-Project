@@ -105,7 +105,11 @@ public class Animation extends Entity {
         if (!stopped) {
             update();
 
-            removeTransformable(0);  ///there should only ever be one
+            if (getTransformableCount() == 1)
+                removeTransformable(0);
+            else if (getTransformableCount() > 1)
+                throw new RuntimeException();   ///there should only ever be one unless you have reasons
+
             addTransformable(getSprite(), 0, 0, 0, 0);
 
             super.draw();
