@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Room {
 	private String roomID;
 	private LevelPart[][] tiles = new LevelPart[11][11];
-	private ArrayList<String> potentialDoors = new ArrayList<>();
+	private ArrayList<String> doors = new ArrayList<>();
 	private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
 
 	public Room(String roomID) {
@@ -21,25 +21,25 @@ public class Room {
 			}
 		}
 
-		locateDoorSpots();
+		locateDoors();
 	}
 
 	public LevelPart[][] getTiles() {
 		return tiles;
 	}
 
-	private void locateDoorSpots(){
+	private void locateDoors(){
 		if(tiles[0][6].getType().equals("Door")) {
-			potentialDoors.add("North");
+			doors.add("North");
 		}
 		if(tiles[6][0].getType().equals("Door")) {
-			potentialDoors.add("West");
+			doors.add("West");
 		}
 		if(tiles[6][10].getType().equals("Door")) {
-			potentialDoors.add("East");
+			doors.add("East");
 		}
 		if(tiles[10][6].getType().equals("Door")) {
-			potentialDoors.add("South");
+			doors.add("South");
 		}
 	}
 }
