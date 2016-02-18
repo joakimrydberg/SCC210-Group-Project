@@ -77,14 +77,15 @@ public class Driver {
 
     public static void addDrawer(Drawer drawer) {
         Drawer item;
+        Boolean found = false;
         for (int i = 0; i < drawers.size(); i++) {
             item = drawers.get(i);
             if (item.getName().equals(drawer.getName())) {
-                drawers.remove(item);
+				found = true;
+				i = drawers.size();
             }
         }
-
-        drawers.add(drawer);
+        if (!found) drawers.add(drawer);
     }
 
     public static Drawer getDrawer(String name) {
