@@ -15,8 +15,8 @@ public class AnimationFrame {
 
     private Sprite frame;
 
-    public AnimationFrame(BufferedImage frame) {
-        setFrame(frame);
+    public AnimationFrame(BufferedImage frame, int width, int height, float scale) {
+        setFrame(frame, width, height, scale);
     }
 
     //Gets the current frame
@@ -25,7 +25,7 @@ public class AnimationFrame {
     }
 
     //Sets the current frame
-    public void setFrame(BufferedImage frame) {
+    public void setFrame(BufferedImage frame, int width, int height, float scale) {
         Texture t = new Texture();
         org.jsfml.graphics.Image image = new org.jsfml.graphics.Image();
         image.create(frame);
@@ -41,10 +41,10 @@ public class AnimationFrame {
 
         Vector2i imgSize = t.getSize();
 
-        int widthTemp = (64 < 0) ? imgSize.x : 64;
-        int heightTemp = (128 < 0) ? imgSize.y : 128;
+        int widthTemp = (width < 0) ? imgSize.x : width;
+        int heightTemp = (height < 0) ? imgSize.y : height;
 
-        sprite.scale((float)(widthTemp / (imgSize.x/3.0)), (float)(heightTemp / (imgSize.y / 3.0)));
+        sprite.scale((float)(widthTemp / (imgSize.x/scale)), (float)(heightTemp / (imgSize.y / scale)));
 
         this.frame = sprite;
     }

@@ -36,9 +36,9 @@ public class CharMenu extends Menu {
     private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(1, 0, newWarriorSheet), SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(2, 0, newWarriorSheet)};
     private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(1, 0, newRangerSheet), SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(2, 0, newRangerSheet)};
     private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, newmageSheet), SpriteSheetLoad.getSprite(1, 0, newmageSheet), SpriteSheetLoad.getSprite(0, 0, newmageSheet), SpriteSheetLoad.getSprite(2, 0, newmageSheet)};
-    private Animation warriorWalk = new Animation(200, 200, 64, 128, warrior);
-    private Animation rangerWalk = new Animation(200, 200, 64, 128, ranger);
-    private Animation mageWalk = new Animation(200, 200, 64, 128, mageA);
+    private Animation warriorWalk = new Animation(200, 200, 64, 128, warrior, 3);
+    private Animation rangerWalk = new Animation(200, 200, 64, 128, ranger, 3);
+    private Animation mageWalk = new Animation(200, 200, 64, 128, mageA, 3);
     private Animation currAnimation = warriorWalk;
 
     private String[] hairCols = new String[3];

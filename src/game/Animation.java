@@ -18,7 +18,7 @@ public class Animation extends Entity {
 
     private List<AnimationFrame> frames = new ArrayList<AnimationFrame>();    // Arraylist of frames
 
-    public Animation(int x, int y, int width, int height, BufferedImage[] frames) {
+    public Animation(int x, int y, int width, int height, BufferedImage[] frames, float scale) {
         super("name");
 
         setWidthHeight(width, height);
@@ -28,7 +28,7 @@ public class Animation extends Entity {
         this.stopped = true;
 
         for (int i = 0; i < frames.length; i++) {
-            addFrame(frames[i]);
+            addFrame(frames[i], width, height, scale);
         }
 
         this.frameCount = 0;
@@ -74,8 +74,8 @@ public class Animation extends Entity {
         this.currentFrame = 0;
     }
 
-    private void addFrame(BufferedImage frame) {
-        frames.add(new AnimationFrame(frame));
+    private void addFrame(BufferedImage frame, int width, int height, float scale) {
+        frames.add(new AnimationFrame(frame, width, height, scale));
         currentFrame = 0;
     }
 
