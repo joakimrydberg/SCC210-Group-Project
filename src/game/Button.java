@@ -7,8 +7,6 @@ package game;
 
 import interfaces.ClickListener;
 import interfaces.Clickable;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
@@ -96,15 +94,7 @@ public class Button extends Rect implements Clickable {
 
     @Override
     public void clicked(Event e){
-        SoundBuffer soundBuffer = new SoundBuffer();
-        try {
-            soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "button_click.wav"));
-        } catch(IOException ex) {
-            ex.printStackTrace();
-        }
-        Sound btnSound = new Sound();
-        btnSound.setBuffer(soundBuffer);
-        btnSound.play();
+        MusicPlayer.play("button_click.wav");
 
         for (ClickListener listener : clickListeners) {
             listener.buttonClicked(this, null);

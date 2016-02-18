@@ -7,8 +7,6 @@ package game;
 
 import interfaces.ClickListener;
 import interfaces.Clickable;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.CircleShape;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Sprite;
@@ -81,25 +79,10 @@ public class Node extends Entity implements Clickable {
 
     @Override
     public void clicked(Event e) {
-        SoundBuffer soundBuffer = new SoundBuffer();
-        Sound nodeSound = new Sound();
-
         if (locked){
-            try {
-                soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "locked.wav"));
-            } catch(IOException ex) {
-                ex.printStackTrace();
-            }
-            nodeSound.setBuffer(soundBuffer);
-            nodeSound.play();
+            MusicPlayer.play("locked.wav");
         } else {
-            try {
-                soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "button_click.wav"));
-            } catch(IOException ex) {
-                ex.printStackTrace();
-            }
-            nodeSound.setBuffer(soundBuffer);
-            nodeSound.play();
+            MusicPlayer.play("button_click.wav");
         }
 
         for (ClickListener listener : clickListeners) {

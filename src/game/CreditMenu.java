@@ -1,14 +1,9 @@
 package game;
 
 import interfaces.Clickable;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
-
-import java.io.IOException;
-import java.nio.file.Paths;
 
 /**
  * Created by Ross on 18/02/2016.
@@ -27,16 +22,8 @@ public class CreditMenu extends Menu {
         backButton.addClickListener(this);
         addEntity(backButton);
 
-        SoundBuffer soundBuffer = new SoundBuffer();
-        try {
-            soundBuffer.loadFromFile(Paths.get("assets\\audio\\applause.wav"));
-        } catch(IOException ex) {
-            ex.printStackTrace();
-        }
-        Sound sound = new Sound();
-        sound.setBuffer(soundBuffer);
-        sound.play();
-
+        MusicPlayer.stop("main_menu_loop.wav");
+        MusicPlayer.play("applause.wav");
         addEntity(new Message(centerX, 200, 0, "Joshua Mills", Color.BLACK, 50));
         addEntity(new Message(centerX, 300, 0, "Ryan Mills", Color.BLACK, 50));
         addEntity(new Message(centerX, 400, 0, "Michael Monk", Color.BLACK, 50));
@@ -56,6 +43,8 @@ public class CreditMenu extends Menu {
                     mainMenu = new MainMenu();
 
                 mainMenu.load();
+                MusicPlayer.play("main_menu_loop.wav", true);
+                MusicPlayer.stop("applause.wav");
 
                 System.out.println("Back clicked");
             }
