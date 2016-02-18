@@ -22,8 +22,10 @@ import java.util.ArrayList;
 public class NodeDescriptor extends Menu {
 
     private final static String SEP = Constants.SEP;
+    private static Image smallMenu;
     public int loaded = 0;
     ArrayList<ClickListener> clickListeners = new ArrayList<>();
+    private Button btnPlay;
 
     public NodeDescriptor(String name, Node n, int width, int height) {
         super(name);
@@ -33,9 +35,10 @@ public class NodeDescriptor extends Menu {
         final int centerX = n.getCenterX() + (width / 2), centerY = n.getCenterY() - (height / 2);
 
         //addEntity(new Rect("box", n.getCenterX() + (width / 2), n.getCenterY() + (height / 2), windowSize.x, windowSize.y, Color.WHITE, 300 ));
-        addEntity(new Image(n.getCenterX() + (width / 2), n.getCenterY() - (height / 2), windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png"));
+        smallMenu = new Image(n.getCenterX() + (width / 2), n.getCenterY() - (height / 2), windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png");
+        addEntity(smallMenu);
 
-        Button btnPlay = new Button(centerX, centerY + 10, 80, 40, Color.WHITE, 200 , "PLAY", 15 );
+        btnPlay = new Button(centerX, centerY + 10, 80, 40, Color.WHITE, 200 , "PLAY", 15 );
         btnPlay.addClickListener(this);
         addEntity(btnPlay);
     }
@@ -50,5 +53,6 @@ public class NodeDescriptor extends Menu {
             }
         }
     }
+
 }
 	
