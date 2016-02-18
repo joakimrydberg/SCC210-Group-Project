@@ -44,7 +44,7 @@ public class MainMenu extends Menu {
         btnQuit.addClickListener(this);
         addEntity(btnQuit);
 
-        MusicPlayer.playLoop("main_menu_loop.wav");
+        //MusicPlayer.playLoop("main_menu_loop.wav");
     }
 
 
@@ -55,7 +55,13 @@ public class MainMenu extends Menu {
 
             if (button.getName().equals("NEW GAME")) {
                 this.unload();
-                new CharMenu().load();
+                if (Driver.getDrawer(CharMenu.NAME) == null) {
+                    new CharMenu().load();
+                } else {
+                    Driver.getDrawer(CharMenu.NAME).load();
+                }
+
+                //
                 System.out.println("NEW GAME clicked");
             }
             else if (button.getName().equals("LOAD GAME")){
