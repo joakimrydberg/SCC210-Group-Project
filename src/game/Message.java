@@ -43,10 +43,7 @@ public class Message extends Entity {
 
         final FloatRect textBounds = text.getLocalBounds();
 
-        addTransformable(text, 0, 0, (int)textBounds.width, (int)textBounds.height);
 
-    }
-    public void updateMessage(){
 
     }
 
