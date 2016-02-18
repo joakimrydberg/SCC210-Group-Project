@@ -27,11 +27,11 @@ public class MainMenu extends Menu {
         //addEntity(new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "main_menu_background_wBoard.png"));
         //addEntity(new Image(centerX, 450, 360, 600, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png"));
 
-        Button btnNewGame = new Button(centerX, 250, 250, 60, Color.WHITE, 200, "NEW GAME", 20);
-        Button btnLoadGame = new Button( centerX, 330, 250, 60, Color.WHITE, 200, "LOAD GAME", 20);
-        Button btnOptions = new Button(centerX, 450, 250, 60, Color.WHITE, 200, "OPTIONS", 20);
-        Button btnCredits = new Button( centerX, 530, 250, 60, Color.WHITE, 200, "CREDITS", 20);
-        Button btnQuit = new Button( centerX, 650, 250, 60, Color.WHITE, 200, "QUIT", 20);
+        Button btnNewGame = new Button(centerX, 250, 250, 60, "BROWN", 200, "NEW GAME", 20);
+        Button btnLoadGame = new Button( centerX, 330, 250, 60, "BROWN", 200, "LOAD GAME", 20);
+        Button btnOptions = new Button(centerX, 450, 250, 60, "BROWN", 200, "OPTIONS", 20);
+        Button btnCredits = new Button( centerX, 530, 250, 60, "BROWN", 200, "CREDITS", 20);
+        Button btnQuit = new Button( centerX, 650, 250, 60, "RED", 200, "QUIT", 20);
 
         btnNewGame.addClickListener(this);
         addEntity(btnNewGame);

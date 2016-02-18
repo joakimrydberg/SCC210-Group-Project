@@ -38,7 +38,7 @@ public class MapMenu extends Menu {
 
         addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
 
-        Button backButton = new Button(50, 40, 80, 50, Color.WHITE, 200 , "BACK", 15 );
+        Button backButton = new Button(50, 40, 80, 50, "BROWN", 200 , "BACK", 15 );
         backButton.addClickListener(this);
         addEntity(backButton);
 
@@ -55,30 +55,25 @@ public class MapMenu extends Menu {
         nodes[9] = new Node("10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         //creating node descriptors
-        nodeDesc[0] = new NodeDescriptor("d1", nodes[0], 200, 100, this);
-        nodeDesc[1] = new NodeDescriptor("d2", nodes[1], 200, 100, this);
-        nodeDesc[2] = new NodeDescriptor("d3", nodes[2], 200, 100, this);
-        nodeDesc[3] = new NodeDescriptor("d4", nodes[3], 200, 100, this);
-        nodeDesc[4] = new NodeDescriptor("d5", nodes[4], 200, 100, this);
-        nodeDesc[5] = new NodeDescriptor("d6", nodes[5], 200, 100, this);
-        nodeDesc[6] = new NodeDescriptor("d7", nodes[6], 200, 100, this);
-        nodeDesc[7] = new NodeDescriptor("d8", nodes[7], 200, 100, this);
-        nodeDesc[8] = new NodeDescriptor("d9", nodes[8], 200, 100, this);
-        nodeDesc[9] = new NodeDescriptor("d10", nodes[9], 200, 100, this);
+        nodeDesc[0] = new NodeDescriptor("Level 1", nodes[0], 200, 100, this);
+        nodeDesc[1] = new NodeDescriptor("Level 2", nodes[1], 200, 100, this);
+        nodeDesc[2] = new NodeDescriptor("Level 3", nodes[2], 200, 100, this);
+        nodeDesc[3] = new NodeDescriptor("Level 4", nodes[3], 200, 100, this);
+        nodeDesc[4] = new NodeDescriptor("Level 5", nodes[4], 200, 100, this);
+        nodeDesc[5] = new NodeDescriptor("Level 6", nodes[5], 200, 100, this);
+        nodeDesc[6] = new NodeDescriptor("Level 7", nodes[6], 200, 100, this);
+        nodeDesc[7] = new NodeDescriptor("Level 8", nodes[7], 200, 100, this);
+        nodeDesc[8] = new NodeDescriptor("Level 9", nodes[8], 200, 100, this);
+        nodeDesc[9] = new NodeDescriptor("Level 10", nodes[9], 200, 100, this);
 
         //draw lines connecting the nodes
         drawDottedLine(nodes[0], nodes[1], Color.BLACK);
-
         drawDottedLine(nodes[1], nodes[2], Color.BLACK);
         drawDottedLine(nodes[1], nodes[3], Color.BLACK);
-
         drawDottedLine(nodes[3], nodes[4], Color.BLACK);
-
         drawDottedLine(nodes[4], nodes[5], Color.BLACK);
         drawDottedLine(nodes[4], nodes[7], Color.BLACK);
-
         drawDottedLine(nodes[5], nodes[6], Color.BLACK);
-
         drawDottedLine(nodes[7], nodes[8], Color.BLACK);
         drawDottedLine(nodes[7], nodes[9], Color.BLACK);
 

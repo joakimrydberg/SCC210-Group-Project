@@ -73,7 +73,7 @@ public class CharMenu extends Menu {
         }
 
         //back button
-        Button backButton = new Button(70, 40, 100, 50, Color.WHITE, 200 , "BACK", 15 );
+        Button backButton = new Button(70, 40, 100, 50, "BROWN", 200 , "BACK", 15 );
         backButton.addClickListener(this);
         addEntity(backButton);
 
@@ -82,7 +82,7 @@ public class CharMenu extends Menu {
         //addEntity(new Rect(null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
         addEntity(new Rect(null, 725, 375, 350, 700, Color.WHITE, 128));
         addEntity(new Rect(null, 725, 500, 350, 220, Color.WHITE, 128));
-        Button createButton = new Button(685, 650, 100, 50, Color.WHITE, 100, "CREATE", 11);
+        Button createButton = new Button(685, 650, 100, 50, "BROWN", 100, "CREATE", 11);
 
         //URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
@@ -153,11 +153,11 @@ public class CharMenu extends Menu {
 
         Button tempButton;
 
-        tempButton = new Button(775, 250, 25, 25, Color.WHITE, 100, ">>", 9 );
+        tempButton = new Button(775, 250, 25, 25, "BROWN", 100, ">>", 9 );
         tempButton.addClickListener(this);
         addEntity(tempButton);
 
-        tempButton = new Button(650, 250, 25, 25, Color.WHITE, 100, "<<", 9 );
+        tempButton = new Button(650, 250, 25, 25, "BROWN", 100, "<<", 9 );
         tempButton.addClickListener(this);
         addEntity(tempButton);
 
@@ -238,8 +238,8 @@ public class CharMenu extends Menu {
                 className = "warr";
                 currAnimation.stop();
                 currAnimation = warriorWalk;
-                tempWalk.start();
-                tempWalk.increaseDelay(30);
+                //tempWalk.start();
+                //tempWalk.increaseDelay(30);
                 currAnimation.start();
             }
 
