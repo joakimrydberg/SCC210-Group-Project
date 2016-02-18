@@ -32,14 +32,17 @@ public class CharMenu extends Menu {
     SpriteSheetLoad mageSpriteSheet = new SpriteSheetLoad(64, 128);
     private BufferedImage newWarriorSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
     private BufferedImage newRangerSheet = SpriteSheetLoad.loadSprite("RangerMaleSheet");
-    private BufferedImage newmageSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
+    private BufferedImage newMageSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
     private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(1, 0, newWarriorSheet), SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(2, 0, newWarriorSheet)};
     private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(1, 0, newRangerSheet), SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(2, 0, newRangerSheet)};
-    private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, newmageSheet), SpriteSheetLoad.getSprite(1, 0, newmageSheet), SpriteSheetLoad.getSprite(0, 0, newmageSheet), SpriteSheetLoad.getSprite(2, 0, newmageSheet)};
+    private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, newMageSheet), SpriteSheetLoad.getSprite(1, 0, newMageSheet), SpriteSheetLoad.getSprite(0, 0, newMageSheet), SpriteSheetLoad.getSprite(2, 0, newMageSheet)};
     private Animation warriorWalk = new Animation(200, 200, 64, 128, warrior, 3);
     private Animation rangerWalk = new Animation(200, 200, 64, 128, ranger, 3);
     private Animation mageWalk = new Animation(200, 200, 64, 128, mageA, 3);
     private Animation currAnimation = warriorWalk;
+    private Player tempPlayer = new Player("temp");
+    BufferedImage[] currentAnimation = tempPlayer.attackAnimation(newMageSheet, 0);
+    private Animation tempWalk = new Animation(100, 200, 64, 128, currentAnimation, 5);
 
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
@@ -162,6 +165,7 @@ public class CharMenu extends Menu {
         addEntity(mageWalk);
         addEntity(rangerWalk);
         addEntity(warriorWalk);
+        addEntity(tempWalk);
     }
 
     @Override
@@ -237,6 +241,8 @@ public class CharMenu extends Menu {
                 className = "warr";
                 currAnimation.stop();
                 currAnimation = warriorWalk;
+                tempWalk.start();
+                tempWalk.increaseDelay(30);
                 currAnimation.start();
             }
 
