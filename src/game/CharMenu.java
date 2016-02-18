@@ -33,9 +33,9 @@ public class CharMenu extends Menu {
     private BufferedImage newWarriorSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
     private BufferedImage newRangerSheet = SpriteSheetLoad.loadSprite("RangerMaleSheet");
     private BufferedImage newmageSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
-    private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(1, 0), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(2, 0)};
-    private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(1, 0), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(2, 0)};
-    private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(1, 0), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(2, 0)};
+    private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(1, 0, newWarriorSheet), SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(2, 0, newWarriorSheet)};
+    private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(1, 0, newRangerSheet), SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(2, 0, newRangerSheet)};
+    private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, newmageSheet), SpriteSheetLoad.getSprite(1, 0, newmageSheet), SpriteSheetLoad.getSprite(0, 0, newmageSheet), SpriteSheetLoad.getSprite(2, 0, newmageSheet)};
     private Animation warriorWalk = new Animation(200, 200, 64, 128, warrior);
     private Animation rangerWalk = new Animation(200, 200, 64, 128, ranger);
     private Animation mageWalk = new Animation(200, 200, 64, 128, mageA);
@@ -159,11 +159,10 @@ public class CharMenu extends Menu {
         addEntity(tempButton);
 
         addEntity(hairCol);
-
-        addEntity(warriorWalk);
+        addEntity(currAnimation);
         addEntity(mageWalk);
         addEntity(rangerWalk);
-
+        addEntity(warriorWalk);
     }
 
     @Override

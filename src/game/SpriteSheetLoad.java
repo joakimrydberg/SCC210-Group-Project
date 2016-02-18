@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class SpriteSheetLoad{
 
-    private static BufferedImage spriteSheet;
+    //private static BufferedImage spriteSheet;
     private static int width = 0;
     private static int height = 0;
 
@@ -29,11 +29,10 @@ public class SpriteSheetLoad{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return sprite;
     }
 
-    public static BufferedImage getSprite(int xGrid, int yGrid) {
+    public static BufferedImage getSprite(int xGrid, int yGrid, BufferedImage spriteSheet) {
         //Load the default sprite sheet if null
         if (spriteSheet == null) {
             spriteSheet = loadSprite("WarriorMaleSheet");
