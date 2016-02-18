@@ -44,7 +44,8 @@ public class MainMenu extends Menu {
         btnQuit.addClickListener(this);
         addEntity(btnQuit);
 
-        //MusicPlayer.playLoop("main_menu_loop.wav");
+        MusicPlayer.playMusic("applause.wav");
+        //MusicPlayer.stopMusic("applause.wav");
     }
 
 
