@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Created by millsr3 on 16/02/2016.
  */
@@ -32,5 +34,25 @@ public class Player extends MovingEntity {
         Agility = c;
         Endurance = d;
         Vitality = e;
+    }
+
+
+    //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-right
+    public BufferedImage[] moveAnimation(BufferedImage character, int dir)
+    {
+        BufferedImage[] characterMove = {SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(1, dir, character), SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(2, dir, character)};
+        return characterMove;
+    }
+
+    public BufferedImage[] attackAnimation(BufferedImage character, int dir)
+    {
+        BufferedImage[] characterAttack = {SpriteSheetLoad.getSprite(4, dir, character), SpriteSheetLoad.getSprite(5, dir, character)};
+        return characterAttack;
+    }
+
+    public BufferedImage[] hurtAnimation(BufferedImage character, int dir)
+    {
+        BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
+        return characterHurt;
     }
 }

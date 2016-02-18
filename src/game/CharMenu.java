@@ -159,7 +159,6 @@ public class CharMenu extends Menu {
         addEntity(tempButton);
 
         addEntity(hairCol);
-        addEntity(currAnimation);
         addEntity(mageWalk);
         addEntity(rangerWalk);
         addEntity(warriorWalk);
