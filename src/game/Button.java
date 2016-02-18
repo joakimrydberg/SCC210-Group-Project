@@ -98,7 +98,7 @@ public class Button extends Rect implements Clickable {
     public void clicked(Event e){
         SoundBuffer soundBuffer = new SoundBuffer();
         try {
-            soundBuffer.loadFromFile(Paths.get("assets\\audio\\button_click.wav"));
+            soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "button_click.wav"));
         } catch(IOException ex) {
             ex.printStackTrace();
         }

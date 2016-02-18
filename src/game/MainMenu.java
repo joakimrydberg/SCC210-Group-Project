@@ -52,7 +52,7 @@ public class MainMenu extends Menu {
         //Create the sound buffer and load a sound from a file
         SoundBuffer soundBuffer = new SoundBuffer();
         try {
-            soundBuffer.loadFromFile(Paths.get("assets\\audio\\main_menu_loop.wav"));
+            soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "main_menu_loop.wav"));
         } catch(IOException e) {
             e.printStackTrace();
         }

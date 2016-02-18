@@ -16,9 +16,6 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -89,7 +86,7 @@ public class Node extends Entity implements Clickable {
 
         if (locked){
             try {
-                soundBuffer.loadFromFile(Paths.get("assets\\audio\\locked.wav"));
+                soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "locked.wav"));
             } catch(IOException ex) {
                 ex.printStackTrace();
             }
@@ -97,7 +94,7 @@ public class Node extends Entity implements Clickable {
             nodeSound.play();
         } else {
             try {
-                soundBuffer.loadFromFile(Paths.get("assets\\audio\\button_click.wav"));
+                soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "button_click.wav"));
             } catch(IOException ex) {
                 ex.printStackTrace();
             }
