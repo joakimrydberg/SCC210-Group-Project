@@ -212,6 +212,7 @@ public class CharMenu extends Menu {
                 className = "mage";
                 currAnimation.stop();
                 currAnimation = mageWalk;
+
                 currAnimation.start();
             }
             else if (button.getName().contains("ranged")){

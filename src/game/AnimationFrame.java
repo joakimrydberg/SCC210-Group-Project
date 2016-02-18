@@ -3,6 +3,7 @@ package game;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
+import org.jsfml.system.Vector2i;
 
 import java.awt.image.BufferedImage;
 
@@ -33,7 +34,18 @@ public class AnimationFrame {
         } catch (TextureCreationException e) {
             e.printStackTrace();
         }
+
+
+
         Sprite sprite = new Sprite(t);
+
+        Vector2i imgSize = t.getSize();
+
+        int widthTemp = (64 < 0) ? imgSize.x : 64;
+        int heightTemp = (128 < 0) ? imgSize.y : 128;
+
+        sprite.scale((float)(widthTemp / (imgSize.x/3.0)), (float)(heightTemp / (imgSize.y / 3.0)));
+
         this.frame = sprite;
     }
 

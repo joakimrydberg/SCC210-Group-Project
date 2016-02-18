@@ -40,6 +40,7 @@ public class SpriteSheetLoad{
 
         //Get current sprite
         return spriteSheet.getSubimage(xGrid * width, yGrid * height, width, height);
+
     }
 
 }
