@@ -1,6 +1,7 @@
 package other;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -77,5 +78,20 @@ public class ConcurrentSafeArrayList<ObjType> {
         }
 
         return index;
+    }
+
+    /**
+     * Any write methods you call will not be reflected in the arrayList
+     *
+     * @return Iterator
+     */
+    public Iterator<ObjType> getReadIterator() {
+        readLock.lock();
+        try {
+            return new ArrayList<ObjType>( list ).iterator();
+            //^ we iterate over an snapshot of our list
+        } finally{
+            readLock.unlock();
+        }
     }
 }

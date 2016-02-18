@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  * Created by Michael on 16/02/2016.
@@ -26,7 +25,6 @@ public class SpriteSheetLoad{
         BufferedImage sprite = null;
         try {
             sprite = ImageIO.read(new File("assets" + Constants.SEP + "art" + Constants.SEP + file + ".png"));
-            sprite = ImageIO.read(new File("assets\\art\\" + file + ".png"));
             System.out.println("Working");
         } catch (IOException e) {
             e.printStackTrace();

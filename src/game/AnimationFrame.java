@@ -1,14 +1,13 @@
 package game;
+
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 
-import java.awt.*;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by Michael on 16/02/2016.
+* Created by Michael on 16/02/2016.
  */
 //Current frame of animation
 public class AnimationFrame {

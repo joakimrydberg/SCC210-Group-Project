@@ -3,9 +3,9 @@ package game;
 import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
+import other.ConcurrentSafeArrayList;
 
-import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 /**
  * This class represents an Entity in the game. Something that will appear on the screen.
@@ -16,7 +16,7 @@ public class Entity  {
     private String name = "";
     private int x = 0, y = 0;   //current x and y coordinates
     private int w = -1, h = -1; // current width and height of the Entity
-    private ArrayList<TransformableHolder> transformableHolders = new ArrayList<>();
+    private ConcurrentSafeArrayList<TransformableHolder> transformableHolders = new ConcurrentSafeArrayList<>();
     //private RenderWindow window = null;
     public boolean hidden = false;
 
@@ -54,8 +54,12 @@ public class Entity  {
      *
      */
     public void draw() {
-        for (TransformableHolder transformableHolder : transformableHolders) {
-            //DebugPrinter.debugPrint(this, "drawing: x:" + getTopLeftX() + " y:" + getTopLeftY() + " w:" + getWidth() + " h:" + getHeight());
+        Iterator<TransformableHolder> iterator = transformableHolders.getReadIterator();
+        TransformableHolder transformableHolder;
+
+        while (iterator.hasNext()) {
+            transformableHolder = iterator.next();
+
             if (!transformableHolder.hidden)
                 getWindow().draw((Drawable) transformableHolder.transformable);
         }
@@ -68,8 +72,9 @@ public class Entity  {
      * @param v - float
      */
     public void rotate(float v) {
-        for (TransformableHolder transformableHolder : transformableHolders) {
-            transformableHolder.transformable.rotate(v);
+        Iterator<TransformableHolder> iterator = transformableHolders.getReadIterator();
+        while (iterator.hasNext()) {
+            iterator.next().transformable.rotate(v);
         }
     }
 
@@ -155,10 +160,10 @@ public class Entity  {
     }
 
     private void update() {
-        for (TransformableHolder transformableHolder : transformableHolders) {
-            transformableHolder.update();
+        Iterator<TransformableHolder> iterator = transformableHolders.getReadIterator();
+        while (iterator.hasNext()) {
+            iterator.next().update();
         }
-
     }
     /**
      * Gets the current X coordinate of the center of the entity on the screen
@@ -245,8 +250,12 @@ public class Entity  {
         transformableHolders.add(new TransformableHolder(this, transformable, relX, relY, w, h));
     }
 
+    public void removeTransformable(int index) {
+        transformableHolders.remove(transformableHolders.get(index));
+    }
+
     public void hideTransformable(Transformable transformable) {
-        ListIterator<TransformableHolder> it = transformableHolders.listIterator();
+        Iterator<TransformableHolder> it = transformableHolders.getReadIterator();
         while (it.hasNext()) {
             TransformableHolder transformableHolder = it.next();
             if (transformableHolder.transformable.equals(transformable)) {
@@ -256,7 +265,7 @@ public class Entity  {
     }
 
     public void showTransformable(Transformable transformable) {
-        ListIterator<TransformableHolder> it = transformableHolders.listIterator();
+        Iterator<TransformableHolder> it = transformableHolders.getReadIterator();
         while (it.hasNext()) {
             TransformableHolder transformableHolder = it.next();
             if (transformableHolder.transformable.equals(transformable)) {
