@@ -88,7 +88,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
                 newFileName += oldFileName.charAt(i);
         }
 
-        if (valid) {
+        if (!valid) {
 
             LevelPart levelPart;
             ArrayList<Object> levelPartArrayList = new ArrayList<>();

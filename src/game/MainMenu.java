@@ -6,13 +6,8 @@
 package game;
 
 import interfaces.Clickable;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2i;
-
-import java.io.IOException;
-import java.nio.file.Paths;
 
 /**
  *
@@ -49,7 +44,20 @@ public class MainMenu extends Menu {
         btnQuit.addClickListener(this);
         addEntity(btnQuit);
 
-        //Create the sound buffer and load a sound from a file
+        MusicPlayer.playMusic("applause.wav");
+        MusicPlayer.stopMusic("applause.wav");
+        MusicPlayer.startAll();
+/*
+        AudioData data = null;
+        try {
+            data = new AudioStream(new FileInputStream("assets" + Constants.SEP + "audio" + Constants.SEP + "main_menu_loop.wav")).getData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ContinuousAudioDataStream BGM = new ContinuousAudioDataStream(data);
+        AudioPlayer.player.start(BGM);*/
+
+        /*//Create the sound buffer and load a sound from a file
         SoundBuffer soundBuffer = new SoundBuffer();
         try {
             soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP + "audio" + Constants.SEP + "main_menu_loop.wav"));
@@ -60,7 +68,7 @@ public class MainMenu extends Menu {
         //Create a sound and set its buffer
         Sound sound = new Sound();
         sound.setBuffer(soundBuffer);
-        sound.play(); //TODO loop the sound if possible
+        sound.play(); //TOD loop the sound if possible */
     }
 
     @Override

@@ -29,7 +29,7 @@ public class CreditMenu extends Menu {
 
         SoundBuffer soundBuffer = new SoundBuffer();
         try {
-            soundBuffer.loadFromFile(Paths.get("assets\\audio\\applause.wav"));
+            soundBuffer.loadFromFile(Paths.get("assets" + Constants.SEP +  "audio" + Constants.SEP + "applause.wav"));
         } catch(IOException ex) {
             ex.printStackTrace();
         }
