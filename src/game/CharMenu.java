@@ -179,7 +179,12 @@ public class CharMenu extends Menu {
             if (button.getName().equals("CREATE")) {
                 //p.setClass(className); //******RYAN, IVE JUST COMMENTED THIS OUT WHILE WORKING ON MAP MENU, IT RESULTED IN A NULL POINTER EXCEPTION ANS STOPPED MAP MENU LOADING*******
                 this.unload();
-                new MapMenu().load();
+                Drawer temp = Driver.getDrawer(MapMenu.NAME);
+                if (temp == null) {
+                    new MapMenu().load();
+                } else {
+                    temp.load();
+                }
             } else if (button.getName().equals(">>")) {
               //  System.out.format("%d", this.i);
                 if (this.i < 2) {
