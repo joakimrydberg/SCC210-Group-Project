@@ -80,9 +80,12 @@ public class MainMenu extends Menu {
                 System.out.println("OPTIONS clicked");
             }
             else if (button.getName().equals("CREDITS")){
+                this.unload();;
+                new CreditMenu().load();
                 System.out.println("CREDITS clicked");
             }
             else if (button.getName().equals("QUIT")){
+                getWindow().close();
                 System.out.println("QUIT clicked");
             }
         }

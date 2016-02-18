@@ -59,7 +59,7 @@ public class MapMenu extends Menu {
         nodes[9] = new Node("10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         //creating node descriptors
-        nodeDesc[0] = new NodeDescriptor("d1", nodes[0], 100, 100);
+        nodeDesc[0] = new NodeDescriptor("d1", nodes[0], 200, 100);
         nodeDesc[1] = new NodeDescriptor("d2", nodes[1], 100, 100);
         nodeDesc[2] = new NodeDescriptor("d3", nodes[2], 100, 100);
         nodeDesc[3] = new NodeDescriptor("d4", nodes[3], 100, 100);
@@ -112,7 +112,7 @@ public class MapMenu extends Menu {
 
                 charMenu.load();
 
-                System.out.println("Create clicked");
+                System.out.println("Back clicked");
             }
         }
         else if (clickable instanceof Node){
@@ -133,39 +133,6 @@ public class MapMenu extends Menu {
             else {
                 System.out.println("Node is locked");
             }
-
-            /*
-            if (button.getName().equals("1")) {
-                System.out.println("node 1 clicked");
-            }
-            else if (button.getName().equals("2")) {
-                System.out.println("node 2 clicked");
-            }
-            else if (button.getName().equals("3")) {
-                System.out.println("node 3 clicked");
-            }
-            else if (button.getName().equals("4")) {
-                System.out.println("node 4 clicked");
-            }
-            else if (button.getName().equals("5")) {
-                System.out.println("node 5 clicked");
-            }
-            else if (button.getName().equals("6")) {
-                System.out.println("node 6 clicked");
-            }
-            else if (button.getName().equals("7")) {
-                System.out.println("node 7 clicked");
-            }
-            else if (button.getName().equals("8")) {
-                System.out.println("node 8 clicked");
-            }
-            else if (button.getName().equals("9")) {
-                System.out.println("node 9 clicked");
-            }
-            else if (button.getName().equals("10")) {
-                System.out.println("node 10 clicked");
-            }
-            */
         }
     }
 

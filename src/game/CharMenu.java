@@ -47,6 +47,7 @@ public class CharMenu extends Menu {
     private Message hairCol = null;
     private Player p;
     private String className;
+
     public CharMenu() {
         super(NAME);
 
@@ -65,6 +66,11 @@ public class CharMenu extends Menu {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+        //back button
+        Button backButton = new Button(70, 40, 100, 50, Color.WHITE, 200 , "BACK", 15 );
+        backButton.addClickListener(this);
+        addEntity(backButton);
 
         hairCol = new Message(700, 242, 0, "Red", Color.BLACK, 11);
 
@@ -161,13 +167,10 @@ public class CharMenu extends Menu {
         if (clickable instanceof  Button ) {
             Entity button = (Button)clickable;
 
-
             if (button.getName().equals("CREATE")) {
                 //p.setClass(className); //******RYAN, IVE JUST COMMENTED THIS OUT WHILE WORKING ON MAP MENU, IT RESULTED IN A NULL POINTER EXCEPTION ANS STOPPED MAP MENU LOADING*******
                 this.unload();
                 new MapMenu().load();
-
-
             } else if (button.getName().equals(">>")) {
               //  System.out.format("%d", this.i);
                 if (this.i < 2) {
@@ -180,8 +183,17 @@ public class CharMenu extends Menu {
                     this.i--;
                     this.moveLeft();
                 }
-            }
+            } else if (button.getName().equals("BACK")) {
+                this.unload();
 
+                Drawer mainMenu = Driver.getDrawer(MainMenu.NAME);
+                if (mainMenu == null)
+                    mainMenu = new MainMenu();
+
+                mainMenu.load();
+
+                System.out.println("Back clicked");
+            }
         } else if (clickable instanceof  ClickableImage ) {
 
             Entity button = (ClickableImage) clickable;
