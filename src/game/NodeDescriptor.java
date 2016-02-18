@@ -20,39 +20,51 @@ import java.util.ArrayList;
  * @author newby
  */
 public class NodeDescriptor extends Menu {
-
-    private final static String SEP = Constants.SEP;
     private static Image smallMenu;
-    public int loaded = 0;
-    ArrayList<ClickListener> clickListeners = new ArrayList<>();
-    private Button btnPlay;
 
     public NodeDescriptor(String name, Node n, int width, int height) {
         super(name);
 
         RenderWindow w = getWindow();
         final Vector2i windowSize = new Vector2i(width, height);
-        final int centerX = n.getCenterX() + (width / 2), centerY = n.getCenterY() - (height / 2);
+        int centerX = n.getCenterX() + (width / 2), centerY = n.getCenterY() - (height / 2);
 
-        //addEntity(new Rect("box", n.getCenterX() + (width / 2), n.getCenterY() + (height / 2), windowSize.x, windowSize.y, Color.WHITE, 300 ));
-        smallMenu = new Image(n.getCenterX() + (width / 2), n.getCenterY() - (height / 2), windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png");
+        //stop the descriptor appearing off the edge of the screen
+        int topPoint = centerY - (height / 2);
+        if(topPoint < 0) {
+            centerY += Math.abs(topPoint);
+        }
+        int rightPoint = centerX + (width / 2);
+        if(rightPoint > w.getSize().x){
+            centerX -= (rightPoint - w.getSize().x);
+        }
+
+        smallMenu = new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png");
         addEntity(smallMenu);
 
-        btnPlay = new Button(centerX, centerY + 10, 80, 40, "BROWN", 200 , "PLAY", 15 );
+        addEntity(new Message(centerX, centerY - 37, 0, name, Color.BLACK, 10));
+
+        Button btnClose = new Button(centerX - 50, centerY + 10, 30, 40, "RED", 200 , "<", 15 );
+        btnClose.addClickListener(this);
+        addEntity(btnClose);
+
+        Button btnPlay = new Button(centerX + 20, centerY + 10, 90, 40, "GREEN", 200 , "PLAY", 15 );
         btnPlay.addClickListener(this);
         addEntity(btnPlay);
     }
 
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) {
-        if (clickable instanceof  Button ) {
+        if (clickable instanceof Button) {
             Entity button = (Button) clickable;
             if (button.getName().equals("PLAY")) {
-                //this.unload();
                 System.out.println("Play clicked");
+            }
+            else if (button.getName().equals("<")) {
+                this.unload();
+                System.out.println("Close clicked");
             }
         }
     }
-
 }
 	
