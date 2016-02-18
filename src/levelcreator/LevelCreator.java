@@ -1,8 +1,11 @@
 package levelcreator;
 
-import game.Constants;
-import game.FileHandling;
-import game.LevelPart;
+import game.*;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.ContextActivationException;
+import org.jsfml.window.VideoMode;
+import org.jsfml.window.WindowStyle;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -29,15 +32,21 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
     private final static String LEVELPARTS_ID_DIR =  "assets" + Constants.SEP + "levelparts"  + Constants.SEP;
     private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
     private JTree menu;
-    private SwingSquare selected;
+    private SwingSquare selectedButton;
     private final static String ROTATION_PROMPT = "Rotation: ";
     private final static String PLACEHOLDER = "placeholder.png";
+    private javax.swing.JScrollPane jScrollPane1;
+    private String selectedSquareFileName;
+    private int selectedSquareRotation;
+
     public LevelCreator() {
-        createMenu(); //is put here just to be explicit
+
         create();
 
         this.setSize(1000,900);
         this.setVisible(true);
+
+        displayError("Hint: Right click to place the last placed block");
     }
 
     public void displayError(String message) {
@@ -48,6 +57,36 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         popUp.add(new JLabel(message, JLabel.CENTER), BorderLayout.CENTER);
 
         popUp.setVisible(true);
+    }
+
+    private void preview() {
+        new Thread(() -> {
+            RenderWindow window = new RenderWindow();
+            window.create(new VideoMode(900, 900), "Preview", WindowStyle.DEFAULT);
+
+            window.setFramerateLimit(30); // Avoid excessive updates
+            Entity.setWindow(window);     //important
+            RoomEntity roomEntity = new RoomEntity().create(new ArrayList<>(getParts()));
+            roomEntity.load();
+
+            try {
+                window.setActive(true);
+            } catch (ContextActivationException e) {
+                e.printStackTrace();
+            }
+
+            while (window.isOpen()) {
+                window.clear(Color.BLACK);
+                Iterable<org.jsfml.window.event.Event> tempEvents = window.pollEvents();
+                ArrayList<org.jsfml.window.event.Event> events = new ArrayList<>();
+
+                for (org.jsfml.window.event.Event e : tempEvents)
+                    events.add(e);
+
+                roomEntity.update(events);
+                window.display();
+            }
+        }).start();
     }
 
     /**
@@ -89,28 +128,30 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         }
 
         if (valid) {
-
-            LevelPart levelPart;
-            ArrayList<Object> levelPartArrayList = new ArrayList<>();
-
-            //populating arraylist with values in combo boxes
-            for (int i = 0; i < 11; i++) {
-                for (int j = 0; j < 11; j++) {
-                    levelPart = new LevelPart();
-
-                    levelPart.setSpriteFileName(squares[i][j].toString());
-                    levelPart.setRotation(squares[i][j].getRotation());
-                    levelPart.setRowNo(i);
-                    levelPart.setColNo(j);
-
-                    levelPartArrayList.add(levelPart);
-                }
-            }
-
             newFileName = newFileName.toLowerCase();
-
-            FileHandling.writeToFile(levelPartArrayList, LEVEL_ID_DIR + newFileName); //SAVING
+            FileHandling.writeToFile(new ArrayList<>(getParts()), LEVEL_ID_DIR + newFileName); //SAVING
         }
+    }
+
+    private ArrayList<LevelPart> getParts() {
+        LevelPart levelPart;
+        ArrayList<LevelPart> levelPartArrayList = new ArrayList<>();
+
+        //populating arraylist with values in combo boxes
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                levelPart = new LevelPart();
+
+                levelPart.setSpriteFileName(squares[i][j].toString());
+                levelPart.setRotation(squares[i][j].getRotation());
+                levelPart.setRowNo(i);
+                levelPart.setColNo(j);
+
+                levelPartArrayList.add(levelPart);
+            }
+        }
+
+        return levelPartArrayList;
     }
 
 
@@ -162,7 +203,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         ));
 
         menu.addTreeSelectionListener(this);
-
+        jScrollPane1.setViewportView(menu);
         return menu;
     }
 
@@ -173,7 +214,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
      */
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-        if (selected != null) {
+        if (selectedButton != null) {
             //DefaultMutableTreeNode node = (DefaultMutableTreeNode)menu.getLastSelectedPathComponent();
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getNewLeadSelectionPath().getLastPathComponent();
 
@@ -192,24 +233,32 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
             if (validEvent) {
                 String nodestr = node.getParent().toString();
                 String fileName = hashMap.get(nodestr);
-                try {
-                    selected.setImage(LEVELPARTS_ID_DIR + fileName);
-                    //selected.setImage("assets" + Constants.SEP + "art"  + Constants.SEP + "lock.png"); //good for testing
 
-                    selected.setRotation(Integer.parseInt(nodeDesc.substring(ROTATION_PROMPT.length()))); //get rotation from node selected
-                } catch (IOException e1) {
-                    try {
-                        displayError("Check the error log...");
-                        throw new IOException("Invalid file name from .csv, please add the sprite image to assets/levelparts/ or correct .csv file.");
-                    } catch (IOException e2) {
-                        e2.printStackTrace();
-                    }
-                }
+                selectedSquareFileName = LEVELPARTS_ID_DIR + fileName;
+                selectedSquareRotation = Integer.parseInt(nodeDesc.substring(ROTATION_PROMPT.length()));
+
+                setSquareImage(selectedSquareFileName, selectedSquareRotation); //get rotation from node selectedButton
+
                 menu.setVisible(false);
+
             }
         }
     }
 
+    private void setSquareImage(String fileName, int rotation) {
+        try {
+            selectedButton.setImage(fileName);
+
+            selectedButton.setRotation(rotation); //get rotation from node selectedButton
+        } catch (IOException e1) {
+            try {
+                displayError("Check the error log...");
+                throw new IOException("Invalid file name from .csv, please add the sprite image to assets/levelparts/ or correct .csv file.");
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
     /**
      * Invoked when the mouse button has been clicked (pressed
      * and released) on a component.
@@ -219,9 +268,15 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            selected = (SwingSquare)e.getSource();
+            selectedButton = (SwingSquare)e.getSource();
+            menu = createMenu();
             menu.setVisible(true);
+        } else {
+            selectedButton = (SwingSquare)e.getSource();
+
+            setSquareImage(selectedSquareFileName, selectedSquareRotation);
         }
+
     }
 
     /**
@@ -243,7 +298,6 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         javax.swing.JButton btnSave;
         javax.swing.JLabel jLabel1;
         javax.swing.JPanel jPanel2;
-        javax.swing.JScrollPane jScrollPane1;
         javax.swing.JTree jTree1;
 
 
@@ -558,6 +612,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         btnSave.setText("Save Level");
 
         btnSave.addActionListener(evt -> save()); //funky lambda that i didn't even know java could do
+        btnPreview.addActionListener(evt -> preview()); //funky lambda that i didn't even know java could do
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

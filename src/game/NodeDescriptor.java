@@ -5,28 +5,24 @@
  */
 package game;
 
-import interfaces.ClickListener;
 import interfaces.Clickable;
-import org.jsfml.graphics.*;
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
-import org.jsfml.window.event.Event;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 /**
  *
  * @author newby
  */
 public class NodeDescriptor extends Menu {
-
     private final static String SEP = Constants.SEP;
-    public int loaded = 0;
-    ArrayList<ClickListener> clickListeners = new ArrayList<>();
+    //public int loaded = 0;
+    private MapMenu mapMenu;
+    //ArrayList<ClickListener> clickListeners = new ArrayList<>();
 
-    public NodeDescriptor(String name, Node n, int width, int height) {
+    public NodeDescriptor(String name, Node n, int width, int height, MapMenu map) {
         super(name);
+        this.mapMenu = map;
 
         RenderWindow w = getWindow();
         final Vector2i windowSize = new Vector2i(width, height);
@@ -45,7 +41,11 @@ public class NodeDescriptor extends Menu {
         if (clickable instanceof  Button ) {
             Entity button = (Button) clickable;
             if (button.getName().equals("PLAY")) {
-                //this.unload();
+                this.unload();
+                mapMenu.unload();
+
+                ((RoomEntity)loadDrawer(RoomEntity.class)).create(FileHandling.readFile("assets" + Constants.SEP + "levels"  + Constants.SEP + "test_level"));
+
                 System.out.println("Play clicked");
             }
         }

@@ -53,6 +53,8 @@ public class Driver {
         // Create a window
         //
         window = new RenderWindow();
+        Entity.setWindow(window);  //important
+
         window.create(new VideoMode(screenWidth, screenHeight), "Dungeons but not Dragons", WindowStyle.DEFAULT);
 
         window.setFramerateLimit(30); // Avoid excessive updates
@@ -63,7 +65,7 @@ public class Driver {
         ArrayList<Drawer> tempDrawers = new ArrayList<>();
 
         while (window.isOpen()) {
-            window.clear(Color.WHITE);
+            window.clear(Color.BLACK);
 
             Iterable<Event> tempEvents = window.pollEvents();
             ArrayList<Event> events = new ArrayList<>();

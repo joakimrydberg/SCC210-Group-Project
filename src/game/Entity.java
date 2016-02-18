@@ -17,7 +17,7 @@ public class Entity  {
     private int x = 0, y = 0;   //current x and y coordinates
     private int w = -1, h = -1; // current width and height of the Entity
     private ConcurrentSafeArrayList<TransformableHolder> transformableHolders = new ConcurrentSafeArrayList<>();
-    //private RenderWindow window = null;
+    private static RenderWindow window = null;
     public boolean hidden = false;
 
     /**
@@ -77,6 +77,16 @@ public class Entity  {
             iterator.next().transformable.rotate(v);
         }
     }
+/*
+
+    public void rotateAroundCenter(float degrees) {
+        Transform transform = new Transform();
+        Vector2f center = SpriteUtils.getTextureCenter(TileTextures.DOORTEXTURE);
+
+        Vector2f rotateOrigin = new Vector2f(sprite.getPosition()).add(center);
+        transform = Transform.rotate(transform, degrees, rotateOrigin.x, rotateOrigin.y);
+    }
+*/
 
     @Override
     public String toString() {
@@ -97,10 +107,13 @@ public class Entity  {
      *
      * @return RenderWindow
      */
-    public RenderWindow getWindow() {
-        return Driver.getWindow();
+    public static RenderWindow getWindow() {
+        return window;
     }
 
+    public static void setWindow(RenderWindow window) {
+        Entity.window = window;
+    }
     /**
      * Sets the name of the Entity, (which will be returned be toString)
      *

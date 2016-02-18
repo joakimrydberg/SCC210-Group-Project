@@ -18,17 +18,18 @@ public abstract class Menu extends Drawer implements ClickListener {
         super( name);
     }
 
-    public void loadDrawer(Class type) {
+    public Drawer loadDrawer(Class type) {
         Drawer drawer = Driver.getDrawer(null, type);
 
         try {
             drawer = (drawer == null) ? (Drawer) type.newInstance() : drawer;
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
 
         drawer.load();
+
+        return drawer;
     }
 
 }
