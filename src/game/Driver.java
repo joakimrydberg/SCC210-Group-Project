@@ -5,7 +5,6 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
-import other.ConcurrentSafeArrayList;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
  *
  */
 public class Driver {
-    private static ConcurrentSafeArrayList<Drawer> drawers = new ConcurrentSafeArrayList<>( );
+    private static ArrayList<Drawer> drawers = new ArrayList<>( );
     private static int screenWidth = 1024,
             screenHeight = 768;
     private static RenderWindow window;
@@ -60,17 +59,23 @@ public class Driver {
         MainMenu mainMenu = new MainMenu();
         mainMenu.load();
 
-        ArrayList<Drawer> tempDrawers = new ArrayList<>();
+
+        new MusicPlayer();
 
         while (window.isOpen()) {
             window.clear(Color.WHITE);
 
-            Iterable<Event> events = window.pollEvents();
+            Iterable<Event> tempEvents = window.pollEvents();
+
+            ArrayList<Event> events = new ArrayList<>();
+            for (Event e : tempEvents){                       //necessary for reasons, see
+                events.add(e);
+            }
 
             for (int i = 0; i < drawers.size(); i++) {
-
                 drawers.get(i).update(events);
             }
+
             window.display();
         }
     }
