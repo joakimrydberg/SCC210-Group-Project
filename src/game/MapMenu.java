@@ -68,17 +68,12 @@ public class MapMenu extends Menu {
 
         //draw lines connecting the nodes
         drawDottedLine(nodes[0], nodes[1], Color.BLACK);
-
         drawDottedLine(nodes[1], nodes[2], Color.BLACK);
         drawDottedLine(nodes[1], nodes[3], Color.BLACK);
-
         drawDottedLine(nodes[3], nodes[4], Color.BLACK);
-
         drawDottedLine(nodes[4], nodes[5], Color.BLACK);
         drawDottedLine(nodes[4], nodes[7], Color.BLACK);
-
         drawDottedLine(nodes[5], nodes[6], Color.BLACK);
-
         drawDottedLine(nodes[7], nodes[8], Color.BLACK);
         drawDottedLine(nodes[7], nodes[9], Color.BLACK);
 
@@ -90,7 +85,7 @@ public class MapMenu extends Menu {
 
         //add locked images to each node ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
         for(int i = 0; i < 10; i++){
-            //nodes[i].lock();
+            nodes[i].lock();
         }
         nodes[0].unlock();
     }
