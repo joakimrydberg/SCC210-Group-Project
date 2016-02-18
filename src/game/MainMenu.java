@@ -6,7 +6,6 @@
 package game;
 
 import interfaces.Clickable;
-import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2i;
 
 /**
@@ -44,7 +43,7 @@ public class MainMenu extends Menu {
         btnQuit.addClickListener(this);
         addEntity(btnQuit);
 
-        //MusicPlayer.play("main_menu_loop.wav", true);
+        MusicPlayer.play("main_menu_loop.wav", true);
 
     }
 
