@@ -26,14 +26,14 @@ public class Button extends Rect implements Clickable {
     private static String FontFile  = "LucidaSansRegular.ttf";
     private String FontPath; // Where fonts were found
 
-    public Button(int x, int y, int width, int height, Color c, int transparency, String text, int size) {
-        super(text, x, y, width, height, c, 0);
+    public Button(int x, int y, int width, int height, String colour, int transparency, String text, int size) {
+        super(text, x, y, width, height, Color.WHITE, 0);
         //super(w, text, x, y, width, height, c, transparency);
 
         // Load image/ texture
         Texture imgTexture = new Texture( );
         try {
-            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "game_button.png"));
+            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "menu_buttons" + Constants.SEP + colour +".png"));
         } catch (IOException ex) {
             ex.printStackTrace( );
         }

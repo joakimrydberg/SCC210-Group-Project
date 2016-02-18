@@ -38,7 +38,7 @@ public class NodeDescriptor extends Menu {
         smallMenu = new Image(n.getCenterX() + (width / 2), n.getCenterY() - (height / 2), windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png");
         addEntity(smallMenu);
 
-        btnPlay = new Button(centerX, centerY + 10, 80, 40, Color.WHITE, 200 , "PLAY", 15 );
+        btnPlay = new Button(centerX, centerY + 10, 80, 40, "BROWN", 200 , "PLAY", 15 );
         btnPlay.addClickListener(this);
         addEntity(btnPlay);
     }

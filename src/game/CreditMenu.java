@@ -18,7 +18,7 @@ public class CreditMenu extends Menu {
 
         addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "menu_background.png"));
 
-        Button backButton = new Button(70, 40, 100, 50, Color.WHITE, 200 , "BACK", 15 );
+        Button backButton = new Button(70, 40, 100, 50, "BROWN", 200 , "BACK", 15 );
         backButton.addClickListener(this);
         addEntity(backButton);
 
