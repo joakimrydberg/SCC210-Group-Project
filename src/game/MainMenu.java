@@ -57,13 +57,7 @@ public class MainMenu extends Menu {
             if (button.getName().equals("NEW GAME")) {
                 this.unload();
 
-                Drawer temp = Driver.getDrawer(CharMenu.NAME);
-                if (temp == null) {
-                    new CharMenu().load();
-                } else {
-                    temp.load();
-                }
-
+                super.loadDrawer(CharMenu.class);
                 //
                 System.out.println("NEW GAME clicked");
             }

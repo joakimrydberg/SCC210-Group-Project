@@ -38,11 +38,8 @@ public class CreditMenu extends Menu {
             if (button.getName().equals("BACK")) {
                 this.unload();
 
-                Drawer mainMenu = Driver.getDrawer(MainMenu.NAME);
-                if (mainMenu == null)
-                    mainMenu = new MainMenu();
+                loadDrawer(MainMenu.class);
 
-                mainMenu.load();
                 MusicPlayer.play("main_menu_loop.wav", true);
                 MusicPlayer.stop("applause.wav");
 

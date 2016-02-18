@@ -6,15 +6,11 @@
 package game;
 
 import interfaces.Clickable;
-import org.jsfml.audio.Sound;
-import org.jsfml.audio.SoundBuffer;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
 import org.jsfml.system.Vector2i;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -106,11 +102,7 @@ public class MapMenu extends Menu {
             if (button.getName().equals("BACK")) {
                 this.unload();
 
-                Drawer charMenu = Driver.getDrawer(CharMenu.NAME);
-                if (charMenu == null)
-                    charMenu = new CharMenu();
-
-                charMenu.load();
+                loadDrawer(CharMenu.class);
 
                 System.out.println("Back clicked");
             }

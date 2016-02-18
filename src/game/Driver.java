@@ -91,11 +91,17 @@ public class Driver {
         drawers.add(drawer);
     }
 
-    public static Drawer getDrawer(String name) {
+
+    public static Drawer getDrawer(String name, Class type) {
+
+        boolean nameIgnore = (name == null),
+                typeIgnore = (type == null);
+
         Drawer drawer;
         for (int i = 0; i < drawers.size(); i++) {
             drawer = drawers.get(i);
-            if (drawer.getName().equals(name)) {
+            if ((drawer.getClass().equals(type) || typeIgnore)
+                    && (drawer.getName().equals(name) || nameIgnore)) {
                 return drawer;
             }
         }
