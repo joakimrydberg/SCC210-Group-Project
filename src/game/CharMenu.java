@@ -238,8 +238,8 @@ public class CharMenu extends Menu {
                 className = "warr";
                 currAnimation.stop();
                 currAnimation = warriorWalk;
-                tempWalk.start();
-                tempWalk.increaseDelay(30);
+                //tempWalk.start();
+                //tempWalk.increaseDelay(30);
                 currAnimation.start();
             }
 
