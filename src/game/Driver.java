@@ -65,7 +65,11 @@ public class Driver {
         while (window.isOpen()) {
             window.clear(Color.WHITE);
 
-            Iterable<Event> events = window.pollEvents();
+            Iterable<Event> tempEvents = window.pollEvents();
+            ArrayList<Event> events = new ArrayList<>();
+
+            for (Event e : tempEvents)
+                events.add(e);
 
             for (int i = 0; i < drawers.size(); i++) {
                 drawers.get(i).update(events);
