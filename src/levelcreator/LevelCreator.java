@@ -69,6 +69,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
             RoomEntity roomEntity = new RoomEntity().create(new ArrayList<>(getParts()));
             roomEntity.load();
 
+
             try {
                 window.setActive(true);
             } catch (ContextActivationException e) {
