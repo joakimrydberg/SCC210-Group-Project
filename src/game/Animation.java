@@ -35,7 +35,11 @@ public class Animation extends Entity {
         this.currentFrame = 0;
         this.totalFrames = this.frames.size();
 
+    }
 
+    public void increaseDelay(int frameDelay)
+    {
+        this.frameDelay = frameDelay;
 
     }
 
