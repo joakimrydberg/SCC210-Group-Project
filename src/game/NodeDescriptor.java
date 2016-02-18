@@ -33,7 +33,7 @@ public class NodeDescriptor extends Menu {
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
         //addEntity(new Rect("box", n.getCenterX() + (width / 2), n.getCenterY() + (height / 2), windowSize.x, windowSize.y, Color.WHITE, 300 ));
-        addEntity(new Image(n.getCenterX() + (width / 2), n.getCenterY() - (height / 2), windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png"));
+        addEntity(new Image(n.getCenterX() + (width / 2), n.getCenterY() - (height / 2), windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png"));
     }
 
     @Override
