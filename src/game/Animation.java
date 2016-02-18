@@ -1,12 +1,14 @@
 package game;
 
+import org.jsfml.graphics.Sprite;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 /**
  * Created by Michael on 17/02/2016.
  */
-public class Animation {
+public class Animation extends Entity {
     private int frameCount;
     private int frameDelay = 10;
     private int currentFrame;
@@ -16,7 +18,13 @@ public class Animation {
 
     private List<AnimationFrame> frames = new ArrayList<AnimationFrame>();    // Arraylist of frames
 
-    public Animation(BufferedImage[] frames) {
+    public Animation(int x, int y, int width, int height, BufferedImage[] frames) {
+        super("name");
+
+        setWidthHeight(width, height);
+
+        setCenterX(x);
+        setCenterY(y);
         this.stopped = true;
 
         for (int i = 0; i < frames.length; i++) {
@@ -45,6 +53,7 @@ public class Animation {
         if (frames.size() == 0) {
             return;
         }
+
         stopped = true;
     }
 
@@ -68,7 +77,7 @@ public class Animation {
         currentFrame = 0;
     }
 
-    public BufferedImage getSprite() {
+    public Sprite getSprite() {
         return frames.get(currentFrame).getFrame();
     }
 
@@ -91,6 +100,15 @@ public class Animation {
 
     }
 
+    @Override
+    public void draw() {
+        if (!stopped) {
+            update();
 
+            addTransformable(getSprite(), 0, 0, 0, 0);
+
+            super.draw();
+        }
+    }
 
 }

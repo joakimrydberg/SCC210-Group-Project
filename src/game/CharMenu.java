@@ -33,12 +33,12 @@ public class CharMenu extends Menu {
     private BufferedImage newWarriorSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
     private BufferedImage newRangerSheet = SpriteSheetLoad.loadSprite("RangerMaleSheet");
     private BufferedImage newmageSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
-    private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(0, 1), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(0, 2)};
-    private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(0, 1), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(0, 2)};
-    private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(0, 1), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(0, 2)};
-    private Animation warriorWalk = new Animation(warrior);
-    private Animation rangerWalk = new Animation(ranger);
-    private Animation mageWalk = new Animation(mageA);
+    private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(1, 0), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(2, 0)};
+    private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(1, 0), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(2, 0)};
+    private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(1, 0), SpriteSheetLoad.getSprite(0, 0), SpriteSheetLoad.getSprite(2, 0)};
+    private Animation warriorWalk = new Animation(200, 200, 64, 128, warrior);
+    private Animation rangerWalk = new Animation(200, 200, 64, 128, ranger);
+    private Animation mageWalk = new Animation(200, 200, 64, 128, mageA);
     private Animation currAnimation = warriorWalk;
 
     private String[] hairCols = new String[3];
@@ -50,6 +50,8 @@ public class CharMenu extends Menu {
 
     public CharMenu() {
         super(NAME);
+
+
 
         final Vector2i windowSize = getWindow().getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
@@ -158,7 +160,9 @@ public class CharMenu extends Menu {
 
         addEntity(hairCol);
 
-
+        addEntity(warriorWalk);
+        addEntity(mageWalk);
+        addEntity(rangerWalk);
 
     }
 
@@ -222,6 +226,7 @@ public class CharMenu extends Menu {
                 currAnimation.stop();
                 currAnimation = rangerWalk;
                 currAnimation.start();
+
             }
             else if (button.getName().contains("strength")){
                 DebugPrinter.debugPrint(this, "Strength selected");

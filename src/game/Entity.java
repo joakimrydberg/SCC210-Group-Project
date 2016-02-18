@@ -19,6 +19,7 @@ public class Entity  {
     private ArrayList<TransformableHolder> transformableHolders = new ArrayList<>();
     //private RenderWindow window = null;
     public boolean hidden = false;
+
     /**
      * Creates a new entity, with a given name
      *
