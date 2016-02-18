@@ -21,10 +21,7 @@ public class Player extends MovingEntity {
 
     void setClass(String c){
         classType = c;
-
-        if(c.equals("mage")){
-            System.out.println("mage selected");
-        }
+            System.out.println(c + " selected");
     }
 
     public void setStats(int a, int b, int c , int d, int e){
@@ -37,7 +34,7 @@ public class Player extends MovingEntity {
     }
 
 
-    //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-right
+    //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-up
     public BufferedImage[] moveAnimation(BufferedImage character, int dir)
     {
         BufferedImage[] characterMove = {SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(1, dir, character), SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(2, dir, character)};

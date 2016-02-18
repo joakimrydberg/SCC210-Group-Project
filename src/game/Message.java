@@ -20,7 +20,7 @@ public class Message extends Entity {
 
     public Message(int x, int y, int r, String message, Color c , int size) {
         super(message);
-
+        double length = message.length();
         if ((new File(Constants.JRE_FONT_PATH)).exists())
             fontPath = Constants.JRE_FONT_PATH;
         else
@@ -37,12 +37,17 @@ public class Message extends Entity {
 
         Text text = new Text (message, sansRegular, size);
         text.setColor(c);
-
-        setTopLeftX(x);
+        int temp = ((int) (length/2))+x;
+        setTopLeftX(temp);
         setTopLeftY(y);
 
         final FloatRect textBounds = text.getLocalBounds();
 
         addTransformable(text, 0, 0, (int)textBounds.width, (int)textBounds.height);
+
     }
+    public void updateMessage(){
+
+    }
+
 }
