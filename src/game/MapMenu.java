@@ -55,16 +55,16 @@ public class MapMenu extends Menu {
         nodes[9] = new Node("10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
 
         //creating node descriptors
-        nodeDesc[0] = new NodeDescriptor("Level 1", nodes[0], 200, 100, this);
-        nodeDesc[1] = new NodeDescriptor("Level 2", nodes[1], 200, 100, this);
-        nodeDesc[2] = new NodeDescriptor("Level 3", nodes[2], 200, 100, this);
-        nodeDesc[3] = new NodeDescriptor("Level 4", nodes[3], 200, 100, this);
-        nodeDesc[4] = new NodeDescriptor("Level 5", nodes[4], 200, 100, this);
-        nodeDesc[5] = new NodeDescriptor("Level 6", nodes[5], 200, 100, this);
-        nodeDesc[6] = new NodeDescriptor("Level 7", nodes[6], 200, 100, this);
-        nodeDesc[7] = new NodeDescriptor("Level 8", nodes[7], 200, 100, this);
-        nodeDesc[8] = new NodeDescriptor("Level 9", nodes[8], 200, 100, this);
-        nodeDesc[9] = new NodeDescriptor("Level 10", nodes[9], 200, 100, this);
+        nodeDesc[0] = new NodeDescriptor("Level 1", "Easy", nodes[0], 200, 150, this);
+        nodeDesc[1] = new NodeDescriptor("Level 2", "Easy", nodes[1], 200, 150, this);
+        nodeDesc[2] = new NodeDescriptor("Level 3", "Easy", nodes[2], 200, 150, this);
+        nodeDesc[3] = new NodeDescriptor("Level 4", "Medium", nodes[3], 200, 150, this);
+        nodeDesc[4] = new NodeDescriptor("Level 5", "Medium", nodes[4], 200, 150, this);
+        nodeDesc[5] = new NodeDescriptor("Level 6", "Medium", nodes[5], 200, 150, this);
+        nodeDesc[6] = new NodeDescriptor("Level 7", "Hard", nodes[6], 200, 150, this);
+        nodeDesc[7] = new NodeDescriptor("Level 8", "Hard", nodes[7], 200, 150, this);
+        nodeDesc[8] = new NodeDescriptor("Level 9", "Hard", nodes[8], 200, 150, this);
+        nodeDesc[9] = new NodeDescriptor("Level 10", "BOSS", nodes[9], 200, 150, this);
 
         //draw lines connecting the nodes
         drawDottedLine(nodes[0], nodes[1], Color.BLACK);

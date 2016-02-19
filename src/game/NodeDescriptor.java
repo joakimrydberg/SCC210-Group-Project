@@ -26,7 +26,7 @@ public class NodeDescriptor extends Menu {
     //ArrayList<ClickListener> clickListeners = new ArrayList<>();
     private static Image smallMenu;
     
-    public NodeDescriptor(String name, Node n, int width, int height, MapMenu map) {
+    public NodeDescriptor(String name, String difficulty, Node n, int width, int height, MapMenu map) {
         super(name);
         this.mapMenu = map;
 
@@ -47,13 +47,25 @@ public class NodeDescriptor extends Menu {
         smallMenu = new Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png");
         addEntity(smallMenu);
 
-        addEntity(new Message(centerX, centerY - 37, 0, name, Color.BLACK, 10));
+        addEntity(new Image(centerX, centerY, windowSize.x - 50, 30, "assets" + Constants.SEP + "art" + Constants.SEP + "game_label.png"));
 
-        Button btnClose = new Button(centerX - 50, centerY + 10, 30, 40, "RED", 200 , "<", 15 );
+        addEntity(new Message(centerX, centerY - 55, 0, name, Color.BLACK, 10));
+
+        Color txtCol;
+        if (difficulty.equals("Easy")){
+            txtCol = new Color(0, 153, 0);
+        } else if (difficulty.equals("Medium")){
+            txtCol = new Color(255, 51, 0);
+        } else {
+            txtCol = Color.RED;
+        }
+        addEntity(new Message(centerX, centerY - 5, 0, difficulty, txtCol, 15));
+
+        Button btnClose = new Button(centerX - 50, centerY + 35, 30, 30, "RED", 200 , "<", 15 );
         btnClose.addClickListener(this);
         addEntity(btnClose);
 
-        Button btnPlay = new Button(centerX + 20, centerY + 10, 90, 40, "GREEN", 200 , "PLAY", 15 );
+        Button btnPlay = new Button(centerX + 20, centerY + 35, 90, 30, "GREEN", 200 , "PLAY", 15 );
         btnPlay.addClickListener(this);
         addEntity(btnPlay);
     }
