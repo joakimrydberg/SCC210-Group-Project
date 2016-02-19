@@ -34,7 +34,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
     private JTree menu;
     private SwingSquare selectedButton;
     private final static String ROTATION_PROMPT = "Rotation: ";
-    private final static String PLACEHOLDER = "placeholder.png";
+    private final static String PLACEHOLDER = "placeholder.jpg";
     private javax.swing.JScrollPane jScrollPane1;
     private String selectedSquareFileName;
     private int selectedSquareRotation;
@@ -47,15 +47,6 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         this.setVisible(true);
 
         displayError("Hint: Right click to place the last placed block");
-
-        while (true) {
-            repaint();
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void displayError(String message) {
@@ -286,7 +277,6 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
 
             setSquareImage(selectedSquareFileName, selectedSquareRotation);
         }
-
     }
 
     /**
@@ -679,7 +669,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
      */
     @Override
     public void mousePressed(MouseEvent e) {
-
+        repaint();
     }
 
     /**
@@ -689,7 +679,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        repaint();
     }
 
     /**
@@ -699,7 +689,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
      */
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        repaint();
     }
 
     /**
@@ -709,6 +699,6 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
      */
     @Override
     public void mouseExited(MouseEvent e) {
-
+            repaint();
     }
 }

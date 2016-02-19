@@ -1,6 +1,7 @@
 package game;
 
 import interfaces.Clickable;
+import interfaces.KeyListener;
 import org.jsfml.window.event.Event;
 
 import java.util.ArrayList;
@@ -34,6 +35,22 @@ public abstract class Drawer extends Entity {
                                 && ((Clickable) entity).checkWithin(event)) {
 
                             ((Clickable) entity).clicked(event);
+                        }
+                    }
+                }
+
+                if (event.type == Event.Type.KEY_PRESSED) {
+                    for (Entity entity : entities) {
+                        if (entity instanceof KeyListener) {
+                            ((KeyListener) entity).keyPressed(event);
+                        }
+                    }
+                }
+
+                if (event.type == Event.Type.KEY_RELEASED) {
+                    for (Entity entity : entities) {
+                        if (entity instanceof KeyListener) {
+                            ((KeyListener) entity).keyReleased(event);
                         }
                     }
                 }
