@@ -110,7 +110,6 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     public void keyPressed(org.jsfml.window.event.KeyEvent event) {
         System.out.println("Pressed");
 
-
         //this would look so pretty as a switch state
         if (compareKeys(event, KeyEvent.VK_DOWN)) {
             setSpeed(new Vector2i(0, 5));
@@ -129,7 +128,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     }
 
     public boolean compareKeys(org.jsfml.window.event.KeyEvent keyEvent, int keyCode) { // when the docs are bock up can someone who doesn't hate jsfml with a passion find a better way of doing this? (though this works so who even cares at this point)
-        return keyEvent.key.toString().equals(KeyEvent.getKeyText(KeyEvent.VK_DOWN).toUpperCase());
+        return keyEvent.key.toString().equals(KeyEvent.getKeyText(keyCode).toUpperCase());
     }
 
 
