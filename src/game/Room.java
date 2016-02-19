@@ -6,7 +6,7 @@ import tools.FileHandling;
 
 import java.util.ArrayList;
 
-/**
+/** //d
  * @author Joakim Rydberg.
  */
 public class Room extends RoomEntity {
