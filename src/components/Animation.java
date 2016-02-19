@@ -45,11 +45,14 @@ public class Animation extends Entity {
 
     }
 
-    public void updateMove(int xDir, int yDir)
-    {
-        setCenterX(currX+xDir);
-        setCenterY(currY+yDir);
+    public void setFrames(BufferedImage[] frames) {
+
+        for (int i = 0; i < frames.length; i++) {
+            addFrame(frames[i], 64, 128, 1);
+        }
+        this.totalFrames = this.frames.size();
     }
+
 
 
     public void increaseDelay(int frameDelay)

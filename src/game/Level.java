@@ -38,7 +38,7 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 		}
 */
 
-		startRoom.create("test_level2");
+		///startRoom.create("test_level2");
 		rooms[3][5] = startRoom;
 		currentRoom = startRoom;
 
@@ -49,7 +49,7 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 */
 
 		Room testRoom = new Room();
-		testRoom.create("test_level2");
+		testRoom.create("test_level3");
 		testRoom.load();
 
 	}

@@ -30,10 +30,11 @@ public class Room extends RoomEntity {
 				tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
 			}
 		}
-		Player p = new Player("");
+		Player p = new Player();
+		p.setClass("mage");
 
 		create(tiles);
-		addEntity(p.warriorWalk);
+		addEntity(p);
 		locatePotentialDoors();
 	}
 
