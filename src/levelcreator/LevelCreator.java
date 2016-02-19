@@ -47,6 +47,15 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         this.setVisible(true);
 
         displayError("Hint: Right click to place the last placed block");
+
+        while (true) {
+            repaint();
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void displayError(String message) {
