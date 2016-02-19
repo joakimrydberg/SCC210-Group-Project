@@ -30,6 +30,7 @@ public class CharMenu extends Menu {
     private Image warr;
     private Image range;
     private Image mage;
+    private Boolean playerChosen = false;
 
     //SpriteSheet load
     SpriteSheetLoad warriorSpriteSheet = new SpriteSheetLoad(64, 128);
@@ -46,7 +47,7 @@ public class CharMenu extends Menu {
     private Animation mageWalk = new Animation(200, 200, 64, 128, mageA, 3);
     private Animation currAnimation = warriorWalk;
     private Player tempPlayer = new Player("temp");
-    BufferedImage[] currentAnimation = tempPlayer.attackAnimation(newMageSheet, 0);
+    BufferedImage[] currentAnimation = tempPlayer.charAttack(newMageSheet, 0);
     private Animation tempWalk = new Animation(100, 200, 64, 128, currentAnimation, 5);
 
     private String[] hairCols = new String[3];
@@ -178,7 +179,7 @@ public class CharMenu extends Menu {
         if (clickable instanceof  Button ) {
             Entity button = (Button)clickable;
 
-            if (button.getName().equals("CREATE")) {
+            if (button.getName().equals("CREATE") && className !=null) {
                 //p.setClass(className); //******RYAN, IVE JUST COMMENTED THIS OUT WHILE WORKING ON MAP MENU, IT RESULTED IN A NULL POINTER EXCEPTION ANS STOPPED MAP MENU LOADING*******
                 this.unload();
 
