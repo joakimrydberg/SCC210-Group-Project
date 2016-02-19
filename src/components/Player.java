@@ -18,33 +18,48 @@ public class Player extends MovingEntity {
     public int Vitality = 0;
     public int Health = 100;
     SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
-     static BufferedImage theSpriteSheet;
-     static BufferedImage[] warrior = Player.charMove(theSpriteSheet, 0);
-     public static Animation warriorWalk = new Animation(200, 200, 64, 128, warrior, 1);
-    public static Animation currAnimation = warriorWalk;
+    static BufferedImage theSpriteSheet;
+    public static BufferedImage[] characterStill;
+    public static Animation warriorWalk;
+    public static Animation currAnimation;
 
     public Player(String name) {
         super(name);
-        currAnimation.stop();
-        currAnimation = warriorWalk;
-        currAnimation.start();
+
     }
 
-    void setClass(String c){
+    public void setClass(String c){
         classType = c;
 
         if(c.equals("mage")){
             System.out.println("mage selected");
             theSpriteSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
+            characterStill = new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, theSpriteSheet)};
+            warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
+            currAnimation = warriorWalk;
+            currAnimation.stop();
+            currAnimation = warriorWalk;
+            currAnimation.start();
         }
         if(c.equals("warrior")){
             System.out.println("warrior selected");
             theSpriteSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
+            characterStill = new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, theSpriteSheet)};
+            warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
+            currAnimation = warriorWalk;
+            currAnimation.stop();
+            currAnimation = warriorWalk;
+            currAnimation.start();
         }
         if(c.equals("ranger")){
             System.out.println("ranger selected");
             theSpriteSheet  = SpriteSheetLoad.loadSprite("RangerMaleSheet");
-
+            characterStill = new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, theSpriteSheet)};
+            warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
+            currAnimation = warriorWalk;
+            currAnimation.stop();
+            currAnimation = warriorWalk;
+            currAnimation.start();
         }
 
     }
@@ -58,13 +73,22 @@ public class Player extends MovingEntity {
         Vitality = e;
     }
 
+    public void move(BufferedImage character, int dir){
+        super.move();
+        currAnimation.stop();
+        BufferedImage[] characterMove = {SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(1, dir, character), SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(2, dir, character)};
+        warriorWalk = new Animation(200, 200, 64, 128, characterMove, 1);
+        currAnimation = warriorWalk;
+        currAnimation.start();
+        //return characterMove;
+
+    }
 
     //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-right
-    public static BufferedImage[] charMove(BufferedImage character, int dir)
+/*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
-        BufferedImage[] characterMove = {SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(1, dir, character), SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(2, dir, character)};
-        return characterMove;
-    }
+
+    }*/
 
     public BufferedImage[] charAttack(BufferedImage character, int dir)
     {
