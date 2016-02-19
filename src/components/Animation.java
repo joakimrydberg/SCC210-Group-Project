@@ -15,6 +15,9 @@ public class Animation extends Entity {
     private int frameDelay = 10;
     private int currentFrame;
     private int totalFrames;                // total amount of frames for your animation
+    private int currX = 0;
+    private int currY = 0;
+
 
     private boolean stopped;                // have animations stopped
 
@@ -33,11 +36,21 @@ public class Animation extends Entity {
             addFrame(frames[i], width, height, scale);
         }
 
+
+        this.currX = x;
+        this.currY = y;
         this.frameCount = 0;
         this.currentFrame = 0;
         this.totalFrames = this.frames.size();
 
     }
+
+    public void updateMove(int xDir, int yDir)
+    {
+        setCenterX(currX+xDir);
+        setCenterY(currY+yDir);
+    }
+
 
     public void increaseDelay(int frameDelay)
     {

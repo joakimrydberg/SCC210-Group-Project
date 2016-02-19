@@ -152,6 +152,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
                 levelPart.setRotation(squares[i][j].getRotation());
                 levelPart.setRowNo(i);
                 levelPart.setColNo(j);
+				levelPart.setType();
 
                 levelPartArrayList.add(levelPart);
             }

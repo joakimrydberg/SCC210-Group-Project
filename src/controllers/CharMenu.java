@@ -128,7 +128,7 @@ public class CharMenu extends Menu {
             warr.hide();
             range.hide();*/
             p = new Player("");
-
+            p.move();
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -211,6 +211,7 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "magic selected");
                 this.setStats(0, 10, 0, 3, 2);
                 p.setStats(0, 10, 0, 3, 2);
+                p.setClass("mage");
                 //range.hide();
                 //warr.hide();
                 //mage.show();
@@ -228,6 +229,7 @@ public class CharMenu extends Menu {
                // range.show();
                 //warr.hide();
                // mage.hide();
+                p.setClass("ranger");
                 className = "ranged";
                 currAnimation.stop();
                 currAnimation = rangerWalk;
@@ -241,6 +243,7 @@ public class CharMenu extends Menu {
                 //range.hide();
                 //warr.show();
                 //mage.hide();
+                p.setClass("warrior");
                 className = "warr";
                 currAnimation.stop();
                 currAnimation = warriorWalk;

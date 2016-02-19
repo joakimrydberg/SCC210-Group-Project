@@ -56,7 +56,6 @@ public class RoomEntity extends Drawer {
                 levelParts[i][j] = (LevelPart) levelPartsPassed.get(i*11 + j);
             }
         }
-
         return create(levelParts);
     }
 

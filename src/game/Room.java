@@ -1,20 +1,21 @@
 package game;
 
+import components.Player;
 import components.RoomEntity;
 import tools.Constants;
 import tools.FileHandling;
 
 import java.util.ArrayList;
 
-/** //d
+/**
  * @author Joakim Rydberg.
  */
 public class Room extends RoomEntity {
 	private String roomID;
-	//private LevelPart[][] tiles = new LevelPart[11][11];
-	private ArrayList<String> doors = new ArrayList<>();
-	private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
 
+	private ArrayList<String> potentialDoors = new ArrayList<>();
+
+	private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
 	public Room() {
 
 	}
@@ -29,27 +30,29 @@ public class Room extends RoomEntity {
 				tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
 			}
 		}
+		Player p = new Player("");
 
 		create(tiles);
-		//locateDoors();
+		addEntity(p.warriorWalk);
+		locatePotentialDoors();
 	}
 
-/*	//public LevelPart[][] getTiles() {
-		return tiles;
-	}*/
+	public ArrayList<String> getPotentialDoors() {
+		return potentialDoors;
+	}
 
-	private void locateDoors(){
+	private void locatePotentialDoors(){
 		if(getTiles()[0][6].getType().equals("Door")) {
-			doors.add("North");
+			potentialDoors.add("North");
 		}
 		if(getTiles()[6][0].getType().equals("Door")) {
-			doors.add("West");
+			potentialDoors.add("West");
 		}
 		if(getTiles()[6][10].getType().equals("Door")) {
-			doors.add("East");
+			potentialDoors.add("East");
 		}
 		if(getTiles()[10][6].getType().equals("Door")) {
-			doors.add("South");
+			potentialDoors.add("South");
 		}
 	}
 }
