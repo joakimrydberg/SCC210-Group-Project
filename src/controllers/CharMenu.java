@@ -128,7 +128,7 @@ public class CharMenu extends Menu {
             warr.hide();
             range.hide();*/
             p = new Player("");
-
+            addEntity(warriorWalk);
 
         } catch (URISyntaxException e) {
             e.printStackTrace();

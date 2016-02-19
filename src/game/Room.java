@@ -1,5 +1,6 @@
 package game;
 
+import components.Player;
 import components.RoomEntity;
 import tools.Constants;
 import tools.FileHandling;
@@ -29,8 +30,10 @@ public class Room extends RoomEntity {
 				tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
 			}
 		}
+		Player p = new Player("");
 
 		create(tiles);
+		addEntity(p.warriorWalk);
 		//locateDoors();
 	}
 

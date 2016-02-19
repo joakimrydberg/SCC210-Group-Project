@@ -17,10 +17,10 @@ public class Player extends MovingEntity {
     public int Endurance = 0;
     public int Vitality = 0;
     public int Health = 100;
-    SpriteSheetLoad warriorSpriteSheet = new SpriteSheetLoad(64, 128);
-    private static BufferedImage newWarriorSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
-    private static BufferedImage[] warrior = Player.charMove(newWarriorSheet, 0);
-    private static Animation warriorWalk = new Animation(200, 200, 64, 128, warrior, 3);
+    SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
+     static BufferedImage theSpriteSheet;
+     static BufferedImage[] warrior = Player.charMove(theSpriteSheet, 0);
+     public static Animation warriorWalk = new Animation(200, 200, 64, 128, warrior, 1);
     public static Animation currAnimation = warriorWalk;
 
     public Player(String name) {
@@ -35,7 +35,18 @@ public class Player extends MovingEntity {
 
         if(c.equals("mage")){
             System.out.println("mage selected");
+            theSpriteSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
         }
+        if(c.equals("warrior")){
+            System.out.println("warrior selected");
+            theSpriteSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
+        }
+        if(c.equals("ranger")){
+            System.out.println("ranger selected");
+            theSpriteSheet  = SpriteSheetLoad.loadSprite("RangerMaleSheet");
+
+        }
+
     }
 
     public void setStats(int a, int b, int c , int d, int e){
