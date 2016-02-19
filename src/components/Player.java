@@ -25,7 +25,6 @@ public class Player extends MovingEntity {
 
     public Player(String name) {
         super(name);
-
     }
 
     public void setClass(String c){
@@ -75,16 +74,23 @@ public class Player extends MovingEntity {
 
     public void move(BufferedImage character, int dir){
         super.move();
+
         currAnimation.stop();
         BufferedImage[] characterMove = {SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(1, dir, character), SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(2, dir, character)};
         warriorWalk = new Animation(200, 200, 64, 128, characterMove, 1);
         currAnimation = warriorWalk;
+        if(dir==0)
+            currAnimation.updateMove(0, 1);
+        else if(dir == 1)
+            currAnimation.updateMove(1, 0);
+        else if(dir == 2)
+            currAnimation.updateMove(-1, 0);
+        else if(dir == 3)
+            currAnimation.updateMove(0, -1);
         currAnimation.start();
-        //return characterMove;
-
     }
 
-    //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-right
+    //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-up
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
 
