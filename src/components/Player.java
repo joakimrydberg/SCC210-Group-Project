@@ -71,7 +71,7 @@ public class Player extends MovingEntity {
         Endurance = d;
         Vitality = e;
     }
-
+//
     public void move(BufferedImage character, int dir){
         super.move();
 
