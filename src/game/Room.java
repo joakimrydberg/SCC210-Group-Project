@@ -55,6 +55,4 @@ public class Room extends RoomEntity {
 			potentialDoors.add("South");
 		}
 	}
-
-	//branch test
 }
