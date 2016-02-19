@@ -2,6 +2,8 @@ package game;
 
 import components.Player;
 import components.RoomEntity;
+import interfaces.MovementListener;
+import interfaces.MovingEntity;
 import tools.Constants;
 import tools.FileHandling;
 
@@ -10,12 +12,11 @@ import java.util.ArrayList;
 /**
  * @author Joakim Rydberg.
  */
-public class Room extends RoomEntity {
+public class Room extends RoomEntity implements MovementListener {
 	private String roomID;
-
 	private ArrayList<String> potentialDoors = new ArrayList<>();
-
 	private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
+
 	public Room() {
 
 	}
@@ -55,5 +56,18 @@ public class Room extends RoomEntity {
 		if(getTiles()[10][6].getType().equals("Door")) {
 			potentialDoors.add("South");
 		}
+	}
+
+	@Override
+	public boolean isMoveAcceptable(int x, int y) {
+
+
+
+		return true;
+	}
+
+	@Override
+	public void onMove(MovingEntity mover) {
+
 	}
 }

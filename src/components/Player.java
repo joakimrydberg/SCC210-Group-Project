@@ -1,20 +1,22 @@
 package components;
 
 import game.SpriteSheetLoad;
-import interfaces.InteractingEntity;
 import interfaces.KeyListener;
+import interfaces.MovementListener;
+import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
-import tools.DebugPrinter;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by millsr3 on 16/02/2016.
  */
-public class Player extends Animation implements KeyListener, interfaces.MovingEntity {
-    private Vector2i speed = new Vector2i(0, 0);
-    private float multiplier = 0;
+public class Player extends Animation implements KeyListener, MovingEntity {
+    //private Vector2i speed = new Vector2i(0, 0);
+    //private float multiplier = 0;
+    ArrayList<MovementListener> listeners = new ArrayList<>();
     private String classType;
     public int Agility = 0;
     public int Intellect = 0;
@@ -124,30 +126,19 @@ public class Player extends Animation implements KeyListener, interfaces.MovingE
         { //moving
             final int newX = (int)(getCenterX() + speed.x * multiplier), newY = (int)(getCenterY() + speed.y * multiplier);
 
-            if (this instanceof InteractingEntity) {
-                final InteractingEntity collidingThis = (InteractingEntity) this;
-
-                if (collidingThis.checkWithin(getCenterX(), getCenterY())) {
-                    DebugPrinter.debugPrint(this, "Already checkWithin!!");
-                    return;
-                }
-
-                if (collidingThis.checkWithin(newX, newY)) {
-                    DebugPrinter.debugPrint(this, "Already checkWithin!!");
-                    return;
-                }
+            //checking all the MovementListeners are 'okay' with the proposed move
+            boolean move = true;
+            for (MovementListener listener : listeners) {  //must be at end of method
+                move = listener.isMoveAcceptable(newX, newY);
             }
 
-            final Vector2i windowSize = getWindow().getSize();
-
-            if (newX < 0 || newX > windowSize.x || newY < 0 || newY > windowSize.y) {
-                // DebugPrinter.debugPrint(this, "Going off screen so stop");
-                return;
+            if (move) {
+                //updating X and Y coordinates
+                setCenterX(newX);
+                setCenterY(newY);
+            } else {
+                //if move isn't okay
             }
-
-            //updating X and Y coordinates
-            setCenterX(getCenterX() + speed.x);
-            setCenterY(getCenterY() + speed.y);
 
             draw();  //drawing to the screen
         }
@@ -167,6 +158,10 @@ public class Player extends Animation implements KeyListener, interfaces.MovingE
                 currAnimation.updateMove(0, -1);
             currAnimation.start();
         }*/
+
+        for (MovementListener listener : listeners) {  //must be at end of method
+            listener.onMove(this);
+        }
     }
 
     /**
@@ -176,7 +171,7 @@ public class Player extends Animation implements KeyListener, interfaces.MovingE
      */
     @Override
     public void setSpeed(Vector2i speed) {
-        this.speed = speed;
+        speed = speed;
     }
 
     /**
@@ -198,7 +193,12 @@ public class Player extends Animation implements KeyListener, interfaces.MovingE
      */
     @Override
     public void setSpeedMultiplier(float multiplier) {
-        this.multiplier = multiplier;
+        multiplier = multiplier;
+    }
+
+    @Override
+    public void addMovementListener(MovementListener listener) {
+        listeners.add(listener);
     }
 
     public void updateMove(int xDir, int yDir)
