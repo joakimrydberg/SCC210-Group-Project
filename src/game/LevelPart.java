@@ -1,6 +1,6 @@
 package game;
 
-import levelcreator.CSVReader;
+import tools.CSVReader;
 
 import java.io.Serializable;
 import java.util.ArrayList;

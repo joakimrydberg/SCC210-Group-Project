@@ -1,6 +1,6 @@
 package levelcreator;
 
-import game.Constants;
+import tools.Constants;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

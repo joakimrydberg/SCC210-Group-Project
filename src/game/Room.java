@@ -1,19 +1,28 @@
 package game;
 
+import components.RoomEntity;
+import tools.Constants;
+import tools.FileHandling;
+
 import java.util.ArrayList;
 
 /**
  * @author Joakim Rydberg.
  */
-public class Room {
+public class Room extends RoomEntity {
 	private String roomID;
-	private LevelPart[][] tiles = new LevelPart[11][11];
+	//private LevelPart[][] tiles = new LevelPart[11][11];
 	private ArrayList<String> doors = new ArrayList<>();
 	private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
 
-	public Room(String roomID) {
+	public Room() {
+
+	}
+
+	public void create(String roomID) {
 		this.roomID = roomID;
 		ArrayList<Object> objects = FileHandling.readFile(LEVEL_ID_DIR + roomID);
+		LevelPart[][] tiles = new LevelPart[11][11];
 
 		for (int i = 0; i < 11; i++){
 			for (int j = 0; j < 11; j++){
@@ -21,24 +30,25 @@ public class Room {
 			}
 		}
 
-		locateDoors();
+		create(tiles);
+		//locateDoors();
 	}
 
-	public LevelPart[][] getTiles() {
+/*	//public LevelPart[][] getTiles() {
 		return tiles;
-	}
+	}*/
 
 	private void locateDoors(){
-		if(tiles[0][6].getType().equals("Door")) {
+		if(getTiles()[0][6].getType().equals("Door")) {
 			doors.add("North");
 		}
-		if(tiles[6][0].getType().equals("Door")) {
+		if(getTiles()[6][0].getType().equals("Door")) {
 			doors.add("West");
 		}
-		if(tiles[6][10].getType().equals("Door")) {
+		if(getTiles()[6][10].getType().equals("Door")) {
 			doors.add("East");
 		}
-		if(tiles[10][6].getType().equals("Door")) {
+		if(getTiles()[10][6].getType().equals("Door")) {
 			doors.add("South");
 		}
 	}

@@ -1,11 +1,16 @@
 package levelcreator;
 
-import game.*;
+import abstract_classes.Entity;
+import components.RoomEntity;
+import game.LevelPart;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.ContextActivationException;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
+import tools.CSVReader;
+import tools.Constants;
+import tools.FileHandling;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

@@ -1,11 +1,16 @@
 package game;
 
+import abstract_classes.Drawer;
+import abstract_classes.Entity;
+import controllers.MainMenu;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
-import other.ConcurrentSafeArrayList;
+import tools.ConcurrentSafeArrayList;
+import tools.Constants;
+import tools.DebugPrinter;
 
 import java.io.File;
 import java.util.ArrayList;

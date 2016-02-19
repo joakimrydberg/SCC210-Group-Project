@@ -1,7 +1,5 @@
 package interfaces;
 
-import game.Button;
-
 /**
  * Implement this to react to click events on buttons and other clickable classes
  *
