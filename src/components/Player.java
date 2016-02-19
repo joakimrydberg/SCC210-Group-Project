@@ -120,7 +120,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
             setSpeed(new Vector2i(-5, 0));
         } else if (compareKeys(event, KeyEvent.VK_RIGHT)) {
             setSpeed(new Vector2i(5, 0));
-        }
+        } //
     }
 
     @Override
