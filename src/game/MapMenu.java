@@ -99,6 +99,13 @@ public class MapMenu extends Menu {
 
                 loadDrawer(CharMenu.class);
 
+                //close any node descriptors that are open
+                for(int i = 0; i < 10; i++){
+                    if (nodeDesc[i].isLoaded()){
+                        nodeDesc[i].unload();
+                    }
+                }
+
                 System.out.println("Back clicked");
             }
         }
