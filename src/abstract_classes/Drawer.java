@@ -45,7 +45,7 @@ public abstract class Drawer extends Entity {
                         if (entity instanceof KeyListener) {
                             ((KeyListener) entity).keyPressed(event);
                         }
-                    }
+                    }//
                 }
 
                 if (event.type == Event.Type.KEY_RELEASED) {
@@ -92,5 +92,4 @@ public abstract class Drawer extends Entity {
             }
         }
     }
-
 }

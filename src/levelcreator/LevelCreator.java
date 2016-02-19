@@ -41,8 +41,8 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
     private final static String ROTATION_PROMPT = "Rotation: ";
     private final static String PLACEHOLDER = "placeholder.jpg";
     private javax.swing.JScrollPane jScrollPane1;
-    private String selectedSquareFileName;
-    private int selectedSquareRotation;
+    private String selectedSquareFileName = null;
+    private int selectedSquareRotation = -4; //invalid rotation
 
     public LevelCreator() {
 
@@ -280,7 +280,8 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         } else {
             selectedButton = (SwingSquare)e.getSource();
 
-            setSquareImage(selectedSquareFileName, selectedSquareRotation);
+            if (selectedSquareFileName != null && selectedSquareRotation != -4)
+                setSquareImage(selectedSquareFileName, selectedSquareRotation);
         }
     }
 
