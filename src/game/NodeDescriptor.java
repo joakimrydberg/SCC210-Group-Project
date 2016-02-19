@@ -49,7 +49,7 @@ public class NodeDescriptor extends Menu {
 
         addEntity(new Image(centerX, centerY, windowSize.x - 50, 30, "assets" + Constants.SEP + "art" + Constants.SEP + "game_label.png"));
 
-        addEntity(new Message(centerX, centerY - 55, 0, name, Color.BLACK, 10));
+        addEntity(new Message(centerX, centerY - 55, 0, name, Color.BLACK, 10)); //title
 
         Color txtCol;
         if (difficulty.equals("Easy")){
