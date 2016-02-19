@@ -13,10 +13,18 @@ public class Player extends MovingEntity {
     public int attackPower = 0;
     public int Endurance = 0;
     public int Vitality = 0;
-
+    public int Health = 100;
+    SpriteSheetLoad warriorSpriteSheet = new SpriteSheetLoad(64, 128);
+    private static BufferedImage newWarriorSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
+    private static BufferedImage[] warrior = Player.charMove(newWarriorSheet, 0);
+    private static Animation warriorWalk = new Animation(200, 200, 64, 128, warrior, 3);
+    public static Animation currAnimation = warriorWalk;
 
     public Player(String name) {
         super(name);
+        currAnimation.stop();
+        currAnimation = warriorWalk;
+        currAnimation.start();
     }
 
     void setClass(String c){
@@ -38,21 +46,22 @@ public class Player extends MovingEntity {
 
 
     //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-right
-    public BufferedImage[] moveAnimation(BufferedImage character, int dir)
+    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
         BufferedImage[] characterMove = {SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(1, dir, character), SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(2, dir, character)};
         return characterMove;
     }
 
-    public BufferedImage[] attackAnimation(BufferedImage character, int dir)
+    public BufferedImage[] charAttack(BufferedImage character, int dir)
     {
         BufferedImage[] characterAttack = {SpriteSheetLoad.getSprite(4, dir, character), SpriteSheetLoad.getSprite(5, dir, character)};
         return characterAttack;
     }
 
-    public BufferedImage[] hurtAnimation(BufferedImage character, int dir)
+    public BufferedImage[] charHurt(BufferedImage character, int dir)
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
+        this.Health = this.Health-20;
         return characterHurt;
     }
 }

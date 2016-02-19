@@ -20,7 +20,7 @@ public class Room {
 				tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
 			}
 		}
-
+		//addEntity(Player.currAnimation);
 		locateDoors();
 	}
 
