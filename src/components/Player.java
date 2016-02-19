@@ -7,6 +7,7 @@ import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -14,8 +15,8 @@ import java.util.ArrayList;
  * Created by millsr3 on 16/02/2016.
  */
 public class Player extends Animation implements KeyListener, MovingEntity {
-    //private Vector2i speed = new Vector2i(0, 0);
-    //private float multiplier = 0;
+    private Vector2i speed = new Vector2i(0, 0);
+    private float multiplier = 1;
     ArrayList<MovementListener> listeners = new ArrayList<>();
     private String classType;
     public int Agility = 0;
@@ -106,16 +107,30 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     }
 
     @Override
-    public void keyPressed(Event event) {
+    public void keyPressed(org.jsfml.window.event.KeyEvent event) {
         System.out.println("Pressed");
+
+
+        //this would look so pretty as a switch state
+        if (compareKeys(event, KeyEvent.VK_DOWN)) {
+            setSpeed(new Vector2i(0, 5));
+        } else if (compareKeys(event, KeyEvent.VK_UP)) {
+            setSpeed(new Vector2i(0, -5));
+        } else if (compareKeys(event, KeyEvent.VK_LEFT)) {
+            setSpeed(new Vector2i(-5, 0));
+        } else if (compareKeys(event, KeyEvent.VK_RIGHT)) {
+            setSpeed(new Vector2i(5, 0));
+        }
     }
 
     @Override
     public void keyReleased(Event event) {
-
+        setSpeed(new Vector2i(0, 0));
     }
 
-
+    public boolean compareKeys(org.jsfml.window.event.KeyEvent keyEvent, int keyCode) { // when the docs are bock up can someone who doesn't hate jsfml with a passion find a better way of doing this? (though this works so who even cares at this point)
+        return keyEvent.key.toString().equals(KeyEvent.getKeyText(KeyEvent.VK_DOWN).toUpperCase());
+    }
 
 
     /**
@@ -126,11 +141,14 @@ public class Player extends Animation implements KeyListener, MovingEntity {
         { //moving
             final int newX = (int)(getCenterX() + speed.x * multiplier), newY = (int)(getCenterY() + speed.y * multiplier);
 
+            if (newX == getCenterX() && newY == getCenterY())
+                return;
+
             //checking all the MovementListeners are 'okay' with the proposed move
             boolean move = true;
             for (MovementListener listener : listeners) {  //must be at end of method
-                move = listener.isMoveAcceptable(newX, newY);
-            }
+                move = listener.isMoveAcceptable(newX, newY + getHeight() / 4, getWidth(), getHeight() / 2); //a little weird but for reasons.
+            }                                                                // It's so the top half of the player can overlap on the walls etc
 
             if (move) {
                 //updating X and Y coordinates
@@ -171,7 +189,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
      */
     @Override
     public void setSpeed(Vector2i speed) {
-        speed = speed;
+        this.speed = speed;
     }
 
     /**

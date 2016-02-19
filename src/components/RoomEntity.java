@@ -28,7 +28,7 @@ public class RoomEntity extends Drawer {
 
 
         final Vector2i wSize = getWindow().getSize();
-        final int partWidth = wSize.x / 11,
+        final float partWidth = wSize.x / 11,
                 partHeight = wSize.y / 11;
 
         DisplayedImagePart img;
@@ -72,8 +72,8 @@ public class RoomEntity extends Drawer {
         private int row = -1,
                 col = -1;
 
-        public DisplayedImagePart(int row, int col, int w, int h, String fileName) {
-            super(col * w + w/2, row * h + h/2, w, h, fileName);
+        public DisplayedImagePart(int row, int col, float w, float h, String fileName) {
+            super((int)(col * w + w/2), (int)(row * h + h/2), (int)w, (int)h, fileName);
             this.row = row;
             this.col = col;
         }
@@ -83,4 +83,9 @@ public class RoomEntity extends Drawer {
         return levelParts;
     }
 
+    public Vector2i getPartSize() {
+        Vector2i wSize = getWindow().getSize();
+
+        return new Vector2i(wSize.x / 11, wSize.y / 11);
+    }
 }

@@ -7,8 +7,7 @@ import org.jsfml.system.Vector2i;
  * @date 19/02/16.
  */
 public interface MovingEntity {
-    Vector2i speed = new Vector2i(0, 0);
-    float multiplier = 1;
+
 
     /**
      * Implementation of move function. Will check for collisions if child implements InteractingEntity and then move if possible

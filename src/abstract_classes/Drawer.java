@@ -42,12 +42,7 @@ public abstract class Drawer extends Entity {
                 }
 
                 if (event.type == Event.Type.KEY_PRESSED) {
-
                     for (Entity entity : entities) {
-                        int j;
-                        if (entity.getName().equals("Player"))
-                            j = 8;
-
                         if (entity instanceof KeyListener) {
                             ((KeyListener) entity).keyPressed(event);
                         }
