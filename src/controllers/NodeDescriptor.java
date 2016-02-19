@@ -27,10 +27,12 @@ public class NodeDescriptor extends Menu {
     private MapMenu mapMenu;
     //ArrayList<ClickListener> clickListeners = new ArrayList<>();
     private static Image smallMenu;
+	private String difficulty;
     
     public NodeDescriptor(String name, String difficulty, Node n, int width, int height, MapMenu map) {
         super(name);
         this.mapMenu = map;
+		this.difficulty = difficulty;
 
         RenderWindow w = getWindow();
         final Vector2i windowSize = new Vector2i(width, height);
@@ -54,14 +56,18 @@ public class NodeDescriptor extends Menu {
         addEntity(new Message(centerX, centerY - 55, 0, name, Color.BLACK, 10)); //title
 
         Color txtCol;
-        if (difficulty.equals("Easy")){
-            txtCol = new Color(0, 153, 0);
-        } else if (difficulty.equals("Medium")){
-            txtCol = new Color(255, 51, 0);
-        } else {
-            txtCol = Color.RED;
-        }
-        addEntity(new Message(centerX, centerY - 5, 0, difficulty, txtCol, 15));
+		switch (this.difficulty) {
+			case "Easy":
+				txtCol = new Color(0, 153, 0);
+				break;
+			case "Medium":
+				txtCol = new Color(255, 51, 0);
+				break;
+			default:
+				txtCol = Color.RED;
+				break;
+		}
+        addEntity(new Message(centerX, centerY - 5, 0, this.difficulty, txtCol, 15));
 
         Button btnClose = new Button(centerX - 50, centerY + 35, 30, 30, "RED", 200 , "<", 15 );
         btnClose.addClickListener(this);
@@ -79,8 +85,8 @@ public class NodeDescriptor extends Menu {
             if (button.getName().equals("PLAY")) {
                 this.unload();
                 mapMenu.unload();
-                //blash
-                new Level();
+
+                new Level(this.getName(), difficulty);
 
                 System.out.println("Play clicked");
             }
