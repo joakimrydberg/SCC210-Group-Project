@@ -7,18 +7,20 @@ import java.util.Random;
  */
 public class Level /*extends Drawer  TODO josh messing with your code, see room entity. (feel free to put this back in) */ {
 
-	private String levelID;
-	private Room[][] rooms = new Room[10][10];
+	private String levelName = "";
+	private String difficulty;
 	private int numberOfRooms = 0;
 	private int maxRooms = 10;
-	private Room startRoom;
+	private Room[][] rooms = new Room[10][10];
+	private Room startRoom = new Room();
 	private Room endRoom;
 	private Room currentRoom;
 
-	public Level() {
+	public Level(String name, String diff) {
 		//super("Level " + id);
 
-		this.levelID = "";
+		this.levelName = name;
+		this.difficulty = diff;
 
 		for (int i = 0; i < 10; i++){
 			for (int j = 0; j < 10; j++){
@@ -26,6 +28,7 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 			}
 		}
 
+/*
 		startRoom = (Room)Driver.getDrawer(null, Room.class);
 
 		try {
@@ -33,15 +36,22 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+*/
 
-
+		startRoom.create("test_level2");
 		rooms[3][5] = startRoom;
 		currentRoom = startRoom;
 
 		createLayout(4, 5);
 
-		startRoom.create("test_level");
-		startRoom.load();
+/*
+		currentRoom.load();
+*/
+
+		Room testRoom = new Room();
+		testRoom.create("test_level2");
+		testRoom.load();
+
 	}
 
 	private void createLayout(int x, int y){
