@@ -1,5 +1,6 @@
 package components.mobs;
 
+import game.Room;
 import interfaces.MovementListener;
 
 /**
@@ -8,7 +9,7 @@ import interfaces.MovementListener;
  */
 public abstract class Enemy extends Mob implements MovementListener {
     private Player player;
-    public Enemy(Player player) {
+    public Enemy(Room room, Player player) {
         super( 200  /*getWindow().getSize().x + (new Random().nextInt() % (getWindow().getSize().x / 4))*/,
                 200 /*getWindow().getSize().y + (new Random().nextInt() % (getWindow().getSize().y / 4))*/,
                 64,
@@ -28,4 +29,6 @@ public abstract class Enemy extends Mob implements MovementListener {
     public Player getPlayer() {
         return player;
     }
+
+
 }

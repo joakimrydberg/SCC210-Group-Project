@@ -11,20 +11,18 @@ import java.awt.image.BufferedImage;
  * @author josh
  * @date 20/02/16.
  */
-public class EnemyWarrior extends Enemy {
+public class DeathBall extends Enemy {
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,
             SPEEDLIMIT = 5;
-    private int tempDir = 0;
 
-    public EnemyWarrior(Room room, Player player) {
+    public DeathBall(Room room, Player player) {
         super(room, player);
 
     }
 
     @Override
     public void onMove(MovingEntity mover) {
-
         final int playerX = getPlayer().getCenterX(),
                 playerY = getPlayer().getCenterY();
 
@@ -49,7 +47,7 @@ public class EnemyWarrior extends Enemy {
         if (c.equals("mage")) {
             System.out.println("mage selected");
             setSpriteSheet(SpriteSheetLoad.loadSprite("MageMaleSheet"));
-            setCharacterStill(tempDir);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
+            setCharacterStill(new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet())});            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
             // currAnimation = warriorWalk;
             BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
 
@@ -62,7 +60,7 @@ public class EnemyWarrior extends Enemy {
         if (c.equals("warrior")) {
             System.out.println("warrior selected");
             setSpriteSheet(SpriteSheetLoad.loadSprite("WarriorMaleSheet"));
-            setCharacterStill(tempDir);
+            setCharacterStill(new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet())});
             BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
 
             super.stop(); //@see Mob , must be before we set the frames
@@ -75,7 +73,7 @@ public class EnemyWarrior extends Enemy {
         if (c.equals("ranger")) {
             System.out.println("ranger selected");
             setSpriteSheet(SpriteSheetLoad.loadSprite("RangerMaleSheet"));
-            setCharacterStill(tempDir);
+            setCharacterStill(new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet())});
             BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
 
 

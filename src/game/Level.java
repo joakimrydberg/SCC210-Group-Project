@@ -12,7 +12,7 @@ public class Level {
 	private int numberOfRooms = 0;
 	private int maxRooms = 10;
 	private Room[][] rooms = new Room[10][10];
-	private Room startRoom = new Room();
+	private Room startRoom = new Room(this);
 	private Room endRoom;
 	private Room currentRoom;
 
@@ -37,7 +37,7 @@ public class Level {
 		currentRoom.load();
 */
 
-		Room testRoom = new Room();
+		Room testRoom = new Room(this);
 		testRoom.create("test_level"); //renamed
 		testRoom.load();
 

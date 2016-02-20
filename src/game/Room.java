@@ -18,9 +18,10 @@ public class Room extends RoomEntity implements MovementListener {
     private String roomID;
     private ArrayList<String> potentialDoors = new ArrayList<>();
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
+    private Level level;
 
-    public Room() {
-
+    public Room(Level level) {
+        this.level = level;
     }
 
     public void create(String roomID) {
