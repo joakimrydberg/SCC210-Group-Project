@@ -27,7 +27,7 @@ public class Level {
 		}
 
 
-		startRoom.create("test_level2");
+		startRoom.create("test_level"); //renamed
 		rooms[3][5] = startRoom;
 		currentRoom = startRoom;
 
@@ -38,7 +38,7 @@ public class Level {
 */
 
 		Room testRoom = new Room();
-		testRoom.create("test_level2");
+		testRoom.create("test_level"); //renamed
 		testRoom.load();
 
 	}

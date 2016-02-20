@@ -1,7 +1,7 @@
 package game;
 
-import components.Player;
 import components.RoomEntity;
+import components.mobs.Player;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;

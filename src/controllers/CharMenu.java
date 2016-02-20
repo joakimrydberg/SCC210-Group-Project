@@ -7,6 +7,7 @@ package controllers;
 
 import abstract_classes.Entity;
 import components.*;
+import components.mobs.Player;
 import game.SpriteSheetLoad;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
