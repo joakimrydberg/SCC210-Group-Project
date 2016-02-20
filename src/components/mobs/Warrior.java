@@ -10,7 +10,8 @@ import java.awt.image.BufferedImage;
  */
 public class Warrior extends Player implements KeyListener {
 
-    public Warrior(){
+
+     public Warrior(){
 
         super();
 
@@ -53,23 +54,29 @@ public class Warrior extends Player implements KeyListener {
 
     @Override
     public void keyPressed(org.jsfml.window.event.KeyEvent event) {
+
         switch(event.key){
 
             case SPACE:
-                if(rightPressed){
+
+                if(tempDir == 2 && !held){
                     attack(ATTACK_RIGHT);
+                    held = true;
                     break;
                 }
-                if(leftPressed){
+                if(tempDir == 1 && !held){
                     attack(ATTACK_LEFT);
+                    held = true;
                     break;
                 }
-                if(upPressed){
+                if(tempDir == 3 && !held){
                     attack(ATTACK_UP);
+                    held = true;
                     break;
                 }
-                else{
+                else if (tempDir == 0 && !held){
                     attack(ATTACK_DOWN);
+                    held = true;
                     break;
                 }
         }
@@ -92,8 +99,8 @@ public class Warrior extends Player implements KeyListener {
             setAnimation(ANIMATE_LEFT);
         } else if (upPressed){
             setAnimation(ANIMATE_UP);
-         }
-
+        }
+        held = false;
 
     }
 }
