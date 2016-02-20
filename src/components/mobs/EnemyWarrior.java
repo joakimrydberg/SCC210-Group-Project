@@ -25,7 +25,6 @@ public class EnemyWarrior extends Enemy {
         BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
 
         super.stop(); //@see Mob , must be before we set the frames
-
         this.setFrames(mageA);
 
         this.start();
@@ -40,6 +39,7 @@ public class EnemyWarrior extends Enemy {
 
         int newX = playerX - this.getCenterX();
         int newY = playerY - this.getCenterY();
+
 
 
         new Thread(() -> {
