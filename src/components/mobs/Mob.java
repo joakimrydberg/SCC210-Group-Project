@@ -5,15 +5,16 @@ import game.SpriteSheetLoad;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
+import tools.DebugPrinter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class Mob extends Animation implements MovingEntity {
     public final static int ANIMATE_RIGHT = 1,
-                            ANIMATE_LEFT = 2,
-                            ANIMATE_UP = 3,
-                            ANIMATE_DOWN = 4;
+            ANIMATE_LEFT = 2,
+            ANIMATE_UP = 3,
+            ANIMATE_DOWN = 4;
     private Vector2i speed = new Vector2i(0, 0);
     private float multiplier = 1;
     ArrayList<MovementListener> listeners = new ArrayList<>();
@@ -24,7 +25,7 @@ public abstract class Mob extends Animation implements MovingEntity {
     public int Endurance = 0;
     public int Vitality = 0;
     public int Health = 100;
-   // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
+    // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     private BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
     // public static Animation currAnimation;
@@ -71,23 +72,25 @@ public abstract class Mob extends Animation implements MovingEntity {
         { //moving
             final int newX = (int)(getCenterX() + speed.x * multiplier), newY = (int)(getCenterY() + speed.y * multiplier);
 
-            if (newX == getCenterX() && newY == getCenterY())
-                return;
 
-            //checking all the MovementListeners are 'okay' with the proposed move
-            boolean move = true;
-            for (MovementListener listener : listeners) {
-                move = listener.isMoveAcceptable(newX, newY + getHeight() / 6, getWidth() / 2, getHeight() /4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
-                        && move;                                             // a little weird but for reasons.
+            if (newX != getCenterX() || newY != getCenterY()) {
+
+                //checking all the MovementListeners are 'okay' with the proposed move
+                boolean move = true;
+                for (MovementListener listener : listeners) {
+                    move = listener.isMoveAcceptable(newX, newY + getHeight() / 6, getWidth() / 2, getHeight() / 4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
+                            && move;                                             // a little weird but for reasons.
+                }
+
+                if (move)
+                    this.onMoveAccepted(newX, newY);
+                else
+                    this.onMoveRejected(newX, newY);
+
+                draw();  //drawing to the screen
             }
-
-            if (move)
-                this.onMoveAccepted(newX, newY);
-            else
-                this.onMoveRejected(newX, newY);
-
-            draw();  //drawing to the screen
         }
+
 
 /*        { //animating TODO needs fixing
             currAnimation.stop();
@@ -120,22 +123,18 @@ public abstract class Mob extends Animation implements MovingEntity {
      * @param speed - Vector2i representing the speed of the entity in the x and y planes
      */
     @Override
-    public synchronized void setSpeed(Vector2i speed) {
-        // attempt to limit the diagonal speed will return to if we have time
-//        if (Math.sqrt(speed.x * speed.x + speed.y + speed.y) > 5) {
-//            speed = new Vector2i(speed.x * ((speed.x * speed.x) / (speed.x * speed.x + speed.y + speed.y)),
-//                    speed.y * ((speed.y * speed.y) / (speed.x * speed.x + speed.y + speed.y)));
-//        }
+    public void setSpeed(Vector2i speed) {
+        double  xSqrd = Math.pow(speed.x, 2),
+                ySqrd = Math.pow(speed.y, 2),
+                hypotenuse = Math.sqrt(xSqrd + ySqrd);
 
-        if (Math.abs(speed.x) > 5)
-            speed = new Vector2i(0, speed.y);    //shouldn't need but it's in now anyway
 
-        if (Math.abs(speed.y) > 5)
-            speed = new Vector2i(speed.x, 0);    //shouldn't need but it's in now anyway
+        this.speed = new Vector2i(
+                (int) (  (speed.x / hypotenuse) * 5 ),
+                (int) (  (speed.y / hypotenuse) * 5 )
+        );
 
-        this.speed = speed;
-
-        System.out.println("Speed.. X: " + speed.x + ",  Y: " + speed.y);
+        DebugPrinter.print(this, "Speed.. X: " + this.speed.x + ",  Y: " + this.speed.y);
 
     }
 
@@ -196,8 +195,8 @@ public abstract class Mob extends Animation implements MovingEntity {
         }
     }
 
-    @Override
-    public void stop() {
+
+    public void stopCharacter() {
         setFrames(characterStill);
 
         super.stop();
@@ -210,7 +209,6 @@ public abstract class Mob extends Animation implements MovingEntity {
     public BufferedImage getTheSpriteSheet() {
         return theSpriteSheet;
     }
-
 
 }
 

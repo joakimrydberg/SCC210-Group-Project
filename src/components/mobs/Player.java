@@ -118,7 +118,7 @@ public class Player extends Mob implements KeyListener {
                 setSpeed(new Vector2i(0, getSpeed().y));
 
                 if (getSpeed().x == 0 && getSpeed().y == 0) {
-                    super.stop(); //@see Mob
+                    super.stopCharacter(); //@see Mob
                 }
 
                 break;
@@ -127,7 +127,7 @@ public class Player extends Mob implements KeyListener {
                 setSpeed(new Vector2i(getSpeed().x, 0));
 
                 if (getSpeed().x == 0 && getSpeed().y == 0) {
-                    super.stop(); //@see Mob
+                    super.stopCharacter(); //@see Mob
                 }
 
                 break;
@@ -136,7 +136,7 @@ public class Player extends Mob implements KeyListener {
                 setSpeed(new Vector2i(0, getSpeed().y));
 
                 if (getSpeed().x == 0 && getSpeed().y == 0) {
-                    super.stop(); //@see Mob
+                    super.stopCharacter(); //@see Mob
                 }
                 break;
             case DOWN:
@@ -144,7 +144,7 @@ public class Player extends Mob implements KeyListener {
                 setSpeed(new Vector2i(getSpeed().x, 0));
 
                 if (getSpeed().x == 0 && getSpeed().y == 0) {
-                    super.stop(); //@see Mob
+                    super.stopCharacter(); //@see Mob
                 }
 
                 break;
@@ -166,6 +166,8 @@ public class Player extends Mob implements KeyListener {
     public void onMoveRejected(int newX, int newY) {
         return;    //do nothing but don't remove (will be used for the bad guys)
     }
+
+
 }
 
 

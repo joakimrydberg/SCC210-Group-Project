@@ -1,6 +1,7 @@
 package game;
 
 import components.RoomEntity;
+import components.mobs.EnemyWarrior;
 import components.mobs.Player;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
@@ -34,9 +35,16 @@ public class Room extends RoomEntity implements MovementListener {
         }
         Player p = new Player();
         p.setClass("ranger");
+
+        EnemyWarrior enemyWarrior = new EnemyWarrior(p);
+        enemyWarrior.setClass("warrior");
+
         p.addMovementListener(this);
         create(tiles);
+
         addEntity(p);
+        addEntity(enemyWarrior);
+
         locatePotentialDoors();
     }
 
