@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * @author Joakim Rydberg.
  */
-public class Level /*extends Drawer  TODO josh messing with your code, see room entity. (feel free to put this back in) */ {
+public class Level {
 
 	private String levelName = "";
 	private String difficulty;
@@ -17,8 +17,6 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 	private Room currentRoom;
 
 	public Level(String name, String diff) {
-		//super("Level " + id);
-
 		this.levelName = name;
 		this.difficulty = diff;
 
@@ -28,15 +26,6 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 			}
 		}
 
-/*
-		startRoom = (Room)Driver.getDrawer(null, Room.class);
-
-		try {
-			startRoom = (startRoom == null) ? (Room) Room.class.newInstance() : startRoom;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-*/
 
 		startRoom.create("test_level2");
 		rooms[3][5] = startRoom;

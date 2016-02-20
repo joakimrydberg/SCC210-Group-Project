@@ -44,7 +44,7 @@ public class Room extends RoomEntity implements MovementListener {
         return potentialDoors;
     }
 
-    private void locatePotentialDoors(){
+    private void locatePotentialDoors(){  //TODO make work with other positions
         LevelPart[][] levelParts = getTiles();
 
         if(levelParts[0][6].getType().equals("Door")) {
@@ -76,15 +76,15 @@ public class Room extends RoomEntity implements MovementListener {
 
         Vector2i partSize = getPartSize();
         LevelPart part;
-        int partLeft, partRight, partBottom, partTop;
+
         for (int i = 0; i < 11; i++){
             for (int j = 0; j < 11; j++) {
                 part = getPart(i, j);
 
                 if (part.getType().equals("Wall")) {
-                    partLeft = j * partSize.x;
-                    partRight = (j + 1) * partSize.x;
-                    partBottom = (i + 1) * partSize.y;
+                    final int partLeft = j * partSize.x,
+                    partRight = (j + 1) * partSize.x,
+                    partBottom = (i + 1) * partSize.y,
                     partTop = i * partSize.y;
 
                     //col * w + w/2, row * h + h/2
@@ -93,8 +93,7 @@ public class Room extends RoomEntity implements MovementListener {
                             && right > partLeft
                             && bottom > partTop
                             && top < partBottom) {
-            /*            if (RectA.X1 < RectB.X2 && RectA.X2 > RectB.X1 &&
-                                RectA.Y1 < RectB.Y2 && RectA.Y2 > RectB.Y1)*/
+
                             return false;
                     }
                 }
