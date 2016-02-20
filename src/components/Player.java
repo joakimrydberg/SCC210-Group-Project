@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * Created by millsr3 on 16/02/2016.
  */
 public class Player extends Animation implements KeyListener, MovingEntity {
+
     private Vector2i speed = new Vector2i(0, 0);
     private float multiplier = 1;
     ArrayList<MovementListener> listeners = new ArrayList<>();
@@ -32,6 +33,8 @@ public class Player extends Animation implements KeyListener, MovingEntity {
    // public static Animation currAnimation;
 
     public Player() {
+
+
         super(200, 200, 64, 128, new BufferedImage[0], 1);
 
 
@@ -110,16 +113,17 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     @Override
     public void keyPressed(org.jsfml.window.event.KeyEvent event) {
        // System.out.println("Pressed");
-        Keyboard.Key key = event.key;
-        if(key == Keyboard.Key.RIGHT){
-            setSpeed(new Vector2i(5, 0));
-        } else if(key == Keyboard.Key.UP){
-            setSpeed(new Vector2i(0, -5));
-        } else if(key == Keyboard.Key.LEFT){
-            setSpeed(new Vector2i(-5, 0));
 
-        } else if(key == Keyboard.Key.DOWN){
-            setSpeed(new Vector2i(0, 5)); //
+        Keyboard.Key key = event.key;
+        switch (key){
+            case RIGHT: setSpeed(new Vector2i(5, 0));
+                break;
+            case UP: setSpeed(new Vector2i(0, -5));
+                break;
+            case LEFT: setSpeed(new Vector2i(-5, 0));
+                break;
+            case DOWN: setSpeed(new Vector2i(0, 5));
+                break;
         }
 
 
