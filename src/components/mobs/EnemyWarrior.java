@@ -19,6 +19,16 @@ public class EnemyWarrior extends Enemy {
 
     public EnemyWarrior(Room room, Player player) {
         super(room, player);
+        setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMaleSheet"));
+        setCharacterStill(tempDir);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
+        // currAnimation = warriorWalk;
+        BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
+
+        super.stop(); //@see Mob , must be before we set the frames
+
+        this.setFrames(mageA);
+
+        this.start();
 
     }
 
@@ -43,52 +53,6 @@ public class EnemyWarrior extends Enemy {
 
     }
 
-
-    public void setClass(String c) {  //TODO remove completely and set the sprite otherwise (only for enemies, this is good for player)
-        //classType = c;
-
-        if (c.equals("mage")) {
-            System.out.println("mage selected");
-            setSpriteSheet(SpriteSheetLoad.loadSprite("MageMaleSheet"));
-            setCharacterStill(tempDir);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
-            // currAnimation = warriorWalk;
-            BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
-
-            super.stop(); //@see Mob , must be before we set the frames
-
-            this.setFrames(mageA);
-
-            this.start();
-        }
-        if (c.equals("warrior")) {
-            System.out.println("warrior selected");
-            setSpriteSheet(SpriteSheetLoad.loadSprite("WarriorMaleSheet"));
-            setCharacterStill(tempDir);
-            BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
-
-            super.stop(); //@see Mob , must be before we set the frames
-
-            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
-            this.setFrames(warrior);
-
-            this.start();
-        }
-        if (c.equals("ranger")) {
-            System.out.println("ranger selected");
-            setSpriteSheet(SpriteSheetLoad.loadSprite("RangerMaleSheet"));
-            setCharacterStill(tempDir);
-            BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
-
-
-            super.stop(); //@see Mob , must be before we set the frames
-
-            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
-            this.setFrames(ranger);
-
-            this.start();
-        }
-
-    }
 
     @Override
     public void onMoveAccepted(int newX, int newY) {
