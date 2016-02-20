@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
  */
 public class Player extends Mob implements KeyListener {
     private float multiplier = 1;
-    private String classType;
+    public static String classType;
     private int tempDir;
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,

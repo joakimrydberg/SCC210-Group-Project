@@ -35,9 +35,9 @@ public class Room extends RoomEntity implements MovementListener {
             }
         }
         Player p = new Player();
-        p.setClass("ranger");
+        p.setClass(Player.classType);
 
-        EnemyWarrior enemyWarrior = new EnemyWarrior(p);
+        EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
         enemyWarrior.setClass("warrior");
 
         p.addMovementListener(this);

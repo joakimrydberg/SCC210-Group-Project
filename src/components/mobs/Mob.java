@@ -135,7 +135,14 @@ public abstract class Mob extends Animation implements MovingEntity {
         );
 
         DebugPrinter.print(this, "Speed.. X: " + this.speed.x + ",  Y: " + this.speed.y);
-
+        /*if(this.speed.x >0)
+            {setAnimation(ANIMATE_RIGHT);}
+        if(this.speed.y >0)
+            {setAnimation(ANIMATE_DOWN);}
+        if(this.speed.x <0)
+            {setAnimation(ANIMATE_LEFT);}
+        if(this.speed.y <0)
+            {setAnimation(ANIMATE_UP);}*/
     }
 
     /**
@@ -178,19 +185,19 @@ public abstract class Mob extends Animation implements MovingEntity {
     public void setAnimation(int dir) {
         switch (dir) {
             case ANIMATE_RIGHT:
-                BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet)};
+                BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(2, 2, theSpriteSheet)};
                 this.setFrames(right);
                 break;
             case ANIMATE_LEFT:
-                BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet)};
+                BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(2, 1, theSpriteSheet)};
                 this.setFrames(left);
                 break;
             case ANIMATE_UP:
-                BufferedImage[] up = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet)};
+                BufferedImage[] up = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(2, 3, theSpriteSheet)};
                 this.setFrames(up);
                 break;
             case ANIMATE_DOWN:
-                BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet)};
+                BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(2, 0, theSpriteSheet)};
                 this.setFrames(down);
                 break;
         }
@@ -210,6 +217,7 @@ public abstract class Mob extends Animation implements MovingEntity {
     public BufferedImage getTheSpriteSheet() {
         return theSpriteSheet;
     }
+
 
 }
 
