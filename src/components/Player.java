@@ -152,11 +152,8 @@ public class Player extends Animation implements KeyListener, MovingEntity {
             case RIGHT:
                 rightPressed = false;
                 BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet)};
-
                 this.setFrames(right);
-                this.stop();
 
-                this.start();
                 setSpeed(new Vector2i(speed.x - MOVEBY, speed.y));
 
                 break;
@@ -164,33 +161,29 @@ public class Player extends Animation implements KeyListener, MovingEntity {
                 upPressed = false;
                 setSpeed(new Vector2i(speed.x, speed.y + MOVEBY));
                 BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet)};
-
                 this.setFrames(mageA);
-                this.stop();
 
-                this.start();
                 break;
             case LEFT:
                 leftPressed = false;
                 setSpeed(new Vector2i(speed.x + MOVEBY, speed.y));
                 BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1,1, theSpriteSheet)};
-
                 this.setFrames(left);
-                this.stop();
 
-                this.start();
                 break;
             case DOWN:
                 downPressed = false;
                 setSpeed(new Vector2i(speed.x, speed.y - MOVEBY));
                 BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet)};
-
                 this.setFrames(down);
-                this.stop();
 
-                this.start();
                 break;
         }
+
+
+        this.stop();
+
+        this.start();
 
 
         //this.speed = new Vector2i(0,0);
