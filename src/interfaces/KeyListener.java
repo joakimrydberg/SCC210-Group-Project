@@ -1,6 +1,5 @@
 package interfaces;
 
-import org.jsfml.window.event.Event;
 import org.jsfml.window.event.KeyEvent;
 
 /**
@@ -10,5 +9,5 @@ import org.jsfml.window.event.KeyEvent;
 public interface KeyListener {
     void keyPressed(KeyEvent event);
 
-    void keyReleased(Event event);
+    void keyReleased(KeyEvent event);
 }

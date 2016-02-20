@@ -52,7 +52,7 @@ public abstract class Drawer extends Entity {
                 if (event.type == Event.Type.KEY_RELEASED) {
                     for (Entity entity : entities) {
                         if (entity instanceof KeyListener) {
-                            ((KeyListener) entity).keyReleased(event);
+                            ((KeyListener) entity).keyReleased(event.asKeyEvent());
                         }
                     }
                 }
