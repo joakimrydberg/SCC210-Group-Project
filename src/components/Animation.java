@@ -45,10 +45,12 @@ public class Animation extends Entity {
 
     }
 
-    public void setFrames(BufferedImage[] frames) {
+    public void setFrames(BufferedImage[] framess) {
 
-        for (int i = 0; i < frames.length; i++) {
-            addFrame(frames[i], 64, 128, 1);
+        frames.clear();
+
+        for (int i = 0; i < framess.length; i++) {
+            addFrame(framess[i], 64, 128, 1);
         }
         this.totalFrames = this.frames.size();
     }

@@ -145,6 +145,51 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     @Override
     public void keyReleased(Event event) {
         setSpeed(new Vector2i(0, 0));
+        Keyboard.Key key = event.asKeyEvent().key;
+
+        switch (key) {
+            case RIGHT:
+                BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet)};
+
+                this.setFrames(right);
+                this.stop();
+
+                this.start();
+                break;
+
+
+
+            case UP:
+
+                BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet)};
+
+                this.setFrames(mageA);
+                this.stop();
+
+                this.start();
+                break;
+            case LEFT:
+
+                BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1,1, theSpriteSheet)};
+
+                this.setFrames(left);
+                this.stop();
+
+                this.start();
+                break;
+
+            case DOWN:
+                BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet)};
+
+                this.setFrames(down);
+                this.stop();
+
+                this.start();
+                break;
+
+
+        }
+
     }
 
     public boolean compareKeys(org.jsfml.window.event.KeyEvent keyEvent, int keyCode) { // when the docs are bock up can someone who doesn't hate jsfml with a passion find a better way of doing this? (though this works so who even cares at this point)
