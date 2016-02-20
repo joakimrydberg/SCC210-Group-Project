@@ -4,8 +4,6 @@ import abstract_classes.Entity;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
-import components.mobs.Ranger;
-import components.mobs.Warrior;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
@@ -34,7 +32,7 @@ public class Room extends RoomEntity implements MovementListener {
         this.roomID = roomID;
         ArrayList<Object> objects = FileHandling.readFile(LEVEL_ID_DIR + roomID);
         LevelPart[][] tiles = new LevelPart[11][11];
-
+//
         for (int i = 0; i < 11; i++){
             for (int j = 0; j < 11; j++){
                 tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
