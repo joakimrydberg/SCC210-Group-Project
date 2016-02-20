@@ -119,11 +119,12 @@ public class Player extends Animation implements KeyListener, MovingEntity {
             setSpeed(new Vector2i(-5, 0));
 
         } else if(key == Keyboard.Key.DOWN){
-            setSpeed(new Vector2i(0, 5));
+            setSpeed(new Vector2i(0, 5)); //
         }
 
 
 
+        //commented to be a bit nicer
 
         //this would look so pretty as a switch state
         /*if (compareKeys(event, KeyEvent.VK_DOWN)) {
