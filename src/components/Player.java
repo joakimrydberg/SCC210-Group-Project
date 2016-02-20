@@ -5,6 +5,7 @@ import interfaces.KeyListener;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 
 import java.awt.event.KeyEvent;
@@ -108,10 +109,24 @@ public class Player extends Animation implements KeyListener, MovingEntity {
 
     @Override
     public void keyPressed(org.jsfml.window.event.KeyEvent event) {
-        System.out.println("Pressed");
+       // System.out.println("Pressed");
+        Keyboard.Key key = event.key;
+        if(key == Keyboard.Key.RIGHT){
+            setSpeed(new Vector2i(5, 0));
+        } else if(key == Keyboard.Key.UP){
+            setSpeed(new Vector2i(0, -5));
+        } else if(key == Keyboard.Key.LEFT){
+            setSpeed(new Vector2i(-5, 0));
+
+        } else if(key == Keyboard.Key.DOWN){
+            setSpeed(new Vector2i(0, 5));
+        }
+
+
+
 
         //this would look so pretty as a switch state
-        if (compareKeys(event, KeyEvent.VK_DOWN)) {
+        /*if (compareKeys(event, KeyEvent.VK_DOWN)) {
             setSpeed(new Vector2i(0, 5));
         } else if (compareKeys(event, KeyEvent.VK_UP)) {
             setSpeed(new Vector2i(0, -5));
@@ -119,7 +134,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
             setSpeed(new Vector2i(-5, 0));
         } else if (compareKeys(event, KeyEvent.VK_RIGHT)) {
             setSpeed(new Vector2i(5, 0));
-        } //
+        } //*/
     }
 
     @Override
