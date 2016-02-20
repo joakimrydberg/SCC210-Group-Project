@@ -36,7 +36,6 @@ public class AnimationFrame {
         }
 
 
-
         Sprite sprite = new Sprite(t);
 
         Vector2i imgSize = t.getSize();

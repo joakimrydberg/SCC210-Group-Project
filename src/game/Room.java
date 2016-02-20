@@ -1,5 +1,6 @@
 package game;
 
+import abstract_classes.Entity;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
@@ -21,6 +22,7 @@ public class Room extends RoomEntity implements MovementListener {
     private ArrayList<String> potentialDoors = new ArrayList<>();
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
+
 
     public Room(Level level) {
         this.level = level;
