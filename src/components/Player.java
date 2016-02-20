@@ -6,9 +6,7 @@ import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Keyboard;
-import org.jsfml.window.event.Event;
 
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -16,7 +14,6 @@ import java.util.ArrayList;
  * Created by millsr3 on 16/02/2016.
  */
 public class Player extends Animation implements KeyListener, MovingEntity {
-
     private Vector2i speed = new Vector2i(0, 0);
     private float multiplier = 1;
     ArrayList<MovementListener> listeners = new ArrayList<>();
@@ -30,11 +27,15 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     static BufferedImage theSpriteSheet;
     public static BufferedImage[] characterStill;
-   // public static Animation currAnimation;
+    // public static Animation currAnimation;
+    private final static int MOVEBY = 5,
+            SPEEDLIMIT = 5;
+    private boolean upPressed = false,
+            downPressed = false,
+            leftPressed = false,
+            rightPressed = false;
 
     public Player() {
-
-
         super(200, 200, 64, 128, new BufferedImage[0], 1);
 
 
@@ -48,7 +49,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
             theSpriteSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
             characterStill = new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, theSpriteSheet)};
             //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
-           // currAnimation = warriorWalk;
+            // currAnimation = warriorWalk;
             BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(2, 0, theSpriteSheet)};
 
             this.setFrames(mageA);
@@ -94,7 +95,6 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-up
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
-
     }*/
 
     public BufferedImage[] charAttack(BufferedImage character, int dir)
@@ -112,55 +112,57 @@ public class Player extends Animation implements KeyListener, MovingEntity {
 
     @Override
     public void keyPressed(org.jsfml.window.event.KeyEvent event) {
-       // System.out.println("Pressed");
+        // System.out.println("Pressed");
 
         Keyboard.Key key = event.key;
         switch (key){
-            case RIGHT: setSpeed(new Vector2i(5, 0));
+            case RIGHT:
+                if (!rightPressed) {
+                    rightPressed = true;
+                    setSpeed(new Vector2i(speed.x + MOVEBY, speed.y));
+                }
                 break;
-            case UP: setSpeed(new Vector2i(0, -5));
+            case UP:
+                if (!upPressed) {
+                    upPressed = true;
+                    setSpeed(new Vector2i(speed.x, speed.y - MOVEBY));
+                }
                 break;
-            case LEFT: setSpeed(new Vector2i(-5, 0));
+            case LEFT:
+                if (!leftPressed) {
+                    leftPressed = true;
+                    setSpeed(new Vector2i(speed.x - MOVEBY, speed.y));
+                }
                 break;
-            case DOWN: setSpeed(new Vector2i(0, 5));
+            case DOWN:
+                if (!downPressed) {
+                    downPressed = true;
+                    setSpeed(new Vector2i(speed.x, speed.y + MOVEBY));
+                }
                 break;
         }
 
-
-
-        //commented to be a bit nicer
-
-        //this would look so pretty as a switch state
-        /*if (compareKeys(event, KeyEvent.VK_DOWN)) {
-            setSpeed(new Vector2i(0, 5));
-        } else if (compareKeys(event, KeyEvent.VK_UP)) {
-            setSpeed(new Vector2i(0, -5));
-        } else if (compareKeys(event, KeyEvent.VK_LEFT)) {
-            setSpeed(new Vector2i(-5, 0));
-        } else if (compareKeys(event, KeyEvent.VK_RIGHT)) {
-            setSpeed(new Vector2i(5, 0));
-        } //*/
     }
 
     @Override
-    public void keyReleased(Event event) {
-        setSpeed(new Vector2i(0, 0));
-        Keyboard.Key key = event.asKeyEvent().key;
-
-        switch (key) {
+    public void keyReleased(org.jsfml.window.event.KeyEvent event) {
+        //this would look so pretty as a switch state
+        Keyboard.Key key = event.key;
+        switch (key){
             case RIGHT:
+                rightPressed = false;
                 BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet)};
 
                 this.setFrames(right);
                 this.stop();
 
                 this.start();
+                setSpeed(new Vector2i(speed.x - MOVEBY, speed.y));
+
                 break;
-
-
-
             case UP:
-
+                upPressed = false;
+                setSpeed(new Vector2i(speed.x, speed.y + MOVEBY));
                 BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet)};
 
                 this.setFrames(mageA);
@@ -169,7 +171,8 @@ public class Player extends Animation implements KeyListener, MovingEntity {
                 this.start();
                 break;
             case LEFT:
-
+                leftPressed = false;
+                setSpeed(new Vector2i(speed.x + MOVEBY, speed.y));
                 BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1,1, theSpriteSheet)};
 
                 this.setFrames(left);
@@ -177,8 +180,9 @@ public class Player extends Animation implements KeyListener, MovingEntity {
 
                 this.start();
                 break;
-
             case DOWN:
+                downPressed = false;
+                setSpeed(new Vector2i(speed.x, speed.y - MOVEBY));
                 BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet)};
 
                 this.setFrames(down);
@@ -186,16 +190,12 @@ public class Player extends Animation implements KeyListener, MovingEntity {
 
                 this.start();
                 break;
-
-
         }
 
-    }
 
-    public boolean compareKeys(org.jsfml.window.event.KeyEvent keyEvent, int keyCode) { // when the docs are bock up can someone who doesn't hate jsfml with a passion find a better way of doing this? (though this works so who even cares at this point)
-        return keyEvent.key.toString().equals(KeyEvent.getKeyText(keyCode).toUpperCase());
-    }
+        //this.speed = new Vector2i(0,0);
 
+    }
 
     /**
      * Implementation of move function. Will check for collisions if child implements InteractingEntity and then move if possible
@@ -210,16 +210,18 @@ public class Player extends Animation implements KeyListener, MovingEntity {
 
             //checking all the MovementListeners are 'okay' with the proposed move
             boolean move = true;
-            for (MovementListener listener : listeners) {  //must be at end of method
-                move = listener.isMoveAcceptable(newX, newY + getHeight() / 4, getWidth(), getHeight() / 2); //a little weird but for reasons.
-            }                                                                // It's so the top half of the player can overlap on the walls etc
+            for (MovementListener listener : listeners) {
+                move = listener.isMoveAcceptable(newX, newY + getHeight() / 6, getWidth() / 2, getHeight() /4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
+                        && move;                                             // a little weird but for reasons.
+            }
 
             if (move) {
                 //updating X and Y coordinates
                 setCenterX(newX);
                 setCenterY(newY);
             } else {
-                //if move isn't okay
+                //setCenterX(getCenterX() - (speed.x / MOVEBY) );
+                // setCenterY(getCenterY() - (speed.y / MOVEBY) );
             }
 
             draw();  //drawing to the screen
@@ -252,8 +254,23 @@ public class Player extends Animation implements KeyListener, MovingEntity {
      * @param speed - Vector2i representing the speed of the entity in the x and y planes
      */
     @Override
-    public void setSpeed(Vector2i speed) {
+    public synchronized void setSpeed(Vector2i speed) {
+        // attempt to limit the diagonal speed will return to if we have time
+//        if (Math.sqrt(speed.x * speed.x + speed.y + speed.y) > 5) {
+//            speed = new Vector2i(speed.x * ((speed.x * speed.x) / (speed.x * speed.x + speed.y + speed.y)),
+//                    speed.y * ((speed.y * speed.y) / (speed.x * speed.x + speed.y + speed.y)));
+//        }
+
+        if (Math.abs(speed.x) > 5)
+            speed = new Vector2i(0, speed.y);    //shouldn't need but it's in now anyway
+
+        if (Math.abs(speed.y) > 5)
+            speed = new Vector2i(speed.x, 0);    //shouldn't need but it's in now anyway
+
         this.speed = speed;
+
+        System.out.println("Speed.. X: " + speed.x + ",  Y: " + speed.y);
+
     }
 
     /**
