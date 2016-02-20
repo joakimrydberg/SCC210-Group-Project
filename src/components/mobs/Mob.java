@@ -148,7 +148,8 @@ public abstract class Mob extends Animation implements MovingEntity {
         return speed;
     }
 
-    public void setCharacterStill(BufferedImage[] characterStill) {
+    public void setCharacterStill(int dir) {
+        characterStill = new BufferedImage[]{SpriteSheetLoad.getSprite(0, dir, getTheSpriteSheet())};
         this.characterStill = characterStill;
     }
     /**
