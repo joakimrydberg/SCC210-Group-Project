@@ -1,7 +1,10 @@
 package abstract_classes;
 
+import components.mobs.Enemy;
+import components.mobs.Player;
 import game.Driver;
 import interfaces.Clickable;
+import interfaces.CollidingEntity;
 import interfaces.KeyListener;
 import interfaces.MovingEntity;
 import org.jsfml.window.event.Event;
@@ -88,6 +91,12 @@ public abstract class Drawer extends Entity {
                 if (entity instanceof MovingEntity)
                     ((MovingEntity) entity).move();
 
+                if(entity instanceof CollidingEntity) {
+
+                    Player p = ((Enemy) entity).getPlayer();
+                    ((CollidingEntity) entity).checkWithin(p.getCenterX(), p.getCenterY());
+
+                }
                 if(!entity.hidden)
                     entity.draw();
             }

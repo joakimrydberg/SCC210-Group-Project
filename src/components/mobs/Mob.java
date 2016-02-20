@@ -5,7 +5,6 @@ import game.SpriteSheetLoad;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
-import tools.DebugPrinter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -131,7 +130,7 @@ public abstract class Mob extends Animation implements MovingEntity {
                 (int) (  (speed.y / hypotenuse) * 5 )
         );
 
-        DebugPrinter.print(this, "Speed.. X: " + this.speed.x + ",  Y: " + this.speed.y);
+        //DebugPrinter.print(this, "Speed.. X: " + this.speed.x + ",  Y: " + this.speed.y);
 
     }
 

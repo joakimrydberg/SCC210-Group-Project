@@ -2,8 +2,10 @@ package components.mobs;
 
 import game.Room;
 import game.SpriteSheetLoad;
+import interfaces.CollidingEntity;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.Event;
 
 import java.awt.image.BufferedImage;
 
@@ -11,7 +13,7 @@ import java.awt.image.BufferedImage;
  * @author josh
  * @date 20/02/16.
  */
-public class EnemyWarrior extends Enemy {
+public class EnemyWarrior extends Enemy implements CollidingEntity {
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,
             SPEEDLIMIT = 5;
@@ -60,6 +62,36 @@ public class EnemyWarrior extends Enemy {
     }
 
 
+    @Override
+    public void collide() {
+
+    }
+
+    @Override
+    public boolean isCollidable() {
+        if (((getCenterX() + getWidth()/2) - (getPlayer().getCenterX() + getPlayer().getWidth() / 2) < 35) && ((getCenterY() + getHeight()/2) - (getPlayer().getCenterY() + getPlayer().getHeight() / 2) < 50)){ //May need some tweaks to numbers
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkWithin(int x, int y) {
+
+        if (isCollidable()) {
+            colliding = true;
+        }
+        else {
+            colliding = false;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean checkWithin(Event e) {
+        return false;
+    }
 }
 
 

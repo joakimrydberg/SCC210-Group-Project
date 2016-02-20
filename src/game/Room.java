@@ -3,7 +3,7 @@ package game;
 import abstract_classes.Entity;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
-import components.mobs.Player;
+import components.mobs.Warrior;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
@@ -40,8 +40,8 @@ public class Room extends RoomEntity implements MovementListener {
             }
         }
 
-        Player p = new Player();
-        p.setClass(Player.classType);
+        Warrior p = new Warrior();
+        //p.setClass(Player.classType);
 
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
 

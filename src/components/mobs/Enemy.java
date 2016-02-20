@@ -9,6 +9,7 @@ import interfaces.MovementListener;
  */
 public abstract class Enemy extends Mob implements MovementListener {
     private Player player;
+    protected boolean colliding = false;
     private Room room;
 
     public Enemy(Room room, Player player) {

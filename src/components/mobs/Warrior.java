@@ -92,13 +92,13 @@ public class Warrior extends Player implements KeyListener {
         this.setFrames(characterStill);
         super.keyReleased(event);
         if(rightPressed){
-            setAnimation(ANIMATE_RIGHT);
-        } else if (downPressed){
-            setAnimation(ANIMATE_DOWN);
-        } else if (leftPressed){
             setAnimation(ANIMATE_LEFT);
+        } else if (downPressed){
+            setAnimation(ANIMATE_LEFT);
+        } else if (leftPressed){
+            setAnimation(ANIMATE_RIGHT);
         } else if (upPressed){
-            setAnimation(ANIMATE_UP);
+            setAnimation(ANIMATE_LEFT);
         }
         held = false;
 
