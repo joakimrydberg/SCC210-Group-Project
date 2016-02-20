@@ -4,6 +4,8 @@ import abstract_classes.Entity;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
+import components.mobs.Ranger;
+import components.mobs.Warrior;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
@@ -23,6 +25,7 @@ public class Room extends RoomEntity implements MovementListener {
     private static int navPixelsRowCount = 11 * 5;
     private NavPixel[][] navPixels = new NavPixel[navPixelsRowCount][navPixelsRowCount];
 
+
     public Room(Level level) {
         this.level = level;
     }
@@ -37,11 +40,11 @@ public class Room extends RoomEntity implements MovementListener {
                 tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
             }
         }
+        
         Player p = new Player();
         p.setClass(Player.classType);
 
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
-        enemyWarrior.setClass("warrior");
 
         p.addMovementListener(this);
         create(tiles);

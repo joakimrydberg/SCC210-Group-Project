@@ -10,6 +10,7 @@ import components.Button;
 import components.Image;
 import components.Node;
 import components.Rect;
+import controllers.CharMenu;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;

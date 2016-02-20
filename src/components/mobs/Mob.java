@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class Mob extends Animation implements MovingEntity {
+
     public final static int ANIMATE_RIGHT = 1,
             ANIMATE_LEFT = 2,
             ANIMATE_UP = 3,
@@ -25,8 +26,9 @@ public abstract class Mob extends Animation implements MovingEntity {
     public int Endurance = 0;
     public int Vitality = 0;
     public int Health = 100;
+    private int tempDir = 0;
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
-    private BufferedImage theSpriteSheet;
+    protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
     // public static Animation currAnimation;
 
@@ -96,21 +98,14 @@ public abstract class Mob extends Animation implements MovingEntity {
         }
 
 
-/*        { //animating TODO needs fixing
-            currAnimation.stop();
-            BufferedImage[] characterMove = {SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(1, dir, character), SpriteSheetLoad.getSprite(0, dir, character), SpriteSheetLoad.getSprite(2, dir, character)};
-            warriorWalk = new Animation(200, 200, 64, 128, characterMove, 1);
-            currAnimation = warriorWalk;
-            if (dir == 0)
-                currAnimation.updateMove(0, 1);
-            else if (dir == 1)
-                currAnimation.updateMove(1, 0);
-            else if (dir == 2)
-                currAnimation.updateMove(-1, 0);
-            else if (dir == 3)
-                currAnimation.updateMove(0, -1);
-            currAnimation.start();
-        }*/
+        if(this.speed.x >0 && this.speed.x>=this.speed.y)
+        {setAnimation(ANIMATE_RIGHT);}
+        else if(this.speed.y >0 && this.speed.y>=this.speed.x)
+        {setAnimation(ANIMATE_DOWN);}
+        else if(this.speed.x <0 && this.speed.x<=this.speed.y)
+        {setAnimation(ANIMATE_LEFT);}
+        else if(this.speed.y <0 && this.speed.y<=this.speed.x)
+        {setAnimation(ANIMATE_UP);}
 
 
     }
@@ -137,14 +132,7 @@ public abstract class Mob extends Animation implements MovingEntity {
         );
 
         DebugPrinter.print(this, "Speed.. X: " + this.speed.x + ",  Y: " + this.speed.y);
-        /*if(this.speed.x >0)
-            {setAnimation(ANIMATE_RIGHT);}
-        if(this.speed.y >0)
-            {setAnimation(ANIMATE_DOWN);}
-        if(this.speed.x <0)
-            {setAnimation(ANIMATE_LEFT);}
-        if(this.speed.y <0)
-            {setAnimation(ANIMATE_UP);}*/
+
     }
 
     /**
@@ -185,23 +173,27 @@ public abstract class Mob extends Animation implements MovingEntity {
     }*/
 
     public void setAnimation(int dir) {
-        switch (dir) {
-            case ANIMATE_RIGHT:
-                BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(2, 2, theSpriteSheet)};
-                this.setFrames(right);
-                break;
-            case ANIMATE_LEFT:
-                BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(2, 1, theSpriteSheet)};
-                this.setFrames(left);
-                break;
-            case ANIMATE_UP:
-                BufferedImage[] up = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(2, 3, theSpriteSheet)};
-                this.setFrames(up);
-                break;
-            case ANIMATE_DOWN:
-                BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(2, 0, theSpriteSheet)};
-                this.setFrames(down);
-                break;
+        if(this.tempDir != dir)
+        {
+            this.tempDir = dir;
+            switch (dir) {
+                case ANIMATE_RIGHT:
+                  BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(2, 2, theSpriteSheet)};
+                  this.setFrames(right);
+                   break;
+                case ANIMATE_LEFT:
+                  BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(2, 1, theSpriteSheet)};
+                   this.setFrames(left);
+                  break;
+             case ANIMATE_UP:
+                 BufferedImage[] up = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(2, 3, theSpriteSheet)};
+                  this.setFrames(up);
+                 break;
+             case ANIMATE_DOWN:
+                 BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(2, 0, theSpriteSheet)};
+                 this.setFrames(down);
+                 break;
+            }
         }
     }
 

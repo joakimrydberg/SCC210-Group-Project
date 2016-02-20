@@ -10,17 +10,23 @@ import java.awt.image.BufferedImage;
  * Created by millsr3 on 16/02/2016.
  */
 public class Player extends Mob implements KeyListener {
+    public final static int ATTACK_RIGHT = 1,
+            ATTACK_LEFT = 2,
+            ATTACK_UP = 3,
+            ATTACK_DOWN = 4;
     private float multiplier = 1;
     public static String classType;
-    private int tempDir;
+    protected int tempDir;
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,
             SPEEDLIMIT = 5;
-    private boolean upPressed = false,
+    protected boolean upPressed = false,
             downPressed = false,
             leftPressed = false,
             rightPressed = false;
 
+    protected int dir = 0;
+    protected boolean held = false;
     public Player() {
         super(200, 200, 64, 128);
 
