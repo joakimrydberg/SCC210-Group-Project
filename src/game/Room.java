@@ -22,6 +22,7 @@ public class Room extends RoomEntity implements MovementListener {
     private Level level;
     private static int navPixelsRowCount = 11 * 5;
     private NavPixel[][] navPixels = new NavPixel[navPixelsRowCount][navPixelsRowCount];
+    private NavReturn[] navTrace = new NavReturn[10];
 
 
     public Room(Level level) {
@@ -32,13 +33,13 @@ public class Room extends RoomEntity implements MovementListener {
         this.roomID = roomID;
         ArrayList<Object> objects = FileHandling.readFile(LEVEL_ID_DIR + roomID);
         LevelPart[][] tiles = new LevelPart[11][11];
-//
+
         for (int i = 0; i < 11; i++){
             for (int j = 0; j < 11; j++){
                 tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
             }
         }
-        
+
         Player p = new Player();
         p.setClass(Player.classType);
 
@@ -145,16 +146,27 @@ public class Room extends RoomEntity implements MovementListener {
             }
         }
 
-        NavReturn navReturn = navigateTo(navFrm, navTo, 0);
+        NavReturn[] navTrace = new NavReturn[10];
+
+        for (int i = 0; i < navTrace.length; i++)
+            navTrace[i] = null;
+
+        NavReturn navReturn = navigateTo(navFrm, navTo, 0, navTrace);
 
         if (navReturn.nextNav == null)
             return new Vector2i(0, 0);
 
+        for (int i = navTrace.length - 1; i > 0; i--) {
+            if (navTrace[i] != null) {
+                navReturn = navTrace[i];
+                break;
+            }
+        }
         return new Vector2i((navReturn.nextNav.x - frm.getCenterX()) ,
                 (navReturn.nextNav.y - frm.getCenterY()));
     }
 
-    public NavReturn navigateTo(NavPixel frm, NavPixel to, int stepCount) {
+    public NavReturn navigateTo(NavPixel frm, NavPixel to, int stepCount, NavReturn[] navTrace) {
         if (frm.i == to.i && frm.j == to.j) {
 
             return new NavReturn(stepCount, to);
@@ -164,7 +176,7 @@ public class Room extends RoomEntity implements MovementListener {
 
         NavReturn navReturn = new NavReturn(Integer.MAX_VALUE, null),
                 tempNavReturn;
-
+        NavReturn[] navTraceReturn = null, tempNavTrace;
         NavPixel tempNavPixel = null;
 
         if (frm.i > 0) {
@@ -173,13 +185,19 @@ public class Room extends RoomEntity implements MovementListener {
                     && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
 
                 tempNavPixel.visitedTime = stepCount;
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+
+                tempNavTrace = (navTrace == null || navTrace.length - stepCount <= 0)
+                        ? null
+                        : new NavReturn[navTrace.length - stepCount];
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, tempNavTrace);
 
                 if (navReturn.stepCount > tempNavReturn.stepCount
                         && tempNavReturn.nextNav != null) {
 
                     navReturn = tempNavReturn;
                     navReturn.nextNav = tempNavPixel;
+                    navTraceReturn = tempNavTrace;
                 }
             }
         }
@@ -190,13 +208,18 @@ public class Room extends RoomEntity implements MovementListener {
                     && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
 
                 tempNavPixel.visitedTime = stepCount;
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+                tempNavTrace = (navTrace == null || navTrace.length - stepCount <= 0)
+                        ? null
+                        : new NavReturn[navTrace.length - stepCount];
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, tempNavTrace);
 
                 if (navReturn.stepCount > tempNavReturn.stepCount
                         && tempNavReturn.nextNav != null) {
 
                     navReturn = tempNavReturn;
                     navReturn.nextNav = tempNavPixel;
+                    navTraceReturn = tempNavTrace;
                 }
             }
         }
@@ -207,13 +230,18 @@ public class Room extends RoomEntity implements MovementListener {
                     && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
 
                 tempNavPixel.visitedTime = stepCount;
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+                tempNavTrace = (navTrace == null || navTrace.length - stepCount <= 0)
+                        ? null
+                        : new NavReturn[navTrace.length - stepCount];
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, tempNavTrace);
 
                 if (navReturn.stepCount > tempNavReturn.stepCount
                         && tempNavReturn.nextNav != null) {
 
                     navReturn = tempNavReturn;
                     navReturn.nextNav = tempNavPixel;
+                    navTraceReturn = tempNavTrace;
                 }
             }
         }
@@ -224,13 +252,30 @@ public class Room extends RoomEntity implements MovementListener {
                     && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
 
                 tempNavPixel.visitedTime = stepCount;
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+                tempNavTrace = (navTrace == null || navTrace.length - stepCount <= 0)
+                        ? null
+                        : new NavReturn[navTrace.length - stepCount];
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, tempNavTrace);
 
                 if (navReturn.stepCount > tempNavReturn.stepCount
                         && tempNavReturn.nextNav != null) {
 
                     navReturn = tempNavReturn;
                     navReturn.nextNav = tempNavPixel;
+                    navTraceReturn = tempNavTrace;
+                }
+            }
+        }
+
+        if (navTrace != null && stepCount -1  < navTrace.length ) {
+            navTrace[stepCount -1] = navReturn;
+
+            if (navTraceReturn != null) {
+                int i = stepCount;
+                for (NavReturn temp : navTraceReturn) {
+                    navTrace[i] = temp;
+                    i++;
                 }
             }
         }
