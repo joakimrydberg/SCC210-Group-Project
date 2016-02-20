@@ -27,13 +27,13 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     static BufferedImage theSpriteSheet;
     public static BufferedImage[] characterStill;
-   // public static Animation currAnimation;
+    // public static Animation currAnimation;
     private final static int MOVEBY = 5,
-                            SPEEDLIMIT = 5;
+            SPEEDLIMIT = 5;
     private boolean upPressed = false,
-                    downPressed = false,
-                    leftPressed = false,
-                    rightPressed = false;
+            downPressed = false,
+            leftPressed = false,
+            rightPressed = false;
 
     public Player() {
         super(200, 200, 64, 128, new BufferedImage[0], 1);
@@ -49,7 +49,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
             theSpriteSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
             characterStill = new BufferedImage[]{SpriteSheetLoad.getSprite(0, 0, theSpriteSheet)};
             //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
-           // currAnimation = warriorWalk;
+            // currAnimation = warriorWalk;
             BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(2, 0, theSpriteSheet)};
 
             this.setFrames(mageA);
@@ -95,7 +95,6 @@ public class Player extends Animation implements KeyListener, MovingEntity {
     //Move character from sheet based on direction, 0-down, 1-right, 2-left, 3-up
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
-
     }*/
 
     public BufferedImage[] charAttack(BufferedImage character, int dir)
@@ -113,7 +112,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
 
     @Override
     public void keyPressed(org.jsfml.window.event.KeyEvent event) {
-       // System.out.println("Pressed");
+        // System.out.println("Pressed");
 
         Keyboard.Key key = event.key;
         switch (key){
@@ -135,7 +134,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
                     setSpeed(new Vector2i(speed.x - MOVEBY, speed.y));
                 }
                 break;
-            case DOWN:         
+            case DOWN:
                 if (!downPressed) {
                     downPressed = true;
                     setSpeed(new Vector2i(speed.x, speed.y + MOVEBY));
@@ -152,25 +151,39 @@ public class Player extends Animation implements KeyListener, MovingEntity {
         switch (key){
             case RIGHT:
                 rightPressed = false;
+                BufferedImage[] right = {SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet), SpriteSheetLoad.getSprite(0, 2, theSpriteSheet), SpriteSheetLoad.getSprite(1, 2, theSpriteSheet)};
+                this.setFrames(right);
+
                 setSpeed(new Vector2i(speed.x - MOVEBY, speed.y));
 
                 break;
             case UP:
                 upPressed = false;
                 setSpeed(new Vector2i(speed.x, speed.y + MOVEBY));
+                BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet), SpriteSheetLoad.getSprite(0, 3, theSpriteSheet), SpriteSheetLoad.getSprite(1, 3, theSpriteSheet)};
+                this.setFrames(mageA);
 
                 break;
             case LEFT:
                 leftPressed = false;
                 setSpeed(new Vector2i(speed.x + MOVEBY, speed.y));
+                BufferedImage[] left = {SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1, 1, theSpriteSheet), SpriteSheetLoad.getSprite(0, 1, theSpriteSheet), SpriteSheetLoad.getSprite(1,1, theSpriteSheet)};
+                this.setFrames(left);
 
                 break;
             case DOWN:
                 downPressed = false;
                 setSpeed(new Vector2i(speed.x, speed.y - MOVEBY));
+                BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet)};
+                this.setFrames(down);
 
                 break;
         }
+
+
+        this.stop();
+
+        this.start();
 
 
         //this.speed = new Vector2i(0,0);
@@ -201,7 +214,7 @@ public class Player extends Animation implements KeyListener, MovingEntity {
                 setCenterY(newY);
             } else {
                 //setCenterX(getCenterX() - (speed.x / MOVEBY) );
-               // setCenterY(getCenterY() - (speed.y / MOVEBY) );
+                // setCenterY(getCenterY() - (speed.y / MOVEBY) );
             }
 
             draw();  //drawing to the screen
