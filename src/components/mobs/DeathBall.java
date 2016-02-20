@@ -11,19 +11,18 @@ import java.awt.image.BufferedImage;
  * @author josh
  * @date 20/02/16.
  */
-public class EnemyWarrior extends Enemy {
+public class DeathBall extends Enemy {
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,
             SPEEDLIMIT = 5;
 
-    public EnemyWarrior(Room room, Player player) {
+    public DeathBall(Room room, Player player) {
         super(room, player);
 
     }
 
     @Override
     public void onMove(MovingEntity mover) {
-
         final int playerX = getPlayer().getCenterX(),
                 playerY = getPlayer().getCenterY();
 
