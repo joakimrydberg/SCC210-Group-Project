@@ -169,6 +169,7 @@ public class Player extends Mob implements KeyListener {
 
     @Override
     public void onMoveRejected(int newX, int newY) {
+
         return;    //do nothing but don't remove (will be used for the bad guys)
     }
 

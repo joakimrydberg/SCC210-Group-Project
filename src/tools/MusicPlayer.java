@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class MusicPlayer  {
     private static ArrayList<ClipHolder> clips = new ArrayList<>();
     private final static String DIR = "assets" + Constants.SEP + "audio" + Constants.SEP ;
-    private static final boolean play = true;
+    private static final boolean play = false;
 
     public static void play(String fileName) {
         play(fileName, false);

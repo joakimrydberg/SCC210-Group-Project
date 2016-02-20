@@ -42,6 +42,10 @@ public class DeathBall extends Enemy {
     }
 
 
+    public void move() {
+        onMove(null);
+    }
+
     public void setClass(String c) {  //TODO remove completely and set the sprite otherwise (only for enemies, this is good for player)
         //classType = c;
 

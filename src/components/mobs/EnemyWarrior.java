@@ -24,24 +24,33 @@ public class EnemyWarrior extends Enemy {
 
     @Override
     public void onMove(MovingEntity mover) {
+        Vector2i newXY = getRoom().navigateTo(this, getPlayer());
 
-        final int playerX = getPlayer().getCenterX(),
-                playerY = getPlayer().getCenterY();
+//        final int playerX = getPlayer().getCenterX(),
+//                playerY = getPlayer().getCenterY();
+//
+//        int newX = playerX - this.getCenterX();
+//        int newY = playerY - this.getCenterY();
 
-        int newX = playerX - this.getCenterX();
-        int newY = playerY - this.getCenterY();
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            setSpeed(new Vector2i(newX, newY));
-        }).start();
+      //
+         setSpeed(newXY);
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            setSpeed(newXY);
+//        }).start();
 
     }
 
+    @Override
+    public void move() {
+        onMove(null);
+
+        super.move();
+    }
 
     public void setClass(String c) {  //TODO remove completely and set the sprite otherwise (only for enemies, this is good for player)
         //classType = c;

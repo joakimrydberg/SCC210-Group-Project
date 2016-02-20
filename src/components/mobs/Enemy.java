@@ -9,13 +9,16 @@ import interfaces.MovementListener;
  */
 public abstract class Enemy extends Mob implements MovementListener {
     private Player player;
+    private Room room;
+
     public Enemy(Room room, Player player) {
-        super( 200  /*getWindow().getSize().x + (new Random().nextInt() % (getWindow().getSize().x / 4))*/,
-                200 /*getWindow().getSize().y + (new Random().nextInt() % (getWindow().getSize().y / 4))*/,
+        super( getWindow().getSize().x - 200  /*getWindow().getSize().x + (new Random().nextInt() % (getWindow().getSize().x / 4))*/,
+                getWindow().getSize().y - 200 /*getWindow().getSize().y + (new Random().nextInt() % (getWindow().getSize().y / 4))*/,
                 64,
                 128);
 
         this.player = player;
+        this.room = room;
         player.addMovementListener(this);
     }
 
@@ -30,5 +33,7 @@ public abstract class Enemy extends Mob implements MovementListener {
         return player;
     }
 
-
+    public Room getRoom() {
+        return room;
+    }
 }

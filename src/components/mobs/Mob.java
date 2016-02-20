@@ -88,6 +88,10 @@ public abstract class Mob extends Animation implements MovingEntity {
                     this.onMoveRejected(newX, newY);
 
                 draw();  //drawing to the screen
+
+                for (MovementListener listener : listeners) {  //must be at end of method
+                    listener.onMove(this);
+                }
             }
         }
 
@@ -108,9 +112,7 @@ public abstract class Mob extends Animation implements MovingEntity {
             currAnimation.start();
         }*/
 
-        for (MovementListener listener : listeners) {  //must be at end of method
-            listener.onMove(this);
-        }
+
     }
 
     public abstract void onMoveAccepted(int newX, int newY);

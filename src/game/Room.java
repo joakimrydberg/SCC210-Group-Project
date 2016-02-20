@@ -1,5 +1,6 @@
 package game;
 
+import abstract_classes.Entity;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
@@ -19,6 +20,8 @@ public class Room extends RoomEntity implements MovementListener {
     private ArrayList<String> potentialDoors = new ArrayList<>();
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
+    private static int navPixelsRowCount = 11 * 5;
+    private NavPixel[][] navPixels = new NavPixel[navPixelsRowCount][navPixelsRowCount];
 
     public Room(Level level) {
         this.level = level;
@@ -92,9 +95,9 @@ public class Room extends RoomEntity implements MovementListener {
 
                 if (part.getType().equals("Wall")) {
                     final int partLeft = j * partSize.x,
-                    partRight = (j + 1) * partSize.x,
-                    partBottom = (i + 1) * partSize.y,
-                    partTop = i * partSize.y;
+                            partRight = (j + 1) * partSize.x,
+                            partBottom = (i + 1) * partSize.y,
+                            partTop = i * partSize.y;
 
                     //col * w + w/2, row * h + h/2
 
@@ -103,7 +106,7 @@ public class Room extends RoomEntity implements MovementListener {
                             && bottom > partTop
                             && top < partBottom) {
 
-                            return false;
+                        return false;
                     }
                 }
             }
@@ -115,5 +118,151 @@ public class Room extends RoomEntity implements MovementListener {
     @Override
     public void onMove(MovingEntity mover) {
 
+    }
+    static int i = 0;
+
+    public Vector2i navigateTo(Entity frm, Entity to) {
+        this.i++;
+        NavPixel navFrm = new NavPixel(0, 0),
+                navTo = new NavPixel(0, 0);
+
+        for (int i = 0; i < navPixels.length; i++) {
+            for (int j = 0; j < navPixels[0].length; j++) {
+                navPixels[i][j] = new NavPixel(i, j);
+
+                if (    Math.sqrt(Math.pow(navPixels[i][j].x - to.getCenterX(), 2) + Math.pow(navPixels[i][j].y - to.getCenterY(), 2))
+                        < Math.sqrt(Math.pow(navTo.x - to.getCenterX(), 2) + Math.pow(navTo.y - to.getCenterY(), 2))
+                        ) {
+                    navTo = navPixels[i][j];
+                }
+
+                if (    Math.sqrt(Math.pow(navPixels[i][j].x - frm.getCenterX(), 2) + Math.pow(navPixels[i][j].y - frm.getCenterY(), 2))
+                        < Math.sqrt(Math.pow(navFrm.x - frm.getCenterX(), 2) + Math.pow(navFrm.y - frm.getCenterY(), 2))
+                        ) {
+                    navFrm = navPixels[i][j];
+                }
+            }
+        }
+
+        NavReturn navReturn = navigateTo(navFrm, navTo, 0);
+
+        if (navReturn.nextNav == null)
+            return new Vector2i(0, 0);
+
+        return new Vector2i((navReturn.nextNav.x - frm.getCenterX()) ,
+                (navReturn.nextNav.y - frm.getCenterY()));
+    }
+
+    public NavReturn navigateTo(NavPixel frm, NavPixel to, int stepCount) {
+        if (frm.i == to.i && frm.j == to.j) {
+
+            return new NavReturn(stepCount, to);
+        }
+
+        stepCount++;
+
+        NavReturn navReturn = new NavReturn(Integer.MAX_VALUE, null),
+                tempNavReturn;
+
+        NavPixel tempNavPixel = null;
+
+        if (frm.i > 0) {
+            tempNavPixel = navPixels[frm.i - 1][frm.j];
+            if (tempNavPixel.visitedTime > stepCount
+                    && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
+
+                tempNavPixel.visitedTime = stepCount;
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+
+                if (navReturn.stepCount > tempNavReturn.stepCount
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+                }
+            }
+        }
+
+        if (frm.i  < navPixelsRowCount  - 1) {
+            tempNavPixel = navPixels[frm.i + 1][frm.j];
+            if (tempNavPixel.visitedTime > stepCount
+                    && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
+
+                tempNavPixel.visitedTime = stepCount;
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+
+                if (navReturn.stepCount > tempNavReturn.stepCount
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+                }
+            }
+        }
+
+        if (frm.j > 0) {
+            tempNavPixel = navPixels[frm.i][frm.j - 1];
+            if (tempNavPixel.visitedTime > stepCount
+                    && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
+
+                tempNavPixel.visitedTime = stepCount;
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+
+                if (navReturn.stepCount > tempNavReturn.stepCount
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+                }
+            }
+        }
+
+        if (frm.j < navPixelsRowCount - 1) {
+            tempNavPixel = navPixels[frm.i][frm.j + 1];
+            if (tempNavPixel.visitedTime > stepCount
+                    && !getPart(tempNavPixel.i / (navPixelsRowCount / 11), tempNavPixel.j / (navPixelsRowCount / 11) ).getType().equals("Wall")) {
+
+                tempNavPixel.visitedTime = stepCount;
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount);
+
+                if (navReturn.stepCount > tempNavReturn.stepCount
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+                }
+            }
+        }
+
+        return navReturn;
+    }
+
+
+    private class NavPixel {
+        int i, j;
+        int x, y;
+        int visitedTime;
+
+        NavPixel(int i, int j) {
+            this.i = i;
+            this.j = j;
+            this.x = j * (getWindow().getSize().x / navPixelsRowCount) + (getWindow().getSize().x / navPixelsRowCount) / 2;
+            this.y = i * (getWindow().getSize().y / navPixelsRowCount) + (getWindow().getSize().y / navPixelsRowCount) / 2;
+            this.visitedTime = Integer.MAX_VALUE;
+        }
+
+        public Vector2i getLevelPartXY() {
+            return new Vector2i( i / navPixelsRowCount, j / navPixelsRowCount );
+        }
+    }
+
+    private class NavReturn {
+        int stepCount;
+        NavPixel nextNav;
+
+        NavReturn(int stepCount, NavPixel nextNav) {
+            this.stepCount = stepCount;
+            this.nextNav = nextNav;
+        }
     }
 }
