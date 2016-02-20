@@ -3,6 +3,7 @@ package game;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
+import components.mobs.Warrior;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
@@ -34,16 +35,18 @@ public class Room extends RoomEntity implements MovementListener {
                 tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
             }
         }
-        Player p = new Player();
-        p.setClass(Player.classType);
+       /* Player p = new Player();
+        p.setClass(Player.classType);*/
 
-        EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
+        Warrior w = new Warrior();
+
+        EnemyWarrior enemyWarrior = new EnemyWarrior(this, w);
         enemyWarrior.setClass("warrior");
 
-        p.addMovementListener(this);
+        w.addMovementListener(this);
         create(tiles);
 
-        addEntity(p);
+        addEntity(w);
         addEntity(enemyWarrior);
 
         locatePotentialDoors();

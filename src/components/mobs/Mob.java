@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class Mob extends Animation implements MovingEntity {
+
     public final static int ANIMATE_RIGHT = 1,
             ANIMATE_LEFT = 2,
             ANIMATE_UP = 3,
@@ -26,7 +27,7 @@ public abstract class Mob extends Animation implements MovingEntity {
     public int Vitality = 0;
     public int Health = 100;
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
-    private BufferedImage theSpriteSheet;
+    protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
     // public static Animation currAnimation;
 
@@ -200,6 +201,7 @@ public abstract class Mob extends Animation implements MovingEntity {
                 BufferedImage[] down = {SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(1, 0, theSpriteSheet), SpriteSheetLoad.getSprite(0, 0, theSpriteSheet), SpriteSheetLoad.getSprite(2, 0, theSpriteSheet)};
                 this.setFrames(down);
                 break;
+
         }
     }
 

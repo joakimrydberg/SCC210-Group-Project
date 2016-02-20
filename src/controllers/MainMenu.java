@@ -8,6 +8,7 @@ package controllers;
 import abstract_classes.Entity;
 import components.Button;
 import components.Image;
+import controllers.CharMenu;
 import interfaces.Clickable;
 import org.jsfml.system.Vector2i;
 import tools.Constants;

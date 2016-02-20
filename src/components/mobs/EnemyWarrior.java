@@ -31,6 +31,7 @@ public class EnemyWarrior extends Enemy {
         int newX = playerX - this.getCenterX();
         int newY = playerY - this.getCenterY();
 
+
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
