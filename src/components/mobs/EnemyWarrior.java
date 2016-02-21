@@ -56,7 +56,8 @@ public class EnemyWarrior extends Enemy implements CollidingEntity {
 
     @Override
     public boolean isCollidable() {
-        if (((getCenterX() + getWidth()/2) - (getPlayer().getCenterX() + getPlayer().getWidth() / 2) < 35) && ((getCenterY() + getHeight()/2) - (getPlayer().getCenterY() + getPlayer().getHeight() / 2) < 50)){ //May need some tweaks to numbers
+
+        if (( Math.abs((getCenterX() + getWidth()/2) - (getPlayer().getCenterX() + getPlayer().getWidth() / 2)) < 35) && (Math.abs((getCenterY() + getHeight()/2) - (getPlayer().getCenterY() + getPlayer().getHeight() / 2)) < 50)){ //May need some tweaks to numbers
             return true;
         }
         return false;
@@ -67,6 +68,7 @@ public class EnemyWarrior extends Enemy implements CollidingEntity {
 
         if (isCollidable()) {
             colliding = true;
+            return true;
         }
         else {
             colliding = false;
@@ -78,6 +80,13 @@ public class EnemyWarrior extends Enemy implements CollidingEntity {
     @Override
     public boolean checkWithin(Event e) {
         return false;
+    }
+
+    public void damaged(){
+
+        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir);
+        setFrames(a); //
+
     }
 }
 

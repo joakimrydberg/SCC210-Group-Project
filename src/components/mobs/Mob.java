@@ -25,7 +25,7 @@ public abstract class Mob extends Animation implements MovingEntity {
     public int Endurance = 0;
     public int Vitality = 0;
     public int Health = 100;
-    private int tempDir = 0;
+    protected int tempDir = 0;
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
@@ -98,9 +98,9 @@ public abstract class Mob extends Animation implements MovingEntity {
 
 
         if(this.speed.x >0 && this.speed.x>=this.speed.y)
-        {setAnimation(ANIMATE_RIGHT);}
+        {setAnimation(ANIMATE_RIGHT); }
         else if(this.speed.y >0 && this.speed.y>=this.speed.x)
-        {setAnimation(ANIMATE_DOWN);}
+        {setAnimation(ANIMATE_DOWN); }
         else if(this.speed.x <0 && this.speed.x<=this.speed.y)
         {setAnimation(ANIMATE_LEFT);}
         else if(this.speed.y <0 && this.speed.y<=this.speed.x)
