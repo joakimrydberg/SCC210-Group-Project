@@ -1,6 +1,5 @@
 package game;
 
-import abstract_classes.Entity;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
@@ -46,12 +45,13 @@ public class Room extends RoomEntity implements MovementListener {
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
         EnemyWarrior enemyWarrior1 = new EnemyWarrior(this, p);
         EnemyWarrior enemyWarrior2 = new EnemyWarrior(this, p);
-
+        //DeathBall deathBall = new DeathBall(this, p);
         addEntity(p);
         addEntity(enemyWarrior);
         addEntity(enemyWarrior2);
         addEntity(enemyWarrior1);
-
+       // deathBall.setClass("ranger");
+       // addEntity(deathBall);
         locatePotentialDoors();
     }
 

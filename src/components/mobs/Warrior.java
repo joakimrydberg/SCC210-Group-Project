@@ -32,24 +32,27 @@ public class Warrior extends Player implements KeyListener {
         switch(dir){
 
             case ATTACK_RIGHT:
+
                 BufferedImage[] right = {SpriteSheetLoad.getSprite(4, 2, theSpriteSheet), SpriteSheetLoad.getSprite(5, 2, theSpriteSheet), SpriteSheetLoad.getSprite(4, 2, theSpriteSheet), SpriteSheetLoad.getSprite(5, 2, theSpriteSheet)};
                 this.setFrames(right);
                 break;
             case ATTACK_DOWN:
+
                 BufferedImage[] down = {SpriteSheetLoad.getSprite(4, 0, theSpriteSheet), SpriteSheetLoad.getSprite(5, 0, theSpriteSheet), SpriteSheetLoad.getSprite(4, 0, theSpriteSheet), SpriteSheetLoad.getSprite(5, 0, theSpriteSheet)};
                 this.setFrames(down);
                 break;
             case ATTACK_LEFT:
+
                 BufferedImage[] left = {SpriteSheetLoad.getSprite(4, 1, theSpriteSheet), SpriteSheetLoad.getSprite(5, 1, theSpriteSheet), SpriteSheetLoad.getSprite(4, 1, theSpriteSheet), SpriteSheetLoad.getSprite(5, 1, theSpriteSheet)};
                 this.setFrames(left);
                 break;
             case ATTACK_UP:
+
                 BufferedImage[] up = {SpriteSheetLoad.getSprite(4, 3, theSpriteSheet), SpriteSheetLoad.getSprite(5, 3, theSpriteSheet), SpriteSheetLoad.getSprite(4, 3, theSpriteSheet), SpriteSheetLoad.getSprite(5, 3, theSpriteSheet)};
                 this.setFrames(up);
                 break;
-
-
         }
+
     }
 
     @Override
@@ -80,6 +83,7 @@ public class Warrior extends Player implements KeyListener {
                     break;
                 }
         }
+
         super.keyPressed(event);
 
 

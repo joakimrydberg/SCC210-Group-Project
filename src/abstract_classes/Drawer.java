@@ -1,6 +1,7 @@
 package abstract_classes;
 
 import components.mobs.Enemy;
+import components.mobs.EnemyWarrior;
 import components.mobs.Player;
 import game.Driver;
 import interfaces.Clickable;
@@ -49,7 +50,7 @@ public abstract class Drawer extends Entity {
                         if (entity instanceof KeyListener) {
                             ((KeyListener) entity).keyPressed(event.asKeyEvent());
                         }
-                    }
+                    }//
                 }
 
                 if (event.type == Event.Type.KEY_RELEASED) {
@@ -87,20 +88,25 @@ public abstract class Drawer extends Entity {
         if (isLoaded()) {
             draw();
 
+
             for (Entity entity : getEntities()) {
-                if (entity instanceof MovingEntity)
-                    ((MovingEntity) entity).move();
 
                 if(entity instanceof CollidingEntity) {
 
                     Player p = ((Enemy) entity).getPlayer();
-                    ((CollidingEntity) entity).checkWithin(p.getCenterX(), p.getCenterY());
+                    if(((CollidingEntity) entity).checkWithin(p.getCenterX(), p.getCenterY()) && p.held) {
+                        ((EnemyWarrior) entity).damaged();
+                    }
 
                 }
+
+                if (entity instanceof MovingEntity)
+                    ((MovingEntity) entity).move();
+
+
                 if(!entity.hidden)
                     entity.draw();
             }
         }
     }
-
 }

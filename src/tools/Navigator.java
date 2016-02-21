@@ -171,101 +171,97 @@ public class Navigator {
             }
         }
 
-//        //north east
-//        if (frm.i > 0
-//                && frm.j < navPixelsRowCount - 1) {
-//
-//            tempNavPixel = navPixels[frm.i - 1][frm.j + 1];
-//            if (tempNavPixel.visitedTime > timer
-//                    && !isInCollidable(tempNavPixel)) {
-//
-//                tempNavPixel.visitedTime = timer;
-//
-//                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + Math.sqrt(2));
-//
-//                if (navReturn.timer > tempNavReturn.timer
-//                        && tempNavReturn.nextNav != null) {
-//
-//                    navReturn = tempNavReturn;
-//                    navReturn.nextNav = tempNavPixel;
-//
-//                    if (stepCount < TRACE_LIM)
-//                        navReturn.navTrace[stepCount-1] = navReturn.nextNav;
-//                }
-//            }
-//        }
-//
-//        // south east
-//        if (frm.i  < navPixelsRowCount  - 1
-//                && frm.j < navPixelsRowCount - 1) {
-//
-//            tempNavPixel = navPixels[frm.i + 1][frm.j + 1];
-//            if (tempNavPixel.visitedTime > timer
-//                    && !isInCollidable(tempNavPixel)) {
-//
-//                tempNavPixel.visitedTime = timer;
-//
-//                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + Math.sqrt(2));
-//
-//                if (navReturn.timer > tempNavReturn.timer
-//                        && tempNavReturn.nextNav != null) {
-//
-//                    navReturn = tempNavReturn;
-//                    navReturn.nextNav = tempNavPixel;
-//
-//                    if (stepCount < TRACE_LIM)
-//                        navReturn.navTrace[stepCount-1] = navReturn.nextNav;
-//                }
-//            }
-//        }
-//
-//        //north west
-//        if (frm.i > 0
-//                && frm.j > 0) {
-//
-//            tempNavPixel = navPixels[frm.i - 1][frm.j - 1];
-//            if (tempNavPixel.visitedTime > timer
-//                    && !isInCollidable(tempNavPixel)) {
-//
-//                tempNavPixel.visitedTime = timer;
-//
-//                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + Math.sqrt(2));
-//
-//                if (navReturn.timer > tempNavReturn.timer
-//                        && tempNavReturn.nextNav != null) {
-//
-//                    navReturn = tempNavReturn;
-//                    navReturn.nextNav = tempNavPixel;
-//
-//                    if (stepCount < TRACE_LIM)
-//                        navReturn.navTrace[stepCount-1] = navReturn.nextNav;
-//                }
-//            }
-//        }
-//
-//        //south west
-//        if (frm.i  < navPixelsRowCount  - 1
-//                && frm.j > 0) {
-//
-//            tempNavPixel = navPixels[frm.i + 1][frm.j - 1];
-//            if (tempNavPixel.visitedTime > timer
-//                    && !isInCollidable(tempNavPixel)) {
-//
-//                tempNavPixel.visitedTime = timer;
-//
-//                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + Math.sqrt(2));
-//
-//                if (navReturn.timer > tempNavReturn.timer
-//                        && tempNavReturn.nextNav != null) {
-//
-//                    navReturn = tempNavReturn;
-//                    navReturn.nextNav = tempNavPixel;
-//
-//                    if (stepCount < TRACE_LIM)
-//                        navReturn.navTrace[stepCount-1] = navReturn.nextNav;
-//                }
-//            }
-//        }
+        //north east
+        if (frm.i > 0
+                && frm.j < navPixelsRowCount - 1) {
+
+            tempNavPixel = navPixels[frm.i - 1][frm.j + 1];
+            if (tempNavPixel.visitedTime > timer
+                    && !isInCollidable(tempNavPixel)) {
+
+                tempNavPixel.visitedTime = timer;
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
+
+                if (navReturn.timer > tempNavReturn.timer
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+
+                    navReturn.addNavPixel(navReturn.nextNav);
+                }
+            }
+        }
+
+        // south east
+        if (frm.i  < navPixelsRowCount  - 1
+                && frm.j < navPixelsRowCount - 1) {
+
+            tempNavPixel = navPixels[frm.i + 1][frm.j + 1];
+            if (tempNavPixel.visitedTime > timer
+                    && !isInCollidable(tempNavPixel)) {
+
+                tempNavPixel.visitedTime = timer;
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
+
+                if (navReturn.timer > tempNavReturn.timer
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+
+                    navReturn.addNavPixel(navReturn.nextNav);
+                }
+            }
+        }
+
+        //north west
+        if (frm.i > 0
+                && frm.j > 0) {
+
+            tempNavPixel = navPixels[frm.i - 1][frm.j - 1];
+            if (tempNavPixel.visitedTime > timer
+                    && !isInCollidable(tempNavPixel)) {
+
+                tempNavPixel.visitedTime = timer;
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
+
+                if (navReturn.timer > tempNavReturn.timer
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+
+                    navReturn.addNavPixel(navReturn.nextNav);
+                }
+            }
+        }
+
+        //south west
+        if (frm.i  < navPixelsRowCount  - 1
+                && frm.j > 0) {
+
+            tempNavPixel = navPixels[frm.i + 1][frm.j - 1];
+            if (tempNavPixel.visitedTime > timer
+                    && !isInCollidable(tempNavPixel)) {
+
+                tempNavPixel.visitedTime = timer;
+
+                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
+
+                if (navReturn.timer > tempNavReturn.timer
+                        && tempNavReturn.nextNav != null) {
+
+                    navReturn = tempNavReturn;
+                    navReturn.nextNav = tempNavPixel;
+
+                    navReturn.addNavPixel(navReturn.nextNav);
+                }
+            }
+        }
 
         return navReturn;
     }
