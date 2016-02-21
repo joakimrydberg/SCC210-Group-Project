@@ -4,6 +4,7 @@ import game.Room;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
+import tools.Navigator;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,6 +25,7 @@ public abstract class Enemy extends Mob implements MovementListener {
     private ArrayList<Vector2i> path;
     private int currentPos;
     private int movementState = IDLE;
+    private Navigator navigator;
 
     public Enemy(Room room, Player player) {
         super( getWindow().getSize().x - 200 - Math.abs(new Random().nextInt() % 50 + 25)  /*getWindow().getSize().x + (new Random().nextInt() % (getWindow().getSize().x / 4))*/,
@@ -33,6 +35,7 @@ public abstract class Enemy extends Mob implements MovementListener {
 
         this.player = player;
         this.room = room;
+        navigator = new Navigator(room);
         player.addMovementListener(this);
     }
 
@@ -65,7 +68,7 @@ public abstract class Enemy extends Mob implements MovementListener {
             processingMove = true;
 
             new Thread(() -> {  //TODO remove threading to add new slow-mo enemy, i love bugs
-                this.path = getRoom().navigateTo(this, getPlayer());
+                this.path = navigator.navigateTo(this, getPlayer());
 
                 currentPos = this.path.size() -1;
 
