@@ -96,7 +96,7 @@ public class Navigator {
 
 
         NavReturn navReturn = navigateTo(navFrm, navPixelPredicate, 0, 0);
-
+//
         if (lineOfSight && navReturn.navTrace.size() == 0) {
             navPixelPredicate = (NavPixel currPixel) ->
                     inLineOfSight(new Vector2f(currPixel.x, currPixel.y), new Vector2f(navFlee.x, navFlee.y),
