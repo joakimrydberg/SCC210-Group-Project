@@ -1,7 +1,6 @@
 package abstract_classes;
 
 import components.mobs.Enemy;
-import components.mobs.EnemyWarrior;
 import components.mobs.Player;
 import game.Driver;
 import interfaces.Clickable;
@@ -95,7 +94,7 @@ public abstract class Drawer extends Entity {
 
                     Player p = ((Enemy) entity).getPlayer();
                     if(((CollidingEntity) entity).checkWithin(p.getCenterX(), p.getCenterY()) && p.held) {
-                        ((EnemyWarrior) entity).damaged();
+                        ((Enemy) entity).damaged();
                     }
 
                 }
