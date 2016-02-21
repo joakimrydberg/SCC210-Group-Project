@@ -29,9 +29,16 @@ public interface MovingEntity {
      * Get the entities speed
      *
      * @return Vector2i value representing the speed in two dimensional space
+     */
+    double getSpeed();
+
+    /**
+     * Get the entities speed
+     *
+     * @return Vector2i value representing the speed in two dimensional space
      *
      */
-    Vector2i getSpeed();
+    Vector2i getVelocity();
 
     /**
      * Sets the speed multiplier for the Entity.

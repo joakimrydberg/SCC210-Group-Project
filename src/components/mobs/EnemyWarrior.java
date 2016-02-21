@@ -3,8 +3,6 @@ package components.mobs;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
-import interfaces.MovingEntity;
-import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
 import java.awt.image.BufferedImage;
@@ -19,6 +17,7 @@ public class EnemyWarrior extends Enemy implements CollidingEntity {
             SPEEDLIMIT = 5;
     private int tempDir = 0;
 
+
     public EnemyWarrior(Room room, Player player) {
         super(room, player);
         setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMaleSheet"));
@@ -31,22 +30,10 @@ public class EnemyWarrior extends Enemy implements CollidingEntity {
 
         this.start();
 
-    }
+        setMovementState(FOLLOW_PLAYER);
 
-    @Override
-    public void onMove(MovingEntity mover) {
-        Vector2i newXY = getRoom().navigateTo(this, getPlayer());
-              //
-         setSpeed(newXY);
+        onMove(getPlayer());
 
-
-    }
-
-    @Override
-    public void move() {
-        onMove(null);
-
-        super.move();
     }
 
 

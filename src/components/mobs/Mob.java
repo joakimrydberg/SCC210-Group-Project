@@ -119,7 +119,7 @@ public abstract class Mob extends Animation implements MovingEntity {
      * @param speed - Vector2i representing the speed of the entity in the x and y planes
      */
     @Override
-    public void setSpeed(Vector2i speed) {
+    public synchronized void setSpeed(Vector2i speed) {
         double  xSqrd = Math.pow(speed.x, 2),
                 ySqrd = Math.pow(speed.y, 2),
                 hypotenuse = Math.sqrt(xSqrd + ySqrd);
@@ -140,8 +140,22 @@ public abstract class Mob extends Animation implements MovingEntity {
      * @return Vector2i value representing the speed in two dimensional space
      */
     @Override
-    public Vector2i getSpeed() {
+    public Vector2i getVelocity() {
         return speed;
+    }
+
+    /**
+     * Get the entities speed
+     *
+     * @return Vector2i value representing the speed in two dimensional space
+     */
+    @Override
+    public double getSpeed() {
+        double  xSqrd = Math.pow(speed.x, 2),
+                ySqrd = Math.pow(speed.y, 2),
+                hypotenuse = Math.sqrt(xSqrd + ySqrd);
+
+        return hypotenuse;
     }
 
     public void setCharacterStill(int dir) {

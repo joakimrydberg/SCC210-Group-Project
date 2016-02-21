@@ -84,7 +84,7 @@ public class Player extends Mob implements KeyListener {
             case RIGHT:
                 if (!rightPressed) {
                     rightPressed = true;
-                    setSpeed(new Vector2i(getSpeed().x + MOVEBY, getSpeed().y));
+                    setSpeed(new Vector2i(getVelocity().x + MOVEBY, getVelocity().y));
                     tempDir = 2;
                     setAnimation(ANIMATE_RIGHT);
                 }
@@ -92,7 +92,7 @@ public class Player extends Mob implements KeyListener {
             case UP:
                 if (!upPressed) {
                     upPressed = true;
-                    setSpeed(new Vector2i(getSpeed().x, getSpeed().y - MOVEBY));
+                    setSpeed(new Vector2i(getVelocity().x, getVelocity().y - MOVEBY));
                     tempDir = 3;
                     setAnimation(ANIMATE_UP);
                 }
@@ -100,7 +100,7 @@ public class Player extends Mob implements KeyListener {
             case LEFT:
                 if (!leftPressed) {
                     leftPressed = true;
-                    setSpeed(new Vector2i(getSpeed().x - MOVEBY, getSpeed().y));
+                    setSpeed(new Vector2i(getVelocity().x - MOVEBY, getVelocity().y));
                     tempDir = 1;
                     setAnimation(ANIMATE_LEFT);
                 }
@@ -108,7 +108,7 @@ public class Player extends Mob implements KeyListener {
             case DOWN:
                 if (!downPressed) {
                     downPressed = true;
-                    setSpeed(new Vector2i(getSpeed().x, getSpeed().y + MOVEBY));
+                    setSpeed(new Vector2i(getVelocity().x, getVelocity().y + MOVEBY));
                     tempDir = 0;
                     setAnimation(ANIMATE_DOWN);
                 }
@@ -122,9 +122,9 @@ public class Player extends Mob implements KeyListener {
         switch (event.key) {
             case RIGHT:
                 rightPressed = false;
-                setSpeed(new Vector2i(0, getSpeed().y));
+                setSpeed(new Vector2i(0, getVelocity().y));
 
-                if (getSpeed().x == 0 && getSpeed().y == 0) {
+                if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
                     super.stopCharacter(); //@see Mob
                 }
@@ -132,9 +132,9 @@ public class Player extends Mob implements KeyListener {
                 break;
             case UP:
                 upPressed = false;
-                setSpeed(new Vector2i(getSpeed().x, 0));
+                setSpeed(new Vector2i(getVelocity().x, 0));
 
-                if (getSpeed().x == 0 && getSpeed().y == 0) {
+                if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
                     super.stopCharacter(); //@see Mob
                 }
@@ -142,18 +142,18 @@ public class Player extends Mob implements KeyListener {
                 break;
             case LEFT:
                 leftPressed = false;
-                setSpeed(new Vector2i(0, getSpeed().y));
+                setSpeed(new Vector2i(0, getVelocity().y));
 
-                if (getSpeed().x == 0 && getSpeed().y == 0) {
+                if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
                     super.stopCharacter(); //@see Mob
                 }
                 break;
             case DOWN:
                 downPressed = false;
-                setSpeed(new Vector2i(getSpeed().x, 0));
+                setSpeed(new Vector2i(getVelocity().x, 0));
 
-                if (getSpeed().x == 0 && getSpeed().y == 0) {
+                if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
                     super.stopCharacter(); //@see Mob
                 }
@@ -163,7 +163,7 @@ public class Player extends Mob implements KeyListener {
 
         this.stop();
         this.start();
-        //this.getSpeed() = new Vector2i(0,0);
+        //this.getVelocity() = new Vector2i(0,0);
 
     }
 
