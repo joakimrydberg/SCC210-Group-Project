@@ -85,7 +85,7 @@ public class EnemyWarrior extends Enemy implements CollidingEntity {
     public void damaged(){
 
         BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir);
-        setFrames(a);
+        setFrames(a); //
 
     }
 }
