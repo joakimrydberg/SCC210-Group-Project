@@ -202,7 +202,7 @@ public class Room extends RoomEntity implements MovementListener, KeyListener {
 
     }
 
-
+//
     @Override
     public void keyPressed(KeyEvent event) {
 //        if (event.asKeyEvent().key == Keyboard.Key.P) {
