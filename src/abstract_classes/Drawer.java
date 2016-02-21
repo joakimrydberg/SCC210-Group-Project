@@ -89,6 +89,20 @@ public abstract class Drawer extends Entity {
         }
     }
 
+    public Drawer loadDrawer(Class type) {
+        Drawer drawer = Driver.getDrawer(null, type);
+
+        try {
+            drawer = (drawer == null) ? (Drawer) type.newInstance() : drawer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        drawer.load();
+
+        return drawer;
+    }
+
     public void load() {
         loaded = true;
     }

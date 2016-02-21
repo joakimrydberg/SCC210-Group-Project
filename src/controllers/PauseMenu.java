@@ -16,6 +16,7 @@ import tools.Constants;
 public class PauseMenu extends Menu {
     public final static String NAME = "Pause Menu";
     private int btnX = 170, btnY = 150;
+    private InventoryMenu inventoryMenu;
 
     /**
      *
@@ -64,7 +65,7 @@ public class PauseMenu extends Menu {
             }
             else if (button.getName().equals("INVENTORY"))
             {
-                loadDrawer(InventoryMenu.class);
+                inventoryMenu = (InventoryMenu)loadDrawer(InventoryMenu.class);
                 System.out.println("INVENTORY clicked");
             }
             else if (button.getName().equals("STATS"))
@@ -74,11 +75,17 @@ public class PauseMenu extends Menu {
             else if (button.getName().equals("RESUME"))
             {
                 this.unload();
+                if (inventoryMenu != null) {
+                    inventoryMenu.unload();
+                }
                 System.out.println("RESUME clicked");
             }
             else if (button.getName().equals("QUIT GAME"))
             {
                 this.unload();
+                if (inventoryMenu != null) {
+                    inventoryMenu.unload();
+                }
                 System.out.println("QUIT GAME clicked");
             }
         }

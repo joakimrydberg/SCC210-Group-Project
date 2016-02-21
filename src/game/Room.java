@@ -2,9 +2,11 @@ package game;
 
 import components.RoomEntity;
 import components.mobs.*;
+import interfaces.KeyListener;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
 import tools.FileHandling;
 
@@ -14,7 +16,7 @@ import java.util.HashMap;
 /**
  * @author Joakim Rydberg.
  */
-public class Room extends RoomEntity implements MovementListener {
+public class Room extends RoomEntity implements MovementListener, KeyListener {
     private String roomID;
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
@@ -22,6 +24,7 @@ public class Room extends RoomEntity implements MovementListener {
 
     public Room(Level level) {
         this.level = level;
+        addEntity(this);
     }
 
     public void create(String roomID) {
@@ -196,6 +199,20 @@ public class Room extends RoomEntity implements MovementListener {
 
     @Override
     public void onMove(MovingEntity mover) {
+
+    }
+
+
+    @Override
+    public void keyPressed(KeyEvent event) {
+//        if (event.asKeyEvent().key == Keyboard.Key.P) {
+//            loadDrawer(PauseMenu.class);
+//            unload();
+//        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event) {
 
     }
 }
