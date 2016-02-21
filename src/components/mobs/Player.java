@@ -49,17 +49,7 @@ public class Player extends Mob implements KeyListener {
             this.start();
         }
         if (c.equals("warrior")) {
-            System.out.println("warrior selected");
-            setSpriteSheet(SpriteSheetLoad.loadSprite("WarriorMaleSheet"));
-            setCharacterStill(tempDir);
-            BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
-
-            super.stop(); //@see Mob , must be before we set the frames
-
-            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
-            this.setFrames(warrior);
-
-            this.start();
+            Warrior w = new Warrior();
     }
         if (c.equals("ranger")) {
             System.out.println("ranger selected");
