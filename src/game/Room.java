@@ -1,10 +1,6 @@
 package game;
 
 import components.RoomEntity;
-import components.mobs.EnemyMage;
-import components.mobs.EnemyRanger;
-import components.mobs.EnemyWarrior;
-import components.mobs.Player;
 import components.mobs.*;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
@@ -13,15 +9,16 @@ import tools.Constants;
 import tools.FileHandling;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Joakim Rydberg.
  */
 public class Room extends RoomEntity implements MovementListener {
     private String roomID;
-    private ArrayList<String> potentialDoors = new ArrayList<>();
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
+    private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
 
     public Room(Level level) {
         this.level = level;
@@ -29,26 +26,97 @@ public class Room extends RoomEntity implements MovementListener {
 
     public void create(String roomID) {
         this.roomID = roomID;
+
         ArrayList<Object> objects = FileHandling.readFile(LEVEL_ID_DIR + roomID);
         LevelPart[][] tiles = new LevelPart[11][11];
 
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
-                tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
+        {   //creating the room layout
+
+
+            LevelPart tile;
+
+            for (int i = 0; i < 11; i++) {
+                for (int j = 0; j < 11; j++) {
+                    tile = (LevelPart) objects.get(i * 11 + j);
+
+                    if ( tile.getType().equals("Door") ) {
+                        String key = null;
+
+                        switch ((int)tile.getRotation()) {
+                            case 0:
+                                key = "North";
+                                break;
+                            case 90:
+                                key = "East";
+                                break;
+                            case 180:
+                                key = "South";
+                                break;
+                            case 270:
+                                key = "West";
+                                break;
+                            default:
+                                throw new RuntimeException("AHHH invalid rotation" + (int)tile.getRotation());
+                        }
+
+                        boolean noPreviousDoors = true;
+                        for (String tempKey : potentialDoors.keySet()) {
+                            if (tempKey.equals(key)) {
+                                noPreviousDoors = false;
+                            }
+                        }
+
+                        if (noPreviousDoors) {
+                            potentialDoors.put(key, tiles[i][j]);
+                        }
+
+                        LevelPart replacementPart = null, temp;
+
+                        switch ( (int) tile.getRotation() ) {
+                            case 0:    case 180:
+                                if ((temp = (LevelPart) objects.get(i * 11 + j - 1)).getType().equals("Wall")) {
+                                    replacementPart = temp;
+                                } else if ((temp = (LevelPart) objects.get(i * 11 + j + 1)).getType().equals("Wall")) {
+                                    replacementPart = temp;
+                                }
+                                break;
+                            case 90:     case 270:
+                                if ((temp = (LevelPart) objects.get((i - 1) * 11 + j )).getType().equals("Wall")) {
+                                    replacementPart = temp;
+                                } else if ((temp = (LevelPart) objects.get((i + 1) * 11 + j)).getType().equals("Wall")) {
+                                    replacementPart = temp;
+                                }
+                                break;
+                            default:
+                                throw new RuntimeException("AHHH invalid rotation" + (int)tile.getRotation());
+                        }
+
+                        replacementPart = (replacementPart == null) ? temp : replacementPart;
+
+                        replacementPart.setRowNo(i);
+                        replacementPart.setColNo(j);
+
+                        tile = replacementPart;
+                    }
+                    tiles[i][j] = tile;
+                }
             }
         }
+
+        create(tiles);
+
+
         Player p = null;
-        if(Player.classType == "warrior")
+        if(Player.classType.equals("warrior"))
         {p  = new Warrior();}
-        if(Player.classType == "mage")
+        if(Player.classType.equals("mage"))
         {p  = new Mage();}
-        if(Player.classType == "ranger")
+        if(Player.classType.equals("ranger"))
         {p  = new Ranger();}
-       // p.setClass(Player.classType);
+        // p.setClass(Player.classType);
 
 
         p.addMovementListener(this);
-        create(tiles);
 
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
         EnemyMage enemyMage = new EnemyMage(this, p);
@@ -58,29 +126,29 @@ public class Room extends RoomEntity implements MovementListener {
         addEntity(enemyWarrior);
         addEntity(enemyMage);
         addEntity(enemyRanger);
-       // deathBall.setClass("ranger");
-       // addEntity(deathBall);
-        locatePotentialDoors();
+        // deathBall.setClass("ranger");
+        // addEntity(deathBall);
     }
 
-    public ArrayList<String> getPotentialDoors() {
+    public void addDoor(String direction) {
+        if (!potentialDoors.containsKey(direction)) {
+            throw new RuntimeException("Invalid Direction, (there isn't a door facing that way)");
+        }
+
+        super.setPart(potentialDoors.get(direction));  //added functionality to RoomEntity and Drawer
+    }
+
+    public HashMap<String, LevelPart> getPotentialDoors() {
         return potentialDoors;
     }
 
-    private void locatePotentialDoors() {  //TODO make work with other positions
+    private void locatePotentialDoors() {
         LevelPart[][] levelParts = getTiles();
 
-        if (levelParts[0][6].getType().equals("Door")) {
-            potentialDoors.add("North");
-        }
-        if (levelParts[6][0].getType().equals("Door")) {
-            potentialDoors.add("West");
-        }
-        if (levelParts[6][10].getType().equals("Door")) {
-            potentialDoors.add("East");
-        }
-        if (levelParts[10][6].getType().equals("Door")) {
-            potentialDoors.add("South");
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+
+            }
         }
     }
 

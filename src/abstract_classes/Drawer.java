@@ -1,7 +1,6 @@
 package abstract_classes;
 
 import components.mobs.Enemy;
-import components.mobs.EnemyWarrior;
 import components.mobs.Player;
 import game.Driver;
 import interfaces.Clickable;
@@ -64,6 +63,32 @@ public abstract class Drawer extends Entity {
         }
     }
 
+    private void drawAll() {
+        if (isLoaded()) {
+            draw();
+
+
+            for (Entity entity : getEntities()) {
+
+                if(entity instanceof CollidingEntity) {
+
+                    Player p = ((Enemy) entity).getPlayer();
+                    if(((CollidingEntity) entity).checkWithin(p.getCenterX(), p.getCenterY()) && p.held) {
+                        ((Enemy) entity).damaged();
+                    }
+
+                }
+
+                if (entity instanceof MovingEntity)
+                    ((MovingEntity) entity).move();
+
+
+                if(!entity.hidden)
+                    entity.draw();
+            }
+        }
+    }
+
     public void load() {
         loaded = true;
     }
@@ -84,29 +109,20 @@ public abstract class Drawer extends Entity {
         entities.add(entity);
     }
 
-    private void drawAll() {
-        if (isLoaded()) {
-            draw();
+    public Entity getEntity(int i) {
+        return entities.get(i);
+    }
 
+    public void replaceEntity(int i, Entity entity) {
+        ArrayList<Entity> newEntities = new ArrayList<>();
 
-            for (Entity entity : getEntities()) {
-
-                if(entity instanceof CollidingEntity) {
-
-                    Player p = ((Enemy) entity).getPlayer();
-                    if(((CollidingEntity) entity).checkWithin(p.getCenterX(), p.getCenterY()) && p.held) {
-                        ((EnemyWarrior) entity).damaged();
-                    }
-
-                }
-
-                if (entity instanceof MovingEntity)
-                    ((MovingEntity) entity).move();
-
-
-                if(!entity.hidden)
-                    entity.draw();
+        for (int j = 0; j < entities.size(); j++) {
+            if (j == i) {
+                entities.add(entity);
+            } else {
+                newEntities.add(entities.get(j));
             }
         }
     }
+
 }

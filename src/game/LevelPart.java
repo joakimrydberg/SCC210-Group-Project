@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * @date 15/02/16.
  */
 public class LevelPart implements Serializable {
+    private static final long serialVersionUID = 1L;  //actually needed
     private String spriteFileName = "";
 	private String type;
 	private float rotation = 0;
@@ -59,6 +60,10 @@ public class LevelPart implements Serializable {
 			if(line[1].equals(spriteFileName)) { type = line[2]; }
 		}
 	}
+
+    public void setType(String type){
+        this.type = type;
+    }
 
     public String getSpriteFileName() {
         return spriteFileName;
