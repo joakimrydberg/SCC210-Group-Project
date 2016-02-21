@@ -1,9 +1,10 @@
 package game;
 
 import components.RoomEntity;
+import components.mobs.EnemyMage;
+import components.mobs.EnemyRanger;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
-import components.mobs.Warrior;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
@@ -43,13 +44,13 @@ public class Room extends RoomEntity implements MovementListener {
         create(tiles);
 
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
-        EnemyWarrior enemyWarrior1 = new EnemyWarrior(this, p);
-        EnemyWarrior enemyWarrior2 = new EnemyWarrior(this, p);
+        EnemyMage enemyMage = new EnemyMage(this, p);
+        EnemyRanger enemyRanger = new EnemyRanger(this, p);
         //DeathBall deathBall = new DeathBall(this, p);
         addEntity(p);
         addEntity(enemyWarrior);
-        addEntity(enemyWarrior2);
-        addEntity(enemyWarrior1);
+        addEntity(enemyMage);
+        addEntity(enemyRanger);
        // deathBall.setClass("ranger");
        // addEntity(deathBall);
         locatePotentialDoors();

@@ -20,12 +20,16 @@ public abstract class Enemy extends Mob implements MovementListener {
     public final static int IDLE = 0,
             FOLLOW_PATH = 1,
             FOLLOW_PLAYER = 2,
-            FLEE_PLAYER = 3;
+            FLEE_PLAYER = 3,
+            BE_CAUTIOUS = 4;
     private boolean processingMove = false;
     private ArrayList<Vector2i> path;
     private int currentPos;
     private int movementState = IDLE;
     private Navigator navigator;
+    private int fleeDistance = 300;
+    private int cautiousThreshold = 50,
+                cautiousDistance = 300;
 
     public Enemy(Room room, Player player) {
         super( getWindow().getSize().x - 200 - Math.abs(new Random().nextInt() % 50 + 25)  /*getWindow().getSize().x + (new Random().nextInt() % (getWindow().getSize().x / 4))*/,
@@ -64,24 +68,64 @@ public abstract class Enemy extends Mob implements MovementListener {
 
     @Override
     public void onMove(MovingEntity mover) {
-        if (!processingMove && movementState == FOLLOW_PLAYER) {
+        if (!processingMove) {
             processingMove = true;
 
-            new Thread(() -> {  //TODO remove threading to add new slow-mo enemy, i love bugs
-                this.path = navigator.navigateTo(this, getPlayer());
+            switch (movementState) {
+                case FOLLOW_PLAYER:      //find and attack
+                    new Thread(() -> {
+                        this.path = navigator.navigateDistanceTo(this, getPlayer(), 0, false);
 
-                currentPos = this.path.size() -1;
+                        currentPos = this.path.size() - 1;
 
-                processingMove= false;
-            }).start();
+                        processingMove = false;
+                    }).start();
+                    break;
 
+                case FLEE_PLAYER:    //run
+                    if (Math.sqrt(Math.pow(getCenterX() - getPlayer().getCenterX(), 2) + Math.pow(getCenterY() -  getPlayer().getCenterY(), 2)) < fleeDistance) {
+                        new Thread(() -> {
+                            this.path = navigator.navigateDistanceAway(this, getPlayer(), fleeDistance, false);
+
+                            currentPos = this.path.size() -1 ;
+
+                            processingMove = false;
+                        }).start();
+
+                    } else {
+                        processingMove = false;
+                    }
+                    break;
+                case BE_CAUTIOUS:   //stay at a certain distance and also be in line of sight
+                    double distanceToPlayer = Math.sqrt(Math.pow(getCenterX() - getPlayer().getCenterX(), 2) + Math.pow(getCenterY() -  getPlayer().getCenterY(), 2));
+                    if (distanceToPlayer > cautiousThreshold + fleeDistance) {
+                        new Thread(() -> {
+                            this.path = navigator.navigateDistanceTo(this, getPlayer(), cautiousDistance + new Random().nextInt(cautiousThreshold * 2) - cautiousThreshold, true);
+
+                            currentPos = this.path.size() - 1;
+
+                            processingMove = false;
+                        }).start();
+                    } else if (distanceToPlayer < fleeDistance - cautiousThreshold) {
+                        new Thread(() -> {
+                            this.path = navigator.navigateDistanceAway(this, getPlayer(), cautiousDistance + new Random().nextInt(cautiousThreshold * 2) - cautiousThreshold, true);
+
+                            currentPos = this.path.size() -1 ;
+
+                            processingMove = false;
+                        }).start();
+                    } else {
+                        processingMove = false;
+                    }
+                    break;
+            }
         }
     }
 
     @Override
     public void move() {
         switch (movementState) {
-            case FOLLOW_PLAYER:  case FOLLOW_PATH:
+            case FOLLOW_PLAYER:  case FOLLOW_PATH:  case FLEE_PLAYER:case BE_CAUTIOUS:
                 if (path != null) {
                     int newX, newY;
 

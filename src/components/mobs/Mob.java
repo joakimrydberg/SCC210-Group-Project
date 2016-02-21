@@ -90,8 +90,10 @@ public abstract class Mob extends Animation implements MovingEntity {
 
                 draw();  //drawing to the screen
 
-                for (MovementListener listener : listeners) {  //must be at end of method
-                    listener.onMove(this);
+                if (move) {
+                    for (MovementListener listener : listeners) {  //must be at end of method
+                        listener.onMove(this);
+                    }
                 }
             }
         }

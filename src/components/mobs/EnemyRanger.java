@@ -9,18 +9,18 @@ import java.awt.image.BufferedImage;
 
 /**
  * @author josh
- * @date 20/02/16.
+ * @date 21/02/16.
  */
-public class EnemyWarrior extends Enemy implements CollidingEntity {
+public class EnemyRanger extends Enemy implements CollidingEntity {
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,
             SPEEDLIMIT = 5;
     private int tempDir = 0;
 
 
-    public EnemyWarrior(Room room, Player player) {
+    public EnemyRanger(Room room, Player player) {
         super(room, player);
-        setMovementState(FOLLOW_PLAYER);
+        setMovementState(BE_CAUTIOUS);
 
         setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMaleSheet"));
         setCharacterStill(tempDir);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
@@ -90,5 +90,3 @@ public class EnemyWarrior extends Enemy implements CollidingEntity {
 
     }
 }
-
-
