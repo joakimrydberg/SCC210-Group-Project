@@ -27,21 +27,49 @@ public class Room extends RoomEntity implements MovementListener {
     public void create(String roomID) {
         this.roomID = roomID;
 
-        locatePotentialDoors(); //must call this at the very start
+        ArrayList<Object> objects = FileHandling.readFile(LEVEL_ID_DIR + roomID);
+        LevelPart[][] tiles = new LevelPart[11][11];
 
         {   //creating the room layout
 
-            ArrayList<Object> objects = FileHandling.readFile(LEVEL_ID_DIR + roomID);
-            LevelPart[][] tiles = new LevelPart[11][11];
+
             LevelPart tile;
 
             for (int i = 0; i < 11; i++) {
                 for (int j = 0; j < 11; j++) {
                     tile = (LevelPart) objects.get(i * 11 + j);
 
-                    if ( !tile.getType().equals("Door") ) {
-                        tiles[i][j] = tile;
-                    } else {
+                    if ( tile.getType().equals("Door") ) {
+                        String key = null;
+
+                        switch ((int)tile.getRotation()) {
+                            case 0:
+                                key = "North";
+                                break;
+                            case 90:
+                                key = "East";
+                                break;
+                            case 180:
+                                key = "South";
+                                break;
+                            case 270:
+                                key = "West";
+                                break;
+                            default:
+                                throw new RuntimeException("AHHH invalid rotation" + (int)tile.getRotation());
+                        }
+
+                        boolean noPreviousDoors = true;
+                        for (String tempKey : potentialDoors.keySet()) {
+                            if (tempKey.equals(key)) {
+                                noPreviousDoors = false;
+                            }
+                        }
+
+                        if (noPreviousDoors) {
+                            potentialDoors.put(key, tiles[i][j]);
+                        }
+
                         LevelPart replacementPart = null, temp;
 
                         switch ( (int) tile.getRotation() ) {
@@ -52,7 +80,7 @@ public class Room extends RoomEntity implements MovementListener {
                                     replacementPart = temp;
                                 }
                                 break;
-                            case 90:     case 170:
+                            case 90:     case 270:
                                 if ((temp = (LevelPart) objects.get((i - 1) * 11 + j )).getType().equals("Wall")) {
                                     replacementPart = temp;
                                 } else if ((temp = (LevelPart) objects.get((i + 1) * 11 + j)).getType().equals("Wall")) {
@@ -60,7 +88,7 @@ public class Room extends RoomEntity implements MovementListener {
                                 }
                                 break;
                             default:
-                                throw new RuntimeException("AHHH invalid rotation");
+                                throw new RuntimeException("AHHH invalid rotation" + (int)tile.getRotation());
                         }
 
                         replacementPart = (replacementPart == null) ? temp : replacementPart;
@@ -70,13 +98,13 @@ public class Room extends RoomEntity implements MovementListener {
 
                         tile = replacementPart;
                     }
-
                     tiles[i][j] = tile;
                 }
             }
-
-            create(tiles);
         }
+
+        create(tiles);
+
 
         Player p = null;
         if(Player.classType.equals("warrior"))
@@ -119,37 +147,7 @@ public class Room extends RoomEntity implements MovementListener {
 
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
-                if (levelParts[i][j].getType().equals("Door")) {
-                    String key = null;
 
-                    switch ((int)levelParts[i][j].getRotation()) {
-                        case 0:
-                            key = "North";
-                            break;
-                        case 90:
-                            key = "East";
-                            break;
-                        case 180:
-                            key = "South";
-                            break;
-                        case 270:
-                            key = "West";
-                            break;
-                        default:
-                            throw new RuntimeException("AHHH invalid rotation");
-                    }
-
-                    boolean noPreviousDoors = true;
-                    for (String tempKey : potentialDoors.keySet()) {
-                        if (tempKey.equals(key)) {
-                            noPreviousDoors = false;
-                        }
-                    }
-
-                    if (noPreviousDoors) {
-                        potentialDoors.put(key, levelParts[i][j]);
-                    }
-                }
             }
         }
     }

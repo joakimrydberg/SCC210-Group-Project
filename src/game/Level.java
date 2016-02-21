@@ -27,9 +27,9 @@ public class Level {
 		}
 
 
-		startRoom.create("test_level"); //renamed
-		rooms[3][5] = startRoom;
-		currentRoom = startRoom;
+		//startRoom.create("test_level"); //renamed
+	//	rooms[3][5] = startRoom;
+	//	currentRoom = startRoom;
 
 		//startRoom.addDoor("South");
 		//setRoom(4, 5, "North");
@@ -37,7 +37,7 @@ public class Level {
 		//currentRoom.load();
 
 		Room testRoom = new Room(this);
-		testRoom.create("ai_test");
+		testRoom.create("test_level");
 		testRoom.load();
 
 	}
