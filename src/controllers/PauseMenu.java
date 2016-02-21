@@ -16,6 +16,9 @@ import tools.Constants;
 public class PauseMenu extends Menu {
     public final static String NAME = "Pause Menu";
     private int btnX = 170, btnY = 150;
+    private PlayerMenu pMenu = new PlayerMenu();
+    private InventoryMenu iMenu = new InventoryMenu();
+    private StatsMenu sMenu = new StatsMenu();
 
     /**
      *
@@ -36,6 +39,8 @@ public class PauseMenu extends Menu {
         addOption("QUIT GAME", 600, "RED");
 
         addEntity(new Rect(null, 300, centerY, 2, 600, new Color(117, 62, 29), 250)); //seperation border
+
+        pMenu.load();
     }
 
 
@@ -60,27 +65,41 @@ public class PauseMenu extends Menu {
             Entity button = (Button) clickable;
             if (button.getName().equals("PLAYER"))
             {
+                unloadMenus();
+                pMenu.load();
                 System.out.println("PLAYER clicked");
             }
             else if (button.getName().equals("INVENTORY"))
             {
-                loadDrawer(InventoryMenu.class);
+                unloadMenus();
+                iMenu.load();
                 System.out.println("INVENTORY clicked");
             }
             else if (button.getName().equals("STATS"))
             {
+                unloadMenus();
+                sMenu.load();
                 System.out.println("STATS clicked");
             }
             else if (button.getName().equals("RESUME"))
             {
                 this.unload();
+                unloadMenus();
                 System.out.println("RESUME clicked");
             }
             else if (button.getName().equals("QUIT GAME"))
             {
                 this.unload();
+                unloadMenus();
                 System.out.println("QUIT GAME clicked");
             }
         }
     }
+
+    private void unloadMenus(){
+        pMenu.unload();
+        sMenu.unload();
+        iMenu.unload();
+    }
+
 }

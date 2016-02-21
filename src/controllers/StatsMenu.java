@@ -7,10 +7,10 @@ import tools.Constants;
 /**
  * Created by Ross on 21/02/2016.
  */
-public class InventoryMenu extends Menu {
-    public final static String NAME = "Inventory Menu";
+public class StatsMenu extends Menu {
+    public final static String NAME = "Stats Menu";
 
-    public InventoryMenu(){
+    public StatsMenu(){
         super(NAME);
     }
 
