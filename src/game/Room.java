@@ -5,6 +5,7 @@ import components.mobs.EnemyMage;
 import components.mobs.EnemyRanger;
 import components.mobs.EnemyWarrior;
 import components.mobs.Player;
+import components.mobs.*;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
@@ -36,8 +37,14 @@ public class Room extends RoomEntity implements MovementListener {
                 tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
             }
         }
-        Player p = new Player();
-        p.setClass(Player.classType);
+        Player p = null;
+        if(Player.classType == "warrior")
+        {p  = new Warrior();}
+        if(Player.classType == "mage")
+        {p  = new Mage();}
+        if(Player.classType == "ranger")
+        {p  = new Ranger();}
+       // p.setClass(Player.classType);
 
 
         p.addMovementListener(this);

@@ -49,7 +49,7 @@ public class Player extends Mob implements KeyListener {
             this.start();
         }
         if (c.equals("warrior")) {
-            Warrior w = new Warrior();
+            Warrior p = new Warrior();
     }
         if (c.equals("ranger")) {
             System.out.println("ranger selected");
