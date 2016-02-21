@@ -26,9 +26,6 @@ import java.util.Random;
  * @author Ross Newby
  */
 public class MapMenu extends Menu {
-    private final static String SEP = Constants.SEP;
-    public int loaded = 0;
-    private ArrayList<Transformable> objs = new ArrayList<Transformable>( );
     private Node[] nodes = new Node[10];
     private NodeDescriptor[] nodeDesc = new NodeDescriptor[10];
     public final static String NAME = "Map Menu";
@@ -48,6 +45,7 @@ public class MapMenu extends Menu {
         Button backButton = new Button(50, 40, 80, 50, "BROWN", 200 , "BACK", 15 );
         backButton.addClickListener(this);
         addEntity(backButton);
+
 
         //creating the nodes
         nodes[0] = new Node("1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
