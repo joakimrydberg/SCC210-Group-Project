@@ -26,7 +26,7 @@ public class Player extends Mob implements KeyListener {
             rightPressed = false;
 
     protected int dir = 0;
-    protected boolean held = false;
+    public boolean held = false;
     public Player() {
         super(200, 200, 64, 128);
 

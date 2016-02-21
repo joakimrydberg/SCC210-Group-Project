@@ -113,4 +113,10 @@ public abstract class Enemy extends Mob implements MovementListener {
         super.move();
     }
 
+    public void damaged(){
+
+
+
+    }
+
 }
