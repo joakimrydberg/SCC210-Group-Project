@@ -63,26 +63,6 @@ public abstract class Drawer extends Entity {
         }
     }
 
-    public void load() {
-        loaded = true;
-    }
-
-    public void unload() {
-        loaded = false;
-    }
-
-    public boolean isLoaded() {
-        return loaded;
-    }
-
-    public ArrayList<Entity> getEntities() {
-        return entities;
-    }
-
-    public void addEntity(Entity entity) {
-        entities.add(entity);
-    }
-
     private void drawAll() {
         if (isLoaded()) {
             draw();
@@ -108,4 +88,41 @@ public abstract class Drawer extends Entity {
             }
         }
     }
+
+    public void load() {
+        loaded = true;
+    }
+
+    public void unload() {
+        loaded = false;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public ArrayList<Entity> getEntities() {
+        return entities;
+    }
+
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+    }
+
+    public Entity getEntity(int i) {
+        return entities.get(i);
+    }
+
+    public void replaceEntity(int i, Entity entity) {
+        ArrayList<Entity> newEntities = new ArrayList<>();
+
+        for (int j = 0; j < entities.size(); j++) {
+            if (j == i) {
+                entities.add(entity);
+            } else {
+                newEntities.add(entities.get(j));
+            }
+        }
+    }
+
 }
