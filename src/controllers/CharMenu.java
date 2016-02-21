@@ -7,6 +7,7 @@ package controllers;
 
 import abstract_classes.Entity;
 import components.*;
+import components.mobs.Player;
 import game.SpriteSheetLoad;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
@@ -46,7 +47,7 @@ public class CharMenu extends Menu {
     private Animation rangerWalk = new Animation(200, 200, 64, 128, ranger, 3);
     private Animation mageWalk = new Animation(200, 200, 64, 128, mageA, 3);
     private Animation currAnimation = warriorWalk;
-    private Player tempPlayer = new Player("temp");
+    private Player tempPlayer = new Player();
     BufferedImage[] currentAnimation = tempPlayer.charAttack(newMageSheet, 0);
     private Animation tempWalk = new Animation(100, 200, 64, 128, currentAnimation, 5);
 
@@ -127,7 +128,7 @@ public class CharMenu extends Menu {
 
             warr.hide();
             range.hide();*/
-            p = new Player("");
+            p = new Player();
             p.move();
 
         } catch (URISyntaxException e) {

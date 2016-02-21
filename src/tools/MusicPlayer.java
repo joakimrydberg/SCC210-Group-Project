@@ -14,26 +14,29 @@ import java.util.ArrayList;
 public class MusicPlayer  {
     private static ArrayList<ClipHolder> clips = new ArrayList<>();
     private final static String DIR = "assets" + Constants.SEP + "audio" + Constants.SEP ;
+    private static final boolean play = false;
 
     public static void play(String fileName) {
         play(fileName, false);
     }
 
     public static void play(String fileName, boolean loop) {
-        try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(new File(DIR + fileName));
+        if (play) {
+            try {
+                AudioInputStream ais = AudioSystem.getAudioInputStream(new File(DIR + fileName));
 
-            Clip clip = AudioSystem.getClip();
-            clip.open(ais);
+                Clip clip = AudioSystem.getClip();
+                clip.open(ais);
 
-            if (loop)
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            else
-                clip.start();
+                if (loop)
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
+                else
+                    clip.start();
 
-            clips.add(new ClipHolder(fileName, clip));
-        } catch (Exception e) {
-            e.printStackTrace();
+                clips.add(new ClipHolder(fileName, clip));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

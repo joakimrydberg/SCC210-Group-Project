@@ -5,20 +5,18 @@ import java.util.Random;
 /**
  * @author Joakim Rydberg.
  */
-public class Level /*extends Drawer  TODO josh messing with your code, see room entity. (feel free to put this back in) */ {
+public class Level {
 
 	private String levelName = "";
 	private String difficulty;
 	private int numberOfRooms = 0;
 	private int maxRooms = 10;
 	private Room[][] rooms = new Room[10][10];
-	private Room startRoom = new Room();
+	private Room startRoom = new Room(this);
 	private Room endRoom;
 	private Room currentRoom;
 
 	public Level(String name, String diff) {
-		//super("Level " + id);
-
 		this.levelName = name;
 		this.difficulty = diff;
 
@@ -28,17 +26,8 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 			}
 		}
 
-/*
-		startRoom = (Room)Driver.getDrawer(null, Room.class);
 
-		try {
-			startRoom = (startRoom == null) ? (Room) Room.class.newInstance() : startRoom;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-*/
-
-		startRoom.create("test_level2");
+		startRoom.create("test_level"); //renamed
 		rooms[3][5] = startRoom;
 		currentRoom = startRoom;
 
@@ -48,8 +37,8 @@ public class Level /*extends Drawer  TODO josh messing with your code, see room 
 		currentRoom.load();
 */
 
-		Room testRoom = new Room();
-		testRoom.create("test_level2");
+		Room testRoom = new Room(this);
+		testRoom.create("ai_test");
 		testRoom.load();
 
 	}
