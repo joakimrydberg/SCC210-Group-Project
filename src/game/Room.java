@@ -3,6 +3,7 @@ package game;
 import abstract_classes.Entity;
 import components.RoomEntity;
 import components.mobs.EnemyWarrior;
+import components.mobs.Player;
 import components.mobs.Warrior;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
@@ -35,7 +36,6 @@ public class Room extends RoomEntity implements MovementListener {
                 tiles[i][j] = (LevelPart) objects.get(i * 11 + j);
             }
         }
-
         Warrior p = new Warrior();
         //p.setClass(Player.classType);
 
