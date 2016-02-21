@@ -37,7 +37,7 @@ public class Level {
 		//currentRoom.load();
 
 		Room testRoom = new Room(this);
-		testRoom.create("wall_test");
+		testRoom.create("ai_test");
 		testRoom.load();
 
 	}
