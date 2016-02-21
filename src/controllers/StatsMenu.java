@@ -12,6 +12,7 @@ public class StatsMenu extends Menu {
 
     public StatsMenu(){
         super(NAME);
+        addEntity(new Image(625, 350, 520, 470, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "PANEL.png"));
     }
 
     @Override

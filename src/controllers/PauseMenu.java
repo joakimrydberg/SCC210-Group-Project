@@ -85,12 +85,14 @@ public class PauseMenu extends Menu {
             {
                 this.unload();
                 unloadMenus();
+                new MainMenu().load();
                 System.out.println("RESUME clicked");
             }
             else if (button.getName().equals("QUIT GAME"))
             {
                 this.unload();
                 unloadMenus();
+                new MainMenu().load();
                 System.out.println("QUIT GAME clicked");
             }
         }

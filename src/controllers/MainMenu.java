@@ -87,6 +87,7 @@ public class MainMenu extends Menu {
                 System.out.println("QUIT clicked");
             }
             else if (button.getName().equals("PAUSE MENU")) { //temp button for loading and testing pause menu
+                this.unload();
                 loadDrawer(PauseMenu.class);
             }
         }
