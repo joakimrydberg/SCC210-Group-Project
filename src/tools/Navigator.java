@@ -26,7 +26,7 @@ public class Navigator {
 
     public Navigator(Room room) {
         super();
-
+        populateNavPixels();
         this.room = room;
     }
 

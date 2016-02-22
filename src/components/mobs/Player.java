@@ -16,7 +16,7 @@ public class Player extends Mob implements KeyListener {
             ATTACK_DOWN = 4;
     private float multiplier = 1;
     public static String classType;
-    protected int tempDir;
+    public int tempDir;
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,
             SPEEDLIMIT = 5;

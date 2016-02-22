@@ -1,10 +1,9 @@
 package game;
 
+import components.Projectile;
 import components.RoomEntity;
 import components.mobs.*;
-import interfaces.KeyListener;
-import interfaces.MovementListener;
-import interfaces.MovingEntity;
+import interfaces.*;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
@@ -16,12 +15,12 @@ import java.util.HashMap;
 /**
  * @author Joakim Rydberg.
  */
-public class Room extends RoomEntity implements MovementListener, KeyListener {
+public class Room extends RoomEntity implements MovementListener, ClickListener {
     private String roomID;
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
-
+    public Player player;
     public Room(Level level) {
         this.level = level;
         addEntity(this);
@@ -118,14 +117,16 @@ public class Room extends RoomEntity implements MovementListener, KeyListener {
         {p  = new Ranger();}
         // p.setClass(Player.classType);
 
-
+        Projectile arrow = new Projectile(this);
+        arrow.addClickListener(this);
         p.addMovementListener(this);
-
+        addEntity(arrow);
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
         EnemyMage enemyMage = new EnemyMage(this, p);
         EnemyRanger enemyRanger = new EnemyRanger(this, p);
         //DeathBall deathBall = new DeathBall(this, p);
         addEntity(p);
+        player = p;
         addEntity(enemyWarrior);
         addEntity(enemyMage);
         addEntity(enemyRanger);
@@ -203,7 +204,7 @@ public class Room extends RoomEntity implements MovementListener, KeyListener {
     }
 
 //
-    @Override
+
     public void keyPressed(KeyEvent event) {
 //        if (event.asKeyEvent().key == Keyboard.Key.P) {
 //            loadDrawer(PauseMenu.class);
@@ -211,8 +212,13 @@ public class Room extends RoomEntity implements MovementListener, KeyListener {
 //        }
     }
 
-    @Override
+
     public void keyReleased(KeyEvent event) {
+
+    }
+
+    @Override
+    public void buttonClicked(Clickable button, Object[] args) {
 
     }
 }
