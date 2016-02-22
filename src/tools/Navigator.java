@@ -7,6 +7,7 @@ import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -160,8 +161,6 @@ public class Navigator {
 //        return navReturn.navTrace;
 //    }
 //
-
-
 
     public NavReturn navigateTo(NavPixel frm, Predicate<NavPixel> cond, int stepCount, double timer) {
         if (cond.test(frm)) {
@@ -332,7 +331,11 @@ public class Navigator {
         return navReturn;
     }
 
-    private boolean inLineOfSight(Vector2f frm, Vector2f to) {
+    public boolean inLineOfSight(Vector2f frm, Vector2f to) {
+        return inLineOfSight(frm, to, null);
+    }
+
+    public boolean inLineOfSight(Vector2f frm, Vector2f to, Consumer<Vector2f> consumer) {
         if (isInCollidable(getNavPixels(new Vector2i((int)frm.x, (int)frm.y), null, false)[0])) {
             return false;
         }
@@ -341,8 +344,11 @@ public class Navigator {
             return true;
         }
 
+        if (consumer != null) {
+            consumer.accept(frm);
+        }
 
-        return inLineOfSight(new Vector2f(frm.x + ((to.x - frm.x) / 30), frm.y + ((to.y - frm.y) / 30)), to);
+        return inLineOfSight(new Vector2f(frm.x + ((to.x - frm.x) / 30), frm.y + ((to.y - frm.y) / 30)), to, consumer);
     }
 
     private boolean isInCollidable(NavPixel navPixel) {

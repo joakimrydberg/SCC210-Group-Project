@@ -10,12 +10,11 @@ import components.Button;
 import components.Image;
 import components.Node;
 import components.Rect;
-import interfaces.ClickListener;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
-import org.jsfml.window.event.Event;
+import tools.CSVReader;
 import tools.Constants;
 
 import java.util.ArrayList;
@@ -25,14 +24,14 @@ import java.util.Random;
  * This...
  * @author Ross Newby
  */
-public class MapMenu extends Menu implements Clickable {
+public class MapMenu extends Menu /*implements Clickable*/ {
     private Node[] nodes = new Node[10];
     private NodeDescriptor[] nodeDesc = new NodeDescriptor[10];
     public final static String NAME = "Map Menu";
     private final int map_id = 1;  // = new Random().nextInt( /* a value */);
     private final static int MOVE_DIST = 200;
     ArrayList<String[]> csvContent;
-   // private Navigator
+
     /**
      *
      */
@@ -51,10 +50,10 @@ public class MapMenu extends Menu implements Clickable {
         backButton.addClickListener(this);
         addEntity(backButton);
 
-        this.addClickListener(this);
-//
-//        csvContent = CSVReader.read("assets" + Constants.SEP + "maps" + Constants.SEP + "map_" + map_id + ".csv");
-//
+    //    this.addClickListener(this);
+
+        csvContent = CSVReader.read("assets" + Constants.SEP + "maps" + Constants.SEP + "map_" + map_id + ".csv");
+
 //        { // creating start and end nodes
 //            Iterator it = csvContent.iterator();
 //            while (it.hasNext()) {
@@ -124,6 +123,15 @@ public class MapMenu extends Menu implements Clickable {
     }
 
 
+//    public int navigateTo(Node frm, int stepCount) {
+//
+////        Iterator it = csvContent.iterator();
+////        while (it.hasNext()) {
+////            String[] row = (String[]) it.next();
+////
+////            if (row[2].equals())
+////        }
+//    }
 
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) { //TODO should there actually be a back button? idk
@@ -228,39 +236,39 @@ public class MapMenu extends Menu implements Clickable {
         return(randomNumber);
     }
 
+//    //=================testing===========================================================================
+//
+//    @Override
+//    public void clicked(Event e) {
+//        System.out.println("X: " + e.asMouseEvent().position.x + ", Y: " + e.asMouseEvent().position.y);
+//    }
+//
+//    @Override
+//    public void addClickListener(ClickListener clickListener) {
+//
+//    }
+//
+//    /**
+//     * Checks whether the x and y parameters
+//     *
+//     * @param x - X coordinate to check
+//     * @param y - Y coordinate to check
+//     * @return - true if checkWithin, false if not;
+//     */
+//    @Override
+//    public boolean checkWithin(int x, int y) {
+//        return true;
+//    }
+//
+//    /**
+//     * Checks whether the x and y parameters passed in an Event obj
+//     *
+//     * @param e - the Event that caused this method call
+//     * @return - true if checkWithin, false if not;
+//     */
+//    @Override
+//    public boolean checkWithin(Event e) {
+//        return true;
+//    }
 
-    //=================testing===========================================================================
-
-    @Override
-    public void clicked(Event e) {
-        System.out.println("X: " + e.asMouseEvent().position.x + ", Y: " + e.asMouseEvent().position.y);
-    }
-
-    @Override
-    public void addClickListener(ClickListener clickListener) {
-
-    }
-
-    /**
-     * Checks whether the x and y parameters
-     *
-     * @param x - X coordinate to check
-     * @param y - Y coordinate to check
-     * @return - true if checkWithin, false if not;
-     */
-    @Override
-    public boolean checkWithin(int x, int y) {
-        return true;
-    }
-
-    /**
-     * Checks whether the x and y parameters passed in an Event obj
-     *
-     * @param e - the Event that caused this method call
-     * @return - true if checkWithin, false if not;
-     */
-    @Override
-    public boolean checkWithin(Event e) {
-        return true;
-    }
 }

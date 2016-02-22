@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * @author newby
  */
 public class Node extends Entity implements Clickable {
-
+    private String type = null;
     ArrayList<ClickListener> clickListeners = new ArrayList<>();
     private boolean locked = false;
     private Sprite img;
@@ -72,6 +72,14 @@ public class Node extends Entity implements Clickable {
         // - We use points x,y and px, py not bounding boxes
         return (px > getTopLeftX() && px < getTopLeftX() + 2 * getWidth() && py > getTopLeftY() && py < getTopLeftY() + 2 * getWidth());
 
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
