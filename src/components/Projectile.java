@@ -9,6 +9,8 @@ import interfaces.MovingEntity;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
+import tools.ConcurrentSafeArrayList;
+import tools.Constants;
 import tools.Navigator;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class Projectile extends Image implements Clickable, MovingEntity {
     private Navigator ne;
     public Projectile(Room room){
 
-        super(0, 0, 35, 35, "H:\\My Documents\\SCC210-Group-Project2\\assets\\art\\arrow.png");
+        super(0, 0, 35, 35, "assets" + Constants.SEP + "art" + Constants.SEP + "arrow.png");
         hide();
         r = room;
         Navigator n = new Navigator(r);
