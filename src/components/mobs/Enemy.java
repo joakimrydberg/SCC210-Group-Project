@@ -1,11 +1,14 @@
 package components.mobs;
 
 import game.Room;
+import interfaces.CollidingEntity;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.Event;
 import tools.Navigator;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,7 +16,7 @@ import java.util.Random;
  * @author josh
  * @date 20/02/16.
  */
-public abstract class Enemy extends Mob implements MovementListener {
+public abstract class Enemy extends Mob implements MovementListener, CollidingEntity {
     private Player player;
     protected boolean colliding = false;
     private Room room;
@@ -27,7 +30,7 @@ public abstract class Enemy extends Mob implements MovementListener {
     private int currentPos;
     private int movementState = IDLE;
     private Navigator navigator;
-    private int fleeDistance = 300;
+    private int fleeDistance = 400;
     private int cautiousThreshold = 50,
                 cautiousDistance = 300;
 
@@ -65,6 +68,49 @@ public abstract class Enemy extends Mob implements MovementListener {
     public int getMovementState() {
         return movementState;
     }
+    @Override
+    public void collide() {
+
+    }
+
+    @Override
+    public boolean isCollidable() {
+
+        if (( Math.abs((getCenterX() + getWidth()/2) - (getPlayer().getCenterX() + getPlayer().getWidth() / 2)) < 35) && (Math.abs((getCenterY() + getHeight()/2) - (getPlayer().getCenterY() + getPlayer().getHeight() / 2)) < 50)){ //May need some tweaks to numbers
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkWithin(int x, int y) {
+
+        if (isCollidable()) {
+            colliding = true;
+            return true;
+        }
+        else {
+            colliding = false;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean checkWithin(Event e) {
+        return false;
+    }
+
+    public void damaged(){
+
+        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir);
+        setFrames(a); //
+
+    }
+
+
+    //==================================================================================================================
+    // moving, do not edit below (without good reason). override in subclass if need be
 
     @Override
     public void onMove(MovingEntity mover) {
@@ -155,12 +201,6 @@ public abstract class Enemy extends Mob implements MovementListener {
         }
 
         super.move();
-    }
-
-    public void damaged(){
-
-
-
     }
 
 }

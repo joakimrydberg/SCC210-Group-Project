@@ -1,6 +1,7 @@
 package game;
 
 import tools.CSVReader;
+import tools.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class LevelPart implements Serializable {
     }
 
     public void setType(){
-		ArrayList<String[]> arraylist = CSVReader.read();
+		ArrayList<String[]> arraylist = CSVReader.read("assets" + Constants.SEP + "levelparts"  + Constants.SEP + "level_IDs.csv");
 		for (String[] line : arraylist){
 			if(line[1].equals(spriteFileName)) { type = line[2]; }
 		}
