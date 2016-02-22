@@ -3,8 +3,10 @@ package game;
 import components.Projectile;
 import components.RoomEntity;
 import components.mobs.*;
+import controllers.PauseMenu;
 import interfaces.*;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
 import tools.FileHandling;
@@ -15,7 +17,7 @@ import java.util.HashMap;
 /**
  * @author Joakim Rydberg.
  */
-public class Room extends RoomEntity implements MovementListener, ClickListener {
+public class Room extends RoomEntity implements MovementListener, ClickListener, KeyListener {
     private String roomID;
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
@@ -206,10 +208,10 @@ public class Room extends RoomEntity implements MovementListener, ClickListener 
 //
 
     public void keyPressed(KeyEvent event) {
-//        if (event.asKeyEvent().key == Keyboard.Key.P) {
-//            loadDrawer(PauseMenu.class);
-//            unload();
-//        }
+        if (event.asKeyEvent().key == Keyboard.Key.P) {
+            loadDrawer(PauseMenu.class);
+            unload();
+        }
     }
 
 

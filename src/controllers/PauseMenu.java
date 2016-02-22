@@ -35,8 +35,9 @@ public class PauseMenu extends Menu {
         addOption("PLAYER", "BROWN");
         addOption("INVENTORY", "BROWN");
         addOption("STATS", "BROWN");
+        addOption("DUNGEON MAP", "BROWN");
         addOption("RESUME", "GREEN");
-        addOption("QUIT GAME", 600, "RED");
+        addOption("QUIT DUNGEON", 600, "RED");
 
         addEntity(new Rect(null, 300, centerY, 2, 600, new Color(117, 62, 29), 250)); //seperation border
 
@@ -81,6 +82,12 @@ public class PauseMenu extends Menu {
                 sMenu.load();
                 System.out.println("STATS clicked");
             }
+            else if (button.getName().equals("DUNGEON MAP"))
+            {
+//                unloadMenus();
+//                sMenu.load();
+                System.out.println("DUNGEON MAP clicked");
+            }
             else if (button.getName().equals("RESUME"))
             {
                 this.unload();
@@ -93,7 +100,7 @@ public class PauseMenu extends Menu {
                 this.unload();
                 unloadMenus();
                 new MainMenu().load();
-                System.out.println("QUIT GAME clicked");
+                System.out.println("QUIT DUNGEON clicked");
             }
         }
     }
