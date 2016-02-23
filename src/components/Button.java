@@ -33,28 +33,9 @@ public class Button extends Rect implements Clickable {
         super(text, x, y, width, height, Color.WHITE, 0);
         //super(w, text, x, y, width, height, c, transparency);
 
-        // Load image/ texture
-        Texture imgTexture = new Texture( );
-        try {
-            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "menu_buttons" + Constants.SEP + colour +".png"));
-        } catch (IOException ex) {
-            ex.printStackTrace( );
-        }
-        imgTexture.setSmooth(true);
 
-        Sprite img = new Sprite(imgTexture);
+        setColour(colour);
 
-        Vector2i imgSize = imgTexture.getSize();
-        int widthTemp = (width < 0) ? imgSize.x : width;
-        int heightTemp = (height < 0) ? imgSize.y : height;
-        setWidthHeight(widthTemp, heightTemp);
-
-        setCenterX(x);
-        setCenterY(y);
-        addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
-
-        if (width >= 0)
-            img.scale((float)(widthTemp / (imgSize.x/1.0)), (float)(heightTemp / (imgSize.y / 1.0)));
 
         // Load text
         if ((new File(Constants.JRE_FONT_PATH)).exists( ))
@@ -108,4 +89,31 @@ public class Button extends Rect implements Clickable {
     public void addClickListener(ClickListener clickListener) {
         clickListeners.add(clickListener);
     }
+
+    public void setColour(String colour) {
+        // Load image/ texture
+        Texture imgTexture = new Texture( );
+        try {
+            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "menu_buttons" + Constants.SEP + colour +".png"));
+        } catch (IOException ex) {
+            ex.printStackTrace( );
+        }
+        imgTexture.setSmooth(true);
+
+        Sprite img = new Sprite(imgTexture);
+
+        Vector2i imgSize = imgTexture.getSize();
+        int widthTemp = (getWidth() < 0) ? imgSize.x : getWidth();
+        int heightTemp = (getHeight() < 0) ? imgSize.y : getHeight();
+        setWidthHeight(widthTemp, heightTemp);
+
+//        setCenterX(x);
+//        setCenterY(y);
+        addTransformable(img, 0, 0, 0, 0); //not supplying w and h so the origin will be 0
+
+        if (getWidth() >= 0)
+            img.scale((float)(widthTemp / (imgSize.x/1.0)), (float)(heightTemp / (imgSize.y / 1.0)));
+
+    }
+
 }

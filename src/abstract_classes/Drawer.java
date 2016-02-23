@@ -7,13 +7,15 @@ import interfaces.MotionListener;
 import interfaces.MovingEntity;
 import org.jsfml.window.event.Event;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * @author josh
  * @date 15/02/16.
  */
-public abstract class Drawer extends Entity {
+public abstract class Drawer extends Entity implements Serializable {
+    private static final long serialVersionUID = 4L;  //actually needed
     private boolean loaded = false;
     private ArrayList<Entity> entities = new ArrayList<>();
 

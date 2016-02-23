@@ -5,6 +5,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Transformable;
 import tools.ConcurrentSafeArrayList;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
@@ -12,7 +13,9 @@ import java.util.Iterator;
  *
  * @author Alexander J Mills
  */
-public class Entity  {
+public class Entity extends ClassDescription implements Serializable {
+    private static final long serialVersionUID = 5L;  //actually needed
+
     private String name = "";
     private int x = 0, y = 0;   //current x and y coordinates
     private int w = -1, h = -1; // current width and height of the Entity
@@ -30,9 +33,8 @@ public class Entity  {
      * @param height - int height
      */
     public Entity(String name, int centerX, int centerY, int width, int height) {
-        super();
+        super(name);
 
-        setName(name);
         setWidthHeight(width, height);
         setCenterX(centerX);
         setCenterY(centerY);
@@ -44,9 +46,7 @@ public class Entity  {
      * @param name - String name for the Entity
      */
     public Entity(String name) {
-        super();
-
-        this.name = name;
+        super(name);
     }
 
     /**
@@ -113,23 +113,6 @@ public class Entity  {
 
     public static void setWindow(RenderWindow window) {
         Entity.window = window;
-    }
-    /**
-     * Sets the name of the Entity, (which will be returned be toString)
-     *
-     * @param name - String name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Returns the name of the Entity
-     *
-     * @return - String name
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -301,7 +284,8 @@ public class Entity  {
         return transformableHolders.size();
     }
 
-    private class TransformableHolder {
+    private class TransformableHolder  implements Serializable{
+        private static final long serialVersionUID = 7L;  //actually needed
         private Entity entity;
         private Transformable transformable;
         private int relX, relY;

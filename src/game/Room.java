@@ -16,7 +16,6 @@ import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
 import tools.FileHandling;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +24,7 @@ import java.util.HashMap;
  */
 public class Room extends RoomEntity implements MovementListener, ClickListener, Clickable, KeyListener {
     private String roomID;
-    ArrayList<ClickListener> listeners = new ArrayList<>();
+    private ArrayList<ClickListener> listeners = new ArrayList<>();
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
@@ -167,7 +166,9 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
+                if (levelParts[i][j].getType().equals("Door")) {
 
+                }
             }
         }
     }
@@ -220,7 +221,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     @Override
     public void onMove(MovingEntity mover) {
+        if (mover instanceof Player) {
+            for (LevelPart door : potentialDoors.values()) {
 
+            }
+        }
     }
 
 //
@@ -358,4 +363,6 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public boolean checkWithin(Event e) {
         return true;
     }
+
+
 }

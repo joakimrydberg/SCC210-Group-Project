@@ -7,9 +7,11 @@ import interfaces.MovingEntity;
 import org.jsfml.system.Vector2f;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Mob extends Animation implements MovingEntity {
+public abstract class Mob extends Animation implements MovingEntity, Serializable {
+    private static final long serialVersionUID = 2L;  //actually needed
     public final static int SPEED_CAP = 5;
     public final static int ANIMATE_RIGHT = 2,
             ANIMATE_LEFT = 1,
