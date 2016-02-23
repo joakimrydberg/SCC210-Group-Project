@@ -306,6 +306,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public void keyPressed(KeyEvent event) {
         if (event.asKeyEvent().key == Keyboard.Key.P) {
             //loadDrawer(PauseMenu.class);
+            MapMenu.getPlayer().printInventory();
             pauseMenu.loadInPlayer(MapMenu.getPlayer());
             pauseMenu.load();
             unload();
