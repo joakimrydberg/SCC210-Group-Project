@@ -17,14 +17,17 @@ import org.jsfml.system.Vector2i;
 import tools.CSVReader;
 import tools.Constants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
  * This...  //TODO complete sentence :P
  * @author Ross Newby
  */
-public class MapMenu extends Menu /*implements Clickable*/ {
+public class MapMenu extends Menu /*implements Clickable*/ implements Serializable {
+    private static final long serialVersionUID = 3L;  //actually needed
     private Node[] nodes = new Node[NUMBER_OF_NODES];
     private NodeDescriptor[] nodeDesc = new NodeDescriptor[NUMBER_OF_NODES];
     public final static String NAME = "Map Menu";
@@ -32,8 +35,9 @@ public class MapMenu extends Menu /*implements Clickable*/ {
     private final static int MAX_MOVE_DIST = 200,
             MIN_MOVE_DIST = 100,
             NUMBER_OF_NODES = 15;
-    ArrayList<String[]> csvContent;
+    private ArrayList<String[]> csvContent;
     private ArrayList<Rect> lines;
+    private final static int EXTRA_BOSS_DIFF = 5;
 
     /**
      *
@@ -53,7 +57,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
         backButton.addClickListener(this);
         addEntity(backButton);
         //this.addClickListener(this);
-
+        Node start = null, end;
         //generating map
         ArrayList<Node> tempNodes;
         int iterationCount = 0;
@@ -70,16 +74,15 @@ public class MapMenu extends Menu /*implements Clickable*/ {
                 for (int i = 0; i < csvContent.size(); i++) {
                     row = csvContent.get(i);
 
-                    Node tempNode;
                     if (row[2].equals("start")) {
-                        tempNode = new Node("1", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
-                        tempNodes.add(tempNode);
-                        tempNode.setType("start");
+                        start = new Node("Starting Level", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+                        tempNodes.add(start);
+                        start.setType("start");
                         csvContent.remove(row);
                     } else if (row[2].equals("end")) {
-                        tempNode = new Node("2", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
-                        tempNodes.add(tempNode);
-                        tempNode.setType("end");
+                        end = new Node("BOSS. Be warned.", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+                        tempNodes.add(end);
+                        end.setType("end");
                         csvContent.remove(row);
                     }
                 }
@@ -93,7 +96,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
                 ArrayList<Node> allNodes = new ArrayList<>(tempNodes); //as two have been removed
 
                 for (String[] row : csvContent) {
-                    allNodes.add(new Node("2", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300));
+                    allNodes.add(new Node("It doesn't matter", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300));
                 }
 
                 if (!isMapValid(allNodes, false)) {
@@ -120,7 +123,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
 
                     if (newNode) {
                         Node node;
-                        node = new Node(String.valueOf(nodeCount), Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+                        node = new Node("Level: " + String.valueOf(nodeCount), Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
 
                         boolean okayToAdd = true;
                         for (Node anotherNode : tempNodes) {
@@ -151,25 +154,51 @@ public class MapMenu extends Menu /*implements Clickable*/ {
 
         for (int i = 0; i < tempNodes.size(); i++) {
             this.nodes[i] = tempNodes.get(i);
-            nodeDesc[i] = new NodeDescriptor("Level " + i, "Easy", nodes[i], 200, 150, this);
-            addEntity(nodeDesc[i]);
         }
 
         for (Rect line : lines) {
             addEntity(line);
         }
 
+
+        ArrayList<Node> nodesCopy = new ArrayList<>();
+        nodesCopy.addAll(Arrays.asList(nodes));
+
+        int i = 0;
+        int maxDiff = 0;
+
         for (Node node : nodes) {
             addEntity(node);
             node.addClickListener(this);
 
+            if (!node.getType().equals("end")) {
+                clearTimes(nodesCopy);
+                int difficulty = navigateTo(start, node, 0, nodesCopy);
+                maxDiff = difficulty > maxDiff ? difficulty : maxDiff;
+                nodeDesc[i] = new NodeDescriptor(node.getName(), "Difficulty : " + difficulty, node, 200, 150, this);
+                addEntity(nodeDesc[i]);
+            }
+
             if (!node.getType().equals("start")) {
-                node.lock();
+             //   node.lock();
             } else {
                 node.unlock();
             }
+            i++;
         }
 
+        //setting the boss to be the most difficult
+        for (Node node : nodes) {
+            int k = 0;
+            for (NodeDescriptor nodeDescriptor : nodeDesc) {
+                if (nodeDescriptor == null) {
+                    nodeDesc[k] = new NodeDescriptor(node.getName(), "Difficulty : " + (maxDiff + EXTRA_BOSS_DIFF), node, 200, 150, this);
+
+                    addEntity(nodeDesc[k]);
+                }
+                k++;
+            }
+        }
     }
 
     public boolean isMapValid(ArrayList<Node> nodes, boolean all) {
@@ -210,9 +239,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
 
     public int navigateTo(Node frm, Node end, int stepCount, ArrayList<Node> nodes) {
         ++stepCount;
-
-
-
+        
         if (frm.equals(end) ) {
             return stepCount;
         }
@@ -349,39 +376,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
         return(randomNumber);
     }
 
-//    //=================testing===========================================================================
-//
-//    @Override
-//    public void clicked(Event e) {
-//        System.out.println("X: " + e.asMouseEvent().position.x + ", Y: " + e.asMouseEvent().position.y);
-//    }
-//
-//    @Override
-//    public void addClickListener(ClickListener clickListener) {
-//
-//    }
-//
-//    /**
-//     * Checks whether the x and y parameters
-//     *
-//     * @param x - X coordinate to check
-//     * @param y - Y coordinate to check
-//     * @return - true if checkWithin, false if not;
-//     */
-//    @Override
-//    public boolean checkWithin(int x, int y) {
-//        return true;
-//    }
-//
-//    /**
-//     * Checks whether the x and y parameters passed in an Event obj
-//     *
-//     * @param e - the Event that caused this method call
-//     * @return - true if checkWithin, false if not;
-//     */
-//    @Override
-//    public boolean checkWithin(Event e) {
-//        return true;
-//    }
+
+
 
 }
