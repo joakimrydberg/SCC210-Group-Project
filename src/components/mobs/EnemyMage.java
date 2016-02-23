@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
  */
 public class EnemyMage extends Enemy implements CollidingEntity {
 
-    public EnemyMage(Room room, Player player) {
-        super(room, player);
+    public EnemyMage(Room room) {
+        super(room);
         setMovementState(FLEE_PLAYER);  //temp value
 
         setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMaleSheet"));

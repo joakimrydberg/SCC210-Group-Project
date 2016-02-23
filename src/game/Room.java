@@ -47,8 +47,6 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         LevelPart[][] tiles = new LevelPart[11][11];
 
         {   //creating the room layout
-
-
             LevelPart tile;
 
             for (int i = 0; i < 11; i++) {
@@ -121,29 +119,67 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
         create(tiles);
 
-        { //creating MapMenu.getPlayer()
-
+        { //adding the player
 
             MapMenu.getPlayer().addMovementListener(this);
             addEntity(MapMenu.getPlayer());
-
         }
 
-        EnemyWarrior enemyWarrior = new EnemyWarrior(this, MapMenu.getPlayer());
-        EnemyMage enemyMage = new EnemyMage(this, MapMenu.getPlayer());
-        EnemyRanger enemyRanger = new EnemyRanger(this, MapMenu.getPlayer());
-        enemyWarrior.addMovementListener(this);
-        enemyMage.addMovementListener(this);
-        enemyRanger.addMovementListener(this);
+        int enemyWarriors = 0,
+                enemyMages = 0,
+                enemyRangers = 0;
+        int diff = level.getDifficulty(getName());
 
+        { //difficulty tweaks //todo make better, much better
 
-        //DeathBall deathBall = new DeathBall(this, p);
+            if (diff == 1) {
+                enemyWarriors = MapMenu.randomInt(0, 3);
+                enemyRangers = MapMenu.randomInt(0, 1);
+                enemyMages = MapMenu.randomInt(0, 0);
+            } else if (diff < 3) {
+                enemyWarriors = MapMenu.randomInt(0, 2);
+                enemyRangers = MapMenu.randomInt(0, 3);
+                enemyMages = MapMenu.randomInt(0, 1);
+            } else if (diff < 6) {
+                enemyWarriors = MapMenu.randomInt(2, 3);
+                enemyRangers = MapMenu.randomInt(2, 4);
+                enemyMages = MapMenu.randomInt(2, 3);
+            } else if (diff < 9) {
+                enemyWarriors = MapMenu.randomInt(3, 4);
+                enemyRangers = MapMenu.randomInt(0, 3);
+                enemyMages = MapMenu.randomInt(0, 7);
+            } else if (diff < 12) {
+                enemyWarriors = MapMenu.randomInt(0, 6);
+                enemyRangers = MapMenu.randomInt(0, 6);
+                enemyMages = MapMenu.randomInt(0, 6);
+            } else {
 
-        addEntity(enemyWarrior);
-        addEntity(enemyMage);
-        addEntity(enemyRanger);
-        // deathBall.setClass("ranger");
-        // addEntity(deathBall);
+            }
+        }
+
+        { //populating with enemies
+
+            EnemyWarrior enemyWarrior;
+            for (int i = 0; i < enemyWarriors; i++) {
+                enemyWarrior = new EnemyWarrior(this);
+                enemyWarrior.addMovementListener(this);
+                addEntity(enemyWarrior);
+            }
+
+            EnemyMage enemyMage;
+            for (int i = 0; i < enemyWarriors; i++) {
+                enemyMage = new EnemyMage(this);
+                enemyMage.addMovementListener(this);
+                addEntity(enemyMage);
+            }
+
+            EnemyRanger enemyRanger;
+            for (int i = 0; i < enemyWarriors; i++) {
+                enemyRanger = new EnemyRanger(this);
+                enemyRanger.addMovementListener(this);
+                addEntity(enemyRanger);
+            }
+        }
     }
 
     public void addDoor(String direction) {
@@ -160,7 +196,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     @Override
     public boolean isMoveAcceptable(int x, int y, int w, int h) {
-        if (isLoaded()) {
+        return isMoveAcceptable(x, y, w, h, false);
+    }
+
+    public boolean isMoveAcceptable(int x, int y, int w, int h, boolean override) {
+        if (isLoaded() || override) {
             Vector2i wSize = getWindow().getSize();
 
             final int left = x - w / 2,

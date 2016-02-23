@@ -295,7 +295,7 @@ public class Level {
         }
     }
 
-    public int getDifficulty() {
+    public int getDifficulty(String roomID) {
         return difficulty;
     }
 }
