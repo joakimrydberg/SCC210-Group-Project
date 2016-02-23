@@ -30,6 +30,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
     public Player player;
     private Message levelUp = null;
+    private boolean endRoom = false;
 
     public Room(Level level) {
         this.level = level;
@@ -80,7 +81,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                         }
 
                         if (noPreviousDoors) {
-                            potentialDoors.put(key, tiles[i][j]);
+                            potentialDoors.put(key, tile);
                         }
 
                         LevelPart replacementPart = null, temp;
@@ -161,18 +162,6 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         return potentialDoors;
     }
 
-    private void locatePotentialDoors() {
-        LevelPart[][] levelParts = getTiles();
-
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
-                if (levelParts[i][j].getType().equals("Door")) {
-
-                }
-            }
-        }
-    }
-
     @Override
     public boolean isMoveAcceptable(int x, int y, int w, int h) {
         Vector2i wSize = getWindow().getSize();
@@ -223,7 +212,39 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public void onMove(MovingEntity mover) {
         if (mover instanceof Player) {
             for (LevelPart door : potentialDoors.values()) {
+                Player player = (Player) mover;
+                Vector2i partSize = getPartSize();
 
+                if (door.displayed){
+                    double dist = Math.sqrt(Math.pow(player.getCenterX() - (door.getColNo() * partSize.x + partSize.x), 2)
+                            + Math.pow(player.getCenterY() - (door.getRowNo() * partSize.y + partSize.y), 2));
+
+                   // System.out.println(dist);
+                    int i = door.getRowNo(), j = door.getRowNo();
+                    final int partLeft = j * partSize.x,
+                            partRight = (j + 1) * partSize.x,
+                            partBottom = (i + 1) * partSize.y,
+                            partTop = i * partSize.y;
+
+//                    //col * w + w/2, row * h + h/2
+//                    if (w == 1) {
+//                        System.out.format("l: %d, r: %d, t: %d, b %d, pl: %d, pr: %d, pt: %d, pb %d\n"
+//                                , left, right, top, bottom,
+//                                partLeft, partRight, partTop, partBottom);
+//                    }
+                    if (player.getCenterX() < partRight
+                            && player.getCenterX()  > partLeft
+                            && player.getCenterY()  > partTop
+                            && player.getCenterY()  < partBottom) {
+
+                        for (String key : potentialDoors.keySet()) {
+                            if (potentialDoors.get(key).equals(door)) {
+                                //System.out.println("Move Rooms");
+                                level.moveRooms(this, key);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -365,4 +386,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     }
 
 
+    public void setEndRoom(boolean endRoom) {
+        this.endRoom = endRoom;
+    }
+
+    public boolean getEndRoom() {
+        return this.endRoom;
+    }
 }

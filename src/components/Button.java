@@ -91,10 +91,11 @@ public class Button extends Rect implements Clickable {
     }
 
     public void setColour(String colour) {
+        this.removeTransformable(0);
         // Load image/ texture
         Texture imgTexture = new Texture( );
         try {
-            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "menu_buttons" + Constants.SEP + colour +".png"));
+            imgTexture.loadFromFile(Paths.get("assets" + Constants.SEP + "art" + Constants.SEP + "menu_buttons" + Constants.SEP + colour + ".png"));
         } catch (IOException ex) {
             ex.printStackTrace( );
         }
@@ -113,7 +114,6 @@ public class Button extends Rect implements Clickable {
 
         if (getWidth() >= 0)
             img.scale((float)(widthTemp / (imgSize.x/1.0)), (float)(heightTemp / (imgSize.y / 1.0)));
-
     }
 
 }

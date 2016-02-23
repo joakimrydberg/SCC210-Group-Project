@@ -78,6 +78,7 @@ public class RoomEntity extends Drawer {
         img.rotate(levelPart.getRotation());
 
         replaceEntity(i * 11 + j, img);
+        levelParts[i][j] = levelPart;
     }
 
     private void addPart(DisplayedImagePart part) {
