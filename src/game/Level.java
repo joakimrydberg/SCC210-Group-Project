@@ -8,6 +8,7 @@ import java.util.Random;
  * @author Joakim Rydberg.
  */
 public class Level {
+
     private MapMenu map;
     private String levelName = "";
     private int difficulty;
@@ -17,22 +18,26 @@ public class Level {
     private Room startRoom = new Room(this);
     private Room endRoom = null;
     private Room currentRoom;
+	private int availableRooms = 0;
+	private int availableEndRooms = 1;
 
     public Level(String name, int diff, MapMenu map) {
         this.map = map;
         this.levelName = name;
         this.difficulty = diff;
 
-//		int failedLevels = 0;
-//		while (endRoom == null) {
-//			generateLevel();
-//
-//			if (endRoom == null) System.out.println("Failed levels: " + ++failedLevels);
-//		}                                                                   //
-//
-//		currentRoom = startRoom;
-//		currentRoom.load();
-//
+/*
+		int failedLevels = 0;
+		while (endRoom == null) {
+			generateLevel();
+
+			if (endRoom == null) System.out.println("Failed levels: " + (++failedLevels));
+		}
+
+		currentRoom = startRoom;
+		currentRoom.load();
+*/
+
         Room testRoom = new Room(this);
         testRoom.create("test2");
         testRoom.load();
@@ -47,118 +52,117 @@ public class Level {
             }
         }
 
-		Room testRoom = new Room(this);
-		testRoom.create("test_new_level");
-		testRoom.load();
+		startRoom.create("start_room");
+		rooms[3][5] = startRoom;
 
-        startRoom.addDoor("South");
-        setRoom(4, 5, "North", 0);
-    }
+		startRoom.addDoor("South");
+		setRoom(4, 5, "North", 0);
+	}
 
-    private void setLayout(int x, int y, int stepsFromStart) {
-        if (numberOfRooms < maxRooms) {
-            Random rn = new Random();
-            for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
-                if (rn.nextInt(4) == 0) {
-                    switch (potentialDoor) {
-                        case "North":
-                            if (x > 0) {
-                                if (rooms[x - 1][y] != null) {
-                                    if (connectRoom(x - 1, y, "South")) rooms[x][y].addDoor("North");
-                                } else {
-                                    if (stepsFromStart > 3 && endRoom == null) {
-                                        setEndRoom(x - 1, y, "South");
-                                    } else {
-                                        setRoom(x - 1, y, "South", stepsFromStart);
-                                    }
-                                    rooms[x][y].addDoor("North");
-                                }
-                            }
-                            break;
-                        case "East":
-                            if (y < 11) {
-                                if (rooms[x][y + 1] != null) {
-                                    if (connectRoom(x, y + 1, "West")) rooms[x][y].addDoor("East");
-                                } else {
-                                    if (stepsFromStart > 3 && endRoom == null) {
-                                        setEndRoom(x, y + 1, "West");
-                                    } else {
-                                        setRoom(x, y + 1, "West", stepsFromStart);
-                                    }
-                                    rooms[x][y].addDoor("East");
-                                }
-                            }
-                            break;
-                        case "South":
-                            if (x < 11) {
-                                if (rooms[x + 1][y] != null) {
-                                    if (connectRoom(x + 1, y, "North")) rooms[x][y].addDoor("South");
-                                } else {
-                                    if (stepsFromStart > 3 && endRoom == null) {
-                                        setEndRoom(x + 1, y, "North");
-                                    } else {
-                                        setRoom(x + 1, y, "North", stepsFromStart);
-                                    }
-                                    rooms[x][y].addDoor("South");
-                                }
-                            }
-                            break;
-                        case "West":
-                            if (y > 0) {
-                                if (rooms[x][y - 1] != null) {
-                                    if (connectRoom(x, y - 1, "East")) rooms[x][y].addDoor("West");
-                                } else {
-                                    if (stepsFromStart > 3 && endRoom == null) {
-                                        setEndRoom(x, y - 1, "East");
-                                    } else {
-                                        setRoom(x, y - 1, "East", stepsFromStart);
-                                    }
-                                    rooms[x][y].addDoor("West");
-                                }
-                            }
-                            break;
-                        default:
-                            throw new RuntimeException("Invalid door direction: " + potentialDoor);
-                    }
-                }
-            }
-        }
-    }
-
-    private void setRoom(int x, int y, String entrance, int stepsFromStart){
-        Random rn = new Random();
-        boolean roomFound = false;
-        Room newRoom = new Room(this);
-        while (!roomFound) {
-            String newRoomID = "Room_" + String.valueOf(rn.nextInt(10) + 1);
-            newRoom.create(newRoomID);
-            for (String potentialDoor : newRoom.getPotentialDoors().keySet()) {
-                if(potentialDoor.equals(entrance)) roomFound = true;
-            }
-        }
-        rooms[x][y] = newRoom;
-        newRoom.addDoor(entrance);
-        stepsFromStart++;
-        numberOfRooms++;
+	private void setLayout(int x, int y, int stepsFromStart) {
+		if (numberOfRooms < maxRooms) {
+			Random rn = new Random();
+			for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
+				if (rn.nextInt(4) == 0) {
+					switch (potentialDoor) {
+						case "North":
+							if (x > 0) {
+								if (rooms[x - 1][y] != null) {
+									if (connectRoom(x - 1, y, "South")) rooms[x][y].addDoor("North");
+								} else {
+									if (stepsFromStart > 3 && endRoom == null) {
+										setEndRoom(x - 1, y, "South");
+									} else {
+										setRoom(x - 1, y, "South", stepsFromStart);
+									}
+									rooms[x][y].addDoor("North");
+								}
+							}
+							break;
+						case "East":
+							if (y < 11) {
+								if (rooms[x][y + 1] != null) {
+									if (connectRoom(x, y + 1, "West")) rooms[x][y].addDoor("East");
+								} else {
+									if (stepsFromStart > 3 && endRoom == null) {
+										setEndRoom(x, y + 1, "West");
+									} else {
+										setRoom(x, y + 1, "West", stepsFromStart);
+									}
+									rooms[x][y].addDoor("East");
+								}
+							}
+							break;
+						case "South":
+							if (x < 11) {
+								if (rooms[x + 1][y] != null) {
+									if (connectRoom(x + 1, y, "North")) rooms[x][y].addDoor("South");
+								} else {
+									if (stepsFromStart > 3 && endRoom == null) {
+										setEndRoom(x + 1, y, "North");
+									} else {
+										setRoom(x + 1, y, "North", stepsFromStart);
+									}
+									rooms[x][y].addDoor("South");
+								}
+							}
+							break;
+						case "West":
+							if (y > 0) {
+								if (rooms[x][y - 1] != null) {
+									if (connectRoom(x, y - 1, "East")) rooms[x][y].addDoor("West");
+								} else {
+									if (stepsFromStart > 3 && endRoom == null) {
+										setEndRoom(x, y - 1, "East");
+									} else {
+										setRoom(x, y - 1, "East", stepsFromStart);
+									}
+									rooms[x][y].addDoor("West");
+								}
+							}
+							break;
+						default:
+							throw new RuntimeException("Invalid door direction: " + potentialDoor);
+					}
+				}
+			}
+		}
+	}
+//
+	private void setRoom(int x, int y, String entrance, int stepsFromStart){
+		Random rn = new Random();
+		boolean roomFound = false;
+		Room newRoom = new Room(this);
+		while (!roomFound) {
+			String newRoomID = "room_" + String.valueOf(rn.nextInt(availableRooms) + 1);
+			newRoom.create(newRoomID);
+			for (String potentialDoor : newRoom.getPotentialDoors().keySet()) {
+				if(potentialDoor.equals(entrance)) roomFound = true;
+			}
+		}
+		rooms[x][y] = newRoom;
+		newRoom.addDoor(entrance);
+		stepsFromStart++;
+		numberOfRooms++;
 
         setLayout(x, y, stepsFromStart);
     }
 
-    private void setEndRoom(int x, int y, String entrance) {
-        Random rn = new Random();
-        boolean roomFound = false;
-        Room newRoom = new Room(this);
-        while (!roomFound) {
-            String newRoomID = "End_Room_" + String.valueOf(rn.nextInt(10) + 1);
-            newRoom.create(newRoomID);
-            for (String potentialDoor : newRoom.getPotentialDoors().keySet()) {
-                if(potentialDoor.equals(entrance)) roomFound = true;
-            }
-        }
-        endRoom = newRoom;
-        rooms[x][y] = endRoom;
-        endRoom.addDoor(entrance);
-    }
+	private void setEndRoom(int x, int y, String entrance) {
+		Random rn = new Random();
+		boolean roomFound = false;
+		Room newRoom = new Room(this);
+		while (!roomFound) {
+			String newRoomID = "end_room_" + String.valueOf(rn.nextInt(availableEndRooms) + 1);
+			newRoom.create(newRoomID);
+			for (String potentialDoor : newRoom.getPotentialDoors().keySet()) {
+				if(potentialDoor.equals(entrance)) roomFound = true;
+			}
+		}
+		endRoom = newRoom;
+		rooms[x][y] = endRoom;
+		endRoom.addDoor(entrance);
+	}
 
     private boolean connectRoom(int x, int y, String entrance) {
         for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
