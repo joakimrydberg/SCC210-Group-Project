@@ -25,11 +25,9 @@ public class Ranger extends Player implements ClickListener, interfaces.Ranger {
         create();
     }
 
-    public Ranger(Room room){
+    public void setRoom(Room room){
         room.addClickListener(this);
         this.room = room;
-
-        create();
     }
 
     public void create() {

@@ -10,6 +10,10 @@ import components.Button;
 import components.Image;
 import components.Node;
 import components.Rect;
+import components.mobs.Mage;
+import components.mobs.Player;
+import components.mobs.Ranger;
+import components.mobs.Warrior;
 import interfaces.ClickListener;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
@@ -42,6 +46,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
     private final static int EXTRA_BOSS_DIFF = 5;
     //private Node currentNode;
     private NodeDescriptor currNodeDescriptor;
+    private static Player player = null;
     /**
      *
      */
@@ -65,6 +70,17 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         ArrayList<Node> tempNodes;
         int iterationCount = 0;
 
+        if (Player.classType.equals("warrior")) {
+            player = new Warrior();
+        }
+        if (Player.classType.equals("mage")) {
+            player = new Mage();
+        }
+        if (Player.classType.equals("ranger")) {
+            player = new Ranger();
+        }
+
+        // p.setClass(Player.classType);
         do {
             iterationCount++;
 
@@ -441,6 +457,11 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         }
         return true;
     }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
 
     /**
      * Checks whether the x and y parameters passed in an Event obj
