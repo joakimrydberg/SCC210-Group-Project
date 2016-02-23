@@ -215,10 +215,15 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public void damaged(){
 
-        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir);
+        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 4);
         setFrames(a); //
 
     }
+
+    public void die(){
+
+    }
+
 }
 
 

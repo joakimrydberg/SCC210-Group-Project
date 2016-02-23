@@ -41,14 +41,15 @@ public class EnemyWarrior extends Enemy {
 
     @Override
     public void move() {
-        Player player = getPlayer();
-        final int xDiff = player.getCenterX() - getCenterX(),
-                yDiff = player.getCenterY() - getCenterY();
+        if(!stopped) {
+            Player player = getPlayer();
+            final int xDiff = player.getCenterX() - getCenterX(),
+                    yDiff = player.getCenterY() - getCenterY();
 
-        double dist_to_player = Math.sqrt(Math.pow(xDiff, 2)
-                + Math.pow(yDiff, 2));
+            double dist_to_player = Math.sqrt(Math.pow(xDiff, 2)
+                    + Math.pow(yDiff, 2));
 
-        if (dist_to_player < ATTACK_DIST) {
+            if (dist_to_player < ATTACK_DIST) {
 
                 if (xDiff > 0 && Math.abs(xDiff) > Math.abs(yDiff)) {
                     if (attackingDir != ATTACK_RIGHT) {
@@ -74,12 +75,13 @@ public class EnemyWarrior extends Enemy {
 
                 }
 
-            attacking = true;
-        } else {
-            attacking = false;
-        }
+                attacking = true;
+            } else {
+                attacking = false;
+            }
 
-        super.move();
+            super.move();
+        }
     }
 
 

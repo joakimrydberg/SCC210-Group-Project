@@ -45,30 +45,33 @@ public class EnemyRanger extends Enemy implements CollidingEntity, interfaces.Ra
 
     //if  in line of sight and haven/t shot of a while then shoot otherwise just move
     public void move() {
-        navigator.populateNavPixels();
-        if (navigator.inLineOfSight(new Vector2f(getCenterX(), getCenterY()),
-                new Vector2f(getPlayer().getCenterX(), getPlayer().getCenterY()))) {
+        if(!stopped) {
 
-            if (System.currentTimeMillis() - timeAtLastShot > RECHARGE + 250) { // a bit slower than that for player for the sake of fun
-                timeAtLastShot = System.currentTimeMillis();
-                Arrow arrow = new Arrow();
+            navigator.populateNavPixels();
+            if (navigator.inLineOfSight(new Vector2f(getCenterX(), getCenterY()),
+                    new Vector2f(getPlayer().getCenterX(), getPlayer().getCenterY()))) {
+
+                if (System.currentTimeMillis() - timeAtLastShot > RECHARGE + 250) { // a bit slower than that for player for the sake of fun
+                    timeAtLastShot = System.currentTimeMillis();
+                    Arrow arrow = new Arrow();
 
 
-                Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
-                Vector2i to = new Vector2i(getPlayer().getCenterX(), getPlayer().getCenterY());
+                    Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                    Vector2i to = new Vector2i(getPlayer().getCenterX(), getPlayer().getCenterY());
 
-                arrow.setCenterX(from.x);
-                arrow.setCenterY(from.y);
+                    arrow.setCenterX(from.x);
+                    arrow.setCenterY(from.y);
 
-                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-                arrow.correctDirection();
-                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                    arrow.correctDirection();
+                    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
 
-                arrow.addMovementListener(room);
-                arrows.add(arrow);
-                room.addEntity(arrow);
+                    arrow.addMovementListener(room);
+                    arrows.add(arrow);
+                    room.addEntity(arrow);
+                }
+
             }
-
         }
 
         super.move();

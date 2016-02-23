@@ -1,18 +1,21 @@
 package game;
 
 import abstract_classes.Entity;
+import components.Message;
 import components.Projectile;
 import components.RoomEntity;
 import components.mobs.*;
 import components.mobs.Ranger;
 import controllers.PauseMenu;
 import interfaces.*;
+import org.jsfml.graphics.Color;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
 import tools.FileHandling;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +30,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private Level level;
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
     public Player player;
+    private Message levelUp = null;
 
     public Room(Level level) {
         this.level = level;
@@ -252,11 +256,20 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     @Override
     public void drawAll() {
+
+        int x = 0;
+
         if (isLoaded()) {
             draw();
 
+
+
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
+
+                if(levelUp != null && x > 100)
+                    levelUp.hidden = true;
+
                 if(entity instanceof CollidingEntity
                         && entity instanceof Enemy) {
 
@@ -291,13 +304,33 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
 
                 }
+
+                if(entity instanceof Mob && ((Mob)entity).Health < 0 && !((Mob)entity).dead){
+                    ((Mob)entity).die();
+
+                }
+
+                if(player.getExp() > 99){
+
+                    levelUp = new Message(player.getCenterX(), player.getCenterY() - 50, 0, "LEVEL UP", Color.RED, 20);
+                 //   levelUp.hidden = false;
+                    addEntity(levelUp);
+                    x = 0;
+                    player.setExp(0);
+
+                }
+
                 if (entity instanceof MovingEntity)
                     ((MovingEntity) entity).move();
 
 
                 if(!entity.hidden)
                     entity.draw();
+
+                x++;
             }
+
+
         }
 
 

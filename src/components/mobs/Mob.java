@@ -11,10 +11,10 @@ import java.util.ArrayList;
 
 public abstract class Mob extends Animation implements MovingEntity {
     public final static int SPEED_CAP = 5;
-    public final static int ANIMATE_RIGHT = 1,
-            ANIMATE_LEFT = 2,
+    public final static int ANIMATE_RIGHT = 2,
+            ANIMATE_LEFT = 1,
             ANIMATE_UP = 3,
-            ANIMATE_DOWN = 4;
+            ANIMATE_DOWN = 0;
     private Vector2f speed = new Vector2f(0, 0);
     private float multiplier = 1;
     ArrayList<MovementListener> listeners = new ArrayList<>();
@@ -26,9 +26,11 @@ public abstract class Mob extends Animation implements MovingEntity {
     public int Vitality = 0;
     public int Health = 100;
     protected int tempDir = 0;
+    public boolean dead = false;
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
+    protected int exp = 0;
     // public static Animation currAnimation;
 
 
@@ -57,10 +59,10 @@ public abstract class Mob extends Animation implements MovingEntity {
         return characterAttack;
     }
 
-    public BufferedImage[] charHurt(BufferedImage character, int dir)
+    public BufferedImage[] charHurt(BufferedImage character, int dir, int dmg)
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
-        this.Health = this.Health-20;
+        this.Health = this.Health-dmg;
         return characterHurt;
     }
 
@@ -233,6 +235,15 @@ public abstract class Mob extends Animation implements MovingEntity {
         return theSpriteSheet;
     }
 
+    public void die(){
 
+    }
+
+    public int getExp(){
+        return exp;
+    }
+    public void setExp(int xp){
+        this.exp = xp;
+    }
 }
 
