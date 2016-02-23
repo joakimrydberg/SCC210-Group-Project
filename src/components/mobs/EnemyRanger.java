@@ -1,5 +1,6 @@
 package components.mobs;
 
+import components.Arrow;
 import components.Projectile;
 import game.Room;
 import game.SpriteSheetLoad;
@@ -9,16 +10,17 @@ import org.jsfml.system.Vector2i;
 import tools.Navigator;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * @author josh
  * @date 21/02/16.
  */
-public class EnemyRanger extends Enemy implements CollidingEntity {
+public class EnemyRanger extends Enemy implements CollidingEntity, interfaces.Ranger {
     private long timeAtLastShot = System.currentTimeMillis();
-    private final static int RECHARGE = 1000;
     private Navigator navigator;
     private Room room;
+    private ArrayList<Projectile> arrows = new ArrayList<>();
 
     public EnemyRanger(Room room, Player player) {
         super(room, player);
@@ -47,22 +49,24 @@ public class EnemyRanger extends Enemy implements CollidingEntity {
         if (navigator.inLineOfSight(new Vector2f(getCenterX(), getCenterY()),
                 new Vector2f(getPlayer().getCenterX(), getPlayer().getCenterY()))) {
 
-            if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
+            if (System.currentTimeMillis() - timeAtLastShot > RECHARGE + 250) { // a bit slower than that for player for the sake of fun
                 timeAtLastShot = System.currentTimeMillis();
-                Projectile projectile = new Projectile();
+                Arrow arrow = new Arrow();
 
 
                 Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
                 Vector2i to = new Vector2i(getPlayer().getCenterX(), getPlayer().getCenterY());
 
-                projectile.setCenterX(from.x);
-                projectile.setCenterY(from.y);
+                arrow.setCenterX(from.x);
+                arrow.setCenterY(from.y);
 
-                projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-                projectile.correctDirection();
-                projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                arrow.correctDirection();
+                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
 
-                room.addEntity(projectile);
+                arrow.addMovementListener(room);
+                arrows.add(arrow);
+                room.addEntity(arrow);
             }
 
         }
@@ -70,14 +74,22 @@ public class EnemyRanger extends Enemy implements CollidingEntity {
         super.move();
 
     }
+
+
     @Override
-    public void onMoveAccepted(int newX, int newY) {
-        setCenterX(newX);
-        setCenterY(newY);
+    public ArrayList<Projectile> getProjectiles() {
+        clearBrokenProjectiles();
+
+        return arrows;
     }
 
     @Override
-    public void onMoveRejected(int newX, int newY) {
-        return;    //do nothing but don't remove (will be used for the bad guys)
+    public void clearBrokenProjectiles() {
+        for (int i = 0; i < arrows.size(); i++) {
+            Projectile arrow = arrows.get(i);
+            if (arrow.getState() == Projectile.BROKEN) {
+                arrows.remove(arrow);
+            }
+        }
     }
 }

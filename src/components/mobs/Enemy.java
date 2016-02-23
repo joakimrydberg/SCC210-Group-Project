@@ -69,24 +69,41 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     public int getMovementState() {
         return movementState;
     }
+
     @Override
     public void collide() {
 
     }
-
     @Override
-    public boolean isCollidable() {
-
-        if (( Math.abs((getCenterX() + getWidth()/2) - (getPlayer().getCenterX() + getPlayer().getWidth() / 2)) < 35) && (Math.abs((getCenterY() + getHeight()/2) - (getPlayer().getCenterY() + getPlayer().getHeight() / 2)) < 50)){ //May need some tweaks to numbers
-            return true;
-        }
-        return false;
+    public void onMoveAccepted(int newX, int newY) {
+        setCenterX(newX);
+        setCenterY(newY);
     }
 
     @Override
+    public void onMoveRejected(int newX, int newY) {
+        switch (movementState) {
+            case FOLLOW_PLAYER:  case FOLLOW_PATH:  case FLEE_PLAYER:   case BE_CAUTIOUS:
+                //trust the path, to any end..
+                onMoveAccepted(newX, newY);
+                break;
+            default:
+                setSpeed(new Vector2f(-getVelocity().x, -getVelocity().y));
+                //turn around
+        }
+    }
+    @Override
+    public boolean isCollidable(int x, int y) {
+
+        return (( Math.abs((getCenterX() + getWidth()/2) - (x  )) < 35)
+                && (Math.abs((getCenterY() + getHeight()/2) - (y  )) < 50));
+        //May need some tweaks to numbers
+
+    }
+    @Override
     public boolean checkWithin(int x, int y) {
 
-        if (isCollidable()) {
+        if (isCollidable(x, y)) {
             colliding = true;
             return true;
         }
@@ -172,7 +189,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     @Override
     public void move() {
         switch (movementState) {
-            case FOLLOW_PLAYER:  case FOLLOW_PATH:  case FLEE_PLAYER:case BE_CAUTIOUS:
+            case FOLLOW_PLAYER:  case FOLLOW_PATH:  case FLEE_PLAYER:   case BE_CAUTIOUS:
                 if (path != null) {
                     int newX, newY;
 
@@ -197,6 +214,21 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
                     } else {
                         setSpeed(new Vector2f(0, 0));
                     }
+
+                    if (getVelocity().x > 0
+                            && Math.abs(getVelocity().x) > Math.abs(getVelocity().y)) {
+                        tempDir = 2;
+                    } else if (getVelocity().x < 0
+                            && Math.abs(getVelocity().x) > Math.abs(getVelocity().y)) {
+                        tempDir = 1;
+                    } else if (getVelocity().y > 0
+                            && Math.abs(getVelocity().y) > Math.abs(getVelocity().x)) {
+                        tempDir = 0;
+                    } else if (getVelocity().y < 0
+                            && Math.abs(getVelocity().y) > Math.abs(getVelocity().x)) {
+                        tempDir = 3;
+                    }
+
                 }
                 break;
         }

@@ -2,16 +2,18 @@ package components.mobs;
 
 import game.Room;
 import game.SpriteSheetLoad;
+import interfaces.CollidingEntity;
 import interfaces.KeyListener;
 import org.jsfml.system.Vector2f;
+import org.jsfml.window.event.Event;
 
 import java.awt.image.BufferedImage;
 
 /**
  * Created by millsr3 on 16/02/2016.
  */
-public class Player extends Mob implements KeyListener {
-
+public class Player extends Mob implements KeyListener, CollidingEntity {
+    private boolean colliding = false;
     public final static int ATTACK_RIGHT = 1,
             ATTACK_LEFT = 2,
             ATTACK_UP = 3,
@@ -28,7 +30,7 @@ public class Player extends Mob implements KeyListener {
             rightPressed = false;
     private Room room;
     protected int dir = 0;
-    public boolean held = false;
+    public boolean attacking = false;
 
     public Player() {
         super(200, 200, 64, 128);
@@ -170,6 +172,52 @@ public class Player extends Mob implements KeyListener {
     public void onMoveRejected(int newX, int newY) {
 
         return;    //do nothing but don't remove (will be used for the bad guys)
+    }
+
+    @Override
+    public void collide() {
+
+    }
+
+    @Override
+    public void setSpeed(Vector2f speed) {
+        super.setSpeed(speed, 2);  //so player is a bit faster
+    }
+
+    @Override
+    public boolean isCollidable(int x, int y) {
+
+        return (( Math.abs((getCenterX() + getWidth()/2) - (x  )) < 35)
+                && (Math.abs((getCenterY() + getHeight()/2) - (y  )) < 50));
+        //May need some tweaks to numbers
+
+    }
+
+    @Override
+    public boolean checkWithin(int x, int y) {
+
+        if (isCollidable(x, y)) {
+            colliding = true;
+            return true;
+        }
+        else {
+            colliding = false;
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public boolean checkWithin(Event e) {
+        return false;
+    }
+
+    public void damaged(){
+
+        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir);
+        setFrames(a); //
+
     }
 }
 

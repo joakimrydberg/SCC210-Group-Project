@@ -27,6 +27,8 @@ public class Warrior extends Player implements KeyListener {
         this.start();
     }
 
+
+    //todo if you change maybe update EnemyWarrior too?
     public void attack(int dir){
         switch(dir){
 
@@ -61,24 +63,24 @@ public class Warrior extends Player implements KeyListener {
 
             case SPACE:
 
-                if(tempDir == 2 && !held){
+                if(tempDir == 2 && !attacking){
                     attack(ATTACK_RIGHT);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                if(tempDir == 1 && !held){
+                if(tempDir == 1 && !attacking){
                     attack(ATTACK_LEFT);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                if(tempDir == 3 && !held){
+                if(tempDir == 3 && !attacking){
                     attack(ATTACK_UP);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                else if (tempDir == 0 && !held){
+                else if (tempDir == 0 && !attacking){
                     attack(ATTACK_DOWN);
-                    held = true;
+                    attacking = true;
                     break;
                 }
         }
@@ -94,7 +96,7 @@ public class Warrior extends Player implements KeyListener {
 
         this.setFrames(characterStill);
         super.keyReleased(event);
-        if(rightPressed){
+        if (rightPressed){
             setAnimation(ANIMATE_LEFT);
         } else if (downPressed){
             setAnimation(ANIMATE_LEFT);
@@ -103,7 +105,7 @@ public class Warrior extends Player implements KeyListener {
         } else if (upPressed){
             setAnimation(ANIMATE_LEFT);
         }
-        held = false;
+        attacking = false;
 
     }
 }

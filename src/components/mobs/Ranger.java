@@ -1,5 +1,6 @@
 package components.mobs;
 
+import components.Arrow;
 import components.Projectile;
 import game.Room;
 import game.SpriteSheetLoad;
@@ -10,14 +11,14 @@ import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by millsr3 on 20/02/2016.
  */
-public class Ranger extends Player implements ClickListener {
+public class Ranger extends Player implements ClickListener, interfaces.Ranger {
     private Room room;
-    private final static int RECHARGE = 750; // a bit faster than that for enemy for the sake of fun
-
+    private ArrayList<Projectile> arrows = new ArrayList<>();
     private long timeAtLastShot = System.currentTimeMillis();
 
     public Ranger(){
@@ -74,7 +75,7 @@ public class Ranger extends Player implements ClickListener {
 
         if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
             timeAtLastShot = System.currentTimeMillis();
-            Projectile projectile = new Projectile();
+            Arrow arrow = new Arrow();
 
             if (args.length == 1) {
                 Event e = (Event) args[0];
@@ -82,15 +83,33 @@ public class Ranger extends Player implements ClickListener {
                 Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
                 Vector2i to = e.asMouseEvent().position;
 
-                projectile.setCenterX(from.x);
-                projectile.setCenterY(from.y);
+                arrow.setCenterX(from.x);
+                arrow.setCenterY(from.y);
 
-                projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-                projectile.correctDirection();
-                //projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                arrow.correctDirection();
+                //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
 
+                arrow.addMovementListener(room);
+                arrows.add(arrow);
+                room.addEntity(arrow);
+            }
+        }
+    }
 
-                room.addEntity(projectile);
+    @Override
+    public ArrayList<Projectile> getProjectiles() {
+        clearBrokenProjectiles();
+
+        return arrows;
+    }
+
+    @Override
+    public void clearBrokenProjectiles() {
+        for (int i = 0; i < arrows.size(); i++) {
+            Projectile arrow = arrows.get(i);
+            if (arrow.getState() == Projectile.BROKEN) {
+                arrows.remove(arrow);
             }
         }
     }

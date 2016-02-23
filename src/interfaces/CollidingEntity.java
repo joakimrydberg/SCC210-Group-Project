@@ -8,6 +8,5 @@ public interface CollidingEntity extends InteractingEntity {
 
     void collide(); //TODO flesh out and implement
 
-    boolean isCollidable();
-
+    public boolean isCollidable(int x, int y) ;
 }

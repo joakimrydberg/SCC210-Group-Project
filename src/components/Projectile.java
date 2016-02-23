@@ -3,59 +3,70 @@ package components;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2f;
-import tools.Constants;
 
 import java.util.ArrayList;
 
 /**
  * Created by millsr3 on 22/02/2016.
  */
-public class Projectile extends Image implements MovingEntity {
+public abstract class Projectile extends Image implements MovingEntity {
 
     private ArrayList<MovementListener> listeners = new ArrayList<>();
     private Vector2f speed = new Vector2f(0,0);
+    public final static int BROKEN = 0, OKAY = 1;
+    private boolean broken = false;
 
-    public Projectile(){
 
-        super(0, 0, 35, 35, "assets" + Constants.SEP + "art" + Constants.SEP + "arrow.png");
+    public Projectile(String spriteName){
+
+        super(0, 0, 35, 35, spriteName);
         hide();
 
 
     }
 
-
     @Override
     public void move() { //this method must take no arguments
         { //moving
+            { //mover from mob
+                //  if (!broken) {
+                final int newX = (int) (getCenterX() + speed.x), newY = (int) (getCenterY() + speed.y);
+                // System.out.format("%f %f \n",(getCenterX() + speed.x), (getCenterY() + speed.y));
 
+                if (newX != getCenterX() || newY != getCenterY()) {
 
-            final int newX = (int)(getCenterX() + speed.x), newY = (int)(getCenterY() + speed.y);
-            // System.out.format("%f %f \n",(getCenterX() + speed.x), (getCenterY() + speed.y));
+                    boolean move = true;
+                    //checking all the MovementListeners are 'okay' with the proposed move
+                    if (!broken) {
+                        for (MovementListener listener : listeners) {
+                            move = listener.isMoveAcceptable(newX - getWidth() / 2, newY - getHeight() / 2, 1, 1) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
+                                    && move;                                             // a little weird but for reasons.
+                        }
+                    }  else {
+                        move = false;
+                    }
 
-            if (newX != getCenterX() || newY != getCenterY()) {
+                    if (move) {
+                        setCenterX(newX);
+                        setCenterY(newY);
 
-                //checking all the MovementListeners are 'okay' with the proposed move
-                boolean move = true;
-                for (MovementListener listener : listeners) {
-                    move = listener.isMoveAcceptable(newX, newY + getHeight() / 6, getWidth() / 2, getHeight() / 4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
-                            && move;                                             // a little weird but for reasons.
-                }
+                    } else {
+                        broken = true;
 
-                if (move) {
-                    setCenterX(newX);
-                    setCenterY(newY);
-                    setCenterX(newX);
-                    setCenterY(newY);
-                }
+                    }
 
+                    draw();
 
-                draw();  //drawing to the screen
+                    //draw();  //drawing to the screen
 
-                if (move) {
-                    for (MovementListener listener : listeners) {  //must be at end of method
-                        listener.onMove(this);
+                    if (move) {
+                        for (MovementListener listener : listeners) {  //must be at end of method
+                            listener.onMove(this);
+                        }
                     }
                 }
+                //  }
+
             }
         }
 
@@ -67,10 +78,10 @@ public class Projectile extends Image implements MovingEntity {
         float angle = (float) Math.atan2(direction.y, direction.x);
 
 
-  //      System.out.println(angle * (180 / Math.PI)+ 90);
+        //      System.out.println(angle * (180 / Math.PI)+ 90);
         getTransformable(0).setOrigin(getCenterX() - getTopLeftX(), getCenterY()-getTopLeftY());
         super.rotate(((float)(angle * (180 / Math.PI) + 90)),true);
-        getTransformable(0).setOrigin(0,0);
+        //getTransformable(0).setOrigin(0,0);
 
 
     }
@@ -115,4 +126,9 @@ public class Projectile extends Image implements MovingEntity {
     public void addMovementListener(MovementListener listener) {
         listeners.add(listener);
     }
+
+    public int getState() {
+        return broken ? BROKEN : OKAY;
+    }
+
 }

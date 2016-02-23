@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class Mob extends Animation implements MovingEntity {
-
+    public final static int SPEED_CAP = 5;
     public final static int ANIMATE_RIGHT = 1,
             ANIMATE_LEFT = 2,
             ANIMATE_UP = 3,
@@ -98,16 +98,18 @@ public abstract class Mob extends Animation implements MovingEntity {
             }
         }
 
+        if ( !(this instanceof EnemyWarrior && ((EnemyWarrior)this).attacking)){
 
-        if(this.speed.x >0 && this.speed.x>=this.speed.y)
-        {setAnimation(ANIMATE_RIGHT); }
-        else if(this.speed.y >0 && this.speed.y>=this.speed.x)
-        {setAnimation(ANIMATE_DOWN); }
-        else if(this.speed.x <0 && this.speed.x<=this.speed.y)
-        {setAnimation(ANIMATE_LEFT);}
-        else if(this.speed.y <0 && this.speed.y<=this.speed.x)
-        {setAnimation(ANIMATE_UP);}
-
+            if (this.speed.x > 0 && this.speed.x >= this.speed.y) {
+                setAnimation(ANIMATE_RIGHT);
+            } else if (this.speed.y > 0 && this.speed.y >= this.speed.x) {
+                setAnimation(ANIMATE_DOWN);
+            } else if (this.speed.x < 0 && this.speed.x <= this.speed.y) {
+                setAnimation(ANIMATE_LEFT);
+            } else if (this.speed.y < 0 && this.speed.y <= this.speed.x) {
+                setAnimation(ANIMATE_UP);
+            }
+        }
 
     }
 
@@ -122,14 +124,18 @@ public abstract class Mob extends Animation implements MovingEntity {
      */
     @Override
     public synchronized void setSpeed(Vector2f speed) {
+        setSpeed(speed, 0);
+    }
+
+    public synchronized void setSpeed(Vector2f speed, int speedBoost) {
         double  xSqrd = Math.pow(speed.x, 2),
                 ySqrd = Math.pow(speed.y, 2),
                 hypotenuse = Math.sqrt(xSqrd + ySqrd);
 
 
         this.speed = new Vector2f(
-                (int) (  (speed.x / hypotenuse) * 5 ),
-                (int) (  (speed.y / hypotenuse) * 5 )
+                (int) (  (speed.x / hypotenuse) * (SPEED_CAP + speedBoost) ),
+                (int) (  (speed.y / hypotenuse) * (SPEED_CAP + speedBoost) )
         );
 
         //DebugPrinter.print(this, "Speed.. X: " + this.speed.x + ",  Y: " + this.speed.y);

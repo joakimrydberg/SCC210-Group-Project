@@ -1,7 +1,10 @@
 package game;
 
+import abstract_classes.Entity;
+import components.Projectile;
 import components.RoomEntity;
 import components.mobs.*;
+import components.mobs.Ranger;
 import controllers.PauseMenu;
 import interfaces.*;
 import org.jsfml.system.Vector2i;
@@ -128,6 +131,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
         EnemyMage enemyMage = new EnemyMage(this, p);
         EnemyRanger enemyRanger = new EnemyRanger(this, p);
+        enemyWarrior.addMovementListener(this);
+        enemyMage.addMovementListener(this);
+        enemyRanger.addMovementListener(this);
+
+
         //DeathBall deathBall = new DeathBall(this, p);
         addEntity(p);
         player = p;
@@ -187,7 +195,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                             partTop = i * partSize.y;
 
                     //col * w + w/2, row * h + h/2
-
+                    if (w == 1) {
+                        System.out.format("l: %d, r: %d, t: %d, b %d, pl: %d, pr: %d, pt: %d, pb %d\n"
+                                , left, right, top, bottom,
+                                partLeft, partRight, partTop, partBottom);
+                    }
                     if (left < partRight
                             && right > partLeft
                             && bottom > partTop
@@ -238,6 +250,58 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         listeners.add(listener);
     }
 
+    @Override
+    public void drawAll() {
+        if (isLoaded()) {
+            draw();
+
+            for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
+                Entity entity = getEntity(i);
+                if(entity instanceof CollidingEntity
+                        && entity instanceof Enemy) {
+
+                    Player player = ((Enemy) entity).getPlayer();
+                    if (((CollidingEntity) entity).checkWithin(player.getCenterX(), player.getCenterY()) && player.attacking) {
+                        ((Enemy) entity).damaged();
+                    }
+
+                    if (entity instanceof EnemyWarrior) {
+                        if (((CollidingEntity) player).checkWithin(entity.getCenterX(), entity.getCenterY()) && ((EnemyWarrior)entity).attacking) {
+                            (player).damaged();
+                        }
+                    }
+
+                    if (entity instanceof EnemyRanger) { //and maybe mage?
+                        for (Projectile projectile : ((EnemyRanger) entity).getProjectiles()) {
+                            if (projectile.getState() == Projectile.OKAY
+                                    && ((CollidingEntity) player).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+                                (player).damaged();
+                            }
+                        }
+                    }
+
+                    if (player instanceof Ranger) { //and maybe mage?
+                        for (Projectile projectile : ((Ranger) player).getProjectiles()) {
+                            if (projectile.getState() == Projectile.OKAY
+                                    &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+                                ((Enemy) entity).damaged();
+                            }
+                        }
+                    }
+
+
+                }
+                if (entity instanceof MovingEntity)
+                    ((MovingEntity) entity).move();
+
+
+                if(!entity.hidden)
+                    entity.draw();
+            }
+        }
+
+
+    }
 
     /**
      * Checks whether the x and y parameters

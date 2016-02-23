@@ -31,15 +31,4 @@ public class EnemyMage extends Enemy implements CollidingEntity {
 
     }
 
-
-    @Override
-    public void onMoveAccepted(int newX, int newY) {
-        setCenterX(newX);
-        setCenterY(newY);
-    }
-
-    @Override
-    public void onMoveRejected(int newX, int newY) {
-        return;    //do nothing but don't remove (will be used for the bad guys)
-    }
 }

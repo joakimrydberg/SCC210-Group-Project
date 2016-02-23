@@ -64,24 +64,24 @@ public class Mage extends Player implements KeyListener {
 
             case SPACE:
 
-                if(tempDir == 2 && !held){
+                if(tempDir == 2 && !attacking){
                     attack(ATTACK_RIGHT);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                if(tempDir == 1 && !held){
+                if(tempDir == 1 && !attacking){
                     attack(ATTACK_LEFT);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                if(tempDir == 3 && !held){
+                if(tempDir == 3 && !attacking){
                     attack(ATTACK_UP);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                else if (tempDir == 0 && !held){
+                else if (tempDir == 0 && !attacking){
                     attack(ATTACK_DOWN);
-                    held = true;
+                    attacking = true;
                     break;
                 }
         }
@@ -106,7 +106,7 @@ public class Mage extends Player implements KeyListener {
         } else if (upPressed){
             setAnimation(ANIMATE_LEFT);
         }
-        held = false;
+        attacking = false;
 
     }
 }

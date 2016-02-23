@@ -125,6 +125,10 @@ public class Driver {
     public static RenderWindow getWindow() {
         return window;
     }
+
+    public void doNotRemoveMeUntilFriday() {
+        int i = 9;
+    }
 }
 
 
