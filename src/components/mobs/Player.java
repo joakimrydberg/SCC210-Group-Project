@@ -277,6 +277,9 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     }
 
+    public ArrayList<Item> getInventory() {
+        return inventory;
+    }
 }
 
 

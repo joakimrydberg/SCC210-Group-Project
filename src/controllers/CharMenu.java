@@ -59,8 +59,6 @@ public class CharMenu extends Menu {
     public CharMenu() {
         super(NAME);
 
-
-
         final Vector2i windowSize = getWindow().getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
 
@@ -182,7 +180,8 @@ public class CharMenu extends Menu {
                 //p.setClass(className); //******RYAN, IVE JUST COMMENTED THIS OUT WHILE WORKING ON MAP MENU, IT RESULTED IN A NULL POINTER EXCEPTION ANS STOPPED MAP MENU LOADING*******
                 this.unload();
 
-                loadDrawer(MapMenu.class);
+              //  loadDrawer(MapMenu.class);
+                new MapMenu(p).load();
             } else if (button.getName().equals(">>")) {
               //  System.out.format("%d", this.i);
                 if (this.i < 2) {
@@ -231,7 +230,7 @@ public class CharMenu extends Menu {
                // mage.hide();
                 p.setClass("ranger");
                 p.addToInventory(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
-                p.printInventory();//debug
+               // p.printInventory();//debug
                 className = "ranged";
                 currAnimation.stop();
                 currAnimation = rangerWalk;

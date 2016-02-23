@@ -6,10 +6,7 @@
 package controllers;
 
 import abstract_classes.Entity;
-import components.Button;
-import components.Image;
-import components.Node;
-import components.Rect;
+import components.*;
 import components.mobs.Mage;
 import components.mobs.Player;
 import components.mobs.Ranger;
@@ -50,7 +47,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
     /**
      *
      */
-    public MapMenu() {
+    public MapMenu(Player p) {
         super(NAME);
 
         super.addEntity(this);  //do first for events
@@ -84,6 +81,11 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         if (Player.classType.equals("ranger")) {
             player = new Ranger();
         }
+        for (Item item : p.getInventory()) {
+            player.addToInventory(item);
+        }
+        System.out.println("From map menu..");
+        p.printInventory();//debug
         player.dead = false;
         // p.setClass(Player.classType);
         do {
