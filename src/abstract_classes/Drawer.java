@@ -68,8 +68,8 @@ public abstract class Drawer extends Entity {
         if (isLoaded()) {
             draw();
 
-
-            for (Entity entity : getEntities()) {
+            for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
+                Entity entity = getEntity(i);
 
                 if(entity instanceof CollidingEntity) {
 

@@ -26,11 +26,11 @@ public class Navigator {
 
     public Navigator(Room room) {
         super();
-        populateNavPixels();
+        //populateNavPixels();
         this.room = room;
     }
 
-    private void populateNavPixels() {
+    public void populateNavPixels() {
         navPixels = new NavPixel[navPixelsRowCount][navPixelsRowCount];
 
         for (int i = 0; i < navPixels.length; i++) {

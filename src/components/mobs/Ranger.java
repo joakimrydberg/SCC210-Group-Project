@@ -79,9 +79,9 @@ public class Ranger extends Player implements ClickListener {
             projectile.setCenterX(from.x);
             projectile.setCenterY(from.y);
 
-            projectile.setSpeed(new Vector2f(to.x - from.y, to.y - from.y));
+            projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
             projectile.correctDirection();
-            projectile.setSpeed(new Vector2f(to.x - from.y, to.y - from.y));
+            //projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
 
 
             room.addEntity(projectile);

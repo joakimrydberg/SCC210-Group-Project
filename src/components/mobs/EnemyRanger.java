@@ -1,8 +1,12 @@
 package components.mobs;
 
+import components.Projectile;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
+import tools.Navigator;
 
 import java.awt.image.BufferedImage;
 
@@ -11,10 +15,15 @@ import java.awt.image.BufferedImage;
  * @date 21/02/16.
  */
 public class EnemyRanger extends Enemy implements CollidingEntity {
+    private long timeAtLastShot = System.currentTimeMillis();
+    private final static int RECHARGE = 1000;
+    private Navigator navigator;
+    private Room room;
 
     public EnemyRanger(Room room, Player player) {
         super(room, player);
         setMovementState(BE_CAUTIOUS);
+        this.room = room;
 
         setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMaleSheet"));
         setCharacterStill(0);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
@@ -26,12 +35,40 @@ public class EnemyRanger extends Enemy implements CollidingEntity {
 
         this.start();
 
+        navigator = new Navigator(room);
 
         onMove(getPlayer());
 
     }
 
+    public void move() {
+        navigator.populateNavPixels();
+        if (navigator.inLineOfSight(new Vector2f(getCenterX(), getCenterY()),
+                new Vector2f(getPlayer().getCenterX(), getPlayer().getCenterY()))) {
 
+            if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
+                timeAtLastShot = System.currentTimeMillis();
+                Projectile projectile = new Projectile();
+
+
+                Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                Vector2i to = new Vector2i(getPlayer().getCenterX(), getPlayer().getCenterY());
+
+                projectile.setCenterX(from.x);
+                projectile.setCenterY(from.y);
+
+                projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                projectile.correctDirection();
+                projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+
+                room.addEntity(projectile);
+            }
+
+        }
+
+
+        super.move();
+    }
     @Override
     public void onMoveAccepted(int newX, int newY) {
         setCenterX(newX);
