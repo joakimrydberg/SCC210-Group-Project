@@ -274,6 +274,9 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
 
+                if(levelUp != null){
+                    levelUp.follow(player.getCenterX(), player.getCenterY() - 50);
+                }
                 if(levelUp != null && x > 10000)
 
                     levelUp.hidden = true;
