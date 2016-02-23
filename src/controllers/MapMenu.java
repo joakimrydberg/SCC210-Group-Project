@@ -14,7 +14,6 @@ import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
-import tools.CSVReader;
 import tools.Constants;
 
 import java.util.ArrayList;
@@ -25,11 +24,12 @@ import java.util.Random;
  * @author Ross Newby
  */
 public class MapMenu extends Menu /*implements Clickable*/ {
-    private Node[] nodes = new Node[10];
+    private Node[] nodes = new Node[NUMBER_OF_NODES];
     private NodeDescriptor[] nodeDesc = new NodeDescriptor[10];
     public final static String NAME = "Map Menu";
     private final int map_id = 1;  // = new Random().nextInt( /* a value */);
-    private final static int MOVE_DIST = 200;
+    private final static int MOVE_DIST = 200,
+            NUMBER_OF_NODES = 10;
     ArrayList<String[]> csvContent;
 
     /**
@@ -46,34 +46,64 @@ public class MapMenu extends Menu /*implements Clickable*/ {
 
         addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
 
-        Button backButton = new Button(50, 40, 80, 50, "BROWN", 200 , "BACK", 15 );
+        Button backButton = new Button(50, 40, 80, 50, "BROWN", 200, "BACK", 15);
         backButton.addClickListener(this);
         addEntity(backButton);
 
-    //    this.addClickListener(this);
-
-        csvContent = CSVReader.read("assets" + Constants.SEP + "maps" + Constants.SEP + "map_" + map_id + ".csv");
-
-//        { // creating start and end nodes
-//            Iterator it = csvContent.iterator();
-//            while (it.hasNext()) {
-//                String[] row = (String[]) it.next();
+//        {
+//            //    this.addClickListener(this);
+//            ArrayList<Node> nodes = new ArrayList<>();
+//            csvContent = CSVReader.read("assets" + Constants.SEP + "maps" + Constants.SEP + "map_" + map_id + ".csv");
 //
-//                if (row[2].equals("start")) {
-//                    nodes[0] = new Node("start", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
-//                    csvContent.remove(row);
-//                } else if (row[2].equals("end")) {
-//                    nodes[1] = new Node("end", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
-//                    csvContent.remove(row);
+//            { // creating start and end nodes
+//                String[] row = null;
+//                for (int i = 0; i < csvContent.size(); i++) {
+//                    row = csvContent.get(i);
+//
+//                    if (row[2].equals("start")) {
+//                        nodes.add(new Node("start", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300));
+//                        csvContent.remove(row);
+//                    } else if (row[2].equals("end")) {
+//                        nodes.add(new Node("end", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300));
+//                        csvContent.remove(row);
+//                    }
 //                }
 //            }
 //
-//            if (nodes[0] == null || nodes[1] == null) {
+//            if (nodes.get(0) == null || nodes.get(1) == null) {
 //                throw new RuntimeException("Invalid map csv.");
 //            }
+//
+//            while (true) {
+//                if (nodes.size() == NUMBER_OF_NODES) {
+//                    break;
+//                }
+//
+//                Iterator it = csvContent.iterator();
+//                for (int i = 0; i < NUMBER_OF_NODES && it.hasNext(); i++) {
+//                    String[] row = (String[]) it.next();
+//                    Node node;
+//                    node = new Node("Node " + i, Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+//
+//                    boolean okayToAdd = false;
+//                    for (Node anotherNode : nodes) {
+//                        if (Math.sqrt(Math.pow(anotherNode.getCenterX() - node.getCenterX(), 2) + Math.pow(anotherNode.getCenterX() - node.getCenterY(), 2)) < MOVE_DIST) {
+//                            okayToAdd = true;
+//                            drawDottedLine(node, anotherNode, Color.BLACK);
+//                        }
+//                    }
+//
+//                    if (okayToAdd) {
+//                        nodes.add(node);
+//                    }
+//                }
+//            }
 //        }
-
-
+//
+//        int i=0;
+//        for (Node node : nodes) {
+//            nodes[i++] = node;
+       // }
         //creating the nodes
         nodes[0] = new Node("1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
         nodes[1] = new Node("2", 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
@@ -110,26 +140,33 @@ public class MapMenu extends Menu /*implements Clickable*/ {
         drawDottedLine(nodes[7], nodes[9], Color.BLACK);
 
         //adding the nodes to the screen in a loop
-        for(int i = 0; i < 10; i++){
-            nodes[i].addClickListener(this);
-            addEntity(nodes[i]);
+        for(int j = 0; j < 10; j++){
+            nodes[j].addClickListener(this);
+            addEntity(nodes[j]);
         }
 
         //add locked images to each node ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
-        for(int i = 0; i < 10; i++){
-            nodes[i].lock();
+        for(int k = 0; k < 10; k++){
+            nodes[k].lock();
         }
         nodes[0].unlock();
     }
 
 
+
 //    public int navigateTo(Node frm, int stepCount) {
-//
+////        ++stepCount;
+////
+////        if (frm.getType().equals("end")) {
+////            return stepCount;
+////        }
+////
+////        int testStep = Integer.MAX_VALUE;
 ////        Iterator it = csvContent.iterator();
 ////        while (it.hasNext()) {
 ////            String[] row = (String[]) it.next();
 ////
-////            if (row[2].equals())
+////            if (row[2])
 ////        }
 //    }
 
@@ -211,7 +248,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
             addEntity(lines[i]);
         }
 
-         //setRotation the lines using trigonometry
+        //setRotation the lines using trigonometry
         int l1 = p2.getCenterY()- p1.getCenterY();
         int l2 = p2.getCenterX() - p1.getCenterX();
 

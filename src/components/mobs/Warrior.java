@@ -9,12 +9,11 @@ import java.awt.image.BufferedImage;
  * Created by millsr3 on 20/02/2016.
  */
 public class Warrior extends Player implements KeyListener {
+    public Warrior(){
+        create();
+    }
 
-
-     public Warrior(){
-
-        super();
-
+    public void create() {
         System.out.println("warrior selected");
         setSpriteSheet(SpriteSheetLoad.loadSprite("WarriorMaleSheet"));
         setCharacterStill(dir);

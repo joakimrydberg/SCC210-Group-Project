@@ -4,7 +4,7 @@ import components.Animation;
 import game.SpriteSheetLoad;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
-import org.jsfml.system.Vector2i;
+import org.jsfml.system.Vector2f;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public abstract class Mob extends Animation implements MovingEntity {
             ANIMATE_LEFT = 2,
             ANIMATE_UP = 3,
             ANIMATE_DOWN = 4;
-    private Vector2i speed = new Vector2i(0, 0);
+    private Vector2f speed = new Vector2f(0, 0);
     private float multiplier = 1;
     ArrayList<MovementListener> listeners = new ArrayList<>();
     private String classType;
@@ -121,13 +121,13 @@ public abstract class Mob extends Animation implements MovingEntity {
      * @param speed - Vector2i representing the speed of the entity in the x and y planes
      */
     @Override
-    public synchronized void setSpeed(Vector2i speed) {
+    public synchronized void setSpeed(Vector2f speed) {
         double  xSqrd = Math.pow(speed.x, 2),
                 ySqrd = Math.pow(speed.y, 2),
                 hypotenuse = Math.sqrt(xSqrd + ySqrd);
 
 
-        this.speed = new Vector2i(
+        this.speed = new Vector2f(
                 (int) (  (speed.x / hypotenuse) * 5 ),
                 (int) (  (speed.y / hypotenuse) * 5 )
         );
@@ -142,7 +142,7 @@ public abstract class Mob extends Animation implements MovingEntity {
      * @return Vector2i value representing the speed in two dimensional space
      */
     @Override
-    public Vector2i getVelocity() {
+    public Vector2f getVelocity() {
         return speed;
     }
 

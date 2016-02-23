@@ -1,19 +1,34 @@
 package components.mobs;
 
+import components.Projectile;
 import game.Room;
 import game.SpriteSheetLoad;
-import interfaces.KeyListener;
+import interfaces.ClickListener;
+import interfaces.Clickable;
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.Event;
 
 import java.awt.image.BufferedImage;
 
 /**
  * Created by millsr3 on 20/02/2016.
  */
-public class Ranger extends Player {
+public class Ranger extends Player implements ClickListener {
+    private Room room;
 
     public Ranger(){
+        create();
+    }
 
-        super();
+    public Ranger(Room room){
+        room.addClickListener(this);
+        this.room = room;
+
+        create();
+    }
+
+    public void create() {
         System.out.println("ranger selected");
         setSpriteSheet(SpriteSheetLoad.loadSprite("RangerMaleSheet"));
         setCharacterStill(dir);
@@ -27,6 +42,7 @@ public class Ranger extends Player {
 
         this.start();
     }
+
     public void attack(int dir) {
         switch (dir) {
 
@@ -47,8 +63,29 @@ public class Ranger extends Player {
                 this.setFrames(up);
                 break;
 
-
         }
     }
 
+    @Override
+    public void buttonClicked(Clickable button, Object[] args) {
+        Projectile projectile = new Projectile();
+
+        if (args.length == 1) {
+            Event e = (Event)args[0];
+
+            Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+            Vector2i to = e.asMouseEvent().position;
+
+            projectile.setCenterX(from.x);
+            projectile.setCenterY(from.y);
+
+            projectile.setSpeed(new Vector2f(to.x - from.y, to.y - from.y));
+            projectile.correctDirection();
+            projectile.setSpeed(new Vector2f(to.x - from.y, to.y - from.y));
+
+
+            room.addEntity(projectile);
+        }
+
+    }
 }

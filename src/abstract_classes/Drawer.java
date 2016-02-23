@@ -1,6 +1,5 @@
 package abstract_classes;
 
-import components.Projectile;
 import components.mobs.Enemy;
 import components.mobs.Player;
 import game.Driver;
@@ -36,9 +35,10 @@ public abstract class Drawer extends Entity {
 
                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
                     //   if(event.asMouseButtonEvent()){
-                    for (Entity entity : getEntities()) {
+                    for (int i = 0; i < getEntities().size(); i++) {
+                        Entity entity = getEntity(i);
                         if (entity instanceof Clickable
-                                && ((Clickable) entity).checkWithin(event) || entity instanceof Projectile) {
+                                && ((Clickable) entity).checkWithin(event)) {
 
                             ((Clickable) entity).clicked(event);
                         }

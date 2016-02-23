@@ -1,79 +1,36 @@
 package components;
 
-import components.mobs.Ranger;
-import game.Room;
-import interfaces.ClickListener;
-import interfaces.Clickable;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
 import org.jsfml.system.Vector2f;
-import org.jsfml.system.Vector2i;
-import org.jsfml.window.event.Event;
-import tools.ConcurrentSafeArrayList;
 import tools.Constants;
-import tools.Navigator;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * Created by millsr3 on 22/02/2016.
  */
-public class Projectile extends Image implements Clickable, MovingEntity {
+public class Projectile extends Image implements MovingEntity {
 
     private ArrayList<MovementListener> listeners = new ArrayList<>();
-    private Vector2i speed = new Vector2i(0,0);
-    private Room r;
-    private Navigator ne;
-    public Projectile(Room room){
+    private Vector2f speed = new Vector2f(0,0);
+
+    public Projectile(){
 
         super(0, 0, 35, 35, "assets" + Constants.SEP + "art" + Constants.SEP + "arrow.png");
         hide();
-        r = room;
-        Navigator n = new Navigator(r);
-        ne = n;
-    }
-
-    @Override
-    public void clicked(Event e) {
-
-
-
-            Vector2i p = e.asMouseButtonEvent().position;
-
-            int x = p.x, y = p.y;
-
-            Vector2f to = new Vector2f(x, y);
-            Vector2f from = new Vector2f(r.player.getCenterX(), r.player.getCenterY());
-
-
-        /*if(ne.inLineOfSight(to,
-                from)){
-            setSpeed(p);
-        }*/
-
-            setCenterX((int) from.x);
-            setCenterY((int) from.y);
-            setSpeed(new Vector2i(x, y));
-
-
-            ((Ranger) r.player).attack(r.player.tempDir);
-
-            show();
 
 
     }
 
-    @Override
-    public void addClickListener(ClickListener clickListener) {
-
-    }
 
     @Override
     public void move() { //this method must take no arguments
         { //moving
+
+
             final int newX = (int)(getCenterX() + speed.x), newY = (int)(getCenterY() + speed.y);
-            System.out.format("%d %d \n",(getCenterX() + speed.x), (getCenterY() + speed.y));
+            // System.out.format("%f %f \n",(getCenterX() + speed.x), (getCenterY() + speed.y));
 
             if (newX != getCenterX() || newY != getCenterY()) {
 
@@ -104,28 +61,49 @@ public class Projectile extends Image implements Clickable, MovingEntity {
 
     }
 
+    public void correctDirection() {
+        Vector2f direction = getVelocity();
+
+        float angle = (float) Math.atan2(direction.y, direction.x);
+
+
+  //      System.out.println(angle * (180 / Math.PI)+ 90);
+        getTransformable(0).setOrigin(getCenterX() - getTopLeftX(), getCenterY()-getTopLeftY());
+        super.rotate(((float)(angle * (180 / Math.PI) + 90)),true);
+        getTransformable(0).setOrigin(0,0);
+
+
+    }
+
+
     @Override
-    public void setSpeed(Vector2i speed) {
+    public void setSpeed(Vector2f speed) {
 
         double  xSqrd = Math.pow(speed.x, 2),
                 ySqrd = Math.pow(speed.y, 2),
                 hypotenuse = Math.sqrt(xSqrd + ySqrd);
 
 
-        this.speed = new Vector2i(
+        this.speed = new Vector2f(
                 (int) (  (speed.x / hypotenuse) * 5 ),
                 (int) (  (speed.y / hypotenuse) * 5 )
         );
+
+        correctDirection();
     }
 
     @Override
     public double getSpeed() {
-        return 0;
+        double  xSqrd = Math.pow(speed.x, 2),
+                ySqrd = Math.pow(speed.y, 2),
+                hypotenuse = Math.sqrt(xSqrd + ySqrd);
+
+        return hypotenuse;
     }
 
     @Override
-    public Vector2i getVelocity() {
-        return null;
+    public Vector2f getVelocity() {
+        return speed;
     }
 
     @Override
@@ -135,8 +113,6 @@ public class Projectile extends Image implements Clickable, MovingEntity {
 
     @Override
     public void addMovementListener(MovementListener listener) {
-
         listeners.add(listener);
-
     }
 }

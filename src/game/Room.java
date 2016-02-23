@@ -1,12 +1,12 @@
 package game;
 
-import components.Projectile;
 import components.RoomEntity;
 import components.mobs.*;
 import controllers.PauseMenu;
 import interfaces.*;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Keyboard;
+import org.jsfml.window.event.Event;
 import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
 import tools.FileHandling;
@@ -17,14 +17,17 @@ import java.util.HashMap;
 /**
  * @author Joakim Rydberg.
  */
-public class Room extends RoomEntity implements MovementListener, ClickListener, KeyListener {
+public class Room extends RoomEntity implements MovementListener, ClickListener, Clickable, KeyListener {
     private String roomID;
+    ArrayList<ClickListener> listeners = new ArrayList<>();
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
     public Player player;
+
     public Room(Level level) {
         this.level = level;
+
         addEntity(this);
     }
 
@@ -116,13 +119,12 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         if(Player.classType.equals("mage"))
         {p  = new Mage();}
         if(Player.classType.equals("ranger"))
-        {p  = new Ranger();}
+        {p  = new Ranger(this);}
         // p.setClass(Player.classType);
 
-        Projectile arrow = new Projectile(this);
-        arrow.addClickListener(this);
+
         p.addMovementListener(this);
-        addEntity(arrow);
+
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, p);
         EnemyMage enemyMage = new EnemyMage(this, p);
         EnemyRanger enemyRanger = new EnemyRanger(this, p);
@@ -222,5 +224,41 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     @Override
     public void buttonClicked(Clickable button, Object[] args) {
 
+    }
+
+    @Override
+    public void clicked(Event e) {
+        for (ClickListener listener : listeners) {
+            listener.buttonClicked(this, new Object[] {e});
+        }
+    }
+
+    @Override
+    public void addClickListener(ClickListener listener) {
+        listeners.add(listener);
+    }
+
+
+    /**
+     * Checks whether the x and y parameters
+     *
+     * @param x - X coordinate to check
+     * @param y - Y coordinate to check
+     * @return - true if checkWithin, false if not;
+     */
+    @Override
+    public boolean checkWithin(int x, int y) {
+        return true;
+    }
+
+    /**
+     * Checks whether the x and y parameters passed in an Event obj
+     *
+     * @param e - the Event that caused this method call
+     * @return - true if checkWithin, false if not;
+     */
+    @Override
+    public boolean checkWithin(Event e) {
+        return true;
     }
 }

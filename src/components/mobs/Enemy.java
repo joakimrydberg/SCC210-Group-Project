@@ -4,6 +4,7 @@ import game.Room;
 import interfaces.CollidingEntity;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
+import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 import tools.Navigator;
@@ -188,13 +189,13 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
                             temp = path.get(currentPos);
                             newX = temp.x - this.getCenterX();
                             newY = temp.y - this.getCenterY();
-                            setSpeed(new Vector2i(newX, newY));
+                            setSpeed(new Vector2f(newX, newY));
                         } else {
-                            setSpeed(new Vector2i(0, 0));
+                            setSpeed(new Vector2f(0, 0));
                         }
 
                     } else {
-                        setSpeed(new Vector2i(0, 0));
+                        setSpeed(new Vector2f(0, 0));
                     }
                 }
                 break;

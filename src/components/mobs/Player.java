@@ -1,8 +1,9 @@
 package components.mobs;
 
+import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.KeyListener;
-import org.jsfml.system.Vector2i;
+import org.jsfml.system.Vector2f;
 
 import java.awt.image.BufferedImage;
 
@@ -10,6 +11,7 @@ import java.awt.image.BufferedImage;
  * Created by millsr3 on 16/02/2016.
  */
 public class Player extends Mob implements KeyListener {
+
     public final static int ATTACK_RIGHT = 1,
             ATTACK_LEFT = 2,
             ATTACK_UP = 3,
@@ -24,13 +26,14 @@ public class Player extends Mob implements KeyListener {
             downPressed = false,
             leftPressed = false,
             rightPressed = false;
-
+    private Room room;
     protected int dir = 0;
     public boolean held = false;
+
     public Player() {
         super(200, 200, 64, 128);
-
     }
+
 
     public void setClass(String c) {
         classType = c;
@@ -74,7 +77,7 @@ public class Player extends Mob implements KeyListener {
             case RIGHT:
                 if (!rightPressed) {
                     rightPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x + MOVEBY, getVelocity().y));
+                    setSpeed(new Vector2f(getVelocity().x + MOVEBY, getVelocity().y));
                     tempDir = 2;
                     setAnimation(ANIMATE_RIGHT);
                 }
@@ -82,7 +85,7 @@ public class Player extends Mob implements KeyListener {
             case UP:
                 if (!upPressed) {
                     upPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x, getVelocity().y - MOVEBY));
+                    setSpeed(new Vector2f(getVelocity().x, getVelocity().y - MOVEBY));
                     tempDir = 3;
                     setAnimation(ANIMATE_UP);
                 }
@@ -90,7 +93,7 @@ public class Player extends Mob implements KeyListener {
             case LEFT:
                 if (!leftPressed) {
                     leftPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x - MOVEBY, getVelocity().y));
+                    setSpeed(new Vector2f(getVelocity().x - MOVEBY, getVelocity().y));
                     tempDir = 1;
                     setAnimation(ANIMATE_LEFT);
                 }
@@ -98,7 +101,7 @@ public class Player extends Mob implements KeyListener {
             case DOWN:
                 if (!downPressed) {
                     downPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x, getVelocity().y + MOVEBY));
+                    setSpeed(new Vector2f(getVelocity().x, getVelocity().y + MOVEBY));
                     tempDir = 0;
                     setAnimation(ANIMATE_DOWN);
                 }
@@ -112,7 +115,7 @@ public class Player extends Mob implements KeyListener {
         switch (event.key) {
             case RIGHT:
                 rightPressed = false;
-                setSpeed(new Vector2i(0, getVelocity().y));
+                setSpeed(new Vector2f(0, getVelocity().y));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -122,7 +125,7 @@ public class Player extends Mob implements KeyListener {
                 break;
             case UP:
                 upPressed = false;
-                setSpeed(new Vector2i(getVelocity().x, 0));
+                setSpeed(new Vector2f(getVelocity().x, 0));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -132,7 +135,7 @@ public class Player extends Mob implements KeyListener {
                 break;
             case LEFT:
                 leftPressed = false;
-                setSpeed(new Vector2i(0, getVelocity().y));
+                setSpeed(new Vector2f(0, getVelocity().y));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -141,7 +144,7 @@ public class Player extends Mob implements KeyListener {
                 break;
             case DOWN:
                 downPressed = false;
-                setSpeed(new Vector2i(getVelocity().x, 0));
+                setSpeed(new Vector2f(getVelocity().x, 0));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -168,8 +171,6 @@ public class Player extends Mob implements KeyListener {
 
         return;    //do nothing but don't remove (will be used for the bad guys)
     }
-
-
 }
 
 

@@ -74,7 +74,7 @@ public class Entity  {
     public void rotate(float v) {
         Iterator<TransformableHolder> iterator = transformableHolders.getReadIterator();
         while (iterator.hasNext()) {
-            iterator.next().transformable.rotate(v);
+            iterator.next().transformable.setRotation(v);
         }
     }
 /*

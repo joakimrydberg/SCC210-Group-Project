@@ -69,7 +69,7 @@ public class Level {
 								if(connectRoom(x-1, y, "North")) rooms[x][y].addDoor("South");
 							} else {
 								setRoom(x-1, y, "North");
-								//rooms[x][y].addDoor("South");
+								rooms[x][y].addDoor("South");
 							}
 							break;
 						case "West":

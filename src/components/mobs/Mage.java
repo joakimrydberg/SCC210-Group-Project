@@ -10,9 +10,13 @@ import java.awt.image.BufferedImage;
  */
 public class Mage extends Player implements KeyListener {
 
-    public Mage(){
+    public Mage() {
 
-        super();
+    }
+
+
+    public void create(){
+
         System.out.println("mage selected");
         setSpriteSheet(SpriteSheetLoad.loadSprite("MageMaleSheet"));
         setCharacterStill(dir);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);

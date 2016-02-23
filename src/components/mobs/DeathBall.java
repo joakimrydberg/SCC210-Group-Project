@@ -3,7 +3,7 @@ package components.mobs;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.MovingEntity;
-import org.jsfml.system.Vector2i;
+import org.jsfml.system.Vector2f;
 
 import java.awt.image.BufferedImage;
 
@@ -36,7 +36,7 @@ public class DeathBall extends Enemy {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            setSpeed(new Vector2i(newX, newY));
+            setSpeed(new Vector2f(newX, newY));
         }).start();
 
     }
