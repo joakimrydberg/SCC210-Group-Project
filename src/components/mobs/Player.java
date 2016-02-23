@@ -31,11 +31,22 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
+    public int x, y;
 
     public Player() {
-        super(200, 200, 64, 128);
+        super(200, 400, 64, 128);
     }
 
+
+    public void setLocation(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX(){return this.x;}
+
+    public int getY(){return this.y;}
 
     public void setClass(String c) {
         classType = c;

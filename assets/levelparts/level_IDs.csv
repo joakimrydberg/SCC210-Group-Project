@@ -14,3 +14,4 @@ Edge7, dungeon_edge_corner_one.png, Wall
 Edge8, dungeon_edge_corner_one_v2.png, Wall
 Edge9, dungeon_edge_corner_two.png, Wall
 Blank, Blank_space.png, Wall
+End_Door, end_door.png, Door
