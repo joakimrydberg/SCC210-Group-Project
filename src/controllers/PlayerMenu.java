@@ -1,13 +1,12 @@
 package controllers;
 
-import components.Animation;
-import components.Image;
-import components.Message;
-import components.Rect;
+import abstract_classes.Entity;
+import components.*;
 import game.SpriteSheetLoad;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import tools.Constants;
+import tools.DebugPrinter;
 
 import java.awt.image.BufferedImage;
 
@@ -16,9 +15,9 @@ import java.awt.image.BufferedImage;
  */
 public class PlayerMenu extends Menu {
     public final static String NAME = "Player Menu";
-    private int money = 100, lvl = 1;
+    private int money = 100, lvl = 1, ag = 0, in = 0, at = 0, en = 0, vi = 0, he = 100;
 
-    public PlayerMenu(){
+    public PlayerMenu() {
         super(NAME);
 
         addSlot("LONG", 625, 150, 520, 70); //top panel
@@ -36,33 +35,72 @@ public class PlayerMenu extends Menu {
         addEntity(new Image(850, 150, "assets" + Constants.SEP + "art" + Constants.SEP + "xp_icon.png"));
 
         //left slots
-        addSlot("HELMET", 500, 250);
-        addSlot("ARMS", 400, 350);
-        addSlot("TORSO", 500, 350);
-        addSlot("BOOTS", 500, 450);
+        addSlot("HELMET", 500, 250, "H");
+        addSlot("ARMS", 400, 350, "A");
+        addSlot("TORSO", 500, 350, "T");
+        addSlot("BOOTS", 500, 450, "B");
 
         //character
         addSlot("LARGE", 670, 350, 203, 270);
 
         //right slots
-        addSlot("WEAPON", 850, 250);
-        addSlot("SHIELD", 850, 350);
-        addSlot("POTION", 850, 450);
+        addSlot("WEAPON", 850, 250, "W");
+        addSlot("SHIELD", 850, 350, "S");
+        addSlot("POTION", 850, 450, "P");
 
         //bottom bar //TODO dont know what to populate this or if its needed but its here to loog good tbh
         addSlot("LONG", 625, 550, 520, 70); //TODO resize / edit this with info
-    }
 
-    private void addSlot(String slot, int x, int y){
-        addEntity(new Image(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot +".png"));
-    }
-
-    private void addSlot(String slot, int x, int y, int length, int height){
-        addEntity(new Image(x, y, length, height, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot +".png"));
+        addEntity(new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12));
+        addEntity(new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12));
+        addEntity(new Message(500, 600, 0, "Agility : " + ag, Color.WHITE, 12));
+        addEntity(new Message(700, 550, 0, "Endurance : " + en, Color.WHITE, 12));
+        addEntity(new Message(700, 575, 0, "Vitality : " + vi, Color.WHITE, 12));
+        addEntity(new Message(700, 600, 0, "Health : " + he, Color.WHITE, 12));
     }
 
     @Override
-    public void buttonClicked(Clickable button, Object[] args) {
-        //
+    public void buttonClicked(Clickable clickable, Object[] args) {
+        if (clickable instanceof ClickableImage) {
+
+            Entity button = (ClickableImage) clickable;
+
+            if (button.getName().equals("H")) {
+                System.out.println("HELMET clicked");
+            } else if (button.getName().equals("A")) {
+                System.out.println("ARMS clicked");
+            } else if (button.getName().equals("T")) {
+                System.out.println("TORSO clicked");
+            } else if (button.getName().equals("B")) {
+                System.out.println("BOOTS clicked");
+            } else if (button.getName().equals("W")) {
+                System.out.println("WEAPON clicked");
+            } else if (button.getName().equals("S")) {
+                System.out.println("SHIELD clicked");
+            } else if (button.getName().equals("P")) {
+                System.out.println("POTION clicked");
+            }
+        }
     }
+
+    private void addSlot(String slot, int x, int y, String name) {
+        ClickableImage s = new ClickableImage(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name);
+        s.addClickListener(this);
+        addEntity(s);
+    }
+
+    private void addSlot(String slot, int x, int y) {
+        addEntity(new ClickableImage(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot +".png"));
+    }
+
+    private void addSlot(String slot, int x, int y, int length, int height, String name) {
+        ClickableImage s = new ClickableImage(x, y, length, height, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name);
+        s.addClickListener(this);
+        addEntity(s);
+    }
+
+    private void addSlot(String slot, int x, int y, int length, int height) {
+        addEntity(new ClickableImage(x, y, length, height, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png"));
+    }
+
 }

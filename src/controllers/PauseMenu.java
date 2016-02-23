@@ -84,8 +84,7 @@ public class PauseMenu extends Menu {
             }
             else if (button.getName().equals("DUNGEON MAP"))
             {
-//                unloadMenus();
-//                sMenu.load();
+                unloadMenus();
                 System.out.println("DUNGEON MAP clicked");
             }
             else if (button.getName().equals("RESUME"))
@@ -95,7 +94,7 @@ public class PauseMenu extends Menu {
                 new MainMenu().load();
                 System.out.println("RESUME clicked");
             }
-            else if (button.getName().equals("QUIT GAME"))
+            else if (button.getName().equals("QUIT DUNGEON"))
             {
                 this.unload();
                 unloadMenus();
