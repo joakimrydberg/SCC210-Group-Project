@@ -295,6 +295,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         if (MapMenu.getPlayer() instanceof Ranger) {
             ((Ranger) MapMenu.getPlayer()).setRoom(this);
         }
+        if (MapMenu.getPlayer() instanceof Mage) {((Mage) MapMenu.getPlayer()).setRoom(this);}
+
 
         super.load();
     }
@@ -368,8 +370,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                         }
                     }
 
-                    if (MapMenu.getPlayer() instanceof Ranger) { //and maybe mage?
-                        for (Projectile projectile : ((Ranger) MapMenu.getPlayer()).getProjectiles()) {
+                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
+                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
                             if (projectile.getState() == Projectile.OKAY
                                     &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
                                 ((Enemy) entity).damaged();
@@ -383,7 +385,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 if(entity instanceof Enemy && ((Enemy)entity).Health < 0 && !((Enemy)entity).dead){
                     ((Enemy)entity).die();
                 }
-                if(entity instanceof Player && ((Player)entity).Health < 0){
+                if(entity instanceof Player && ((Player)entity).Health < 0 && !((Player)entity).dead){
+                    ((Player)entity).die();
                     loadDrawer(GameOverMenu.class);
                     unload();
                 }
