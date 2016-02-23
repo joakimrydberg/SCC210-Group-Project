@@ -52,7 +52,7 @@ public class PlayerMenu extends Menu {
         addSlot("POTION", 850, 450, "POTION");
 
         //bottom bar //TODO dont know what to populate this or if its needed but its here to loog good tbh
-        addSlot("LONG", 625, 550, 520, 70); //TODO resize / edit this with info
+        addSlot("LONG2", 625, 580, 520, 120); //TODO resize / edit this with info
 
         addEntity(new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12));
         addEntity(new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12));
@@ -90,7 +90,7 @@ public class PlayerMenu extends Menu {
         itemDesc[count] = new ItemDescriptor(name, x, y);
 
         Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, itemDesc[count]);
-        s.addClickListener(this);
+        //s.addClickListener(this);
         addEntity(s);
 
         slots[count] = s;

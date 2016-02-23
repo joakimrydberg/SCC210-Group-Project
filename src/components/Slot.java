@@ -57,12 +57,18 @@ public class Slot extends ClickableImage implements MotionListener {
         itemDesc = desc;
     }
 
+    /*
+     * returns null if no item in the slot
+     */
     public Item getItem() {
-//        if(item != null) {
             return item;
-//        }else{
-//            return /**/;
-//        }
+    }
+
+    public boolean hasItem(){
+        if (item == null)
+            return false;
+        else
+            return true;
     }
 
 

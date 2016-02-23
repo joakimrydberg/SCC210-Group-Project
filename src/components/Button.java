@@ -62,6 +62,14 @@ public class Button extends Rect implements Clickable {
         addTransformable(textObj, width / 2, height / 2 - 5, (int)textBounds.width, (int)textBounds.height);
     }
 
+    public void hide(){
+        hidden = true;
+    }
+
+    public void show(){
+        hidden = false;
+    }
+
     @Override
     public boolean checkWithin(Event e){
         Vector2i v = e.asMouseButtonEvent().position;

@@ -2,7 +2,10 @@ package controllers;
 
 import abstract_classes.Entity;
 import components.*;
+import components.Button;
+import components.Image;
 import interfaces.Clickable;
+import org.jsfml.graphics.Color;
 import tools.Constants;
 
 import java.util.ArrayList;
@@ -14,15 +17,26 @@ public class InventoryMenu extends Menu {
     public final static String NAME = "Inventory Menu";
     private ItemDescriptor[] itemDesc = new ItemDescriptor[42];
     private Slot[] slots = new Slot[42];
-    //private ItemMenu itemMenu = new ItemMenu();
+    private Slot clickedSlot = null;
+
     private int count;
+    private Button btnEquipt = null, btnDiscard = null;
+    private boolean firstClick = true;
+    Message n = null, d = null;
+    Image img = new Image(450, 610, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
 
     public InventoryMenu() {
         super(NAME);
 
         drawSlots(); //draws all inventory boxes and item descriptors
 
-        addSlot("LONG", 625, 600, 520, 70);
+        addSlot("LONG2", 625, 610, 520, 100);
+
+        addSlot("EMPTY", 450, 610, 70, 70);
+        n = new Message(550, 590, 0, "Select an Item!", Color.WHITE, 12);
+        d = new Message(550, 620, 0, "Select an Item!", Color.WHITE, 12);
+        addEntity(n);
+        addEntity(d);
     }
 
     public void populateMenu(ArrayList<Item> inventory){
@@ -35,30 +49,72 @@ public class InventoryMenu extends Menu {
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) {
         if (clickable instanceof Slot){
-            Entity button = (Slot) clickable;
+            Slot slot = (Slot) clickable;
+            clickedSlot = (Slot) clickable;
+
+            if (slot.hasItem()) {
+                if(firstClick) {
+                    btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
+                    btnEquipt.addClickListener(this);
+                    addEntity(btnEquipt);
+
+                    btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
+                    btnDiscard.addClickListener(this);
+                    addEntity(btnDiscard);
+
+                    img.changeImage(slot.getItem().getItemIcon());
+                    addEntity(img);
+
+                    n.setText(slot.getItem().getName());
+                    d.setText(slot.getItem().getDescription());
+
+                    firstClick = false;
+                }else{
+                    img.show();
+                    btnEquipt.show();
+                    btnDiscard.show();
+                    img.changeImage(slot.getItem().getItemIcon());
+                    n.setText(slot.getItem().getName());
+                    d.setText(slot.getItem().getDescription());
+                }
+            }else {
+                img.hide();
+                btnEquipt.hide();
+                btnDiscard.hide();
+                n.setText("Empty Inventory Slot!");
+                    d.setText("");
+            }
 
             for(int i = 1; i < 36; i++) {
-                if (button.getName().equals("" + i)) {
+                if (slot.getName().equals("" + i)) {
                     //loadDrawer(ItemMenu.class);
                     //itemMenu.load();
                     System.out.println("Slot " + i + " clicked");
                 }
             }
 
-            if (button.getName().equals("H")) {
+            if (slot.getName().equals("H")) {
                 System.out.println("HELMET clicked");
-            } else if (button.getName().equals("A")) {
+            } else if (slot.getName().equals("A")) {
                 System.out.println("ARMS clicked");
-            } else if (button.getName().equals("T")) {
+            } else if (slot.getName().equals("T")) {
                 System.out.println("TORSO clicked");
-            } else if (button.getName().equals("B")) {
+            } else if (slot.getName().equals("B")) {
                 System.out.println("BOOTS clicked");
-            } else if (button.getName().equals("W")) {
+            } else if (slot.getName().equals("W")) {
                 System.out.println("WEAPON clicked");
-            } else if (button.getName().equals("S")) {
+            } else if (slot.getName().equals("S")) {
                 System.out.println("SHIELD clicked");
-            } else if (button.getName().equals("P")) {
+            } else if (slot.getName().equals("P")) {
                 System.out.println("POTION clicked");
+            }
+        }else if (clickable instanceof Button) {
+            Entity button = (Button) clickable;
+
+            if (button.getName().equals("EQUIPT")) {
+                System.out.println("EQUIPT clicked");
+            }else if (button.getName().equals("DISCARD")) {
+                System.out.println("DISCARD clicked");
             }
         }
     }

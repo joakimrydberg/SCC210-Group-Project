@@ -3,6 +3,7 @@ package components;
 import interfaces.ClickListener;
 import interfaces.Clickable;
 import org.jsfml.window.event.Event;
+import tools.MusicPlayer;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public class ClickableImage extends Image implements Clickable {
 
     @Override
     public void clicked(Event e) {
+        MusicPlayer.play("button_click.wav");
+
         for (ClickListener listener : clickListeners) {
             listener.buttonClicked(this, null);
         }
