@@ -198,11 +198,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     }
 
     @Override
-    public boolean isMoveAcceptable(int x, int y, int w, int h) {
-        return isMoveAcceptable(x, y, w, h, false);
+    public boolean isMoveAcceptable(int x, int y, int w, int h, MovingEntity movingEntity) {
+        return isMoveAcceptable(x, y, w, h, false, movingEntity);
     }
 
-    public boolean isMoveAcceptable(int x, int y, int w, int h, boolean override) {
+    public boolean isMoveAcceptable(int x, int y, int w, int h, boolean override, MovingEntity entity) {
         if (isLoaded() || override) {
             Vector2i wSize = getWindow().getSize();
 
@@ -222,11 +222,14 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 for (int j = 0; j < 11; j++) {
                     part = getPart(i, j);
 
-                    if (part.getType().equals("Wall")) {
-                        final int partLeft = j * partSize.x,
-                                partRight = (j + 1) * partSize.x,
-                                partBottom = (i + 1) * partSize.y,
-                                partTop = i * partSize.y;
+
+                    if (!(part.getType().equals("Blank") && entity instanceof Projectile)) {
+                        if (part.getType().equals("Wall")) {
+
+                            final int partLeft = j * partSize.x,
+                                    partRight = (j + 1) * partSize.x,
+                                    partBottom = (i + 1) * partSize.y,
+                                    partTop = i * partSize.y;
 
 //                    //col * w + w/2, row * h + h/2
 //                    if (w == 1) {
@@ -234,12 +237,13 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 //                                , left, right, top, bottom,
 //                                partLeft, partRight, partTop, partBottom);
 //                    }
-                        if (left < partRight
-                                && right > partLeft
-                                && bottom > partTop
-                                && top < partBottom) {
+                            if (left < partRight
+                                    && right > partLeft
+                                    && bottom > partTop
+                                    && top < partBottom) {
 
-                            return false;
+                                return false;
+                            }
                         }
                     }
                 }

@@ -39,7 +39,7 @@ public abstract class Projectile extends Image implements MovingEntity {
                     //checking all the MovementListeners are 'okay' with the proposed move
                     if (!broken) {
                         for (MovementListener listener : listeners) {
-                            move = listener.isMoveAcceptable(newX - getWidth() / 2, newY - getHeight() / 2, 1, 1) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
+                            move = listener.isMoveAcceptable(newX - getWidth() / 2, newY - getHeight() / 2, 1, 1, this) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
                                     && move;                                             // a little weird but for reasons.
                         }
                     }  else {

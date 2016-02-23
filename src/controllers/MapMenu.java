@@ -234,18 +234,15 @@ public class MapMenu extends Menu implements Clickable, Serializable {
             }
         }
 
-        int fails = 0;
         if (all) {
             for (Node node : nodes) {
                 clearTimes(nodes);
                 if (navigateTo(start, node, 0, nodes) < 0) {
-                    fails++;
+                    return false;
                 }
             }
 
-            System.out.println("fails " + fails);
-
-            return (fails == 0);
+            return true;
         } else {
             return navigateTo(start, end, 0, nodes) > 0;
         }

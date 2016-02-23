@@ -71,10 +71,10 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     }
 
     public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
-        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true);
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true, this);
     }
     public boolean isPlacable(MovementListener room, int newX, int newY, int w, int h) {
-        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4);
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, this);
     }
 
     public BufferedImage[] charAttack(BufferedImage character, int dir)

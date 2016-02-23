@@ -51,7 +51,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     }
 
     @Override
-    public boolean isMoveAcceptable(int newX, int newY, int w, int h) {
+    public boolean isMoveAcceptable(int newX, int newY, int w, int h, MovingEntity movingEntity) {
         //maybe we do collision stuff here?
 
         return true;
