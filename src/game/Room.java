@@ -121,8 +121,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         create(tiles);
 
         { //adding the player
-
             MapMenu.getPlayer().addMovementListener(this);
+            MapMenu.getPlayer().place(this);
             addEntity(MapMenu.getPlayer());
         }
 
