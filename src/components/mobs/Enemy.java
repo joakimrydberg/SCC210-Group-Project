@@ -40,7 +40,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
                 getWindow().getSize().y - 200 - Math.abs(new Random().nextInt() % 300) /*getWindow().getSize().y + (new Random().nextInt() % (getWindow().getSize().y / 4))*/,
                 64,
                 128);
-
+        this.exp = 50;
         this.player = player;
         this.room = room;
         navigator = new Navigator(room);
@@ -121,8 +121,18 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
 
     public void damaged(){
 
-        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir);
-        setFrames(a); //
+        if (player instanceof Ranger){
+
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 5);
+            setFrames(a);
+
+        }
+        else {
+
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 3);
+            setFrames(a);
+        }
+
 
     }
 
@@ -234,6 +244,12 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
         }
 
         super.move();
+    }
+    public void die(){
+
+        stopCharacter();
+        player.exp = player.exp + this.exp;
+        dead = true;
     }
 
 }
