@@ -16,6 +16,9 @@ import java.awt.image.BufferedImage;
  */
 public class Ranger extends Player implements ClickListener {
     private Room room;
+    private final static int RECHARGE = 750; // a bit faster than that for enemy for the sake of fun
+
+    private long timeAtLastShot = System.currentTimeMillis();
 
     public Ranger(){
         create();
@@ -68,24 +71,27 @@ public class Ranger extends Player implements ClickListener {
 
     @Override
     public void buttonClicked(Clickable button, Object[] args) {
-        Projectile projectile = new Projectile();
 
-        if (args.length == 1) {
-            Event e = (Event)args[0];
+        if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
+            timeAtLastShot = System.currentTimeMillis();
+            Projectile projectile = new Projectile();
 
-            Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
-            Vector2i to = e.asMouseEvent().position;
+            if (args.length == 1) {
+                Event e = (Event) args[0];
 
-            projectile.setCenterX(from.x);
-            projectile.setCenterY(from.y);
+                Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                Vector2i to = e.asMouseEvent().position;
 
-            projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-            projectile.correctDirection();
-            //projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                projectile.setCenterX(from.x);
+                projectile.setCenterY(from.y);
+
+                projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                projectile.correctDirection();
+                //projectile.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
 
 
-            room.addEntity(projectile);
+                room.addEntity(projectile);
+            }
         }
-
     }
 }

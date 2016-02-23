@@ -41,6 +41,7 @@ public class EnemyRanger extends Enemy implements CollidingEntity {
 
     }
 
+    //if  in line of sight and haven/t shot of a while then shoot otherwise just move
     public void move() {
         navigator.populateNavPixels();
         if (navigator.inLineOfSight(new Vector2f(getCenterX(), getCenterY()),
@@ -66,8 +67,8 @@ public class EnemyRanger extends Enemy implements CollidingEntity {
 
         }
 
-
         super.move();
+
     }
     @Override
     public void onMoveAccepted(int newX, int newY) {
