@@ -38,6 +38,7 @@ public class RoomEntity extends Drawer {
             for (int j = 0; j < 11; j++) {
                 img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelParts[i][j].getSpriteFileName());
                 addPart(img);
+                levelParts[i][j].displayed = true;
                 img.rotate(levelParts[i][j].getRotation());
             }
         }
@@ -69,6 +70,8 @@ public class RoomEntity extends Drawer {
     public void setPart(LevelPart levelPart) {
         int i = levelPart.getRowNo(),
                 j = levelPart.getColNo();
+
+        levelPart.displayed = true;
 
         DisplayedImagePart img;
         img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelPart.getSpriteFileName());

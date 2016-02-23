@@ -14,9 +14,10 @@ import org.jsfml.system.Vector2f;
  *
  * @author ryan
  */
-public class Rect extends Entity {
+public class Rect extends Entity  {
+    private static final long serialVersionUID = 7L;  //actually needed
 
-	RectangleShape rect;
+    RectangleShape rect;
 	Vector2f vec;
 
 	public Rect(String name, int x, int y, int width, int height, Color c, int transparency) {

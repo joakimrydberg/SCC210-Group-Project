@@ -16,6 +16,7 @@ public class LevelPart implements Serializable {
 	private String type;
 	private float rotation = 0;
 	private short rowNo = 0, colNo = 0; // position on grid just in case
+    public boolean displayed = false;
 
     public LevelPart(String fileName, float rotation, short rowNo, short colNo) {
         super();

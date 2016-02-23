@@ -1,12 +1,11 @@
 package controllers;
 
 import abstract_classes.Entity;
-import components.ClickableImage;
-import components.Image;
-import components.Node;
-import components.Slot;
+import components.*;
 import interfaces.Clickable;
 import tools.Constants;
+
+import java.util.ArrayList;
 
 /**
  * Created by Ross on 21/02/2016.
@@ -14,23 +13,34 @@ import tools.Constants;
 public class InventoryMenu extends Menu {
     public final static String NAME = "Inventory Menu";
     private ItemDescriptor[] itemDesc = new ItemDescriptor[42];
+    private Slot[] slots = new Slot[42];
+    //private ItemMenu itemMenu = new ItemMenu();
+    private int count;
 
-    public InventoryMenu(){
+    public InventoryMenu() {
         super(NAME);
-        //addEntity(new Image(625, 350, 520, 470, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "PANEL.png"));
 
         drawSlots(); //draws all inventory boxes and item descriptors
 
         addSlot("LONG", 625, 600, 520, 70);
     }
 
+    public void populateMenu(ArrayList<Item> inventory){
+        //display items in playes inventory
+        for(int i = 0; i < inventory.size(); i++){
+            slots[i + 7].addItem(inventory.get(i));
+        }
+    }
+
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) {
-        if (clickable instanceof ClickableImage){
-            Entity button = (ClickableImage) clickable;
+        if (clickable instanceof Slot){
+            Entity button = (Slot) clickable;
 
             for(int i = 1; i < 36; i++) {
                 if (button.getName().equals("" + i)) {
+                    //loadDrawer(ItemMenu.class);
+                    //itemMenu.load();
                     System.out.println("Slot " + i + " clicked");
                 }
             }
@@ -57,46 +67,53 @@ public class InventoryMenu extends Menu {
         int x = 400, y = 100;
         int xadd = 520 / 7;
 
-        addSlot("HELMET", x, y, "H", new ItemDescriptor("H", x, y, 200, 150));
+        count = 0;
+
+        addSlot("HELMET", x, y, "H");
         x += xadd;
-        addSlot("ARMS", x, y, "A", new ItemDescriptor("A", x, y, 200, 150));
+        addSlot("ARMS", x, y, "A");
         x += xadd;
-        addSlot("TORSO", x, y, "T", new ItemDescriptor("T", x, y, 200, 150));
+        addSlot("TORSO", x, y, "T");
         x += xadd;
-        addSlot("BOOTS", x, y, "B", new ItemDescriptor("B", x, y, 200, 150));
+        addSlot("BOOTS", x, y, "B");
         x += xadd;
-        addSlot("WEAPON", x, y, "W", new ItemDescriptor("W", x, y, 200, 150));
+        addSlot("WEAPON", x, y, "W");
         x += xadd;
-        addSlot("SHIELD", x, y, "S", new ItemDescriptor("S", x, y, 200, 150));
+        addSlot("SHIELD", x, y, "S");
         x += xadd;
-        addSlot("POTION", x, y, "P", new ItemDescriptor("P", x, y, 200, 150));
+        addSlot("POTION", x, y, "P");
 
         int name = 1;
-        int d = 0;
+        count = 0;
         x = 400;
         y = 190;
         int yadd = 470 / 6;
 
         for(int i = 0; i < 5; y += yadd, i++) {
             for (int j = 0; j < 7; x +=xadd, j++) {
-                ;
-                itemDesc[d] = new ItemDescriptor("D" + name, x, y, 200, 150);
-                addSlot("BLANK", x, y, "" + name, itemDesc[d]);
+                itemDesc[count + 7] = new ItemDescriptor("Slot " + name, x, y);
 
-                Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "BLANK.png", "" + name, itemDesc[d]);
+                Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "BLANK.png", "" + name, itemDesc[count + 7]);
                 s.addClickListener(this);
                 addEntity(s);
+
+                slots[count + 7] = s;
+
                 name++;
-                d++;
+                count++;
             }
             x = 400;
         }
     }
 
-    private void addSlot(String slot, int x, int y, String name, ItemDescriptor desc) {
-        Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, desc);
+    private void addSlot(String slot, int x, int y, String name) {
+        itemDesc[count] = new ItemDescriptor(slot, x, y);
+
+        Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, itemDesc[count]);
         s.addClickListener(this);
         addEntity(s);
+
+        count++;
     }
 
     private void addSlot(String slot, int x, int y) {

@@ -1,13 +1,17 @@
 package components.mobs;
 
+import components.Image;
+import components.Item;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
 import interfaces.KeyListener;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
+import tools.Constants;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by millsr3 on 16/02/2016.
@@ -28,25 +32,19 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             downPressed = false,
             leftPressed = false,
             rightPressed = false;
+
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
-    public int x, y;
+    ArrayList<Item> inventory = new ArrayList<Item>();
+    ArrayList<Item> equippedItems = new ArrayList<Item>();
+    public int level = 1;
 
     public Player() {
-        super(200, 400, 64, 128);
+        super(200, 200, 64, 128);
+        //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
     }
 
-
-    public void setLocation(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX(){return this.x;}
-
-    public int getY(){return this.y;}
 
     public void setClass(String c) {
         classType = c;
@@ -226,12 +224,17 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public void damaged(){
 
-        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 4);
-        setFrames(a); //
+        if(System.currentTimeMillis() - timeAtLastDamaged > 500){
+            timeAtLastDamaged = System.currentTimeMillis();
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 15);
+            setFrames(a);
+        }
 
     }
 
     public void die(){
+
+
 
     }
 

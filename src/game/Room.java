@@ -6,6 +6,7 @@ import components.Projectile;
 import components.RoomEntity;
 import components.mobs.*;
 import components.mobs.Ranger;
+import controllers.GameOverMenu;
 import controllers.PauseMenu;
 import interfaces.*;
 import org.jsfml.graphics.Color;
@@ -16,7 +17,6 @@ import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
 import tools.FileHandling;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,12 +25,13 @@ import java.util.HashMap;
  */
 public class Room extends RoomEntity implements MovementListener, ClickListener, Clickable, KeyListener {
     private String roomID;
-    ArrayList<ClickListener> listeners = new ArrayList<>();
+    private ArrayList<ClickListener> listeners = new ArrayList<>();
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
     public Player player;
     private Message levelUp = null;
+    int x = 0;
 
     public Room(Level level) {
         this.level = level;
@@ -167,7 +168,9 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
+                if (levelParts[i][j].getType().equals("Door")) {
 
+                }
             }
         }
     }
@@ -220,7 +223,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     @Override
     public void onMove(MovingEntity mover) {
+        if (mover instanceof Player) {
+            for (LevelPart door : potentialDoors.values()) {
 
+            }
+        }
     }
 
 //
@@ -257,7 +264,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     @Override
     public void drawAll() {
 
-        int x = 0;
+
 
         if (isLoaded()) {
             draw();
@@ -267,7 +274,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
 
-                if(levelUp != null && x > 100)
+                if(levelUp != null){
+                    levelUp.follow(player.getCenterX(), player.getCenterY() - 50);
+                }
+                if(levelUp != null && x > 10000)
+
                     levelUp.hidden = true;
 
                 if(entity instanceof CollidingEntity
@@ -305,18 +316,22 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
                 }
 
-                if(entity instanceof Mob && ((Mob)entity).Health < 0 && !((Mob)entity).dead){
-                    ((Mob)entity).die();
-
+                if(entity instanceof Enemy && ((Enemy)entity).Health < 0 && !((Enemy)entity).dead){
+                    ((Enemy)entity).die();
                 }
+                if(entity instanceof Player && ((Player)entity).Health < 0){
+                    loadDrawer(GameOverMenu.class);
+                    unload();
+                }
+
 
                 if(player.getExp() > 99){
 
                     levelUp = new Message(player.getCenterX(), player.getCenterY() - 50, 0, "LEVEL UP", Color.RED, 20);
-                 //   levelUp.hidden = false;
                     addEntity(levelUp);
                     x = 0;
                     player.setExp(0);
+                    player.level++;
 
                 }
 
@@ -358,4 +373,6 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public boolean checkWithin(Event e) {
         return true;
     }
+
+
 }
