@@ -131,7 +131,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         int diff = level.getDifficulty(getName());
 
         { //difficulty tweaks //todo make better, much better
-
+            System.out.print(diff);
             if (diff == 1) {
                 enemyWarriors = MapMenu.randomInt(0, 3);
                 enemyRangers = MapMenu.randomInt(0, 1);
@@ -153,7 +153,9 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 enemyRangers = MapMenu.randomInt(0, 6);
                 enemyMages = MapMenu.randomInt(0, 6);
             } else {
-
+                enemyWarriors = MapMenu.randomInt(0, 8);
+                enemyRangers = MapMenu.randomInt(0, 8);
+                enemyMages = MapMenu.randomInt(0, 8);
             }
         }
 
@@ -167,14 +169,14 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             }
 
             EnemyMage enemyMage;
-            for (int i = 0; i < enemyWarriors; i++) {
+            for (int i = 0; i < enemyMages; i++) {
                 enemyMage = new EnemyMage(this);
                 enemyMage.addMovementListener(this);
                 addEntity(enemyMage);
             }
 
             EnemyRanger enemyRanger;
-            for (int i = 0; i < enemyWarriors; i++) {
+            for (int i = 0; i < enemyRangers; i++) {
                 enemyRanger = new EnemyRanger(this);
                 enemyRanger.addMovementListener(this);
                 addEntity(enemyRanger);
