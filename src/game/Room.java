@@ -343,7 +343,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 if(entity instanceof Enemy && ((Enemy)entity).Health < 0 && !((Enemy)entity).dead){
                     ((Enemy)entity).die();
                 }
-                if(entity instanceof Player && ((Player)entity).Health < 0){
+                if(entity instanceof Player && ((Player)entity).Health < 0 && !((Player)entity).dead){
                     ((Player)entity).die();
                     loadDrawer(GameOverMenu.class);
                     unload();
