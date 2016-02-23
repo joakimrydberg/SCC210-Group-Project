@@ -1,14 +1,13 @@
 package components.mobs;
 
-import components.Image;
 import components.Item;
+import controllers.MapMenu;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
 import interfaces.KeyListener;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
-import tools.Constants;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -41,7 +40,6 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public int level = 1;
 
     public Player() {
-        super(400, 400, 64, 128);
         //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
     }
 
@@ -55,6 +53,18 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                 inventory.remove(i);
             }
         }
+    }
+    public void place(Room room) {
+        int x = 400,
+                y = 400;
+
+        //randomise position until we get a suitable one
+        while (!isPlacable(room, x , y, 64, 128)) {
+            x = MapMenu.randomInt(0, getWindow().getSize().x);
+            y = MapMenu.randomInt(0, getWindow().getSize().y);
+        }
+
+        super.create(x, y, 64, 128);
     }
 
     public Item getFromInventory(Item item){

@@ -2,13 +2,9 @@ package controllers;
 
 import abstract_classes.Entity;
 import components.*;
-import game.SpriteSheetLoad;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import tools.Constants;
-import tools.DebugPrinter;
-
-import java.awt.image.BufferedImage;
 
 /**
  * Created by Ross on 21/02/2016.
@@ -59,7 +55,7 @@ public class PlayerMenu extends Menu {
         addEntity(new Message(500, 600, 0, "Agility : " + ag, Color.WHITE, 12));
         addEntity(new Message(700, 550, 0, "Endurance : " + en, Color.WHITE, 12));
         addEntity(new Message(700, 575, 0, "Vitality : " + vi, Color.WHITE, 12));
-        addEntity(new Message(700, 600, 0, "Health : " + he, Color.WHITE, 12));
+        addEntity(new Message(700, 600, 0, "health : " + he, Color.WHITE, 12));
     }
 
     @Override

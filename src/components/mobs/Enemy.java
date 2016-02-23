@@ -136,7 +136,9 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
             setFrames(a);
         }
 
-
+        if (getHealth() < 30) {
+            setMovementState(FLEE_PLAYER);
+        }
     }
 
 

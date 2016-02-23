@@ -39,7 +39,7 @@ public class Level {
 */
 
         Room testRoom = new Room(this);
-        testRoom.create("test2");
+        testRoom.create("end_room_1");
         testRoom.load();
 
     //    testRoom.addDoor(testRoom.getPotentialDoors().keySet().iterator().next());

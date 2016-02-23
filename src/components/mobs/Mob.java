@@ -28,7 +28,7 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public int attackPower = 0;
     public int Endurance = 0;
     public int Vitality = 0;
-    public int Health = 100;
+    public int health = 100;
     protected int tempDir = 0;
     public boolean dead = false;
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
@@ -66,6 +66,9 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
     }*/
+    public int getHealth() {
+        return this.health;
+    }
 
     public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
         return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true);
@@ -83,7 +86,7 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public BufferedImage[] charHurt(BufferedImage character, int dir, int dmg)
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
-        this.Health = this.Health-dmg;
+        this.health = this.health -dmg;
         return characterHurt;
     }
 

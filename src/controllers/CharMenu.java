@@ -34,8 +34,6 @@ public class CharMenu extends Menu {
     private Boolean playerChosen = false;
 
     //SpriteSheet load
-    SpriteSheetLoad warriorSpriteSheet = new SpriteSheetLoad(64, 128);
-    SpriteSheetLoad rangerSpriteSheet = new SpriteSheetLoad(64, 128);
     SpriteSheetLoad mageSpriteSheet = new SpriteSheetLoad(64, 128);
     private BufferedImage newWarriorSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
     private BufferedImage newRangerSheet = SpriteSheetLoad.loadSprite("RangerMaleSheet");

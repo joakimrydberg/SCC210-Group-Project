@@ -60,7 +60,7 @@ public class Driver {
         window = new RenderWindow();
         Entity.setWindow(window);  //important
 
-        window.create(new VideoMode(screenWidth, screenHeight), "Dungeons but not Dragons", WindowStyle.DEFAULT);
+        window.create(new VideoMode(screenWidth, screenHeight), "Dungeons but not Dragons", WindowStyle.TITLEBAR | WindowStyle.CLOSE);
 
         window.setFramerateLimit(30); // Avoid excessive updates
 
@@ -75,8 +75,13 @@ public class Driver {
             Iterable<Event> tempEvents = window.pollEvents();
             ArrayList<Event> events = new ArrayList<>();
 
-            for (Event e : tempEvents)
+            for (Event e : tempEvents) {
                 events.add(e);
+
+                if (e.type == Event.Type.RESIZED) {
+
+                }
+            }
 
             for (int i = 0; i < drawers.size(); i++) {
                 drawers.get(i).update(events);
