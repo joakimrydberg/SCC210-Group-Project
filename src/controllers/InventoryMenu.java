@@ -19,7 +19,7 @@ public class InventoryMenu extends Menu {
     private Slot[] slots = new Slot[42];
     private Slot clickedSlot = null;
 
-    private int count;
+    private int count = 0;
     private Button btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
     private Button btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
     Message n = null, d = null;
