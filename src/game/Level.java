@@ -28,7 +28,7 @@ public class Level {
 //			generateLevel();
 //
 //			if (endRoom == null) System.out.println("Failed levels: " + ++failedLevels);
-//		}
+//		}                                                                   //
 //
 //		currentRoom = startRoom;
 //		currentRoom.load();
