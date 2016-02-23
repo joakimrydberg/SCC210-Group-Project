@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 public class Mage extends Player implements KeyListener {
 
     public Mage() {
-
+        create();
     }
 
 
@@ -97,14 +97,14 @@ public class Mage extends Player implements KeyListener {
 
         this.setFrames(characterStill);
         super.keyReleased(event);
-        if(rightPressed){
-            setAnimation(ANIMATE_LEFT);
-        } else if (downPressed){
-            setAnimation(ANIMATE_LEFT);
-        } else if (leftPressed){
+        if (rightPressed){
             setAnimation(ANIMATE_RIGHT);
-        } else if (upPressed){
+        } else if (downPressed){
+            setAnimation(ANIMATE_DOWN);
+        } else if (leftPressed){
             setAnimation(ANIMATE_LEFT);
+        } else if (upPressed){
+            setAnimation(ANIMATE_UP);
         }
         attacking = false;
 
