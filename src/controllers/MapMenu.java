@@ -64,6 +64,11 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         Button backButton = new Button(50, 40, 80, 50, "BROWN", 200, "BACK", 15);
         backButton.addClickListener(this);
         addEntity(backButton);
+
+        Button btnShop = new Button(900, 600, 80, 50, "BROWN", 200, "SHOP", 15);
+        btnShop.addClickListener(this);
+        addEntity(btnShop);
+
         this.addClickListener(this);
         Node start = null, end;
         //generating map
@@ -304,7 +309,20 @@ public class MapMenu extends Menu implements Clickable, Serializable {
                     }
                 }
 
-                System.out.println("Back clicked");
+                System.out.println("BACK clicked");
+            } else if (button.getName().equals("SHOP")) {
+                this.unload();
+
+                loadDrawer(ShopMenu.class);
+
+                //close any node descriptors that are open
+                for(int i = 0; i < 10; i++){
+                    if (nodeDesc[i].isLoaded()){
+                        nodeDesc[i].unload();
+                    }
+                }
+
+                System.out.println("SHOP clicked");
             }
         }
         else if (clickable instanceof Node){
