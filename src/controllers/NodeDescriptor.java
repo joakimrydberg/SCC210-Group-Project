@@ -28,12 +28,14 @@ public class NodeDescriptor extends Menu {
     //ArrayList<ClickListener> clickListeners = new ArrayList<>();
     private static Image smallMenu;
 	private String difficulty;
-    
+    private Node node;
+
     public NodeDescriptor(String name, String difficulty, Node n, int width, int height, MapMenu map) {
         super(name);
         this.mapMenu = map;
 		this.difficulty = difficulty;
 
+        this.node = n;
         RenderWindow w = getWindow();
         final Vector2i windowSize = new Vector2i(width, height);
         int centerX = n.getCenterX() + (width / 2), centerY = n.getCenterY() - (height / 2);
@@ -95,6 +97,10 @@ public class NodeDescriptor extends Menu {
                 System.out.println("Close clicked");
             }
         }
+    }
+
+    public Node getNode() {
+        return node;
     }
 }
 	

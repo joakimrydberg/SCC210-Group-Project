@@ -1,22 +1,30 @@
 package components.mobs;
 
+import components.Image;
+import components.Item;
+import game.Room;
 import game.SpriteSheetLoad;
+import interfaces.CollidingEntity;
 import interfaces.KeyListener;
-import org.jsfml.system.Vector2i;
+import org.jsfml.system.Vector2f;
+import org.jsfml.window.event.Event;
+import tools.Constants;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by millsr3 on 16/02/2016.
  */
-public class Player extends Mob implements KeyListener {
+public class Player extends Mob implements KeyListener, CollidingEntity {
+    private boolean colliding = false;
     public final static int ATTACK_RIGHT = 1,
             ATTACK_LEFT = 2,
             ATTACK_UP = 3,
             ATTACK_DOWN = 4;
     private float multiplier = 1;
     public static String classType;
-    protected int tempDir;
+    public int tempDir;
     // public static Animation currAnimation;
     private final static int MOVEBY = 5,
             SPEEDLIMIT = 5;
@@ -25,12 +33,18 @@ public class Player extends Mob implements KeyListener {
             leftPressed = false,
             rightPressed = false;
 
+    private Room room;
     protected int dir = 0;
-    protected boolean held = false;
+    public boolean attacking = false;
+    ArrayList<Item> inventory = new ArrayList<Item>();
+    ArrayList<Item> equippedItems = new ArrayList<Item>();
+    public int level = 1;
+
     public Player() {
         super(200, 200, 64, 128);
-
+        //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
     }
+
 
     public void setClass(String c) {
         classType = c;
@@ -49,17 +63,7 @@ public class Player extends Mob implements KeyListener {
             this.start();
         }
         if (c.equals("warrior")) {
-            System.out.println("warrior selected");
-            setSpriteSheet(SpriteSheetLoad.loadSprite("WarriorMaleSheet"));
-            setCharacterStill(tempDir);
-            BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
-
-            super.stop(); //@see Mob , must be before we set the frames
-
-            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
-            this.setFrames(warrior);
-
-            this.start();
+            Warrior p = new Warrior();
     }
         if (c.equals("ranger")) {
             System.out.println("ranger selected");
@@ -84,7 +88,7 @@ public class Player extends Mob implements KeyListener {
             case RIGHT:
                 if (!rightPressed) {
                     rightPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x + MOVEBY, getVelocity().y));
+                    setSpeed(new Vector2f(getVelocity().x + MOVEBY, getVelocity().y));
                     tempDir = 2;
                     setAnimation(ANIMATE_RIGHT);
                 }
@@ -92,7 +96,7 @@ public class Player extends Mob implements KeyListener {
             case UP:
                 if (!upPressed) {
                     upPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x, getVelocity().y - MOVEBY));
+                    setSpeed(new Vector2f(getVelocity().x, getVelocity().y - MOVEBY));
                     tempDir = 3;
                     setAnimation(ANIMATE_UP);
                 }
@@ -100,7 +104,7 @@ public class Player extends Mob implements KeyListener {
             case LEFT:
                 if (!leftPressed) {
                     leftPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x - MOVEBY, getVelocity().y));
+                    setSpeed(new Vector2f(getVelocity().x - MOVEBY, getVelocity().y));
                     tempDir = 1;
                     setAnimation(ANIMATE_LEFT);
                 }
@@ -108,7 +112,7 @@ public class Player extends Mob implements KeyListener {
             case DOWN:
                 if (!downPressed) {
                     downPressed = true;
-                    setSpeed(new Vector2i(getVelocity().x, getVelocity().y + MOVEBY));
+                    setSpeed(new Vector2f(getVelocity().x, getVelocity().y + MOVEBY));
                     tempDir = 0;
                     setAnimation(ANIMATE_DOWN);
                 }
@@ -122,7 +126,7 @@ public class Player extends Mob implements KeyListener {
         switch (event.key) {
             case RIGHT:
                 rightPressed = false;
-                setSpeed(new Vector2i(0, getVelocity().y));
+                setSpeed(new Vector2f(0, getVelocity().y));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -132,7 +136,7 @@ public class Player extends Mob implements KeyListener {
                 break;
             case UP:
                 upPressed = false;
-                setSpeed(new Vector2i(getVelocity().x, 0));
+                setSpeed(new Vector2f(getVelocity().x, 0));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -142,7 +146,7 @@ public class Player extends Mob implements KeyListener {
                 break;
             case LEFT:
                 leftPressed = false;
-                setSpeed(new Vector2i(0, getVelocity().y));
+                setSpeed(new Vector2f(0, getVelocity().y));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -151,7 +155,7 @@ public class Player extends Mob implements KeyListener {
                 break;
             case DOWN:
                 downPressed = false;
-                setSpeed(new Vector2i(getVelocity().x, 0));
+                setSpeed(new Vector2f(getVelocity().x, 0));
 
                 if (getVelocity().x == 0 && getVelocity().y == 0) {
                     setCharacterStill(tempDir);
@@ -179,6 +183,57 @@ public class Player extends Mob implements KeyListener {
         return;    //do nothing but don't remove (will be used for the bad guys)
     }
 
+    @Override
+    public void collide() {
+
+    }
+
+    @Override
+    public void setSpeed(Vector2f speed) {
+        super.setSpeed(speed, 2);  //so player is a bit faster
+    }
+
+    @Override
+    public boolean isCollidable(int x, int y) {
+
+        return (( Math.abs((getCenterX() + getWidth()/2) - (x  )) < 35)
+                && (Math.abs((getCenterY() + getHeight()/2) - (y  )) < 50));
+        //May need some tweaks to numbers
+
+    }
+
+    @Override
+    public boolean checkWithin(int x, int y) {
+
+        if (isCollidable(x, y)) {
+            colliding = true;
+            return true;
+        }
+        else {
+            colliding = false;
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public boolean checkWithin(Event e) {
+        return false;
+    }
+
+    public void damaged(){
+
+        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 4);
+        setFrames(a);
+
+    }
+
+    public void die(){
+
+
+
+    }
 
 }
 

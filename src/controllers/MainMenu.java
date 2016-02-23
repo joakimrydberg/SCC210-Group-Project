@@ -38,6 +38,11 @@ public class MainMenu extends Menu {
         Button btnCredits = new Button( centerX, 530, 250, 60, "BROWN", 200, "CREDITS", 20);
         Button btnQuit = new Button( centerX, 650, 250, 60, "RED", 200, "QUIT", 20);
 
+        //temo button for testing pause menu - removed in finished game
+        Button tempPauseButton = new Button(170, 500, 120, 50, "BROWN", 200 , "PAUSE MENU", 15 );
+        tempPauseButton.addClickListener(this);
+        addEntity(tempPauseButton);
+
         btnNewGame.addClickListener(this);
         addEntity(btnNewGame);
         btnLoadGame.addClickListener(this);
@@ -80,6 +85,10 @@ public class MainMenu extends Menu {
             else if (button.getName().equals("QUIT")){
                 Entity.getWindow().close();
                 System.out.println("QUIT clicked");
+            }
+            else if (button.getName().equals("PAUSE MENU")) { //temp button for loading and testing pause menu
+                this.unload();
+                loadDrawer(PauseMenu.class);
             }
         }
     }

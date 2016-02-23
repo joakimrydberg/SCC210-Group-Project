@@ -19,7 +19,7 @@ public class Animation extends Entity {
  //   private int currY = 0;
 
 
-    private boolean stopped;                // have animations stopped
+    protected boolean stopped;                // have animations stopped
 
     private List<AnimationFrame> frames = new ArrayList<AnimationFrame>();    // Arraylist of frames
 

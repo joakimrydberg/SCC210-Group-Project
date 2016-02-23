@@ -3,82 +3,168 @@ package tools;
 import abstract_classes.Entity;
 import game.LevelPart;
 import game.Room;
+import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Created by millsaj on 21/02/2016.
  */
 public class Navigator {
     private static int navPixelsRowCount = 11 * 2;
-    private NavPixel[][] navPixels = new NavPixel[navPixelsRowCount][navPixelsRowCount];
+    private NavPixel[][] navPixels = null;
     private static final int TRACE_LIM = 0;
-    private static final int DIAGONAL = 1, STRAIGHT = 0;  //todo do not remove
-    private int lastMoveDirection = 5;  //todo do not remove
+    private static final int DIAGONAL = 1, STRAIGHT = 0;  //todo do not remove | edit: can probably remove
+    private int lastMoveDirection = 5;  //todo do not remove | edit: can probably remove
     private int frmWidth = 64,
             frmHeight = 128;
+   // private int toX, toY;
     private Room room;
 
     public Navigator(Room room) {
         super();
-
+        //populateNavPixels();
         this.room = room;
-}
+    }
 
-    public ArrayList<Vector2i> navigateTo(Entity frm, Entity to) {
-        frmHeight = frm.getHeight();
-        frmWidth = frm.getWidth();
-
-        NavPixel navFrm = new NavPixel(0, 0),
-                navTo = new NavPixel(0, 0);
+    public void populateNavPixels() {
+        navPixels = new NavPixel[navPixelsRowCount][navPixelsRowCount];
 
         for (int i = 0; i < navPixels.length; i++) {
             for (int j = 0; j < navPixels[0].length; j++) {
                 navPixels[i][j] = new NavPixel(i, j);
+            }
+        }
+    }
 
-                if (    (Math.sqrt(Math.pow(navPixels[i][j].x - to.getCenterX(), 2) + Math.pow(navPixels[i][j].y - to.getCenterY(), 2))
-                        < Math.sqrt(Math.pow(navTo.x - to.getCenterX(), 2) + Math.pow(navTo.y - to.getCenterY(), 2)))
-                        && !isInCollidable(navPixels[i][j])
-                        ) {
-                    navTo = navPixels[i][j];
+    private NavPixel[] getNavPixels(Vector2i entity1, Vector2i entity2, boolean checkForCollisions) {
+        if (navPixels == null) {
+            throw new RuntimeException("Must set navPixels with populateNavPixels");
+        }
+
+        NavPixel[] navs = {new NavPixel(0, 0),
+                new NavPixel(0, 0)};
+
+        for (NavPixel[] navPixel : navPixels) {
+            for (int j = 0; j < navPixels[0].length; j++) {
+                if (entity1 != null) {
+                    if ((Math.sqrt(Math.pow(navPixel[j].x - entity1.x, 2) + Math.pow(navPixel[j].y - entity1.y, 2))
+                            < Math.sqrt(Math.pow(navs[0].x - entity1.x, 2) + Math.pow(navs[0].y - entity1.y, 2)))
+                            && (!checkForCollisions || !isInCollidable(navPixel[j]))
+                            ) {
+                        navs[0] = navPixel[j];
+                    }
                 }
 
-                if (    (Math.sqrt(Math.pow(navPixels[i][j].x - frm.getCenterX(), 2) + Math.pow(navPixels[i][j].y - frm.getCenterY(), 2))
-                        < Math.sqrt(Math.pow(navFrm.x - frm.getCenterX(), 2) + Math.pow(navFrm.y - frm.getCenterY(), 2)))
-                        && !isInCollidable(navPixels[i][j])
-                        ) {
-                    navFrm = navPixels[i][j];
+                if (entity2 != null) {
+                    if ((Math.sqrt(Math.pow(navPixel[j].x - entity2.x, 2) + Math.pow(navPixel[j].y - entity2.y, 2))
+                            < Math.sqrt(Math.pow(navs[1].x - entity2.x, 2) + Math.pow(navs[1].y - entity2.y, 2)))
+                            && (!checkForCollisions || !isInCollidable(navPixel[j]))
+                            ) {
+                        navs[1] = navPixel[j];
+                    }
                 }
             }
         }
 
-        NavReturn[] navTrace = new NavReturn[TRACE_LIM];
+        return navs;
+    }
 
-        for (int i = 0; i < navTrace.length; i++)
-            navTrace[i] = null;
+    public ArrayList<Vector2i> navigateDistanceAway(Entity frm, Entity flee, int distance, boolean lineOfSight) {
+        frmHeight = frm.getHeight();
+        frmWidth = frm.getWidth();
 
-        NavReturn navReturn = navigateTo(navFrm, navTo, 0, 0);
-        NavPixel navPixel = navReturn.nextNav;
+        populateNavPixels();
+        NavPixel[] tempToFrm = getNavPixels(new Vector2i(frm.getCenterX(), frm.getCenterY()),
+                new Vector2i(flee.getCenterX(), flee.getCenterY()), true);
 
-        //       if (navPixel == null)
-        //       return new Vector2i(0, 0);
+        final NavPixel navFrm = tempToFrm[0],
+                navFlee = tempToFrm[1];
 
-//        //TODO do not remove
-//        for (int i = 0; i < navReturn.navTrace.length; i++)  {
-//            if (navReturn.navTrace[i] != null)
-//                navPixel = navReturn.navTrace[i];
-//        }
+        Predicate<NavPixel> navPixelPredicate;
+        if (lineOfSight) {
+            navPixelPredicate = (NavPixel currPixel) ->
+                    Math.sqrt(Math.pow(currPixel.x - navFlee.x, 2) + Math.pow(currPixel.y - navFlee.y, 2)) >= distance
+                            && inLineOfSight(new Vector2f(currPixel.x, currPixel.y), new Vector2f(navFlee.x, navFlee.y));
+        } else {
+            navPixelPredicate = (NavPixel currPixel) ->
+                    Math.sqrt(Math.pow(currPixel.x - navFlee.x, 2) + Math.pow(currPixel.y - navFlee.y, 2)) >= distance;
+        }
 
+
+        NavReturn navReturn = navigateTo(navFrm, navPixelPredicate, 0, 0);
+//
+        if (lineOfSight && navReturn.navTrace.size() == 0) {
+            navPixelPredicate = (NavPixel currPixel) ->
+                    inLineOfSight(new Vector2f(currPixel.x, currPixel.y), new Vector2f(navFlee.x, navFlee.y));
+            navReturn = navigateTo(navFrm, navPixelPredicate, 0, 0);
+        }
+
+        navPixels = null;
         return navReturn.navTrace;
     }
 
 
+    public ArrayList<Vector2i> navigateDistanceTo(Entity frm, Entity to, int distance, boolean lineOfSight) {
+        frmHeight = frm.getHeight();
+        frmWidth = frm.getWidth();
 
+        populateNavPixels();
+        NavPixel[] tempToFrm = getNavPixels(new Vector2i(frm.getCenterX(), frm.getCenterY()),
+                new Vector2i(to.getCenterX(), to.getCenterY()), true);
 
-    public NavReturn navigateTo(NavPixel frm, NavPixel to, int stepCount, double timer) {
-        if (frm.i == to.i && frm.j == to.j) {
-            return new NavReturn(stepCount, timer, to);
+        final NavPixel navFrm = tempToFrm[0],
+                navTo = tempToFrm[1];
+
+        Predicate<NavPixel> navPixelPredicate;
+        if (lineOfSight) {
+            navPixelPredicate = (NavPixel currPixel) ->
+                    Math.sqrt(Math.pow(currPixel.x - navTo.x, 2) + Math.pow(currPixel.y - navTo.y, 2)) <= distance
+                            && inLineOfSight(new Vector2f(currPixel.x, currPixel.y), new Vector2f(navTo.x, navTo.y));
+        } else {
+            navPixelPredicate = (NavPixel currPixel) ->
+                    Math.sqrt(Math.pow(currPixel.x - navTo.x, 2) + Math.pow(currPixel.y - navTo.y, 2)) <= distance
+                            || inLineOfSight(new Vector2f(currPixel.x, currPixel.y), new Vector2f(navTo.x, navTo.y));  //only for navigateTo
+        }
+
+        NavReturn navReturn = navigateTo(navFrm, navPixelPredicate, 0, 0);
+
+        if (lineOfSight && navReturn.navTrace.size() == 0) {
+            navPixelPredicate = (NavPixel currPixel) ->
+                    inLineOfSight(new Vector2f(currPixel.x, currPixel.y), new Vector2f(navTo.x, navTo.y));
+            navReturn = navigateTo(navFrm, navPixelPredicate, 0, 0);
+        }
+
+        navReturn.navTrace.add(0, new Vector2i(to.getCenterX(), to.getCenterY())); //only for navigateTo
+
+        navPixels = null;
+        return navReturn.navTrace;
+    }
+
+//    public ArrayList<Vector2i> navigateTo(Entity frm, Entity to) {
+//        frmHeight = frm.getHeight();
+//        frmWidth = frm.getWidth();
+//
+//        NavPixel[] tempToFrm = getNavPixels(frm, to);
+//
+//        final NavPixel navFrm = tempToFrm[0],
+//                navTo = tempToFrm[1];
+//
+//        NavReturn navReturn = navigateTo(navFrm,
+//                (NavPixel frmPixel) -> frmPixel.i == navTo.i && frmPixel.j == navTo.j,
+//                0,
+//                0);
+//
+//        return navReturn.navTrace;
+//    }
+//
+
+    public NavReturn navigateTo(NavPixel frm, Predicate<NavPixel> cond, int stepCount, double timer) {
+        if (cond.test(frm)) {
+            return new NavReturn(stepCount, timer, frm);
         }
 
         stepCount++;
@@ -86,6 +172,9 @@ public class Navigator {
         NavReturn navReturn = new NavReturn(Integer.MAX_VALUE, Double.MAX_VALUE, null),
                 tempNavReturn;
         NavPixel tempNavPixel;
+        double timerAddition = 1;
+//        if (inLineOfSight(new Vector2f(frm.x, frm.y), new Vector2f(to.x, to.y)))
+//
 
         //north
         if (frm.i > 0) {
@@ -94,16 +183,12 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
         }
@@ -115,16 +200,12 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
         }
@@ -136,16 +217,12 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
         }
@@ -157,19 +234,23 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
         }
+
+
+        //================================================================================
+
+        timerAddition = Math.sqrt(2);
+
+        //==================================================================================
+
 
         //north east
         if (frm.i > 0
@@ -180,19 +261,15 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
-        }
+        } //
 
         // south east
         if (frm.i  < navPixelsRowCount  - 1
@@ -203,16 +280,12 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
         }
@@ -226,16 +299,12 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
         }
@@ -249,21 +318,37 @@ public class Navigator {
                     && !isInCollidable(tempNavPixel)) {
 
                 tempNavPixel.visitedTime = timer;
+                tempNavReturn = navigateTo(tempNavPixel, cond, stepCount, timer + timerAddition);
 
-                tempNavReturn = navigateTo(tempNavPixel, to, stepCount, timer + 1);
-
-                if (navReturn.timer > tempNavReturn.timer
-                        && tempNavReturn.nextNav != null) {
+                if (navReturn.timer > tempNavReturn.timer) {
 
                     navReturn = tempNavReturn;
-                    navReturn.nextNav = tempNavPixel;
-
-                    navReturn.addNavPixel(navReturn.nextNav);
+                    navReturn.addNavPixel(tempNavPixel);
                 }
             }
         }
 
         return navReturn;
+    }
+
+    public boolean inLineOfSight(Vector2f frm, Vector2f to) {
+        return inLineOfSight(frm, to, null);
+    }
+
+    public boolean inLineOfSight(Vector2f frm, Vector2f to, Consumer<Vector2f> consumer) {
+        if (isInCollidable(getNavPixels(new Vector2i((int)frm.x, (int)frm.y), null, false)[0])) {
+            return false;
+        }
+
+        if (Math.abs(frm.x - to.x) < 30 && Math.abs(frm.y - to.y) < 30 ) {
+            return true;
+        }
+
+        if (consumer != null) {
+            consumer.accept(frm);
+        }
+
+        return inLineOfSight(new Vector2f(frm.x + ((to.x - frm.x) / 30), frm.y + ((to.y - frm.y) / 30)), to, consumer);
     }
 
     private boolean isInCollidable(NavPixel navPixel) {
@@ -335,13 +420,12 @@ public class Navigator {
     private class NavReturn {
         int stepCount;
         double timer;
-        NavPixel nextNav;
         ArrayList<Vector2i> navTrace = new ArrayList<>();
 
         NavReturn(int stepCount, double timer, NavPixel nextNav) {
             this.stepCount = stepCount;
             this.timer = timer;
-            this.nextNav = nextNav;
+
         }
 
         void addNavPixel(NavPixel navPixel) {
@@ -932,6 +1016,7 @@ public class Navigator {
         return navReturn;
     }
 */
+
 
 
 }

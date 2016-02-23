@@ -1,5 +1,6 @@
 package tools;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.locks.Lock;
@@ -12,7 +13,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @param <ObjType>
  */
-public class ConcurrentSafeArrayList<ObjType> {
+public class ConcurrentSafeArrayList<ObjType>  implements Serializable{
+    private static final long serialVersionUID = 6L;  //actually needed
+
     private final ArrayList<ObjType> list = new ArrayList<>();
     private final Lock readLock;
     private final Lock writeLock;

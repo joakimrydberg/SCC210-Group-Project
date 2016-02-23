@@ -1,6 +1,6 @@
 package interfaces;
 
-import org.jsfml.system.Vector2i;
+import org.jsfml.system.Vector2f;
 
 /**
  * @author josh
@@ -23,7 +23,7 @@ public interface MovingEntity {
      * @param speed - Vector2i representing the speed of the entity in the x and y planes
      *
      */
-    void setSpeed(Vector2i speed);
+    void setSpeed(Vector2f speed);
 
     /**
      * Get the entities speed
@@ -38,7 +38,7 @@ public interface MovingEntity {
      * @return Vector2i value representing the speed in two dimensional space
      *
      */
-    Vector2i getVelocity();
+    Vector2f getVelocity();
 
     /**
      * Sets the speed multiplier for the Entity.

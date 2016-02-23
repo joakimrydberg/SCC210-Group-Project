@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 public class Message extends Entity {
     private final static String FontFile  = "LucidaSansRegular.ttf";
     private String fontPath; // Where fonts were found
+    Text text;
 
     public Message(int x, int y, int r, String message, Color c , int size) {
         super(message);
@@ -37,7 +38,7 @@ public class Message extends Entity {
             ex.printStackTrace( );
         }
 
-        Text text = new Text (message, sansRegular, size);
+        text = new Text (message, sansRegular, size);
         text.setColor(c);
 
         setTopLeftX(x);
@@ -46,5 +47,9 @@ public class Message extends Entity {
         final FloatRect textBounds = text.getLocalBounds();
 
         addTransformable(text, 0, 0, (int)textBounds.width, (int)textBounds.height);
+    }
+
+    public void setText(String txt){
+        text.setString(txt);
     }
 }

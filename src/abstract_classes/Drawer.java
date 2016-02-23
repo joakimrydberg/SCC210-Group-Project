@@ -1,21 +1,21 @@
 package abstract_classes;
 
-import components.mobs.Enemy;
-import components.mobs.Player;
 import game.Driver;
 import interfaces.Clickable;
-import interfaces.CollidingEntity;
 import interfaces.KeyListener;
+import interfaces.MotionListener;
 import interfaces.MovingEntity;
 import org.jsfml.window.event.Event;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * @author josh
  * @date 15/02/16.
  */
-public abstract class Drawer extends Entity {
+public abstract class Drawer extends Entity implements Serializable {
+    private static final long serialVersionUID = 4L;  //actually needed
     private boolean loaded = false;
     private ArrayList<Entity> entities = new ArrayList<>();
 
@@ -35,7 +35,8 @@ public abstract class Drawer extends Entity {
 
                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
                     //   if(event.asMouseButtonEvent()){
-                    for (Entity entity : getEntities()) {
+                    for (int i = 0; i < getEntities().size(); i++) {
+                        Entity entity = getEntity(i);
                         if (entity instanceof Clickable
                                 && ((Clickable) entity).checkWithin(event)) {
 
@@ -59,8 +60,49 @@ public abstract class Drawer extends Entity {
                         }
                     }
                 }
+
+                if (event.type == Event.Type.MOUSE_MOVED) {
+                    for (Entity entity : entities) {
+                        if (entity instanceof MotionListener) {
+                            ((MotionListener)entity).mouseMoved(event);
+                        }
+                    }
+                }
             }
         }
+    }
+
+    public void drawAll() {
+        if (isLoaded()) {
+            draw();
+
+            for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
+                Entity entity = getEntity(i);
+
+                //ryan, I moved the missing methods to Room
+
+                if (entity instanceof MovingEntity)
+                    ((MovingEntity) entity).move();
+
+
+                if(!entity.hidden)
+                    entity.draw();
+            }
+        }
+    }
+
+    public Drawer loadDrawer(Class type) {
+        Drawer drawer = Driver.getDrawer(null, type);
+
+        try {
+            drawer = (drawer == null) ? (Drawer) type.newInstance() : drawer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        drawer.load();
+
+        return drawer;
     }
 
     public void load() {
@@ -83,23 +125,20 @@ public abstract class Drawer extends Entity {
         entities.add(entity);
     }
 
-    private void drawAll() {
-        if (isLoaded()) {
-            draw();
+    public Entity getEntity(int i) {
+        return entities.get(i);
+    }
 
-            for (Entity entity : getEntities()) {
-                if (entity instanceof MovingEntity)
-                    ((MovingEntity) entity).move();
+    public void replaceEntity(int i, Entity entity) {
+        ArrayList<Entity> newEntities = new ArrayList<>();
 
-                if(entity instanceof CollidingEntity) {
-
-                    Player p = ((Enemy) entity).getPlayer();
-                    ((CollidingEntity) entity).checkWithin(p.getCenterX(), p.getCenterY());
-
-                }
-                if(!entity.hidden)
-                    entity.draw();
+        for (int j = 0; j < entities.size(); j++) {
+            if (j == i) {
+                entities.add(entity);
+            } else {
+                newEntities.add(entities.get(j));
             }
         }
     }
+
 }

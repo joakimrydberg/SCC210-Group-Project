@@ -4,18 +4,20 @@ import components.Animation;
 import game.SpriteSheetLoad;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
-import org.jsfml.system.Vector2i;
+import org.jsfml.system.Vector2f;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Mob extends Animation implements MovingEntity {
-
-    public final static int ANIMATE_RIGHT = 1,
-            ANIMATE_LEFT = 2,
+public abstract class Mob extends Animation implements MovingEntity, Serializable {
+    private static final long serialVersionUID = 2L;  //actually needed
+    public final static int SPEED_CAP = 5;
+    public final static int ANIMATE_RIGHT = 2,
+            ANIMATE_LEFT = 1,
             ANIMATE_UP = 3,
-            ANIMATE_DOWN = 4;
-    private Vector2i speed = new Vector2i(0, 0);
+            ANIMATE_DOWN = 0;
+    private Vector2f speed = new Vector2f(0, 0);
     private float multiplier = 1;
     ArrayList<MovementListener> listeners = new ArrayList<>();
     private String classType;
@@ -25,10 +27,12 @@ public abstract class Mob extends Animation implements MovingEntity {
     public int Endurance = 0;
     public int Vitality = 0;
     public int Health = 100;
-    private int tempDir = 0;
+    protected int tempDir = 0;
+    public boolean dead = false;
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
+    protected int exp = 0;
     // public static Animation currAnimation;
 
 
@@ -57,10 +61,10 @@ public abstract class Mob extends Animation implements MovingEntity {
         return characterAttack;
     }
 
-    public BufferedImage[] charHurt(BufferedImage character, int dir)
+    public BufferedImage[] charHurt(BufferedImage character, int dir, int dmg)
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
-        this.Health = this.Health-20;
+        this.Health = this.Health-dmg;
         return characterHurt;
     }
 
@@ -90,22 +94,26 @@ public abstract class Mob extends Animation implements MovingEntity {
 
                 draw();  //drawing to the screen
 
-                for (MovementListener listener : listeners) {  //must be at end of method
-                    listener.onMove(this);
+                if (move) {
+                    for (MovementListener listener : listeners) {  //must be at end of method
+                        listener.onMove(this);
+                    }
                 }
             }
         }
 
+        if ( !(this instanceof EnemyWarrior && ((EnemyWarrior)this).attacking)){
 
-        if(this.speed.x >0 && this.speed.x>=this.speed.y)
-        {setAnimation(ANIMATE_RIGHT);}
-        else if(this.speed.y >0 && this.speed.y>=this.speed.x)
-        {setAnimation(ANIMATE_DOWN);}
-        else if(this.speed.x <0 && this.speed.x<=this.speed.y)
-        {setAnimation(ANIMATE_LEFT);}
-        else if(this.speed.y <0 && this.speed.y<=this.speed.x)
-        {setAnimation(ANIMATE_UP);}
-
+            if (this.speed.x > 0 && this.speed.x >= this.speed.y) {
+                setAnimation(ANIMATE_RIGHT);
+            } else if (this.speed.y > 0 && this.speed.y >= this.speed.x) {
+                setAnimation(ANIMATE_DOWN);
+            } else if (this.speed.x < 0 && this.speed.x <= this.speed.y) {
+                setAnimation(ANIMATE_LEFT);
+            } else if (this.speed.y < 0 && this.speed.y <= this.speed.x) {
+                setAnimation(ANIMATE_UP);
+            }
+        }
 
     }
 
@@ -119,15 +127,19 @@ public abstract class Mob extends Animation implements MovingEntity {
      * @param speed - Vector2i representing the speed of the entity in the x and y planes
      */
     @Override
-    public synchronized void setSpeed(Vector2i speed) {
+    public synchronized void setSpeed(Vector2f speed) {
+        setSpeed(speed, 0);
+    }
+
+    public synchronized void setSpeed(Vector2f speed, int speedBoost) {
         double  xSqrd = Math.pow(speed.x, 2),
                 ySqrd = Math.pow(speed.y, 2),
                 hypotenuse = Math.sqrt(xSqrd + ySqrd);
 
 
-        this.speed = new Vector2i(
-                (int) (  (speed.x / hypotenuse) * 5 ),
-                (int) (  (speed.y / hypotenuse) * 5 )
+        this.speed = new Vector2f(
+                (int) (  (speed.x / hypotenuse) * (SPEED_CAP + speedBoost) ),
+                (int) (  (speed.y / hypotenuse) * (SPEED_CAP + speedBoost) )
         );
 
         //DebugPrinter.print(this, "Speed.. X: " + this.speed.x + ",  Y: " + this.speed.y);
@@ -140,7 +152,7 @@ public abstract class Mob extends Animation implements MovingEntity {
      * @return Vector2i value representing the speed in two dimensional space
      */
     @Override
-    public Vector2i getVelocity() {
+    public Vector2f getVelocity() {
         return speed;
     }
 
@@ -225,6 +237,15 @@ public abstract class Mob extends Animation implements MovingEntity {
         return theSpriteSheet;
     }
 
+    public void die(){
 
+    }
+
+    public int getExp(){
+        return exp;
+    }
+    public void setExp(int xp){
+        this.exp = xp;
+    }
 }
 

@@ -15,8 +15,19 @@ public class ClickableImage extends Image implements Clickable {
     public ClickableImage( int x, int y, int width, int height,  String textureFile){
         super( x,  y,  width,  height,   textureFile);
     }
+
+    public ClickableImage( int x, int y, int width, int height,  String textureFile, String name){
+        super( x,  y,  width,  height,   textureFile);
+        super.setName(name);
+    }
+
     public ClickableImage( int x, int y, String textureFile) {
+        this(x, y, -1, -1, textureFile);
+    }
+
+    public ClickableImage( int x, int y, String textureFile, String name) {
         this( x, y, -1, -1, textureFile);
+        super.setName(name);
     }
 
     @Override

@@ -167,7 +167,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
      */
     private void readCSV() {
         hashMap = new HashMap<>();
-        ArrayList<String[]> csvContents = CSVReader.read();
+        ArrayList<String[]> csvContents = CSVReader.read("assets" + Constants.SEP + "levelparts"  + Constants.SEP + "level_IDs.csv");
 
         for (String[] line : csvContents) {
             if (line.length >= 2)

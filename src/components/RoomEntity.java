@@ -15,6 +15,8 @@ public class RoomEntity extends Drawer {
     private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
     private final static String LEVELPARTS =  "assets" + Constants.SEP + "levelparts"  + Constants.SEP;
     private LevelPart[][] levelParts;
+    float partWidth,
+            partHeight;
 
     public RoomEntity() {
         super("Room");
@@ -28,14 +30,15 @@ public class RoomEntity extends Drawer {
 
 
         final Vector2i wSize = getWindow().getSize();
-        final float partWidth = wSize.x / 11,
-                partHeight = wSize.y / 11;
+        partWidth = wSize.x / 11;
+        partHeight = wSize.y / 11;
 
         DisplayedImagePart img;
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
                 img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelParts[i][j].getSpriteFileName());
                 addPart(img);
+                levelParts[i][j].displayed = true;
                 img.rotate(levelParts[i][j].getRotation());
             }
         }
@@ -62,6 +65,19 @@ public class RoomEntity extends Drawer {
 
     public LevelPart getPart(int i, int j) {
         return levelParts[i][j];
+    }
+
+    public void setPart(LevelPart levelPart) {
+        int i = levelPart.getRowNo(),
+                j = levelPart.getColNo();
+
+        levelPart.displayed = true;
+
+        DisplayedImagePart img;
+        img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelPart.getSpriteFileName());
+        img.rotate(levelPart.getRotation());
+
+        replaceEntity(i * 11 + j, img);
     }
 
     private void addPart(DisplayedImagePart part) {

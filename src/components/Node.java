@@ -8,6 +8,7 @@ package components;
 import abstract_classes.Entity;
 import interfaces.ClickListener;
 import interfaces.Clickable;
+import interfaces.MotionListener;
 import org.jsfml.graphics.CircleShape;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Sprite;
@@ -25,11 +26,14 @@ import java.util.ArrayList;
  *
  * @author newby
  */
-public class Node extends Entity implements Clickable {
-
+public class Node extends Entity implements Clickable, MotionListener {
+    private String type = "Regular";
     ArrayList<ClickListener> clickListeners = new ArrayList<>();
     private boolean locked = false;
     private Sprite img;
+    public int visitTime = Integer.MAX_VALUE;  //used by map menu
+    private ArrayList<Rect> lines = new ArrayList<>();
+    private boolean hovered = false;
 
     public Node(String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(name);
@@ -74,6 +78,14 @@ public class Node extends Entity implements Clickable {
 
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public boolean checkWithin(Event e) {
         Vector2i v = e.asMouseButtonEvent().position;
@@ -110,6 +122,39 @@ public class Node extends Entity implements Clickable {
 
     public boolean isLocked(){
         return locked;
+    }
+
+    @Override
+    public void mouseMoved(Event event) {
+        if (checkWithin(event.asMouseEvent().position.x, event.asMouseEvent().position.y)) {
+            if (!hovered) {
+                hovered = true;
+                for (Rect line : lines) {
+                    line.hidden = false;
+                }
+            }
+        } else if (hovered) {
+            hovered = false;
+            for (Rect line : lines) {
+                line.hidden = true;
+            }
+        }
+    }
+
+    public void addLines(ArrayList<Rect> lines) {
+        for (Rect line : lines) {
+            line.hidden = true;
+        }
+        this.lines.addAll(lines);
+    }
+
+    public void addLine(Rect line) {
+        line.hidden = true;
+        this.lines.add(line);
+    }
+
+    public void clearLines() {
+        this.lines = new ArrayList<>();
     }
 }
 	

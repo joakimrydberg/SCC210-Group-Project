@@ -11,14 +11,14 @@ import java.util.ArrayList;
  */
 public class CSVReader {
 
-    public static ArrayList<String[]> read() {
+    public static ArrayList<String[]> read(String filePath) {
         ArrayList<String[]> arrayList = new ArrayList<>();
         BufferedReader br = null;
         String line = "";
         String[] levelIDMap;
 
         try {
-            br = new BufferedReader(new FileReader("assets" + Constants.SEP + "levelparts"  + Constants.SEP + "level_IDs.csv"));
+            br = new BufferedReader(new FileReader(filePath));
             while ((line = br.readLine()) != null) {
                 if (line.length() != 0
                         && (line.charAt(0) != '/' && line.charAt(1) != '/')) { //allow for any 'comments'

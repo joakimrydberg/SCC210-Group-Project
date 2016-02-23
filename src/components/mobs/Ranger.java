@@ -1,18 +1,38 @@
 package components.mobs;
 
+import components.Arrow;
+import components.Projectile;
+import game.Room;
 import game.SpriteSheetLoad;
-import interfaces.KeyListener;
+import interfaces.ClickListener;
+import interfaces.Clickable;
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.Event;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by millsr3 on 20/02/2016.
  */
-public class Ranger extends Player implements KeyListener {
+public class Ranger extends Player implements ClickListener, interfaces.Ranger {
+    private Room room;
+    private ArrayList<Projectile> arrows = new ArrayList<>();
+    private long timeAtLastShot = System.currentTimeMillis();
 
     public Ranger(){
+        create();
+    }
 
-        super();
+    public Ranger(Room room){
+        room.addClickListener(this);
+        this.room = room;
+
+        create();
+    }
+
+    public void create() {
         System.out.println("ranger selected");
         setSpriteSheet(SpriteSheetLoad.loadSprite("RangerMaleSheet"));
         setCharacterStill(dir);
@@ -26,8 +46,9 @@ public class Ranger extends Player implements KeyListener {
 
         this.start();
     }
-    public void attack(int dir){
-        switch(dir){
+
+    public void attack(int dir) {
+        switch (dir) {
 
             case ATTACK_RIGHT:
                 BufferedImage[] right = {SpriteSheetLoad.getSprite(4, 2, theSpriteSheet), SpriteSheetLoad.getSprite(5, 2, theSpriteSheet), SpriteSheetLoad.getSprite(4, 2, theSpriteSheet), SpriteSheetLoad.getSprite(5, 2, theSpriteSheet)};
@@ -46,59 +67,50 @@ public class Ranger extends Player implements KeyListener {
                 this.setFrames(up);
                 break;
 
-
         }
     }
 
     @Override
-    public void keyPressed(org.jsfml.window.event.KeyEvent event) {
+    public void buttonClicked(Clickable button, Object[] args) {
 
-        switch(event.key){
+        if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
+            timeAtLastShot = System.currentTimeMillis();
+            Arrow arrow = new Arrow();
 
-            case SPACE:
+            if (args.length == 1) {
+                Event e = (Event) args[0];
 
-                if(rightPressed && !held){
-                    attack(ATTACK_RIGHT);
-                    held = true;
-                    break;
-                }
-                if(leftPressed && !held){
-                    attack(ATTACK_LEFT);
-                    held = true;
-                    break;
-                }
-                if(upPressed && !held){
-                    attack(ATTACK_UP);
-                    held = true;
-                    break;
-                }
-                else if (tempDir == 0 && !held){
-                    attack(ATTACK_DOWN);
-                    held = true;
-                    break;
-                }
+                Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                Vector2i to = e.asMouseEvent().position;
+
+                arrow.setCenterX(from.x);
+                arrow.setCenterY(from.y);
+
+                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                arrow.correctDirection();
+                //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+
+                arrow.addMovementListener(room);
+                arrows.add(arrow);
+                room.addEntity(arrow);
+            }
         }
-        super.keyPressed(event);
-
-
     }
 
     @Override
-    public void keyReleased(org.jsfml.window.event.KeyEvent event) {
+    public ArrayList<Projectile> getProjectiles() {
+        clearBrokenProjectiles();
 
+        return arrows;
+    }
 
-        this.setFrames(characterStill);
-        super.keyReleased(event);
-        if(rightPressed){
-            setAnimation(ANIMATE_RIGHT);
-        } else if (downPressed){
-            setAnimation(ANIMATE_DOWN);
-        } else if (leftPressed){
-            setAnimation(ANIMATE_LEFT);
-        } else if (upPressed){
-            setAnimation(ANIMATE_UP);
+    @Override
+    public void clearBrokenProjectiles() {
+        for (int i = 0; i < arrows.size(); i++) {
+            Projectile arrow = arrows.get(i);
+            if (arrow.getState() == Projectile.BROKEN) {
+                arrows.remove(arrow);
+            }
         }
-        held = false;
-
     }
 }

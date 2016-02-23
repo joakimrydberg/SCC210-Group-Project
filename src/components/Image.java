@@ -6,15 +6,11 @@
 package components;
 
 import abstract_classes.Entity;
-
-import controllers.MainMenu;
-import controllers.MapMenu;
 import interfaces.InteractingEntity;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
-import tools.DebugPrinter;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -132,10 +128,16 @@ public class Image extends Entity implements InteractingEntity {
         if (rot != 0)
             super.rotate(rot);
 
-
-
-
-
     }
+
+    public void rotate(float v, boolean override) {
+        if (!override) {
+            rotate(v);
+        } else {
+            super.rotate(v);
+        }
+    }
+
+
 
 }

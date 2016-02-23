@@ -9,12 +9,11 @@ import java.awt.image.BufferedImage;
  * Created by millsr3 on 20/02/2016.
  */
 public class Warrior extends Player implements KeyListener {
+    public Warrior(){
+        create();
+    }
 
-
-     public Warrior(){
-
-        super();
-
+    public void create() {
         System.out.println("warrior selected");
         setSpriteSheet(SpriteSheetLoad.loadSprite("WarriorMaleSheet"));
         setCharacterStill(dir);
@@ -28,28 +27,33 @@ public class Warrior extends Player implements KeyListener {
         this.start();
     }
 
+
+    //todo if you change maybe update EnemyWarrior too?
     public void attack(int dir){
         switch(dir){
 
             case ATTACK_RIGHT:
+
                 BufferedImage[] right = {SpriteSheetLoad.getSprite(4, 2, theSpriteSheet), SpriteSheetLoad.getSprite(5, 2, theSpriteSheet), SpriteSheetLoad.getSprite(4, 2, theSpriteSheet), SpriteSheetLoad.getSprite(5, 2, theSpriteSheet)};
                 this.setFrames(right);
                 break;
             case ATTACK_DOWN:
+
                 BufferedImage[] down = {SpriteSheetLoad.getSprite(4, 0, theSpriteSheet), SpriteSheetLoad.getSprite(5, 0, theSpriteSheet), SpriteSheetLoad.getSprite(4, 0, theSpriteSheet), SpriteSheetLoad.getSprite(5, 0, theSpriteSheet)};
                 this.setFrames(down);
                 break;
             case ATTACK_LEFT:
+
                 BufferedImage[] left = {SpriteSheetLoad.getSprite(4, 1, theSpriteSheet), SpriteSheetLoad.getSprite(5, 1, theSpriteSheet), SpriteSheetLoad.getSprite(4, 1, theSpriteSheet), SpriteSheetLoad.getSprite(5, 1, theSpriteSheet)};
                 this.setFrames(left);
                 break;
             case ATTACK_UP:
+
                 BufferedImage[] up = {SpriteSheetLoad.getSprite(4, 3, theSpriteSheet), SpriteSheetLoad.getSprite(5, 3, theSpriteSheet), SpriteSheetLoad.getSprite(4, 3, theSpriteSheet), SpriteSheetLoad.getSprite(5, 3, theSpriteSheet)};
                 this.setFrames(up);
                 break;
-
-
         }
+
     }
 
     @Override
@@ -59,27 +63,28 @@ public class Warrior extends Player implements KeyListener {
 
             case SPACE:
 
-                if(tempDir == 2 && !held){
+                if(tempDir == 2 && !attacking){
                     attack(ATTACK_RIGHT);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                if(tempDir == 1 && !held){
+                if(tempDir == 1 && !attacking){
                     attack(ATTACK_LEFT);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                if(tempDir == 3 && !held){
+                if(tempDir == 3 && !attacking){
                     attack(ATTACK_UP);
-                    held = true;
+                    attacking = true;
                     break;
                 }
-                else if (tempDir == 0 && !held){
+                else if (tempDir == 0 && !attacking){
                     attack(ATTACK_DOWN);
-                    held = true;
+                    attacking = true;
                     break;
                 }
         }
+
         super.keyPressed(event);
 
 
@@ -91,16 +96,16 @@ public class Warrior extends Player implements KeyListener {
 
         this.setFrames(characterStill);
         super.keyReleased(event);
-        if(rightPressed){
-            setAnimation(ANIMATE_LEFT);
-        } else if (downPressed){
-            setAnimation(ANIMATE_LEFT);
-        } else if (leftPressed){
+        if (rightPressed){
             setAnimation(ANIMATE_RIGHT);
-        } else if (upPressed){
+        } else if (downPressed){
+            setAnimation(ANIMATE_DOWN);
+        } else if (leftPressed){
             setAnimation(ANIMATE_LEFT);
+        } else if (upPressed){
+            setAnimation(ANIMATE_UP);
         }
-        held = false;
+        attacking = false;
 
     }
 }
