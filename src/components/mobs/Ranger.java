@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Ranger extends Player implements ClickListener, interfaces.Ranger {
     private Room room;
     private ArrayList<Projectile> arrows = new ArrayList<>();
-
+    protected Long timeAtLastShot = System.currentTimeMillis();
 
     public Ranger(){
         create();

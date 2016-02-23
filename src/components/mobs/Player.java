@@ -2,7 +2,6 @@ package components.mobs;
 
 import components.Image;
 import components.Item;
-import components.Projectile;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
  * Created by millsr3 on 16/02/2016.
  */
 public class Player extends Mob implements KeyListener, CollidingEntity {
-    public boolean dead = false;
-    protected long timeAtLastShot = System.currentTimeMillis();
     private boolean colliding = false;
     public final static int ATTACK_RIGHT = 1,
             ATTACK_LEFT = 2,
@@ -45,11 +42,38 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public Player() {
         super(400, 400, 64, 128);
-        Health = 100;
-        dead = false;
         //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
     }
 
+    public void addToInventory(Item item){
+        inventory.add(item);
+    }
+
+    public void removeFromInventory(Item item){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == item){
+                inventory.remove(i);
+            }
+        }
+    }
+
+    public Item getFromInventory(Item item){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == item){
+                inventory.remove(i);
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void printInventory(){
+        System.out.println("--Inventory-------");
+        for(int i = 0; i < inventory.size(); i++){
+            System.out.println(inventory.get(i).getName());
+        }
+        System.out.println("------------------");
+    }
 
     public void setClass(String c) {
         classType = c;
@@ -239,11 +263,8 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public void die(){
 
-        dead = true;
 
-    }
-    public ArrayList<Projectile> getProjectiles() {
-        return new ArrayList<>();
+
     }
 
 }
