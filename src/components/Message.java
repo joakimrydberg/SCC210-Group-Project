@@ -52,4 +52,9 @@ public class Message extends Entity {
     public void setText(String txt){
         text.setString(txt);
     }
+
+    public void follow(int x, int y){
+        setTopLeftX(x);
+        setTopLeftY(y);
+    }
 }

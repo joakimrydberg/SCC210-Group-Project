@@ -41,7 +41,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public int level = 1;
 
     public Player() {
-        super(200, 200, 64, 128);
+        super(400, 400, 64, 128);
         //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
     }
 
@@ -224,8 +224,11 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public void damaged(){
 
-        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 4);
-        setFrames(a);
+        if(System.currentTimeMillis() - timeAtLastDamaged > 500){
+            timeAtLastDamaged = System.currentTimeMillis();
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 15);
+            setFrames(a);
+        }
 
     }
 

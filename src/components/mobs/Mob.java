@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public abstract class Mob extends Animation implements MovingEntity, Serializable {
+    protected long timeAtLastDamaged = System.currentTimeMillis();
     private static final long serialVersionUID = 2L;  //actually needed
     public final static int SPEED_CAP = 5;
     public final static int ANIMATE_RIGHT = 2,
