@@ -194,12 +194,12 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                             partBottom = (i + 1) * partSize.y,
                             partTop = i * partSize.y;
 
-                    //col * w + w/2, row * h + h/2
-                    if (w == 1) {
-                        System.out.format("l: %d, r: %d, t: %d, b %d, pl: %d, pr: %d, pt: %d, pb %d\n"
-                                , left, right, top, bottom,
-                                partLeft, partRight, partTop, partBottom);
-                    }
+//                    //col * w + w/2, row * h + h/2
+//                    if (w == 1) {
+//                        System.out.format("l: %d, r: %d, t: %d, b %d, pl: %d, pr: %d, pt: %d, pb %d\n"
+//                                , left, right, top, bottom,
+//                                partLeft, partRight, partTop, partBottom);
+//                    }
                     if (left < partRight
                             && right > partLeft
                             && bottom > partTop
