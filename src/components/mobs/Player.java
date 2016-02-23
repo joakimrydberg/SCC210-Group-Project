@@ -32,11 +32,13 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             downPressed = false,
             leftPressed = false,
             rightPressed = false;
+
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
     ArrayList<Item> inventory = new ArrayList<Item>();
     ArrayList<Item> equippedItems = new ArrayList<Item>();
+    public int level = 1;
 
     public Player() {
         super(200, 200, 64, 128);
@@ -223,11 +225,13 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public void damaged(){
 
         BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 4);
-        setFrames(a); //
+        setFrames(a);
 
     }
 
     public void die(){
+
+
 
     }
 

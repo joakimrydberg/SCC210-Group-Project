@@ -6,6 +6,7 @@ import components.Projectile;
 import components.RoomEntity;
 import components.mobs.*;
 import components.mobs.Ranger;
+import controllers.GameOverMenu;
 import controllers.PauseMenu;
 import interfaces.*;
 import org.jsfml.graphics.Color;
@@ -31,6 +32,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
     public Player player;
     private Message levelUp = null;
+    int x = 0;
 
     public Room(Level level) {
         this.level = level;
@@ -257,7 +259,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     @Override
     public void drawAll() {
 
-        int x = 0;
+
 
         if (isLoaded()) {
             draw();
@@ -267,7 +269,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
 
-                if(levelUp != null && x > 100)
+                if(levelUp != null && x > 10000)
+
                     levelUp.hidden = true;
 
                 if(entity instanceof CollidingEntity
@@ -305,18 +308,22 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
                 }
 
-                if(entity instanceof Mob && ((Mob)entity).Health < 0 && !((Mob)entity).dead){
-                    ((Mob)entity).die();
-
+                if(entity instanceof Enemy && ((Enemy)entity).Health < 0 && !((Enemy)entity).dead){
+                    ((Enemy)entity).die();
                 }
+                if(entity instanceof Player && ((Player)entity).Health < 0){
+                    loadDrawer(GameOverMenu.class);
+                    unload();
+                }
+
 
                 if(player.getExp() > 99){
 
                     levelUp = new Message(player.getCenterX(), player.getCenterY() - 50, 0, "LEVEL UP", Color.RED, 20);
-                 //   levelUp.hidden = false;
                     addEntity(levelUp);
                     x = 0;
                     player.setExp(0);
+                    player.level++;
 
                 }
 
