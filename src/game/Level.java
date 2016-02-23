@@ -121,7 +121,7 @@ public class Level {
 			}
 		}
 	}
-
+//
 	private void setRoom(int x, int y, String entrance, int stepsFromStart){
 		Random rn = new Random();
 		boolean roomFound = false;
