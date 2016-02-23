@@ -33,6 +33,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private Message levelUp = null;
     int x = 0;
     private boolean endRoom = false;
+    private PauseMenu pauseMenu = new PauseMenu();
 
     public Room(Level level) {
         this.level = level;
@@ -260,7 +261,9 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     public void keyPressed(KeyEvent event) {
         if (event.asKeyEvent().key == Keyboard.Key.P) {
-            loadDrawer(PauseMenu.class);
+            //loadDrawer(PauseMenu.class);
+            pauseMenu.loadInPlayer(MapMenu.getPlayer());
+            pauseMenu.load();
             unload();
         }
     }

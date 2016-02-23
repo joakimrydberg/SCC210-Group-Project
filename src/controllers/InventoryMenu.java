@@ -20,8 +20,8 @@ public class InventoryMenu extends Menu {
     private Slot clickedSlot = null;
 
     private int count;
-    private Button btnEquipt = null, btnDiscard = null;
-    private boolean firstClick = true;
+    private Button btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
+    private Button btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
     Message n = null, d = null;
     Image img = new Image(450, 610, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
 
@@ -37,10 +37,15 @@ public class InventoryMenu extends Menu {
         d = new Message(550, 620, 0, "Select an Item!", Color.WHITE, 12);
         addEntity(n);
         addEntity(d);
+        addEntity(btnEquipt);
+        addEntity(btnDiscard);
+        btnEquipt.hide();
+        btnDiscard.hide();
     }
 
     public void populateMenu(ArrayList<Item> inventory){
         for(int i = 0; i < inventory.size(); i++){ //display items in playes inventory
+            System.out.println(inventory.get(i).getName()); //debug
             slots[i + 7].addItem(inventory.get(i));
         }
     }
@@ -52,30 +57,15 @@ public class InventoryMenu extends Menu {
             clickedSlot = (Slot) clickable;
 
             if (slot.hasItem()) {
-                if(firstClick) {
-                    btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
-                    btnEquipt.addClickListener(this);
-                    addEntity(btnEquipt);
+                btnEquipt.show();
+                btnDiscard.show();
 
-                    btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
-                    btnDiscard.addClickListener(this);
-                    addEntity(btnDiscard);
+                img.changeImage(slot.getItem().getItemIcon());
+                addEntity(img);
+                img.show();
 
-                    img.changeImage(slot.getItem().getItemIcon());
-                    addEntity(img);
-
-                    n.setText(slot.getItem().getName());
-                    d.setText(slot.getItem().getDescription());
-
-                    firstClick = false;
-                }else{
-                    img.show();
-                    btnEquipt.show();
-                    btnDiscard.show();
-                    img.changeImage(slot.getItem().getItemIcon());
-                    n.setText(slot.getItem().getName());
-                    d.setText(slot.getItem().getDescription());
-                }
+                n.setText(slot.getItem().getName());
+                d.setText(slot.getItem().getDescription());
             }else {
                 img.hide();
                 btnEquipt.hide();

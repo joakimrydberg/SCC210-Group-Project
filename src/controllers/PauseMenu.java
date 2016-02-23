@@ -5,6 +5,7 @@ import components.Button;
 import components.Image;
 import components.Item;
 import components.Rect;
+import components.mobs.Player;
 import game.Driver;
 import game.Room;
 import interfaces.Clickable;
@@ -25,6 +26,7 @@ public class PauseMenu extends Menu {
     private PlayerMenu pMenu = new PlayerMenu();
     private InventoryMenu iMenu = new InventoryMenu();
     private StatsMenu sMenu = new StatsMenu();
+    private Player player = null;
 
     /**
      *
@@ -63,10 +65,12 @@ public class PauseMenu extends Menu {
 
         addEntity(new Rect(null, 300, centerY, 2, 600, new Color(117, 62, 29), 250)); //seperation border
 
-        pMenu.load();
+        //pMenu.load();
     }
 
-
+    public void loadInPlayer(Player p){
+        player = p;
+    }
 
     private void addOption(String text, String colour){
         Button btn = new Button(btnX, btnY, 200, 40, colour, 200, text, 15);
@@ -102,6 +106,7 @@ public class PauseMenu extends Menu {
                 inventory.add(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
 
                 iMenu.load();
+                //iMenu.populateMenu(player.getInventory());
                 iMenu.populateMenu(inventory);
                 System.out.println("INVENTORY clicked");
             }
