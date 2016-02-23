@@ -30,7 +30,6 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private final static String LEVEL_ID_DIR = "assets" + Constants.SEP + "levels" + Constants.SEP;
     private Level level;
     private HashMap<String, LevelPart> potentialDoors = new HashMap<>();
-    public Player player;
     private Message levelUp = null;
     int x = 0;
     private boolean endRoom = false;
@@ -124,8 +123,6 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
         { //creating MapMenu.getPlayer()
 
-       
-        // p.setClass(Player.classType);
 
             MapMenu.getPlayer().addMovementListener(this);
             addEntity(MapMenu.getPlayer());
@@ -133,17 +130,15 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         }
 
         EnemyWarrior enemyWarrior = new EnemyWarrior(this, MapMenu.getPlayer());
-              EnemyMage enemyMage = new EnemyMage(this, MapMenu.getPlayer());
-              EnemyRanger enemyRanger = new EnemyRanger(this, MapMenu.getPlayer());
-
+        EnemyMage enemyMage = new EnemyMage(this, MapMenu.getPlayer());
+        EnemyRanger enemyRanger = new EnemyRanger(this, MapMenu.getPlayer());
         enemyWarrior.addMovementListener(this);
         enemyMage.addMovementListener(this);
         enemyRanger.addMovementListener(this);
 
 
         //DeathBall deathBall = new DeathBall(this, p);
-      /*  addEntity(p);
-        player = p;*/
+
         addEntity(enemyWarrior);
         addEntity(enemyMage);
         addEntity(enemyRanger);
@@ -165,67 +160,26 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     @Override
     public boolean isMoveAcceptable(int x, int y, int w, int h) {
-        Vector2i wSize = getWindow().getSize();
+        if (isLoaded()) {
+            Vector2i wSize = getWindow().getSize();
 
-        final int left = x - w / 2,
-                right = x + w / 2,
-                top = y - h / 2,
-                bottom = y + h / 2;
+            final int left = x - w / 2,
+                    right = x + w / 2,
+                    top = y - h / 2,
+                    bottom = y + h / 2;
 
-        //return false if outside of window
-        if (left < 0 || right < 0 || top > wSize.x || bottom > wSize.y)
-            return false;
+            //return false if outside of window
+            if (left < 0 || right < 0 || top > wSize.x || bottom > wSize.y)
+                return false;
 
-        Vector2i partSize = getPartSize();
-        LevelPart part;
+            Vector2i partSize = getPartSize();
+            LevelPart part;
 
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
-                part = getPart(i, j);
+            for (int i = 0; i < 11; i++) {
+                for (int j = 0; j < 11; j++) {
+                    part = getPart(i, j);
 
-                if (part.getType().equals("Wall")) {
-                    final int partLeft = j * partSize.x,
-                            partRight = (j + 1) * partSize.x,
-                            partBottom = (i + 1) * partSize.y,
-                            partTop = i * partSize.y;
-
-//                    //col * w + w/2, row * h + h/2
-//                    if (w == 1) {
-//                        System.out.format("l: %d, r: %d, t: %d, b %d, pl: %d, pr: %d, pt: %d, pb %d\n"
-//                                , left, right, top, bottom,
-//                                partLeft, partRight, partTop, partBottom);
-//                    }
-                    if (left < partRight
-                            && right > partLeft
-                            && bottom > partTop
-                            && top < partBottom) {
-
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public void onMove(MovingEntity mover) {
-        if (mover instanceof Player) {
-            for (LevelPart door : potentialDoors.values()) {
-                Player player = (Player) mover;
-                Vector2i partSize = getPartSize();
-
-                if (door.displayed){
-                    double dist = Math.sqrt(Math.pow(player.getCenterX() - (door.getColNo() * partSize.x + partSize.x), 2)
-                            + Math.pow(player.getCenterY() - (door.getRowNo() * partSize.y + partSize.y), 2));
-
-                   // System.out.println(dist);
-                    int i = door.getRowNo(), j = door.getRowNo();
-
-
-                        // System.out.println(dist);
-
+                    if (part.getType().equals("Wall")) {
                         final int partLeft = j * partSize.x,
                                 partRight = (j + 1) * partSize.x,
                                 partBottom = (i + 1) * partSize.y,
@@ -237,15 +191,56 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 //                                , left, right, top, bottom,
 //                                partLeft, partRight, partTop, partBottom);
 //                    }
-                    if (player.getCenterX() < partRight
-                            && player.getCenterX()  > partLeft
-                            && player.getCenterY()  > partTop
-                            && player.getCenterY()  < partBottom) {
+                        if (left < partRight
+                                && right > partLeft
+                                && bottom > partTop
+                                && top < partBottom) {
 
-                        for (String key : potentialDoors.keySet()) {
-                            if (potentialDoors.get(key).equals(door)) {
-                                //System.out.println("Move Rooms");
-                                level.moveRooms(this, key);
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+
+    }
+
+    @Override
+    public void onMove(MovingEntity mover) {
+        if (isLoaded()) {
+            if (mover instanceof Player) {
+                for (LevelPart door : potentialDoors.values()) {
+
+                    Vector2i partSize = getPartSize();
+
+                    if (door.displayed) {
+                        double dist = Math.sqrt(Math.pow(MapMenu.getPlayer().getCenterX() - (door.getColNo() * partSize.x + partSize.x), 2)
+                                + Math.pow(MapMenu.getPlayer().getCenterY() - (door.getRowNo() * partSize.y + partSize.y), 2));
+
+                        // System.out.println(dist);
+                        int i = door.getRowNo(), j = door.getRowNo();
+                        final int partLeft = j * partSize.x,
+                                partRight = (j + 1) * partSize.x,
+                                partBottom = (i + 1) * partSize.y,
+                                partTop = i * partSize.y;
+
+//                    //col * w + w/2, row * h + h/2
+//                    if (w == 1) {
+//                        System.out.format("l: %d, r: %d, t: %d, b %d, pl: %d, pr: %d, pt: %d, pb %d\n"
+//                                , left, right, top, bottom,
+//                                partLeft, partRight, partTop, partBottom);
+//                    }
+                        if (MapMenu.getPlayer().getCenterX() < partRight
+                                && MapMenu.getPlayer().getCenterX() > partLeft
+                                && MapMenu.getPlayer().getCenterY() > partTop
+                                && MapMenu.getPlayer().getCenterY() < partBottom) {
+
+                            for (String key : potentialDoors.keySet()) {
+                                if (potentialDoors.get(key).equals(door)) {
+                                    //System.out.println("Move Rooms");
+                                    level.moveRooms(this, key);
+                                }
                             }
                         }
                     }
@@ -258,9 +253,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         if (MapMenu.getPlayer() instanceof Ranger) {
             ((Ranger) MapMenu.getPlayer()).setRoom(this);
         }
-        if (MapMenu.getPlayer() instanceof Mage) {
-            ((Mage) MapMenu.getPlayer()).setRoom(this);
-        }
+        if (MapMenu.getPlayer() instanceof Mage) {((Mage) MapMenu.getPlayer()).setRoom(this);}
+
 
         super.load();
     }
@@ -297,18 +291,13 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     @Override
     public void drawAll() {
-
-
-
         if (isLoaded()) {
             draw();
-
-
 
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
 
-                if(levelUp != null){
+                if (levelUp != null) {
                     levelUp.follow(MapMenu.getPlayer().getCenterX(), MapMenu.getPlayer().getCenterY() - 50);
                 }
 
@@ -319,28 +308,28 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 if(entity instanceof CollidingEntity
                         && entity instanceof Enemy) {
 
-                    Player player = ((Enemy) entity).getPlayer();
-                    if (((CollidingEntity) entity).checkWithin(player.getCenterX(), player.getCenterY()) && player.attacking) {
+
+                    if (((CollidingEntity) entity).checkWithin(MapMenu.getPlayer().getCenterX(), MapMenu.getPlayer().getCenterY()) && MapMenu.getPlayer().attacking) {
                         ((Enemy) entity).damaged();
                     }
 
                     if (entity instanceof EnemyWarrior) {
-                        if (((CollidingEntity) player).checkWithin(entity.getCenterX(), entity.getCenterY()) && ((EnemyWarrior)entity).attacking) {
-                            (player).damaged();
+                        if (((CollidingEntity) MapMenu.getPlayer()).checkWithin(entity.getCenterX(), entity.getCenterY()) && ((EnemyWarrior)entity).attacking) {
+                            (MapMenu.getPlayer()).damaged();
                         }
                     }
 
                     if (entity instanceof EnemyRanger) { //and maybe mage?
                         for (Projectile projectile : ((EnemyRanger) entity).getProjectiles()) {
                             if (projectile.getState() == Projectile.OKAY
-                                    && ((CollidingEntity) player).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
-                                (player).damaged();
+                                    && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+                                (MapMenu.getPlayer()).damaged();
                             }
                         }
                     }
 
-                    if (player instanceof Ranger || player instanceof Mage) { //and maybe mage?
-                        for (Projectile projectile : ((Player) player).getProjectiles()) {
+                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
+                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
                             if (projectile.getState() == Projectile.OKAY
                                     &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
                                 ((Enemy) entity).damaged();
@@ -354,7 +343,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 if(entity instanceof Enemy && ((Enemy)entity).Health < 0 && !((Enemy)entity).dead){
                     ((Enemy)entity).die();
                 }
-                if(entity instanceof Player && ((Player)entity).Health < 0 && !((Player)entity).dead){
+                if(entity instanceof Player && ((Player)entity).Health < 0){
                     ((Player)entity).die();
                     loadDrawer(GameOverMenu.class);
                     unload();
