@@ -84,7 +84,7 @@ public class PlayerMenu extends Menu {
     }
 
     private void addSlot(String slot, int x, int y, String name) {
-        ClickableImage s = new ClickableImage(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name);
+        Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, new ItemDescriptor("D" + name, x, y, 200, 150));
         s.addClickListener(this);
         addEntity(s);
     }

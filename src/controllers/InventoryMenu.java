@@ -19,8 +19,9 @@ public class InventoryMenu extends Menu {
         super(NAME);
         //addEntity(new Image(625, 350, 520, 470, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "PANEL.png"));
 
-        drawSlots();
+        drawSlots(); //draws all inventory boxes and item descriptors
 
+        addSlot("LONG", 625, 600, 520, 70);
     }
 
     @Override
@@ -56,19 +57,19 @@ public class InventoryMenu extends Menu {
         int x = 400, y = 100;
         int xadd = 520 / 7;
 
-        addSlot("HELMET", x, y, "H");
+        addSlot("HELMET", x, y, "H", new ItemDescriptor("H", x, y, 200, 150));
         x += xadd;
-        addSlot("ARMS", x, y, "A");
+        addSlot("ARMS", x, y, "A", new ItemDescriptor("A", x, y, 200, 150));
         x += xadd;
-        addSlot("TORSO", x, y, "T");
+        addSlot("TORSO", x, y, "T", new ItemDescriptor("T", x, y, 200, 150));
         x += xadd;
-        addSlot("BOOTS", x, y, "B");
+        addSlot("BOOTS", x, y, "B", new ItemDescriptor("B", x, y, 200, 150));
         x += xadd;
-        addSlot("WEAPON", x, y, "W");
+        addSlot("WEAPON", x, y, "W", new ItemDescriptor("W", x, y, 200, 150));
         x += xadd;
-        addSlot("SHIELD", x, y, "S");
+        addSlot("SHIELD", x, y, "S", new ItemDescriptor("S", x, y, 200, 150));
         x += xadd;
-        addSlot("POTION", x, y, "P");
+        addSlot("POTION", x, y, "P", new ItemDescriptor("P", x, y, 200, 150));
 
         int name = 1;
         int d = 0;
@@ -78,9 +79,9 @@ public class InventoryMenu extends Menu {
 
         for(int i = 0; i < 5; y += yadd, i++) {
             for (int j = 0; j < 7; x +=xadd, j++) {
-                //addSlot("BLANK", x, y, "" + name);
-                itemDesc[d] = new ItemDescriptor("D" + name, x, y, 200, 150, this);
-
+                ;
+                itemDesc[d] = new ItemDescriptor("D" + name, x, y, 200, 150);
+                addSlot("BLANK", x, y, "" + name, itemDesc[d]);
 
                 Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "BLANK.png", "" + name, itemDesc[d]);
                 s.addClickListener(this);
@@ -92,8 +93,8 @@ public class InventoryMenu extends Menu {
         }
     }
 
-    private void addSlot(String slot, int x, int y, String name) {
-        ClickableImage s = new ClickableImage(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name);
+    private void addSlot(String slot, int x, int y, String name, ItemDescriptor desc) {
+        Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, desc);
         s.addClickListener(this);
         addEntity(s);
     }
