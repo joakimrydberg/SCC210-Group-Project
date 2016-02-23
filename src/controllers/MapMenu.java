@@ -79,7 +79,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         if (Player.classType.equals("ranger")) {
             player = new Ranger();
         }
-
+        player.dead = false;
         // p.setClass(Player.classType);
         do {
             iterationCount++;
