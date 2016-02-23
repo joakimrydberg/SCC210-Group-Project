@@ -1,6 +1,7 @@
 package components.mobs;
 
 import components.Animation;
+import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
@@ -36,9 +37,19 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     protected int exp = 0;
     // public static Animation currAnimation;
 
-
     public Mob(int x, int y, int w, int h) {
         super(x, y, w, h, new BufferedImage[0], 1);
+    }
+
+    public Mob() {
+
+    }
+
+    public void create(int x, int y, int w, int h) {
+        setWidthHeight(w, h);
+
+        setCenterX(x);
+        setCenterY(y);
     }
 
     public void setStats(int a, int b, int c , int d, int e){
@@ -55,6 +66,13 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
     }*/
+
+    public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true);
+    }
+    public boolean isPlacable(MovementListener room, int newX, int newY, int w, int h) {
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4);
+    }
 
     public BufferedImage[] charAttack(BufferedImage character, int dir)
     {
@@ -84,7 +102,7 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
                 //checking all the MovementListeners are 'okay' with the proposed move
                 boolean move = true;
                 for (MovementListener listener : listeners) {
-                    move = listener.isMoveAcceptable(newX, newY + getHeight() / 6, getWidth() / 2, getHeight() / 4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
+                    move = isPlacable(listener, newX, newY + getHeight() / 6, getWidth() / 2, getHeight() / 4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
                             && move;                                             // a little weird but for reasons.
                 }
 

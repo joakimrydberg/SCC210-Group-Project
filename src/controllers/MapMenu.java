@@ -79,7 +79,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         if (Player.classType.equals("ranger")) {
             player = new Ranger();
         }
-
+        player.dead = false;
         // p.setClass(Player.classType);
         do {
             iterationCount++;
@@ -412,7 +412,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
 
 
     //a random int between two integers, i may still need this, will wait and see (Ross)
-    private int randomInt(int aStart, int aEnd){
+    public static int randomInt(int aStart, int aEnd){
         Random rand = new Random();
         if (aStart > aEnd) {
             throw new IllegalArgumentException("Start cannot exceed End.");

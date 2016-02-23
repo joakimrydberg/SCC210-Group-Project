@@ -23,6 +23,14 @@ public class Animation extends Entity {
 
     private List<AnimationFrame> frames = new ArrayList<AnimationFrame>();    // Arraylist of frames
 
+    public Animation() {
+        super("name");
+
+        this.stopped = true;
+        this.frameCount = 0;
+        this.currentFrame = 0;
+        this.totalFrames = this.frames.size();
+    }
     public Animation(int x, int y, int width, int height, BufferedImage[] frames, float scale) {
         super("name");
 

@@ -45,6 +45,35 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
         //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
     }
 
+    public void addToInventory(Item item){
+        inventory.add(item);
+    }
+
+    public void removeFromInventory(Item item){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == item){
+                inventory.remove(i);
+            }
+        }
+    }
+
+    public Item getFromInventory(Item item){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == item){
+                inventory.remove(i);
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void printInventory(){
+        System.out.println("--Inventory-------");
+        for(int i = 0; i < inventory.size(); i++){
+            System.out.println(inventory.get(i).getName());
+        }
+        System.out.println("------------------");
+    }
 
     public void setClass(String c) {
         classType = c;

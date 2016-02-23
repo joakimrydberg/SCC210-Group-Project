@@ -1,5 +1,6 @@
 package components.mobs;
 
+import controllers.MapMenu;
 import game.Room;
 import interfaces.CollidingEntity;
 import interfaces.MovementListener;
@@ -18,7 +19,7 @@ import java.util.Random;
  * @date 20/02/16.
  */
 public abstract class Enemy extends Mob implements MovementListener, CollidingEntity {
-    private Player player;
+
     protected boolean colliding = false;
     private Room room;
     public final static int IDLE = 0,
@@ -35,16 +36,18 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     private int cautiousThreshold = 50,
                 cautiousDistance = 300;
 
-    public Enemy(Room room, Player player) {
-        super( getWindow().getSize().x - 200 - Math.abs(new Random().nextInt() % 50 + 25)  /*getWindow().getSize().x + (new Random().nextInt() % (getWindow().getSize().x / 4))*/,
-                getWindow().getSize().y - 200 - Math.abs(new Random().nextInt() % 300) /*getWindow().getSize().y + (new Random().nextInt() % (getWindow().getSize().y / 4))*/,
-                64,
-                128);
+    public Enemy(Room room) {
+        int x, y;
+        
+        //randomise position until we get a suitable one
+        while (!isPlacable(room, x = MapMenu.randomInt(0, getWindow().getSize().x), y = MapMenu.randomInt(0, getWindow().getSize().y), 64, 128));
+
+        super.create(x, y, 64, 128);
         this.exp = 50;
-        this.player = player;
+     
         this.room = room;
         navigator = new Navigator(room);
-        player.addMovementListener(this);
+        MapMenu.getPlayer().addMovementListener(this);
     }
 
     @Override
@@ -55,7 +58,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     }
 
     public Player getPlayer() {
-        return player;
+        return MapMenu.getPlayer();
     }
 
     public Room getRoom() {
@@ -121,7 +124,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
 
     public void damaged(){
 
-        if (player instanceof Ranger){
+        if (MapMenu.getPlayer() instanceof Ranger){
 
             BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 5);
             setFrames(a);
@@ -248,7 +251,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     public void die(){
 
         stopCharacter();
-        player.exp = player.exp + this.exp;
+        MapMenu.getPlayer().exp = MapMenu.getPlayer().exp + this.exp;
         dead = true;
     }
 
