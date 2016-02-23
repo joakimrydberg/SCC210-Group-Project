@@ -3,6 +3,7 @@ package abstract_classes;
 import game.Driver;
 import interfaces.Clickable;
 import interfaces.KeyListener;
+import interfaces.MotionListener;
 import interfaces.MovingEntity;
 import org.jsfml.window.event.Event;
 
@@ -54,6 +55,14 @@ public abstract class Drawer extends Entity {
                     for (Entity entity : entities) {
                         if (entity instanceof KeyListener) {
                             ((KeyListener) entity).keyReleased(event.asKeyEvent());
+                        }
+                    }
+                }
+
+                if (event.type == Event.Type.MOUSE_MOVED) {
+                    for (Entity entity : entities) {
+                        if (entity instanceof MotionListener) {
+                            ((MotionListener)entity).mouseMoved(event);
                         }
                     }
                 }

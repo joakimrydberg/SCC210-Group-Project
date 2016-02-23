@@ -14,23 +14,26 @@ import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
+import tools.CSVReader;
 import tools.Constants;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * This...
+ * This...  //TODO complete sentence :P
  * @author Ross Newby
  */
 public class MapMenu extends Menu /*implements Clickable*/ {
     private Node[] nodes = new Node[NUMBER_OF_NODES];
-    private NodeDescriptor[] nodeDesc = new NodeDescriptor[10];
+    private NodeDescriptor[] nodeDesc = new NodeDescriptor[NUMBER_OF_NODES];
     public final static String NAME = "Map Menu";
     private final int map_id = 1;  // = new Random().nextInt( /* a value */);
-    private final static int MOVE_DIST = 200,
-            NUMBER_OF_NODES = 10;
+    private final static int MAX_MOVE_DIST = 200,
+            MIN_MOVE_DIST = 100,
+            NUMBER_OF_NODES = 15;
     ArrayList<String[]> csvContent;
+    private ArrayList<Rect> lines;
 
     /**
      *
@@ -49,126 +52,192 @@ public class MapMenu extends Menu /*implements Clickable*/ {
         Button backButton = new Button(50, 40, 80, 50, "BROWN", 200, "BACK", 15);
         backButton.addClickListener(this);
         addEntity(backButton);
+        //this.addClickListener(this);
 
-//        {
-//            //    this.addClickListener(this);
-//            ArrayList<Node> nodes = new ArrayList<>();
-//            csvContent = CSVReader.read("assets" + Constants.SEP + "maps" + Constants.SEP + "map_" + map_id + ".csv");
-//
-//            { // creating start and end nodes
-//                String[] row = null;
-//                for (int i = 0; i < csvContent.size(); i++) {
-//                    row = csvContent.get(i);
-//
-//                    if (row[2].equals("start")) {
-//                        nodes.add(new Node("start", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300));
-//                        csvContent.remove(row);
-//                    } else if (row[2].equals("end")) {
-//                        nodes.add(new Node("end", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300));
-//                        csvContent.remove(row);
-//                    }
-//                }
-//            }
-//
-//            if (nodes.get(0) == null || nodes.get(1) == null) {
-//                throw new RuntimeException("Invalid map csv.");
-//            }
-//
-//            while (true) {
-//                if (nodes.size() == NUMBER_OF_NODES) {
-//                    break;
-//                }
-//
-//                Iterator it = csvContent.iterator();
-//                for (int i = 0; i < NUMBER_OF_NODES && it.hasNext(); i++) {
-//                    String[] row = (String[]) it.next();
-//                    Node node;
-//                    node = new Node("Node " + i, Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
-//
-//                    boolean okayToAdd = false;
-//                    for (Node anotherNode : nodes) {
-//                        if (Math.sqrt(Math.pow(anotherNode.getCenterX() - node.getCenterX(), 2) + Math.pow(anotherNode.getCenterX() - node.getCenterY(), 2)) < MOVE_DIST) {
-//                            okayToAdd = true;
-//                            drawDottedLine(node, anotherNode, Color.BLACK);
-//                        }
-//                    }
-//
-//                    if (okayToAdd) {
-//                        nodes.add(node);
-//                    }
-//                }
-//            }
-//        }
-//
-//        int i=0;
-//        for (Node node : nodes) {
-//            nodes[i++] = node;
-       // }
-        //creating the nodes
-        nodes[0] = new Node("1", 200, 600, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[1] = new Node("2", 200, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[2] = new Node("3", 100, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[3] = new Node("4", 500, 500, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[4] = new Node("5", 550, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[5] = new Node("6", 350, 300, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[6] = new Node("7", 500, 100, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[7] = new Node("8", 700, 400, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[8] = new Node("9", 700, 200, 10, Color.WHITE, Color.BLACK, 4, 300);
-        nodes[9] = new Node("10", 800 , 300, 10, Color.WHITE, Color.BLACK, 4, 300);
+        //generating map
+        ArrayList<Node> tempNodes;
+        int iterationCount = 0;
 
-        //creating node descriptors
-        nodeDesc[0] = new NodeDescriptor("Level 1", "Easy", nodes[0], 200, 150, this);
-        nodeDesc[1] = new NodeDescriptor("Level 2", "Easy", nodes[1], 200, 150, this);
-        nodeDesc[2] = new NodeDescriptor("Level 3", "Easy", nodes[2], 200, 150, this);
-        nodeDesc[3] = new NodeDescriptor("Level 4", "Medium", nodes[3], 200, 150, this);
-        nodeDesc[4] = new NodeDescriptor("Level 5", "Medium", nodes[4], 200, 150, this);
-        nodeDesc[5] = new NodeDescriptor("Level 6", "Medium", nodes[5], 200, 150, this);
-        nodeDesc[6] = new NodeDescriptor("Level 7", "Hard", nodes[6], 200, 150, this);
-        nodeDesc[7] = new NodeDescriptor("Level 8", "Hard", nodes[7], 200, 150, this);
-        nodeDesc[8] = new NodeDescriptor("Level 9", "Hard", nodes[8], 200, 150, this);
-        nodeDesc[9] = new NodeDescriptor("Level 10", "BOSS", nodes[9], 200, 150, this);
+        do {
+            iterationCount++;
 
-        //draw lines connecting the nodes
-        drawDottedLine(nodes[0], nodes[1], Color.BLACK);
-        drawDottedLine(nodes[1], nodes[2], Color.BLACK);
-        drawDottedLine(nodes[1], nodes[3], Color.BLACK);
-        drawDottedLine(nodes[3], nodes[4], Color.BLACK);
-        drawDottedLine(nodes[4], nodes[5], Color.BLACK);
-        drawDottedLine(nodes[4], nodes[7], Color.BLACK);
-        drawDottedLine(nodes[5], nodes[6], Color.BLACK);
-        drawDottedLine(nodes[7], nodes[8], Color.BLACK);
-        drawDottedLine(nodes[7], nodes[9], Color.BLACK);
+            lines = new ArrayList<>();
+            tempNodes = new ArrayList<>();
+            csvContent = CSVReader.read("assets" + Constants.SEP + "maps" + Constants.SEP + "map_" + map_id + ".csv");
 
-        //adding the nodes to the screen in a loop
-        for(int j = 0; j < 10; j++){
-            nodes[j].addClickListener(this);
-            addEntity(nodes[j]);
+            { // creating start and end nodes
+                String[] row = null;
+                for (int i = 0; i < csvContent.size(); i++) {
+                    row = csvContent.get(i);
+
+                    Node tempNode;
+                    if (row[2].equals("start")) {
+                        tempNode = new Node("1", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+                        tempNodes.add(tempNode);
+                        tempNode.setType("start");
+                        csvContent.remove(row);
+                    } else if (row[2].equals("end")) {
+                        tempNode = new Node("2", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+                        tempNodes.add(tempNode);
+                        tempNode.setType("end");
+                        csvContent.remove(row);
+                    }
+                }
+            }
+
+            if (iterationCount == 1) {
+                if (tempNodes.get(0) == null || tempNodes.get(1) == null) {
+                    throw new RuntimeException("Invalid map csv, needs a start and a end node");
+                }
+
+                ArrayList<Node> allNodes = new ArrayList<>(tempNodes); //as two have been removed
+
+                for (String[] row : csvContent) {
+                    allNodes.add(new Node("2", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300));
+                }
+
+                if (!isMapValid(allNodes, false)) {
+                    throw new RuntimeException("Invalid map csv: no way from the start to the end with the current values of MAX_MOVE_DIST and MIN_MOVE_DIST");
+                }
+            }
+
+            int nodeCount = 3;
+            while (tempNodes.size() < NUMBER_OF_NODES) {
+
+                //Iterator it = csvContent.iterator();
+                for (int i = 0; i < NUMBER_OF_NODES
+                        && i < csvContent.size()
+                        && tempNodes.size() < NUMBER_OF_NODES; i++) {
+                    String[] row = csvContent.get(randomInt(0, csvContent.size() - 1));
+
+                    boolean newNode = true;
+                    for (Node node : tempNodes) {
+                        if (node.getCenterX() == Integer.parseInt(row[0])
+                                && node.getCenterY() == Integer.parseInt(row[1])) {
+                            newNode = false;
+                        }
+                    }
+
+                    if (newNode) {
+                        Node node;
+                        node = new Node(String.valueOf(nodeCount), Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+
+                        boolean okayToAdd = true;
+                        for (Node anotherNode : tempNodes) {
+                            double dist = Math.sqrt(Math.pow(anotherNode.getCenterX() - node.getCenterX(), 2) + Math.pow(anotherNode.getCenterY() - node.getCenterY(), 2));
+
+                            if (dist < MAX_MOVE_DIST) {
+                                if (dist > MIN_MOVE_DIST) {
+
+                                    drawDottedLine(node, anotherNode, Color.BLACK);
+                                } else {
+                                    okayToAdd = false;
+                                }
+                            }
+                        }
+
+                        if (okayToAdd) {
+                            //creating node descriptors
+                            tempNodes.add(node);
+                            node.setType(String.valueOf(nodeCount));
+                            csvContent.remove(row);
+                            nodeCount++;
+                        }
+                    }
+                }
+            }
+
+        } while (!isMapValid(tempNodes, true));
+
+        for (int i = 0; i < tempNodes.size(); i++) {
+            this.nodes[i] = tempNodes.get(i);
+            nodeDesc[i] = new NodeDescriptor("Level " + i, "Easy", nodes[i], 200, 150, this);
+            addEntity(nodeDesc[i]);
         }
 
-        //add locked images to each node ****NEEDS AMENDING AS THE LOCKS ARE JUST SUPERFICIAL AT THIS POINT****
-        for(int k = 0; k < 10; k++){
-            nodes[k].lock();
+        for (Rect line : lines) {
+            addEntity(line);
         }
-        nodes[0].unlock();
+
+        for (Node node : nodes) {
+            addEntity(node);
+            node.addClickListener(this);
+
+            if (!node.getType().equals("start")) {
+                node.lock();
+            } else {
+                node.unlock();
+            }
+        }
+
     }
 
+    public boolean isMapValid(ArrayList<Node> nodes, boolean all) {
+        Node start = null;
+        Node end = null;
+        for (Node node : nodes) {
+            node.visitTime = Integer.MAX_VALUE;
+            if (node.getType().equals("start")) {
+                start = node;
+
+            } else if (node.getType().equals("end")) {
+                end = node;
+            }
+        }
+
+        int fails = 0;
+        if (all) {
+            for (Node node : nodes) {
+                clearTimes(nodes);
+                if (navigateTo(start, node, 0, nodes) < 0) {
+                    fails++;
+                }
+            }
+
+            System.out.println("fails " + fails);
+
+            return (fails == 0);
+        } else {
+            return navigateTo(start, end, 0, nodes) > 0;
+        }
+    }
+
+    public void clearTimes (ArrayList<Node> nodes) {
+        for (Node node : nodes) {
+            node.visitTime = Integer.MAX_VALUE;
+        }
+    }
+
+    public int navigateTo(Node frm, Node end, int stepCount, ArrayList<Node> nodes) {
+        ++stepCount;
 
 
-//    public int navigateTo(Node frm, int stepCount) {
-////        ++stepCount;
-////
-////        if (frm.getType().equals("end")) {
-////            return stepCount;
-////        }
-////
-////        int testStep = Integer.MAX_VALUE;
-////        Iterator it = csvContent.iterator();
-////        while (it.hasNext()) {
-////            String[] row = (String[]) it.next();
-////
-////            if (row[2])
-////        }
-//    }
+
+        if (frm.equals(end) ) {
+            return stepCount;
+        }
+
+        int bestStep = Integer.MAX_VALUE;
+        for (Node node : nodes) {
+            double dist = Math.sqrt(Math.pow(frm.getCenterX() - node.getCenterX(), 2) + Math.pow(frm.getCenterY() - node.getCenterY(), 2));
+
+            if (end.getType().equals("end") || !node.getType().equals("end")) {
+                if (node.visitTime > stepCount && dist < MAX_MOVE_DIST && dist > MIN_MOVE_DIST) {
+                    node.visitTime = stepCount;
+                    Integer testStep = navigateTo(node, end, stepCount, nodes);
+                    if (testStep > 0 && testStep < bestStep) {
+                        bestStep = testStep;
+                    }
+                }
+            }
+        }
+
+        if (bestStep < Integer.MAX_VALUE) {
+            return bestStep;
+        } else {
+            return -1;
+        }
+    }
 
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) { //TODO should there actually be a back button? idk
@@ -190,22 +259,27 @@ public class MapMenu extends Menu /*implements Clickable*/ {
             }
         }
         else if (clickable instanceof Node){
-            Entity button = (Node) clickable;
-            int i = Integer.parseInt(button.getName()) - 1;
+            Node button = (Node) clickable;
 
-            //debugging
-            System.out.println("Node " + (i + 1) + " clicked");
-
-            if (!nodes[i].isLocked()){
-                if (nodeDesc[i].isLoaded()){
-                    nodeDesc[i].unload();
-                }
-                else {
-                    nodeDesc[i].load();
+            NodeDescriptor nodeDescriptor = null;
+            for (NodeDescriptor nodeD : nodeDesc) {
+                if (nodeD.getNode().equals(button)) {
+                    nodeDescriptor = nodeD;
                 }
             }
-            else {
-                System.out.println("Node is locked");
+            //debugging
+            System.out.println("Node " + button.getName() + " clicked");
+
+            if (nodeDescriptor != null) {
+                if (!button.isLocked()) {
+                    if (nodeDescriptor.isLoaded()) {
+                        nodeDescriptor.unload();
+                    } else {
+                        nodeDescriptor.load();
+                    }
+                } else {
+                    System.out.println("Node is locked");
+                }
             }
         }
     }
@@ -217,7 +291,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
         Rect line = new Rect(null, (p1.getCenterX() + p2.getCenterX()) / 2, (p1.getCenterY() + p2.getCenterY()) / 2, (int)length, 5, c, 300); //create the line between the two nodes
 
-        addEntity(line);
+        lines.add(line);
 
         //setRotation the line using trigonometry
         int l1 = p2.getCenterY()- p1.getCenterY();
@@ -231,22 +305,24 @@ public class MapMenu extends Menu /*implements Clickable*/ {
      */
     public void drawDottedLine(Node p1, Node p2, Color c){
         double length = Math.sqrt(Math.pow(p2.getCenterY() - p1.getCenterY(), 2) + Math.pow(p2.getCenterX() - p1.getCenterX(), 2)); //find the length the line should be using pythagoras theorem
-        int noOfLines = (int)length / 20; //has a line every 20p
+        int noOfLines = (int)(length / 20); //has a line every 20p
 
-        Rect lines[] = new Rect[noOfLines];
+        // System.out.println(noOfLines);
+        ArrayList<Rect> lines = new ArrayList<>();
+
 
         double xInterval = (p2.getCenterX() - p1.getCenterX()) / noOfLines;
         double yInterval = (p2.getCenterY() - p1.getCenterY()) / noOfLines;
 
+
         //creating the lines at intervals between the 2 nodes
         for(int i = 0, j = 1; i < noOfLines; i++, j++){
-            lines[i] = new Rect(null, (int)(p1.getCenterX() + (xInterval * j)), (int)(p1.getCenterY() + (yInterval * j)), 10, 5, c, 300);
+            lines.add(new Rect(null, (int)(p1.getCenterX() + (xInterval * j)), (int)(p1.getCenterY() + (yInterval * j)), 10, 5, c, 300));
         }
 
-        //adding the lines to the screen in a loop
-        for(int i = 0; i < noOfLines; i++){
-            addEntity(lines[i]);
-        }
+        this.lines.addAll(lines);
+        p1.addLines(lines);
+        p2.addLines(lines);
 
         //setRotation the lines using trigonometry
         int l1 = p2.getCenterY()- p1.getCenterY();
@@ -254,7 +330,7 @@ public class MapMenu extends Menu /*implements Clickable*/ {
 
         float trigAngle = (float)Math.toDegrees(Math.atan2(l1, l2)); //uses trig method 'SOH CAH TOA'
         for(int i = 0; i < noOfLines; i++){
-            lines[i].rotate(trigAngle);
+            lines.get(i).rotate(trigAngle);
         }
     }
 
