@@ -24,6 +24,7 @@ public class Mage extends Player implements ClickListener, KeyListener {
 
     private ArrayList<Projectile> fireballs = new ArrayList<>();
     private Room room;
+    protected long timeAtLastShot = System.currentTimeMillis();
 
     public Mage() {
         create();

@@ -233,7 +233,7 @@ public class CharMenu extends Menu {
                // mage.hide();
                 p.setClass("ranger");
                 p.addToInventory(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
-                p.printInventory(); //debug
+                p.printInventory();//debug
                 className = "ranged";
                 currAnimation.stop();
                 currAnimation = rangerWalk;

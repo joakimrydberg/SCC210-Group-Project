@@ -373,14 +373,14 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                         }
                     }
 
-                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
-                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
-                            if (projectile.getState() == Projectile.OKAY
-                                    &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
-                                ((Enemy) entity).damaged();
-                            }
-                        }
-                    }
+//                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
+//                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
+//                            if (projectile.getState() == Projectile.OKAY
+//                                    &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+//                                ((Enemy) entity).damaged();
+//                            }
+//                        }
+//                    }
 
 
                 }
