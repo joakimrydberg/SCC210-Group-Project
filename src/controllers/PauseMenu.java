@@ -6,6 +6,7 @@ import components.Image;
 import components.Item;
 import components.Rect;
 import game.Driver;
+import game.Room;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
@@ -119,14 +120,14 @@ public class PauseMenu extends Menu {
             {
                 this.unload();
                 unloadMenus();
-                new MainMenu().load();
+                loadDrawer(Room.class);
                 System.out.println("RESUME clicked");
             }
             else if (button.getName().equals("QUIT DUNGEON"))
             {
                 this.unload();
                 unloadMenus();
-                new MainMenu().load();
+                loadDrawer(MapMenu.class);
                 System.out.println("QUIT DUNGEON clicked");
             }
             else if (button.getName().equals("SAVE GAME"))

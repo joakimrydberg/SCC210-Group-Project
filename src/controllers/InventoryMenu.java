@@ -40,8 +40,7 @@ public class InventoryMenu extends Menu {
     }
 
     public void populateMenu(ArrayList<Item> inventory){
-        //display items in playes inventory
-        for(int i = 0; i < inventory.size(); i++){
+        for(int i = 0; i < inventory.size(); i++){ //display items in playes inventory
             slots[i + 7].addItem(inventory.get(i));
         }
     }
