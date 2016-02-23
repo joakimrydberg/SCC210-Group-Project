@@ -2,8 +2,14 @@ package components;
 
 import controllers.ItemDescriptor;
 import interfaces.MotionListener;
+import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.Transformable;
 import org.jsfml.window.event.Event;
+import tools.Constants;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -11,30 +17,27 @@ import java.util.ArrayList;
  */
 public class Slot extends ClickableImage implements MotionListener {
 
-    private ArrayList<Rect> lines = new ArrayList<>();
     private boolean hovered = false;
+    private Item item = null;
     private ItemDescriptor itemDesc;
-
-    public Slot(int x, int y, int width, int height,  String textureFile, ItemDescriptor desc){
-        super(x, y, width, height, textureFile);
-        itemDesc = desc;
-    }
-
-    public Slot( int x, int y, int width, int height,  String textureFile, String name, ItemDescriptor desc){
-        super( x,  y,  width,  height,   textureFile);
-        super.setName(name);
-        itemDesc = desc;
-    }
-
-    public Slot( int x, int y, String textureFile, ItemDescriptor desc) {
-        super(x, y, -1, -1, textureFile);
-        itemDesc = desc;
-    }
+    private Transformable img;
 
     public Slot( int x, int y, String textureFile, String name, ItemDescriptor desc) {
         super(x, y, -1, -1, textureFile);
         super.setName(name);
         itemDesc = desc;
+    }
+
+    public void addItem(Item i){
+        item = i;
+        img = item.getItemIcon().getTransformable(0);
+        addTransformable(img, 40, 40, 60, 60);
+        itemDesc.setTitle(item.getName());
+    }
+
+    public void removeItem(){
+        removeTransformable(1);
+        item = null;
     }
 
     @Override
@@ -50,7 +53,32 @@ public class Slot extends ClickableImage implements MotionListener {
         }
     }
 
-    public boolean getHovered(){
-        return hovered;
+    public void setItemDesc(ItemDescriptor desc){
+        itemDesc = desc;
     }
+
+    public Item getItem() {
+//        if(item != null) {
+            return item;
+//        }else{
+//            return /**/;
+//        }
+    }
+
+
+//    public Slot(int x, int y, int width, int height,  String textureFile, ItemDescriptor desc){
+//        super(x, y, width, height, textureFile);
+//        itemDesc = desc;
+//    }
+//
+//    public Slot( int x, int y, int width, int height,  String textureFile, String name, ItemDescriptor desc){
+//        super( x,  y,  width,  height,   textureFile);
+//        super.setName(name);
+//        itemDesc = desc;
+//    }
+//
+//    public Slot( int x, int y, String textureFile, ItemDescriptor desc) {
+//        super(x, y, -1, -1, textureFile);
+//        itemDesc = desc;
+//    }
 }

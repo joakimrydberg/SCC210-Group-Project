@@ -16,6 +16,9 @@ import java.awt.image.BufferedImage;
 public class PlayerMenu extends Menu {
     public final static String NAME = "Player Menu";
     private int money = 100, lvl = 1, ag = 0, in = 0, at = 0, en = 0, vi = 0, he = 100;
+    private ItemDescriptor[] itemDesc = new ItemDescriptor[7];
+    private Slot[] slots = new Slot[7];
+    private int count = 0;
 
     public PlayerMenu() {
         super(NAME);
@@ -35,18 +38,18 @@ public class PlayerMenu extends Menu {
         addEntity(new Image(850, 150, "assets" + Constants.SEP + "art" + Constants.SEP + "xp_icon.png"));
 
         //left slots
-        addSlot("HELMET", 500, 250, "H");
-        addSlot("ARMS", 400, 350, "A");
-        addSlot("TORSO", 500, 350, "T");
-        addSlot("BOOTS", 500, 450, "B");
+        addSlot("HELMET", 500, 250, "HELMET");
+        addSlot("ARMS", 400, 350, "ARMS");
+        addSlot("TORSO", 500, 350, "TORSO");
+        addSlot("BOOTS", 500, 450, "BOOTS");
 
         //character
         addSlot("LARGE", 670, 350, 203, 270);
 
         //right slots
-        addSlot("WEAPON", 850, 250, "W");
-        addSlot("SHIELD", 850, 350, "S");
-        addSlot("POTION", 850, 450, "P");
+        addSlot("WEAPON", 850, 250, "WEAPON");
+        addSlot("SHIELD", 850, 350, "SHIELD");
+        addSlot("POTION", 850, 450, "POTION");
 
         //bottom bar //TODO dont know what to populate this or if its needed but its here to loog good tbh
         addSlot("LONG", 625, 550, 520, 70); //TODO resize / edit this with info
@@ -65,42 +68,49 @@ public class PlayerMenu extends Menu {
 
             Entity button = (ClickableImage) clickable;
 
-            if (button.getName().equals("H")) {
+            if (button.getName().equals("HELMET")) {
                 System.out.println("HELMET clicked");
-            } else if (button.getName().equals("A")) {
+            } else if (button.getName().equals("ARMS")) {
                 System.out.println("ARMS clicked");
-            } else if (button.getName().equals("T")) {
+            } else if (button.getName().equals("TORSO")) {
                 System.out.println("TORSO clicked");
-            } else if (button.getName().equals("B")) {
+            } else if (button.getName().equals("BOOTS")) {
                 System.out.println("BOOTS clicked");
-            } else if (button.getName().equals("W")) {
+            } else if (button.getName().equals("WEAPON")) {
                 System.out.println("WEAPON clicked");
-            } else if (button.getName().equals("S")) {
+            } else if (button.getName().equals("SHIELD")) {
                 System.out.println("SHIELD clicked");
-            } else if (button.getName().equals("P")) {
+            } else if (button.getName().equals("POTION")) {
                 System.out.println("POTION clicked");
             }
         }
     }
 
     private void addSlot(String slot, int x, int y, String name) {
-        Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, new ItemDescriptor("D" + name, x, y, 200, 150));
+        itemDesc[count] = new ItemDescriptor(name, x, y);
+
+        Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, itemDesc[count]);
         s.addClickListener(this);
         addEntity(s);
-    }
 
-    private void addSlot(String slot, int x, int y) {
-        addEntity(new ClickableImage(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot +".png"));
-    }
+        slots[count] = s;
 
-    private void addSlot(String slot, int x, int y, int length, int height, String name) {
-        ClickableImage s = new ClickableImage(x, y, length, height, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name);
-        s.addClickListener(this);
-        addEntity(s);
+        count++;
+        //System.out.println(slots[count].getName());
     }
 
     private void addSlot(String slot, int x, int y, int length, int height) {
         addEntity(new ClickableImage(x, y, length, height, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png"));
     }
 
+
+//    private void addSlot(String slot, int x, int y) {
+//        addEntity(new ClickableImage(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot +".png"));
+//    }
+//
+//    private void addSlot(String slot, int x, int y, int length, int height, String name) {
+//        ClickableImage s = new ClickableImage(x, y, length, height, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name);
+//        s.addClickListener(this);
+//        addEntity(s);
+//    }
 }

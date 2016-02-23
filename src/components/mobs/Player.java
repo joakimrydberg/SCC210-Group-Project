@@ -1,13 +1,17 @@
 package components.mobs;
 
+import components.Image;
+import components.Item;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
 import interfaces.KeyListener;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
+import tools.Constants;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by millsr3 on 16/02/2016.
@@ -31,9 +35,12 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
+    ArrayList<Item> inventory = new ArrayList<Item>();
+    ArrayList<Item> equippedItems = new ArrayList<Item>();
 
     public Player() {
         super(200, 200, 64, 128);
+        //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
     }
 
 

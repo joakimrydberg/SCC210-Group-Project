@@ -3,12 +3,15 @@ package controllers;
 import abstract_classes.Entity;
 import components.Button;
 import components.Image;
+import components.Item;
 import components.Rect;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
 import tools.Constants;
+
+import java.util.ArrayList;
 
 /**
  * Created by Ross on 21/02/2016.
@@ -74,7 +77,14 @@ public class PauseMenu extends Menu {
             else if (button.getName().equals("INVENTORY"))
             {
                 unloadMenus();
+
+                ArrayList<Item> inventory = new ArrayList<Item>();
+                inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
+                inventory.add(new Item("Basic Staff", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_staff.png"), "A basic staff"));
+                inventory.add(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
+
                 iMenu.load();
+                iMenu.populateMenu(inventory);
                 System.out.println("INVENTORY clicked");
             }
             else if (button.getName().equals("STATS"))
