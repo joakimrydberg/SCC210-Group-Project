@@ -66,12 +66,17 @@ public class Driver {
         window.setFramerateLimit(30); // Avoid excessive updates
 
         MainMenu mainMenu;
-        if (args.length > 0) {
-            if (args[0].equals("levelcreator")) {
+
+        for (String cheat : args) {
+            if (cheat.equals("levelcreator")
+                    || cheat.equals("level creator")) {
+
                 new Thread(LevelCreator::new).start(); //who even knew java had this syntax
-                window.close();
+            } else if (false) {
+
             }
         }
+
         mainMenu = new MainMenu();
 
         mainMenu.load();
