@@ -9,6 +9,6 @@ import tools.Constants;
 public class Arrow extends Projectile {
 
     public Arrow() {
-        super("assets" + Constants.SEP + "art" + Constants.SEP + "arrow.png");
+        super("assets" + Constants.SEP + "art" + Constants.SEP + "arrow.png", 35,35);
     }
 }

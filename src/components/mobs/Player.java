@@ -1,6 +1,7 @@
 package components.mobs;
 
 import components.Item;
+import components.Projectile;
 import controllers.MapMenu;
 import game.Room;
 import game.SpriteSheetLoad;
@@ -275,6 +276,10 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
 
 
+    }
+
+    public ArrayList<Projectile> getProjectiles(){
+        return new ArrayList<>();
     }
 
     public ArrayList<Item> getInventory() {

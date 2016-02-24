@@ -14,12 +14,12 @@ public abstract class Projectile extends Image implements MovingEntity {
     private ArrayList<MovementListener> listeners = new ArrayList<>();
     private Vector2f speed = new Vector2f(0,0);
     public final static int BROKEN = 0, OKAY = 1;
-    private boolean broken = false;
+    protected boolean broken = false;
 
 
-    public Projectile(String spriteName){
+    public Projectile(String spriteName, int width, int height){
 
-        super(0, 0, 35, 35, spriteName);
+        super(0, 0, width, height, spriteName);
         hide();
 
 
@@ -30,6 +30,7 @@ public abstract class Projectile extends Image implements MovingEntity {
         { //moving
             { //mover from mob
                 //  if (!broken) {
+
                 final int newX = (int) (getCenterX() + speed.x), newY = (int) (getCenterY() + speed.y);
                 // System.out.format("%f %f \n",(getCenterX() + speed.x), (getCenterY() + speed.y));
 
