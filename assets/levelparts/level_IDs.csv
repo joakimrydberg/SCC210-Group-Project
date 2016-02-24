@@ -15,5 +15,6 @@ Edge7, dungeon_edge_corner_one.png, Wall
 Edge8, dungeon_edge_corner_one_v2.png, Wall
 Edge9, dungeon_edge_corner_two.png, Wall
 Edge10, dungeon_edge_corner_2.png, Wall
+Edge11, dungeon_edge_corner_3.png, Wall
 Wall, dungeon_wall.png, Wall
 Torch, dungeon_wall_torch.png, Wall
