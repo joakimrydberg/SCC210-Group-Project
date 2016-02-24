@@ -665,6 +665,10 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         pack();
     }
 
+    public static void main(String[] args) {
+        throw new RuntimeException("Please use the appropriate cheat... in game or via program args (or I guess edit this line)");
+    }
+
     /**
      * Invoked when a mouse button has been pressed on a component.
      *
