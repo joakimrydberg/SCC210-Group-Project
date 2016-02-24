@@ -40,7 +40,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public int level = 1;
 
     public Player() {
-        //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
+        //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "sword0.png"), "A basic sword"));
     }
 
     public void addToInventory(Item item){
