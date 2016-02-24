@@ -225,7 +225,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
 
                     if (!(part.getType().equals("Blank") && entity instanceof Projectile)) {
-                        if (part.getType().equals("Wall")) {
+                        if (part.getType().equals("Wall") || (part.getType().equals("Blank")) ) {
 
                             final int partLeft = j * partSize.x,
                                     partRight = (j + 1) * partSize.x,
