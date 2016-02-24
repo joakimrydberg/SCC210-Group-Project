@@ -39,6 +39,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         this.level = level;
 
         addEntity(this);
+
     }
 
     public void create(String roomID) {

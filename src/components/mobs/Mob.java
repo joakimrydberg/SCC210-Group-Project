@@ -31,6 +31,9 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public int health = 100;
     protected int tempDir = 0;
     public boolean dead = false;
+    private BufferedImage newMageSheet = SpriteSheetLoad.loadSprite("HealthSheet");
+    public static Animation currentHealthBar;
+
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
@@ -87,7 +90,21 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
         this.health = this.health -dmg;
+        int currHealth = (int) Math.floor(this.health/2);
+        int sheetPos = 50 - currHealth;
+        BufferedImage[] currentHealth;
+        if(currHealth > 35)
+            {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 0, character)};}
+        else if(currHealth > 20)
+        {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 1, character)};}
+        else if(currHealth > 5)
+        {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 2, character)};}
+        else{currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 3, character)};}
+        currentHealthBar = new Animation(200, 200, 64, 128, currentHealth, 3);
+
+
         return characterHurt;
+
     }
 
 
