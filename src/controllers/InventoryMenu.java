@@ -22,8 +22,8 @@ public class InventoryMenu extends Menu {
     private int count = 0;
     private Button btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
     private Button btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
-    Message n = null, d = null;
-    Image img = new Image(450, 610, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
+    private Message n = null, d = null;
+    private Image img = new Image(450, 610, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
 
     public InventoryMenu() {
         super(NAME);
@@ -71,7 +71,7 @@ public class InventoryMenu extends Menu {
                 btnEquipt.hide();
                 btnDiscard.hide();
                 n.setText("Empty Inventory Slot!");
-                    d.setText("");
+                d.setText("");
             }
 
             for(int i = 1; i < 36; i++) {
