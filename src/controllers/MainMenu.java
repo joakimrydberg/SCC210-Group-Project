@@ -8,23 +8,30 @@ package controllers;
 import abstract_classes.Entity;
 import components.Button;
 import components.Image;
-import controllers.CharMenu;
 import interfaces.Clickable;
+import interfaces.KeyListener;
+import levelcreator.LevelCreator;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.Keyboard;
+import org.jsfml.window.event.KeyEvent;
 import tools.Constants;
-import tools.FileHandling;
 import tools.MusicPlayer;
 
 /**
  *
  * @author ryan
  */
-public class MainMenu extends Menu {
-    public int loaded = 0;
+public class MainMenu extends Menu implements KeyListener {
+  //  public int loaded = 0;
     public final static String NAME = "Main Menu";
+    private boolean cheating = false;
+    private String cheat = "";
+
 
     public MainMenu() {
         super(NAME);
+
+        this.addEntity(this);
 
         final Vector2i windowSize = Entity.getWindow().getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
@@ -79,7 +86,7 @@ public class MainMenu extends Menu {
                 System.out.println("OPTIONS clicked");
             }
             else if (button.getName().equals("CREDITS")){
-                this.unload();;
+                this.unload();
                 new CreditMenu().load();
                 System.out.println("CREDITS clicked");
             }
@@ -94,4 +101,25 @@ public class MainMenu extends Menu {
         }
     }
 
+    @Override
+    public void keyPressed(KeyEvent event) {
+        if (Keyboard.isKeyPressed(Keyboard.Key.LCONTROL)) {
+            if (event.key != Keyboard.Key.LCONTROL) {
+                cheat += event.key;
+
+                if (cheat.toLowerCase().equals("levelcreator")
+                        || cheat.toLowerCase().equals("level creator")) {
+
+                    new Thread(LevelCreator::new).start(); //who even knew java had this syntax
+                }
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event) {
+        if (!Keyboard.isKeyPressed(Keyboard.Key.LCONTROL)) {
+            cheat = "";
+        }
+    }
 }
