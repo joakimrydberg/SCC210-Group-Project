@@ -47,9 +47,9 @@ public class MainMenu extends Menu implements KeyListener {
         Button btnQuit = new Button( centerX, 650, 250, 60, "RED", 200, "QUIT", 20);
 
         //temo button for testing pause menu - removed in finished game
-        Button tempPauseButton = new Button(170, 500, 120, 50, "BROWN", 200 , "PAUSE MENU", 15 );
-        tempPauseButton.addClickListener(this);
-        addEntity(tempPauseButton);
+//        Button tempPauseButton = new Button(170, 500, 120, 50, "BROWN", 200 , "PAUSE MENU", 15 );
+//        tempPauseButton.addClickListener(this);
+//        addEntity(tempPauseButton);
 
         btnNewGame.addClickListener(this);
         addEntity(btnNewGame);

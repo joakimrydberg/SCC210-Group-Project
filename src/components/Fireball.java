@@ -19,7 +19,7 @@ public class Fireball extends Projectile {
 
         setCenterX(getCenterX());
         setCenterY(getCenterY());
-        if(System.currentTimeMillis() - timeLastFlamed > 2000){
+        if(System.currentTimeMillis() - timeLastFlamed > 1500){
             this.broken = true;
             this.hidden = true;
 

@@ -44,6 +44,8 @@ public class MapMenu extends Menu implements Clickable, Serializable {
     //private Node currentNode;
     private NodeDescriptor currNodeDescriptor;
     private static Player player = null;
+    private PauseMenuMap pauseMenuMap = new PauseMenuMap();
+
     /**
      *
      */
@@ -58,11 +60,21 @@ public class MapMenu extends Menu implements Clickable, Serializable {
 
         addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
 
-        Button backButton = new Button(50, 40, 80, 50, "BROWN", 200, "BACK", 15);
-        backButton.addClickListener(this);
-        addEntity(backButton);
+        //QUIT button
+        addEntity(new Image(140, 15, 200, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnQuit = new Button(140, 30, 140, 40, "RED", 200, "QUIT GAME", 15);
+        btnQuit.addClickListener(this);
+        addEntity(btnQuit);
 
-        Button btnShop = new Button(900, 600, 80, 50, "BROWN", 200, "SHOP", 15);
+        //PLAYER button
+        addEntity(new Image(750, 755, 150, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnPlayer = new Button(750, 740, 100, 40, "BROWN", 200, "PLAYER", 15);
+        btnPlayer.addClickListener(this);
+        addEntity(btnPlayer);
+
+        //SHOP button
+        addEntity(new Image(900, 755, 130, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnShop = new Button(900, 740, 80, 40, "BROWN", 200, "SHOP", 15);
         btnShop.addClickListener(this);
         addEntity(btnShop);
 
@@ -299,7 +311,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
     public void buttonClicked(Clickable clickable, Object[] args) { //TODO should there actually be a back button? idk
         if (clickable instanceof  Button ) {
             Entity button = (Button) clickable;
-            if (button.getName().equals("BACK")) {
+            if (button.getName().equals("QUIT GAME")) {
                 this.unload();
 
                 loadDrawer(CharMenu.class);
@@ -311,7 +323,15 @@ public class MapMenu extends Menu implements Clickable, Serializable {
                     }
                 }
 
-                System.out.println("BACK clicked");
+                System.out.println("QUIT GAME clicked");
+            } else if (button.getName().equals("PLAYER")) {
+                MapMenu.getPlayer().printInventory();
+                //MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0)); //shouldnt need this but its there as a quick fix for now
+                MapMenu.getPlayer().printEquipped();
+                pauseMenuMap.loadInPlayer(MapMenu.getPlayer());
+                pauseMenuMap.load();
+
+                System.out.println("PLAYER clicked");
             } else if (button.getName().equals("SHOP")) {
                 this.unload();
 

@@ -31,7 +31,6 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public int health = 100;
     protected int tempDir = 0;
     public boolean dead = false;
-    private BufferedImage newMageSheet = SpriteSheetLoad.loadSprite("HealthSheet");
     public static Animation currentHealthBar;
 
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
@@ -69,11 +68,7 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
     }*/
-    public int getHealth() {
-        return this.health;
-    }
-
-    public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
+        public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
         return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true, this);
     }
     public boolean isPlacable(MovementListener room, int newX, int newY, int w, int h) {
@@ -90,22 +85,9 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
         this.health = this.health -dmg;
-        int currHealth = (int) Math.floor(this.health/2);
-        int sheetPos = 50 - currHealth;
-        BufferedImage[] currentHealth;
-        if(currHealth > 35)
-            {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 0, character)};}
-        else if(currHealth > 20) {
-            {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 0, character)};}
-        }
-        else if(currHealth > 5)
-        {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 2, character)};}
-        else{currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 3, character)};}
-        currentHealthBar = new Animation(200, 200, 64, 128, currentHealth, 3);
 
 
         return characterHurt;
-
     }
 
 
@@ -286,6 +268,30 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     }
     public void setExp(int xp){
         this.exp = xp;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public int getIntellect() {
+        return Intellect;
+    }
+
+    public int getAgility() {
+        return Agility;
+    }
+
+    public int getEndurance() {
+        return Endurance;
+    }
+
+    public int getVitality() {
+        return Vitality;
+    }
+
+    public int getHealth() {
+        return this.health;
     }
 }
 

@@ -138,7 +138,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             if (diff == 1) {
                 enemyWarriors = MapMenu.randomInt(0, 3);
                 enemyRangers = MapMenu.randomInt(0, 1);
-                enemyMages = MapMenu.randomInt(0, 0);
+                enemyMages = MapMenu.randomInt(0, 2);
             } else if (diff < 3) {
                 enemyWarriors = MapMenu.randomInt(0, 2);
                 enemyRangers = MapMenu.randomInt(0, 3);
@@ -203,6 +203,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public boolean isMoveAcceptable(int x, int y, int w, int h, MovingEntity movingEntity) {
         return isMoveAcceptable(x, y, w, h, false, movingEntity);
     }
+
 
     public boolean isMoveAcceptable(int x, int y, int w, int h, boolean override, MovingEntity entity) {
         if (isLoaded() || override) {
@@ -312,7 +313,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public void keyPressed(KeyEvent event) {
         if (event.asKeyEvent().key == Keyboard.Key.P) {
             //loadDrawer(PauseMenu.class);
+
+            //debugging
             MapMenu.getPlayer().printInventory();
+            //MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0)); //shouldnt need this but its there as a quick fix for now
+            MapMenu.getPlayer().printEquipped();
             pauseMenu.loadInPlayer(MapMenu.getPlayer());
             pauseMenu.load();
             unload();
@@ -364,21 +369,29 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                     if (((CollidingEntity) entity).checkWithin(MapMenu.getPlayer().getCenterX(), MapMenu.getPlayer().getCenterY()) && MapMenu.getPlayer().attacking) {
                         ((Enemy) entity).damaged();
                     }
-//
-//                    if (entity instanceof EnemyWarrior) {
-//                        if (((CollidingEntity) MapMenu.getPlayer()).checkWithin(entity.getCenterX(), entity.getCenterY()) && ((EnemyWarrior)entity).attacking) {
-//                            (MapMenu.getPlayer()).damaged();
-//                        }
-//                    }
-//
-//                    if (entity instanceof EnemyRanger) { //and maybe mage?
-//                        for (Projectile projectile : ((EnemyRanger) entity).getProjectiles()) {
-//                            if (projectile.getState() == Projectile.OKAY
-//                                    && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
-//                                (MapMenu.getPlayer()).damaged();
-//                            }
-//                        }
-//                    }
+
+                    if (entity instanceof EnemyWarrior) {
+                        if (((CollidingEntity) MapMenu.getPlayer()).checkWithin(entity.getCenterX(), entity.getCenterY()) && ((EnemyWarrior)entity).attacking) {
+                            (MapMenu.getPlayer()).damaged();
+                        }
+                    }
+
+                    if (entity instanceof EnemyRanger) { //and maybe mage?
+                        for (Projectile projectile : ((EnemyRanger) entity).getProjectiles()) {
+                            if (projectile.getState() == Projectile.OKAY
+                                    && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+                                (MapMenu.getPlayer()).damaged();
+                            }
+                        }
+                    }
+                    if (entity instanceof EnemyMage) { //and maybe mage?
+                        for (Projectile projectile : ((EnemyMage) entity).getProjectiles()) {
+                            if (projectile.getState() == Projectile.OKAY
+                                    && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+                                (MapMenu.getPlayer()).damaged();
+                            }
+                        }
+                    }
 
                     if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
                         for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {

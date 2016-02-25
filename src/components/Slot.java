@@ -21,6 +21,7 @@ public class Slot extends ClickableImage implements MotionListener {
     private Item item = null;
     private ItemDescriptor itemDesc;
     private Transformable img;
+    //private String name;
 
     public Slot( int x, int y, String textureFile, String name, ItemDescriptor desc) {
         super(x, y, -1, -1, textureFile);
@@ -30,7 +31,7 @@ public class Slot extends ClickableImage implements MotionListener {
 
     public void addItem(Item i){
         item = i;
-        img = item.getItemIcon().getTransformable(0);
+        this.img = i.getItemIcon().getTransformable(0);
         addTransformable(img, 40, 40, 60, 60);
         itemDesc.setTitle(item.getName());
     }
@@ -38,6 +39,7 @@ public class Slot extends ClickableImage implements MotionListener {
     public void removeItem(){
         removeTransformable(1);
         item = null;
+        itemDesc.setTitle(this.getName());
     }
 
     @Override

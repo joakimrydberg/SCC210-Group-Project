@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 public class Mage extends Player implements ClickListener, KeyListener {
 
     final static int RECHARGE = 750;
-
+    private int timesClicked = 0;
     private ArrayList<Projectile> fireballs = new ArrayList<>();
     private Room room;
     protected long timeAtLastShot = System.currentTimeMillis();
@@ -81,36 +81,40 @@ public class Mage extends Player implements ClickListener, KeyListener {
 
 
     public void buttonClicked(Clickable button, Object[] args) {
+        if(timesClicked != 0) {
+            if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
+                timeAtLastShot = System.currentTimeMillis();
 
-        if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
-            timeAtLastShot = System.currentTimeMillis();
+                Fireball arrow = new Fireball();
+                Navigator n = new Navigator(room);
+                n.populateNavPixels();
+                if (args.length == 1) {
+                    Event e = (Event) args[0];
 
-            Fireball arrow = new Fireball();
-            Navigator n = new Navigator(room);
-            n.populateNavPixels();
-            if (args.length == 1 ) {
-                Event e = (Event) args[0];
+                    Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                    Vector2i to = e.asMouseEvent().position;
+                    Vector2f too = new Vector2f(to.x, to.y);
+                    Vector2f fromm = new Vector2f(from.x, from.y);
 
-                Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
-                Vector2i to = e.asMouseEvent().position;
-                Vector2f too = new Vector2f(to.x, to.y);
-                Vector2f fromm = new Vector2f(from.x, from.y);
+                    if (n.inLineOfSight(too, fromm)) {
+                        arrow.setCenterX(to.x);
+                        arrow.setCenterY(to.y);
+                        arrow.setCenterX(to.x);
+                        arrow.setCenterY(to.y);
 
-                if( n.inLineOfSight(too,fromm)) {
-                    arrow.setCenterX(to.x);
-                    arrow.setCenterY(to.y);
-                    arrow.setCenterX(to.x);
-                    arrow.setCenterY(to.y);
-
-                    //    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-                    //     arrow.correctDirection();
-                    //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-                    arrow.show();
-                    //  arrow.addMovementListener(room);
-                    fireballs.add(arrow);
-                    room.addEntity(arrow);
+                        //    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                        //     arrow.correctDirection();
+                        //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                        arrow.show();
+                        //  arrow.addMovementListener(room);
+                        fireballs.add(arrow);
+                        room.addEntity(arrow);
+                    }
                 }
             }
+        }
+        else {
+            timesClicked++;
         }
     }
 
