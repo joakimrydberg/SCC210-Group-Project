@@ -41,9 +41,9 @@ public class CharMenu extends Menu {
     private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(1, 0, newWarriorSheet), SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(2, 0, newWarriorSheet)};
     private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(1, 0, newRangerSheet), SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(2, 0, newRangerSheet)};
     private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, newMageSheet), SpriteSheetLoad.getSprite(1, 0, newMageSheet), SpriteSheetLoad.getSprite(0, 0, newMageSheet), SpriteSheetLoad.getSprite(2, 0, newMageSheet)};
-    private Animation warriorWalk = new Animation(232, 264, 64, 128, warrior, 3);
-    private Animation rangerWalk = new Animation(232, 264, 64, 128, ranger, 3);
-    private Animation mageWalk = new Animation(232, 264, 64, 128, mageA, 3);
+    private Animation warriorWalk = new Animation(512, 350, 64, 128, warrior, 3);
+    private Animation rangerWalk = new Animation(512, 350, 64, 128, ranger, 3);
+    private Animation mageWalk = new Animation(512, 350, 64, 128, mageA, 3);
     private Animation currAnimation = warriorWalk;
     BufferedImage[] currentAnimation = new Player().charAttack(newMageSheet, 0);
     private Animation tempWalk = new Animation(100, 200, 64, 128, currentAnimation, 5);
@@ -51,7 +51,7 @@ public class CharMenu extends Menu {
     private String[] hairCols = new String[3];
     private Message[] messages = new Message[6];
     private int i; //TODO what even is this?
-    private Message hairCol = null;
+    //private Message hairCol = null;
     private Player p;
     private String className;
 
@@ -75,46 +75,67 @@ public class CharMenu extends Menu {
         }
 
         //back button
-        Button backButton = new Button(70, 40, 100, 50, "BROWN", 200 , "BACK", 15 );
-        backButton.addClickListener(this);
-        addEntity(backButton);
+//        Button backButton = new Button(70, 40, 100, 50, "BROWN", 200 , "BACK", 15 );
+//        backButton.addClickListener(this);
+//        addEntity(backButton);
 
-        hairCol = new Message(700, 242, 0, "Red", Color.BLACK, 11);
+        addEntity(new Image(centerX, centerY, 520, windowSize.y - 100, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "PANEL.png"));
+
+        //QUIT button
+        addEntity(new Image(200, 50, 180, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnQuit = new Button(200, 65, 120, 40, "RED", 200, "BACK", 15);
+        btnQuit.addClickListener(this);
+        addEntity(btnQuit);
+
+        //hairCol = new Message(700, 242, 0, "Red", Color.BLACK, 11);
 
         //addEntity(new Rect(null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
-        addEntity(new Rect(null, 725, 375, 350, 700, Color.WHITE, 128));
-        addEntity(new Rect(null, 725, 500, 350, 220, Color.WHITE, 128));
-        Button createButton = new Button(685, 650, 100, 50, "BROWN", 100, "CREATE", 11);
+//        addEntity(new Rect(null, 725, 375, 350, 700, Color.WHITE, 128));
+//        addEntity(new Rect(null, 725, 500, 350, 220, Color.WHITE, 128));
+
+//        Button createButton = new Button(685, 650, 100, 50, "BROWN", 100, "CREATE", 11);
+//        addEntity(createButton);
+//        createButton.addClickListener(this);
+
+        //CREATE button
+        addEntity(new Image(750, 725, 200, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button createButton = new Button(750, 710, 140, 40, "GREEN", 200, "CREATE", 15);
+        createButton.addClickListener(this);
+        addEntity(createButton);
 
         //URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
         final String artLoc = "assets" + SEP + "art" + SEP;
 
         ClickableImage clickableImage ;
-        clickableImage = new ClickableImage(600, 100, artLoc+ "magic.png");
+
+        addEntity(new Image(centerX - 100, 130, 100, 100, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "BLANK.png"));
+        clickableImage = new ClickableImage(centerX - 100, 130, artLoc+ "magic.png");
         clickableImage.addClickListener(this);
         addEntity(clickableImage);
-        clickableImage = new ClickableImage(725, 100, artLoc + "strength.png");
+
+        addEntity(new Image(centerX, 130, 100, 100, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "BLANK.png"));
+        clickableImage = new ClickableImage(centerX, 130, artLoc + "strength.png");
         clickableImage.addClickListener(this);
         addEntity(clickableImage);
-        clickableImage = new ClickableImage(850, 100, artLoc+ "ranged.png");
+
+        addEntity(new Image(centerX + 100, 130, 100, 100, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "BLANK.png"));
+        clickableImage = new ClickableImage(centerX + 100, 130, artLoc+ "ranged.png");
         clickableImage.addClickListener(this);
         addEntity(clickableImage);
+
+        addEntity(new Image(centerX, centerY - 30, 203, 300, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "LARGE.png"));
 
         p = new Player();
         p.move();
 
-
-        addEntity(createButton);
-        createButton.addClickListener(this);
-
         // DebugPrinter.debugPrint(this, getClass().getClassLoader().getResource("\\SCC210-Group-Project\\assets\\art\\magic.png").toString());
-        messages[0] = (new Message(575, 430, 0, "Stats", Color.BLACK, 20));
-        messages[1] = (new Message(675, 450, 0, "Attack power : 5", Color.BLACK, 12));
-        messages[2] = (new Message(675, 475, 0, "Intellect : 0", Color.BLACK, 12));
-        messages[3] = (new Message(675, 500, 0, "Agility : 0", Color.BLACK, 12));
-        messages[4] = (new Message(675, 525, 0, "Endurance : 5", Color.BLACK, 12));
-        messages[5] = (new Message(675, 550, 0, "Vitality : 5", Color.BLACK, 12));
+        messages[0] = (new Message(centerX - 100, 530, 0, "Stats", Color.WHITE, 20));
+        messages[1] = (new Message(centerX, 550, 0, "Attack power : 5", Color.WHITE, 12));
+        messages[2] = (new Message(centerX, 575, 0, "Intellect : 0", Color.WHITE, 12));
+        messages[3] = (new Message(centerX, 600, 0, "Agility : 0", Color.WHITE, 12));
+        messages[4] = (new Message(centerX, 625, 0, "Endurance : 5", Color.WHITE, 12));
+        messages[5] = (new Message(centerX, 650, 0, "Vitality : 5", Color.WHITE, 12));
 
         addEntity(messages[0]);
         addEntity(messages[1]);
@@ -123,21 +144,21 @@ public class CharMenu extends Menu {
         addEntity(messages[4]);
         addEntity(messages[5]);
 
-        hairCols[0] = "Red";
-        hairCols[1] = "Blue";
-        hairCols[2] = "Green";
+//        hairCols[0] = "Red";
+//        hairCols[1] = "Blue";
+//        hairCols[2] = "Green";
+//
+//        Button tempButton;
+//
+//        tempButton = new Button(775, 250, 25, 25, "BROWN", 100, ">>", 9 );
+//        tempButton.addClickListener(this);
+//        addEntity(tempButton);
+//
+//        tempButton = new Button(650, 250, 25, 25, "BROWN", 100, "<<", 9 );
+//        tempButton.addClickListener(this);
+//        addEntity(tempButton);
 
-        Button tempButton;
-
-        tempButton = new Button(775, 250, 25, 25, "BROWN", 100, ">>", 9 );
-        tempButton.addClickListener(this);
-        addEntity(tempButton);
-
-        tempButton = new Button(650, 250, 25, 25, "BROWN", 100, "<<", 9 );
-        tempButton.addClickListener(this);
-        addEntity(tempButton);
-
-        addEntity(hairCol);
+        //addEntity(hairCol);
         addEntity(mageWalk);
         addEntity(rangerWalk);
         addEntity(warriorWalk);
@@ -155,18 +176,18 @@ public class CharMenu extends Menu {
 
                 //  loadDrawer(MapMenu.class);
                 new MapMenu(p).load();
-            } else if (button.getName().equals(">>")) {
-                //  System.out.format("%d", this.i);
-                if (this.i < 2) {
-                    this.i++;
-                    this.moveRight();
-                }
-            } else if (button.getName().equals("<<")) {
-                // System.out.format("%d", this.i);
-                if (this.i > 0) {
-                    this.i--;
-                    this.moveLeft();
-                }
+//            } else if (button.getName().equals(">>")) {
+//                //  System.out.format("%d", this.i);
+//                if (this.i < 2) {
+//                    this.i++;
+//                    this.moveRight();
+//                }
+//            } else if (button.getName().equals("<<")) {
+//                // System.out.format("%d", this.i);
+//                if (this.i > 0) {
+//                    this.i--;
+//                    this.moveLeft();
+//                }
             } else if (button.getName().equals("BACK")) {
                 this.unload();
 
@@ -242,13 +263,13 @@ public class CharMenu extends Menu {
     }
 
 
-    public void moveRight(){
-        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
-    }
-
-    public void moveLeft(){
-        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
-    }
+//    public void moveRight(){
+//        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
+//    }
+//
+//    public void moveLeft(){
+//        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
+//    }
 
     public void setStats(int a, int b, int c , int d, int e){
         ((Text)messages[1].getTransformable(0)).setString("Attack power : " + a);
