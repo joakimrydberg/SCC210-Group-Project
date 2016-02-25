@@ -144,7 +144,7 @@ public class Animation extends Entity {
             else if (getTransformableCount() > 1)
                 throw new RuntimeException();   ///there should only ever be one unless you have reasons
 
-            addTransformable(getSprite(), 0, 0, 0, 0);
+            addTransformable(getSprite(), getWidth()/2,getHeight()/2,getWidth(),getHeight());
 
             super.draw();
         }

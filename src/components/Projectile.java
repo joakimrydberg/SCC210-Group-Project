@@ -18,11 +18,8 @@ public abstract class Projectile extends Image implements MovingEntity {
 
 
     public Projectile(String spriteName){
-
         super(0, 0, 35, 35, spriteName);
         hide();
-
-
     }
 
     @Override
@@ -47,6 +44,7 @@ public abstract class Projectile extends Image implements MovingEntity {
                     }
 
                     if (move) {
+
                         setCenterX(newX);
                         setCenterY(newY);
 
@@ -79,27 +77,26 @@ public abstract class Projectile extends Image implements MovingEntity {
 
 
         //      System.out.println(angle * (180 / Math.PI)+ 90);
-        getTransformable(0).setOrigin(getCenterX() - getTopLeftX(), getCenterY()-getTopLeftY());
+        getTransformable(0).setOrigin(getWidth() / 2, getHeight());
         super.rotate(((float)(angle * (180 / Math.PI) + 90)),true);
-        //getTransformable(0).setOrigin(0,0);
-
-
+        getTransformable(0).setOrigin(0,0);
     }
 
 
     @Override
     public void setSpeed(Vector2f speed) {
+       // System.out.print("Speed x:" + speed.x + "y: " +speed.y);
 
         double  xSqrd = Math.pow(speed.x, 2),
                 ySqrd = Math.pow(speed.y, 2),
                 hypotenuse = Math.sqrt(xSqrd + ySqrd);
 
-
         this.speed = new Vector2f(
-                (int) (  (speed.x / hypotenuse) * 5 ),
-                (int) (  (speed.y / hypotenuse) * 5 )
+                (float) (  (speed.x / hypotenuse) * 5 ),
+                (float) (  (speed.y / hypotenuse) * 5 )
         );
 
+       // System.out.println("Speed x:" + this.speed.x + "y: " +this.speed.y);
         correctDirection();
     }
 

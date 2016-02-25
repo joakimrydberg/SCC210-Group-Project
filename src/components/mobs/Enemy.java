@@ -34,17 +34,17 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     private Navigator navigator;
     private int fleeDistance = 400;
     private int cautiousThreshold = 50,
-                cautiousDistance = 300;
+            cautiousDistance = 300;
 
     public Enemy(Room room) {
         int x, y;
-        
+
         //randomise position until we get a suitable one
         while (!isPlacable(room, x = MapMenu.randomInt(0, getWindow().getSize().x), y = MapMenu.randomInt(0, getWindow().getSize().y), 64, 128));
 
         super.create(x, y, 64, 128);
         this.exp = 50;
-     
+
         this.room = room;
         navigator = new Navigator(room);
         MapMenu.getPlayer().addMovementListener(this);

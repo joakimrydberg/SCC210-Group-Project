@@ -41,12 +41,11 @@ public class CharMenu extends Menu {
     private BufferedImage[] warrior = {SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(1, 0, newWarriorSheet), SpriteSheetLoad.getSprite(0, 0, newWarriorSheet), SpriteSheetLoad.getSprite(2, 0, newWarriorSheet)};
     private BufferedImage[] ranger = {SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(1, 0, newRangerSheet), SpriteSheetLoad.getSprite(0, 0, newRangerSheet), SpriteSheetLoad.getSprite(2, 0, newRangerSheet)};
     private BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, newMageSheet), SpriteSheetLoad.getSprite(1, 0, newMageSheet), SpriteSheetLoad.getSprite(0, 0, newMageSheet), SpriteSheetLoad.getSprite(2, 0, newMageSheet)};
-    private Animation warriorWalk = new Animation(200, 200, 64, 128, warrior, 3);
-    private Animation rangerWalk = new Animation(200, 200, 64, 128, ranger, 3);
-    private Animation mageWalk = new Animation(200, 200, 64, 128, mageA, 3);
+    private Animation warriorWalk = new Animation(232, 264, 64, 128, warrior, 3);
+    private Animation rangerWalk = new Animation(232, 264, 64, 128, ranger, 3);
+    private Animation mageWalk = new Animation(232, 264, 64, 128, mageA, 3);
     private Animation currAnimation = warriorWalk;
-    private Player tempPlayer = new Player();
-    BufferedImage[] currentAnimation = tempPlayer.charAttack(newMageSheet, 0);
+    BufferedImage[] currentAnimation = new Player().charAttack(newMageSheet, 0);
     private Animation tempWalk = new Animation(100, 200, 64, 128, currentAnimation, 5);
 
     private String[] hairCols = new String[3];
@@ -89,47 +88,22 @@ public class CharMenu extends Menu {
 
         //URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
-        try{
+        final String artLoc = "assets" + SEP + "art" + SEP;
 
-            File myfile = new File(url.toURI());
-            File dir = myfile.getParentFile().getParentFile().getParentFile(); // strip off .jar file
+        ClickableImage clickableImage ;
+        clickableImage = new ClickableImage(600, 100, artLoc+ "magic.png");
+        clickableImage.addClickListener(this);
+        addEntity(clickableImage);
+        clickableImage = new ClickableImage(725, 100, artLoc + "strength.png");
+        clickableImage.addClickListener(this);
+        addEntity(clickableImage);
+        clickableImage = new ClickableImage(850, 100, artLoc+ "ranged.png");
+        clickableImage.addClickListener(this);
+        addEntity(clickableImage);
 
-            final String a = (dir.toString() + SEP +"assets" + SEP +"art" + SEP + "magic.png");
-            final String d = (dir.toString() + SEP + "assets" + SEP + "art" + SEP + "ranged.png");
-            final String e = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "strength.png");
+        p = new Player();
+        p.move();
 
-
-            ClickableImage clickableImage ;
-            clickableImage = new ClickableImage(600, 100, a);
-            clickableImage.addClickListener(this);
-            addEntity(clickableImage);
-            clickableImage = new ClickableImage(725, 100, e);
-            clickableImage.addClickListener(this);
-            addEntity(clickableImage);
-            clickableImage = new ClickableImage(850, 100, d);
-            clickableImage.addClickListener(this);
-            addEntity(clickableImage);
-
-
-
-            /*final String f = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "mage-front.png");
-            final String g = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "warr-front.png");
-            final String h = (dir.toString()  + SEP + "assets" + SEP + "art" + SEP + "range-front.png");
-            mage = new Image(350, 400, 100, 200, f);
-            range = new Image(350, 400, 100, 200, h);
-            warr = new Image(350, 400, 100, 200, g);
-            addEntity(mage);
-            addEntity(range);
-            addEntity(warr);
-
-            warr.hide();
-            range.hide();*/
-            p = new Player();
-            p.move();
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
 
         addEntity(createButton);
         createButton.addClickListener(this);
@@ -148,7 +122,6 @@ public class CharMenu extends Menu {
         addEntity(messages[3]);
         addEntity(messages[4]);
         addEntity(messages[5]);
-
 
         hairCols[0] = "Red";
         hairCols[1] = "Blue";
@@ -180,16 +153,16 @@ public class CharMenu extends Menu {
                 //p.setClass(className); //******RYAN, IVE JUST COMMENTED THIS OUT WHILE WORKING ON MAP MENU, IT RESULTED IN A NULL POINTER EXCEPTION ANS STOPPED MAP MENU LOADING*******
                 this.unload();
 
-              //  loadDrawer(MapMenu.class);
+                //  loadDrawer(MapMenu.class);
                 new MapMenu(p).load();
             } else if (button.getName().equals(">>")) {
-              //  System.out.format("%d", this.i);
+                //  System.out.format("%d", this.i);
                 if (this.i < 2) {
                     this.i++;
                     this.moveRight();
                 }
             } else if (button.getName().equals("<<")) {
-               // System.out.format("%d", this.i);
+                // System.out.format("%d", this.i);
                 if (this.i > 0) {
                     this.i--;
                     this.moveLeft();
@@ -225,12 +198,12 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "ranged selected");
                 this.setStats(0, 0, 5, 5, 5);
                 p.setStats(0, 0, 5, 5, 5);
-               // range.show();
+                // range.show();
                 //warr.hide();
-               // mage.hide();
+                // mage.hide();
                 p.setClass("ranger");
                 p.addToInventory(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
-               // p.printInventory();//debug
+                // p.printInventory();//debug
                 className = "ranged";
                 currAnimation.stop();
                 currAnimation = rangerWalk;
