@@ -27,13 +27,15 @@ public class ShopMenu extends Menu {
 
     private Slot clickedSlot = null;
 
-    ArrayList<Item> helmets = new ArrayList<Item>();
-    ArrayList<Item> torsos = new ArrayList<Item>();
-    ArrayList<Item> arms = new ArrayList<Item>();
-    ArrayList<Item> boots = new ArrayList<Item>();
-    ArrayList<Item> weapons = new ArrayList<Item>();
-    ArrayList<Item> shields = new ArrayList<Item>();
-    ArrayList<Item> potions = new ArrayList<Item>();
+    private ArrayList<Item> helmets = new ArrayList<Item>();
+    private ArrayList<Item> torsos = new ArrayList<Item>();
+    private ArrayList<Item> arms = new ArrayList<Item>();
+    private ArrayList<Item> boots = new ArrayList<Item>();
+    private ArrayList<Item> weapons = new ArrayList<Item>();
+    private ArrayList<Item> shields = new ArrayList<Item>();
+    private ArrayList<Item> potions = new ArrayList<Item>();
+
+    private ArrayList<Item> lastList;
 
     public ShopMenu(){
         super(NAME);
@@ -86,6 +88,8 @@ public class ShopMenu extends Menu {
             System.out.println(items.get(i).getName()); //debug
             slots[i].addItem(items.get(i));
         }
+
+        lastList = items;
     }
 
     public void createItems(){
@@ -254,8 +258,25 @@ public class ShopMenu extends Menu {
                 this.unload();
                 loadDrawer(MapMenu.class);
                 System.out.println("EXIT SHOP clicked");
-            } else if (button.getName().equals("BUY")) {
-                MapMenu.getPlayer().addToInventory(clickedSlot.getItem());
+            } else if (button.getName().equals("BUY"))
+            {
+                MapMenu.getPlayer().addToInventory(clickedSlot.getItem()); //add the item to the players inventory
+
+                //remove the item from being purchasable
+                for(int i = 0; i < lastList.size(); i++){
+                    if (lastList.get(i) == clickedSlot.getItem()){
+                        lastList.remove(i);
+                    }
+                }
+                populateMenu(lastList);
+
+                //Output to screen that the item has been bought successfully
+                img.hide();
+                coins.hide();
+                btnBuy.hide();
+                n.setText("Bought!");
+                d.setText("");
+                price.setText("");
 
                 System.out.println("BUY clicked");
             }

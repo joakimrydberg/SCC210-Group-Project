@@ -167,6 +167,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                 }
             }
         }
+
     }
 
     public Item[] getEquippedItems() {
@@ -388,6 +389,10 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
         else {
             this.health = this.health + 50;
         }
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
 

@@ -22,6 +22,11 @@ public class PlayerMenu extends Menu
     private int count = 0;
     private Player player = null;
 
+    public final static int MIN_SIZE = 0;
+    public final static int MAX_SIZE = 175;
+    public final static int MIN_XP = 0;
+    public final static int MAX_XP = 99;
+
     private BufferedImage newWarriorSheet = SpriteSheetLoad.loadSprite("WarriorMaleSheet");
     private BufferedImage newRangerSheet = SpriteSheetLoad.loadSprite("RangerMaleSheet");
     private BufferedImage newMageSheet = SpriteSheetLoad.loadSprite("MageMaleSheet");
@@ -51,7 +56,6 @@ public class PlayerMenu extends Menu
         addEntity(new Image(500, 150, "assets" + Constants.SEP + "art" + Constants.SEP + "coins.png"));
 
         addSlot("LVL", 585, 150, 85, 85); //level box
-        addEntity(new Message(585, 150, 0, Integer.toString(lvl), Color.WHITE, 30)); //TODO pass in actual level
 
         //experiance bar
         //TODO add functioning xp bar, this is just for show atm
@@ -127,9 +131,20 @@ public class PlayerMenu extends Menu
         addEntity(viMsg);
         addEntity(heMsg);
 
-        for(int i = 0; i < items.length; i++){ //display items the player has equipped
+        //display level
+        lvl = player.getLevel();
+        Message lvlMsg = new Message(585, 150, 0, Integer.toString(lvl), Color.WHITE, 30);
+        addEntity(lvlMsg);
+
+        //display xp
+        int barSize = ((player.getExp() - MIN_XP) / (MIN_XP - MAX_XP)) * (MAX_SIZE - MIN_XP) + MIN_SIZE;
+        Rect xpBar = new Rect(null, 730, 150, barSize, 15, Color.WHITE, 250);
+        addEntity(xpBar);
+
+        //display items the player has equipped
+        for(int i = 0; i < items.length; i++){
             if(items[i] != null) {
-                //System.out.println(items[i].getName()); //debug
+
                 slots[i].addItem(items[i]);
             }
         }

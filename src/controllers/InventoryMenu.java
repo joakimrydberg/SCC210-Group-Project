@@ -4,8 +4,10 @@ import abstract_classes.Entity;
 import components.*;
 import components.Button;
 import components.Image;
+import components.mobs.Player;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
+import org.omg.CORBA.MARSHAL;
 import tools.Constants;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class InventoryMenu extends Menu {
     private ItemDescriptor[] itemDesc = new ItemDescriptor[42];
     private Slot[] slots = new Slot[42];
     private Slot clickedSlot = null;
+    private Player player = null;
 
     private int count = 0;
     private Button btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
@@ -167,13 +170,26 @@ public class InventoryMenu extends Menu {
         } else if (clickable instanceof Button) {
             Entity button = (Button) clickable;
 
-            if (button.getName().equals("EQUIPT")) {
+            player = MapMenu.getPlayer();
+
+            if (button.getName().equals("EQUIPT"))
+            {
                 MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(clickedSlot.getItem()));
-                //populateEquipped(MapMenu.getPlayer().getEquippedItems());
+
+                updateSlots(player.getInventory(), player.getEquippedItems());
+
                 System.out.println("EQUIPT clicked");
-            } else if (button.getName().equals("UNEQUIPT")) {
+            }
+            else if (button.getName().equals("UNEQUIPT"))
+            {
                 System.out.println("UNEQUIPT clicked : FUNCTIONALITY NOT YET IMPLEMENTED");
-            }else if (button.getName().equals("DISCARD")) {
+            }
+            else if (button.getName().equals("DISCARD"))
+            {
+                player.removeFromInventory(clickedSlot.getItem());
+
+                updateSlots(player.getInventory(), player.getEquippedItems());
+
                 System.out.println("DISCARD clicked");
             }
         }
@@ -230,16 +246,6 @@ public class InventoryMenu extends Menu {
         addEntity(slots[count]);
 
         count++;
-    }
-
-    private void addSlot(String slot, int x, int y) {
-        addEntity(new ClickableImage(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot +".png"));
-    }
-
-    private void addSlot(String slot, int x, int y, int length, int height, String name) {
-        ClickableImage s = new ClickableImage(x, y, length, height, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name);
-        s.addClickListener(this);
-        addEntity(s);
     }
 
     private void addSlot(String slot, int x, int y, int length, int height) {
