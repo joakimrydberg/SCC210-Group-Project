@@ -247,7 +247,9 @@ public class Entity extends ClassDescription implements Serializable {
     }
 
     public void removeTransformable(int index) {
-        transformableHolders.remove(transformableHolders.get(index));
+        if (index < transformableHolders.size()) {
+            transformableHolders.remove(transformableHolders.get(index));
+        }
     }
 
     public void hideTransformable(Transformable transformable) {

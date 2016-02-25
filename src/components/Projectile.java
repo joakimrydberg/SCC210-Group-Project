@@ -14,12 +14,12 @@ public abstract class Projectile extends Image implements MovingEntity {
     private ArrayList<MovementListener> listeners = new ArrayList<>();
     private Vector2f speed = new Vector2f(0,0);
     public final static int BROKEN = 0, OKAY = 1;
-    private boolean broken = false;
+    protected boolean broken = false;
 
 
-    public Projectile(String spriteName){
+    public Projectile(String spriteName, int width, int height){
 
-        super(0, 0, 35, 35, spriteName);
+        super(0, 0, width, height, spriteName);
         hide();
 
 
@@ -30,6 +30,7 @@ public abstract class Projectile extends Image implements MovingEntity {
         { //moving
             { //mover from mob
                 //  if (!broken) {
+
                 final int newX = (int) (getCenterX() + speed.x), newY = (int) (getCenterY() + speed.y);
                 // System.out.format("%f %f \n",(getCenterX() + speed.x), (getCenterY() + speed.y));
 
@@ -39,7 +40,7 @@ public abstract class Projectile extends Image implements MovingEntity {
                     //checking all the MovementListeners are 'okay' with the proposed move
                     if (!broken) {
                         for (MovementListener listener : listeners) {
-                            move = listener.isMoveAcceptable(newX - getWidth() / 2, newY - getHeight() / 2, 1, 1) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
+                            move = listener.isMoveAcceptable(newX - getWidth() / 2, newY - getHeight() / 2, 1, 1, this) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
                                     && move;                                             // a little weird but for reasons.
                         }
                     }  else {
@@ -47,6 +48,7 @@ public abstract class Projectile extends Image implements MovingEntity {
                     }
 
                     if (move) {
+
                         setCenterX(newX);
                         setCenterY(newY);
 
@@ -79,11 +81,9 @@ public abstract class Projectile extends Image implements MovingEntity {
 
 
         //      System.out.println(angle * (180 / Math.PI)+ 90);
-        getTransformable(0).setOrigin(getCenterX() - getTopLeftX(), getCenterY()-getTopLeftY());
+        getTransformable(0).setOrigin(getWidth() / 2, getHeight());
         super.rotate(((float)(angle * (180 / Math.PI) + 90)),true);
-        //getTransformable(0).setOrigin(0,0);
-
-
+        getTransformable(0).setOrigin(0,0);//
     }
 
 
@@ -96,10 +96,11 @@ public abstract class Projectile extends Image implements MovingEntity {
 
 
         this.speed = new Vector2f(
-                (int) (  (speed.x / hypotenuse) * 5 ),
-                (int) (  (speed.y / hypotenuse) * 5 )
+                (float) (  (speed.x / hypotenuse) * 5 ),
+                (float) (  (speed.y / hypotenuse) * 5 )
         );
 
+       // System.out.println("Speed x:" + this.speed.x + "y: " +this.speed.y);
         correctDirection();
     }
 

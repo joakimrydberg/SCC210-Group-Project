@@ -27,7 +27,6 @@ public class SpriteSheetLoad{
         BufferedImage sprite = null;
         try {
             sprite = ImageIO.read(new File("assets" + Constants.SEP + "art" + Constants.SEP + file + ".png"));
-            System.out.println("Working");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -24,7 +24,7 @@ public class GameOverMenu extends Menu{
         addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "pause_menu_background.png"));
 
         addEntity(new Message(centerX, centerY, 0, "You died", Color.RED, 30));
-        addEntity(new Message(centerX, centerY + 100, 0, "Level :", Color.RED, 30));
+        addEntity(new Message(centerX, centerY + 100, 0, "Level : " + MapMenu.getPlayer().level, Color.RED, 30));
 
         Button btn = new Button(centerX, centerY + 200, 200, 40, "GREEN", 200, "Play Again", 15);
         btn.addClickListener(this);

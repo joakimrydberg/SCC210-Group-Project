@@ -6,14 +6,17 @@
 package controllers;
 
 import abstract_classes.Entity;
-import components.Button;
-import components.Image;
-import components.Node;
-import components.Rect;
+import components.*;
+import components.mobs.Mage;
+import components.mobs.Player;
+import components.mobs.Ranger;
+import components.mobs.Warrior;
+import interfaces.ClickListener;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.Event;
 import tools.CSVReader;
 import tools.Constants;
 
@@ -26,26 +29,30 @@ import java.util.Random;
  * This...  //TODO complete sentence :P
  * @author Ross Newby
  */
-public class MapMenu extends Menu /*implements Clickable*/ implements Serializable {
+public class MapMenu extends Menu implements Clickable, Serializable {
     private static final long serialVersionUID = 3L;  //actually needed
     private Node[] nodes = new Node[NUMBER_OF_NODES];
     private NodeDescriptor[] nodeDesc = new NodeDescriptor[NUMBER_OF_NODES];
     public final static String NAME = "Map Menu";
     private final int map_id = 1;  // = new Random().nextInt( /* a value */);
     private final static int MAX_MOVE_DIST = 200,
-            MIN_MOVE_DIST = 100,
-            NUMBER_OF_NODES = 15;
+            MIN_MOVE_DIST = 100;
+    public final static int NUMBER_OF_NODES = 15;
     private ArrayList<String[]> csvContent;
     private ArrayList<Rect> lines;
     private final static int EXTRA_BOSS_DIFF = 5;
+    //private Node currentNode;
+    private NodeDescriptor currNodeDescriptor;
+    private static Player player = null;
+    private PauseMenuMap pauseMenuMap = new PauseMenuMap();
 
     /**
      *
      */
-    public MapMenu() {
+    public MapMenu(Player p) {
         super(NAME);
 
-        super.addEntity(this);
+        super.addEntity(this);  //do first for events
 
         RenderWindow w = getWindow();
         final Vector2i windowSize = w.getSize();
@@ -53,15 +60,47 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
 
         addEntity(new Image(centerX, centerY, "assets" + Constants.SEP + "art" + Constants.SEP + "game-map.png"));
 
-        Button backButton = new Button(50, 40, 80, 50, "BROWN", 200, "BACK", 15);
-        backButton.addClickListener(this);
-        addEntity(backButton);
-        //this.addClickListener(this);
+        //QUIT button
+        addEntity(new Image(140, 15, 200, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnQuit = new Button(140, 30, 140, 40, "RED", 200, "QUIT GAME", 15);
+        btnQuit.addClickListener(this);
+        addEntity(btnQuit);
+
+        //PLAYER button
+        addEntity(new Image(750, 755, 150, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnPlayer = new Button(750, 740, 100, 40, "BROWN", 200, "PLAYER", 15);
+        btnPlayer.addClickListener(this);
+        addEntity(btnPlayer);
+
+        //SHOP button
+        addEntity(new Image(900, 755, 130, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnShop = new Button(900, 740, 80, 40, "BROWN", 200, "SHOP", 15);
+        btnShop.addClickListener(this);
+        addEntity(btnShop);
+
+        this.addClickListener(this);
         Node start = null, end;
         //generating map
         ArrayList<Node> tempNodes;
         int iterationCount = 0;
 
+        if (Player.classType.equals("warrior")) {
+            player = new Warrior();
+        }
+        if (Player.classType.equals("mage")) {
+            player = new Mage();
+        }
+        if (Player.classType.equals("ranger")) {
+            player = new Ranger();
+        }
+        for (Item item : p.getInventory()) {
+            player.addToInventory(item);
+        }
+
+        System.out.println("From map menu..");
+        p.printInventory();//debug
+        player.dead = false;
+        // p.setClass(Player.classType);
         do {
             iterationCount++;
 
@@ -75,12 +114,12 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
                     row = csvContent.get(i);
 
                     if (row[2].equals("start")) {
-                        start = new Node("Starting Level", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+                        start = new Node("Starting Level", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.BLUE, Color.BLACK, 4, 300);
                         tempNodes.add(start);
                         start.setType("start");
                         csvContent.remove(row);
                     } else if (row[2].equals("end")) {
-                        end = new Node("BOSS. Be warned.", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.WHITE, Color.BLACK, 4, 300);
+                        end = new Node("BOSS. Be warned.", Integer.parseInt(row[0]), Integer.parseInt(row[1]), 10, Color.RED, Color.BLACK, 4, 300);
                         tempNodes.add(end);
                         end.setType("end");
                         csvContent.remove(row);
@@ -175,13 +214,14 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
                 clearTimes(nodesCopy);
                 int difficulty = navigateTo(start, node, 0, nodesCopy);
                 maxDiff = difficulty > maxDiff ? difficulty : maxDiff;
-                nodeDesc[i] = new NodeDescriptor(node.getName(), "Difficulty : " + difficulty, node, 200, 150, this);
+                nodeDesc[i] = new NodeDescriptor(node.getName(),  difficulty, node, 200, 150, this);
                 addEntity(nodeDesc[i]);
             }
 
             if (!node.getType().equals("start")) {
-             //   node.lock();
+                node.lock();
             } else {
+                currNodeDescriptor = nodeDesc[i];
                 node.unlock();
             }
             i++;
@@ -192,7 +232,7 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
             int k = 0;
             for (NodeDescriptor nodeDescriptor : nodeDesc) {
                 if (nodeDescriptor == null) {
-                    nodeDesc[k] = new NodeDescriptor(node.getName(), "Difficulty : " + (maxDiff + EXTRA_BOSS_DIFF), node, 200, 150, this);
+                    nodeDesc[k] = new NodeDescriptor(node.getName(), (maxDiff + EXTRA_BOSS_DIFF), node, 200, 150, this);
 
                     addEntity(nodeDesc[k]);
                 }
@@ -214,18 +254,15 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
             }
         }
 
-        int fails = 0;
         if (all) {
             for (Node node : nodes) {
                 clearTimes(nodes);
                 if (navigateTo(start, node, 0, nodes) < 0) {
-                    fails++;
+                    return false;
                 }
             }
 
-            System.out.println("fails " + fails);
-
-            return (fails == 0);
+            return true;
         } else {
             return navigateTo(start, end, 0, nodes) > 0;
         }
@@ -239,7 +276,7 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
 
     public int navigateTo(Node frm, Node end, int stepCount, ArrayList<Node> nodes) {
         ++stepCount;
-        
+
         if (frm.equals(end) ) {
             return stepCount;
         }
@@ -266,11 +303,16 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
         }
     }
 
+    public void levelComplete() {
+        this.load();
+        setCurrNodeDescriptor(currNodeDescriptor, false);
+    }
+
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) { //TODO should there actually be a back button? idk
         if (clickable instanceof  Button ) {
             Entity button = (Button) clickable;
-            if (button.getName().equals("BACK")) {
+            if (button.getName().equals("QUIT GAME")) {
                 this.unload();
 
                 loadDrawer(CharMenu.class);
@@ -282,7 +324,28 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
                     }
                 }
 
-                System.out.println("Back clicked");
+                System.out.println("QUIT GAME clicked");
+            } else if (button.getName().equals("PLAYER")) {
+                MapMenu.getPlayer().printInventory();
+                //MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0)); //shouldnt need this but its there as a quick fix for now
+                MapMenu.getPlayer().printEquipped();
+                pauseMenuMap.loadInPlayer(MapMenu.getPlayer());
+                pauseMenuMap.load();
+
+                System.out.println("PLAYER clicked");
+            } else if (button.getName().equals("SHOP")) {
+                this.unload();
+
+                loadDrawer(ShopMenu.class);
+
+                //close any node descriptors that are open
+                for(int i = 0; i < 10; i++){
+                    if (nodeDesc[i].isLoaded()){
+                        nodeDesc[i].unload();
+                    }
+                }
+
+                System.out.println("SHOP clicked");
             }
         }
         else if (clickable instanceof Node){
@@ -302,13 +365,37 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
                     if (nodeDescriptor.isLoaded()) {
                         nodeDescriptor.unload();
                     } else {
+                        setCurrNodeDescriptor(nodeDescriptor, true);
                         nodeDescriptor.load();
                     }
                 } else {
                     System.out.println("Node is locked");
                 }
             }
+        } else if (clickable instanceof MapMenu) {
+            for (NodeDescriptor nodeDescriptor : nodeDesc) {
+                if (nodeDescriptor.isLoaded()) {
+                    nodeDescriptor.unload();
+                }
+            }
         }
+    }
+
+    public void setCurrNodeDescriptor(NodeDescriptor current, boolean keepLinksLocked) {
+        currNodeDescriptor.getNode().setColour(Color.WHITE, Color.BLACK, 4, 300);
+
+        Node node = current.getNode();
+        node.unlock();
+
+        if (!keepLinksLocked) {
+            for (Node link : node.getLinks()) {
+                link.unlock();
+            }
+        }
+
+        node.setColour(Color.BLUE, Color.BLACK, 4, 300);
+
+        currNodeDescriptor = current;
     }
 
     /*
@@ -348,8 +435,8 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
         }
 
         this.lines.addAll(lines);
-        p1.addLines(lines);
-        p2.addLines(lines);
+        p1.addNodeLinks(lines, p2);
+        p2.addNodeLinks(lines, p1);
 
         //setRotation the lines using trigonometry
         int l1 = p2.getCenterY()- p1.getCenterY();
@@ -363,7 +450,7 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
 
 
     //a random int between two integers, i may still need this, will wait and see (Ross)
-    private int randomInt(int aStart, int aEnd){
+    public static int randomInt(int aStart, int aEnd){
         Random rand = new Random();
         if (aStart > aEnd) {
             throw new IllegalArgumentException("Start cannot exceed End.");
@@ -377,6 +464,51 @@ public class MapMenu extends Menu /*implements Clickable*/ implements Serializab
     }
 
 
+    @Override
+    public void clicked(Event e) {
+        buttonClicked(this, null);
+    }
+
+    //===============================================================================================================
 
 
+    @Override
+    public void addClickListener(ClickListener clickListener) {
+
+    }
+
+    /**
+     * Checks whether the x and y parameters
+     *
+     * @param x - X coordinate to check
+     * @param y - Y coordinate to check
+     * @return - true if checkWithin, false if not;
+     */
+    @Override
+    public boolean checkWithin(int x, int y) {
+        for (Entity entity : getEntities()) {
+            if (entity instanceof Clickable
+                    && !(entity instanceof MapMenu)
+                    && ((Clickable) entity).checkWithin(x, y)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
+
+    /**
+     * Checks whether the x and y parameters passed in an Event obj
+     *
+     * @param e - the Event that caused this method call
+     * @return - true if checkWithin, false if not;
+     */
+    @Override
+    public boolean checkWithin(Event e) {
+        return checkWithin(e.asMouseButtonEvent().position.x, e.asMouseButtonEvent().position.y);
+    }
 }

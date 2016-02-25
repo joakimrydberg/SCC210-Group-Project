@@ -1,7 +1,8 @@
 package components.mobs;
 
-import components.Image;
 import components.Item;
+import components.Projectile;
+import controllers.MapMenu;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
@@ -9,8 +10,10 @@ import interfaces.KeyListener;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
 import tools.Constants;
+import tools.FileHandling;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -32,19 +35,163 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             downPressed = false,
             leftPressed = false,
             rightPressed = false;
-
+    public int healthPotions = 0;
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
-    ArrayList<Item> inventory = new ArrayList<Item>();
-    ArrayList<Item> equippedItems = new ArrayList<Item>();
+    private ArrayList<Item> inventory = new ArrayList<Item>();
+    //ArrayList<Item> equippedItems = new ArrayList<Item>();
+    private Item[] equippedItems = new Item[7]; //7 slots for each equipped item
     public int level = 1;
 
     public Player() {
-        super(200, 200, 64, 128);
-        //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
+        //initialise equipped items array
+        for(int i = 0; i < 7; i++){
+            equippedItems[i] = null;
+        }
+        File save = new File("assets" + Constants.SEP + "save_games" + Constants.SEP + "player_state");
+        if(save.exists()){
+
+            ArrayList<Object> objs = new ArrayList<>();
+            objs = FileHandling.readFile("assets" + Constants.SEP + "save_games" + Constants.SEP + "player_state");
+            Object obj[] = objs.toArray();
+            this.level = (int) obj[0];
+            setExp((int) obj[1]);
+            this.Vitality = (int) obj[2];
+            this.Endurance = (int) obj[3];
+            this.Intellect = (int) obj[4];
+            this.attackPower = (int) obj[5];
+            this.Agility = (int) obj[6];
+
+           System.out.format("%d", (int) obj[0]);
+        }
     }
 
+    public void place(Room room) {
+        int x = 400,
+                y = 400;
+
+        //randomise position until we get a suitable one
+        while (!isPlacable(room, x , y, 64, 128)) {
+            x = MapMenu.randomInt(0, getWindow().getSize().x);
+            y = MapMenu.randomInt(0, getWindow().getSize().y);
+        }
+
+        super.create(x, y, 64, 128);
+    }
+
+    public void addToInventory(Item item){
+        inventory.add(item);
+    }
+
+    public void removeFromInventory(Item item){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == item){
+                inventory.remove(i);
+            }
+        }
+    }
+
+    public Item getFromInventory(int j){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(j) != null) {
+                if (inventory.get(i) == inventory.get(j)) {
+                    //inventory.remove(i);
+                    return inventory.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public Item getFromInventory(Item item){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == item) {
+                Item rtn = inventory.get(i);
+                inventory.remove(i);
+                return rtn;
+            }
+        }
+        return null;
+    }
+
+    public void printInventory(){
+        System.out.println("--Inventory-------");
+        for(int i = 0; i < inventory.size(); i++){
+            System.out.println(inventory.get(i).getName());
+        }
+        System.out.println("------------------");
+    }
+
+    public void printEquipped(){
+        System.out.println("--Equipped-------");
+        for(int i = 0; i < 7; i++){
+            System.out.print(i + 1 + ": ");
+            if(equippedItems[i] != null) {
+                System.out.print(equippedItems[i].getName());
+            }
+            System.out.print("\n");
+        }
+        System.out.println("------------------");
+    }
+
+    public void equipt(Item item){
+        if(item.getType().equals("HELMET")){
+            equippedItems[0] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
+        } else if(item.getType().equals("ARM")){
+            equippedItems[1] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
+        } else if(item.getType().equals("TORSO")){
+            equippedItems[2] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
+        } else if(item.getType().equals("BOOT")){
+            equippedItems[3] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
+        } else if(item.getType().equals("WEAPON")){
+            equippedItems[4] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
+        } else if(item.getType().equals("SHIELD")){
+            equippedItems[5] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
+        } else if(item.getType().equals("POTION")){
+            equippedItems[6] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
+        }
+
+    }
+
+    public Item[] getEquippedItems() {
+        return equippedItems;
+    }
 
     public void setClass(String c) {
         classType = c;
@@ -116,6 +263,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                     tempDir = 0;
                     setAnimation(ANIMATE_DOWN);
                 }
+
                 break;
         }
 
@@ -161,7 +309,10 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                     setCharacterStill(tempDir);
                     super.stopCharacter(); //@see Mob
                 }
-
+            case H:
+                if(healthPotions > 0){
+                    drinkHealthPotion();
+                }
                 break;
         }
 
@@ -224,8 +375,12 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public void damaged(){
 
-        BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 4);
-        setFrames(a);
+        if(System.currentTimeMillis() - timeAtLastDamaged > 500){
+            timeAtLastDamaged = System.currentTimeMillis();
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 10);
+            setFrames(a);
+
+        }
 
     }
 
@@ -235,6 +390,30 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     }
 
+    public ArrayList<Projectile> getProjectiles(){
+        return new ArrayList<>();
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventory;
+    }
+
+    public static String getClassType() {
+        return classType;
+    }
+
+    public void drinkHealthPotion(){
+        if(this.health + 50 > 100){
+            this.health = 100;
+        }
+        else {
+            this.health = this.health + 50;
+        }
+    }
+
+    public int getLevel() {
+        return level;
+    }
 }
 
 

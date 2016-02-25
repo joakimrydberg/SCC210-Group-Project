@@ -23,6 +23,14 @@ public class Animation extends Entity {
 
     private List<AnimationFrame> frames = new ArrayList<AnimationFrame>();    // Arraylist of frames
 
+    public Animation() {
+        super("name");
+
+        this.stopped = true;
+        this.frameCount = 0;
+        this.currentFrame = 0;
+        this.totalFrames = this.frames.size();
+    }
     public Animation(int x, int y, int width, int height, BufferedImage[] frames, float scale) {
         super("name");
 
@@ -136,7 +144,7 @@ public class Animation extends Entity {
             else if (getTransformableCount() > 1)
                 throw new RuntimeException();   ///there should only ever be one unless you have reasons
 
-            addTransformable(getSprite(), 0, 0, 0, 0);
+            addTransformable(getSprite(), getWidth()/2,getHeight()/2,getWidth(),getHeight());
 
             super.draw();
         }

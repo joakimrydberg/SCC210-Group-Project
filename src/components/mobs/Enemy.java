@@ -1,5 +1,6 @@
 package components.mobs;
 
+import controllers.MapMenu;
 import game.Room;
 import interfaces.CollidingEntity;
 import interfaces.MovementListener;
@@ -18,7 +19,7 @@ import java.util.Random;
  * @date 20/02/16.
  */
 public abstract class Enemy extends Mob implements MovementListener, CollidingEntity {
-    private Player player;
+    private long timeAtMove = System.currentTimeMillis() + (long)(Math.random() * 1000);
     protected boolean colliding = false;
     private Room room;
     public final static int IDLE = 0,
@@ -33,29 +34,32 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     private Navigator navigator;
     private int fleeDistance = 400;
     private int cautiousThreshold = 50,
-                cautiousDistance = 300;
+            cautiousDistance = 300;
 
-    public Enemy(Room room, Player player) {
-        super( getWindow().getSize().x - 200 - Math.abs(new Random().nextInt() % 50 + 25)  /*getWindow().getSize().x + (new Random().nextInt() % (getWindow().getSize().x / 4))*/,
-                getWindow().getSize().y - 200 - Math.abs(new Random().nextInt() % 300) /*getWindow().getSize().y + (new Random().nextInt() % (getWindow().getSize().y / 4))*/,
-                64,
-                128);
+    public Enemy(Room room) {
+        int x, y;
+
+        //randomise position until we get a suitable one
+        while (!isPlacable(room, x = MapMenu.randomInt(0, getWindow().getSize().x), y = MapMenu.randomInt(0, getWindow().getSize().y), 64, 128));
+
+        super.create(x, y, 64, 128);
         this.exp = 50;
-        this.player = player;
+
         this.room = room;
         navigator = new Navigator(room);
-        player.addMovementListener(this);
+        MapMenu.getPlayer().addMovementListener(this);
+        onMove(MapMenu.getPlayer());
     }
 
     @Override
-    public boolean isMoveAcceptable(int newX, int newY, int w, int h) {
+    public boolean isMoveAcceptable(int newX, int newY, int w, int h, MovingEntity movingEntity) {
         //maybe we do collision stuff here?
 
         return true;
     }
 
     public Player getPlayer() {
-        return player;
+        return MapMenu.getPlayer();
     }
 
     public Room getRoom() {
@@ -121,7 +125,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
 
     public void damaged(){
 
-        if (player instanceof Ranger){
+        if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage){
 
             BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 5);
             setFrames(a);
@@ -129,11 +133,13 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
         }
         else {
 
-            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 3);
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 10);
             setFrames(a);
         }
 
-
+        if (getHealth() < 30) {
+            setMovementState(FLEE_PLAYER);
+        }
     }
 
 
@@ -142,7 +148,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
 
     @Override
     public void onMove(MovingEntity mover) {
-        if (!processingMove) {
+        if (!processingMove && System.currentTimeMillis() - timeAtMove > 1000) {
             processingMove = true;
 
             switch (movementState) {
@@ -193,6 +199,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
                     }
                     break;
             }
+            timeAtMove = System.currentTimeMillis();
         }
     }
 
@@ -248,7 +255,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
     public void die(){
 
         stopCharacter();
-        player.exp = player.exp + this.exp;
+        MapMenu.getPlayer().exp = MapMenu.getPlayer().exp + this.exp;
         dead = true;
     }
 

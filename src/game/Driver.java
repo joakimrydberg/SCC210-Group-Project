@@ -3,12 +3,12 @@ package game;
 import abstract_classes.Drawer;
 import abstract_classes.Entity;
 import controllers.MainMenu;
+import levelcreator.LevelCreator;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
-import tools.ConcurrentSafeArrayList;
 import tools.Constants;
 import tools.DebugPrinter;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  *
  */
 public class Driver {
-    private static ConcurrentSafeArrayList<Drawer> drawers = new ConcurrentSafeArrayList<>( );
+    private static ArrayList<Drawer> drawers = new ArrayList<>( );
     private static int screenWidth = 1024,
             screenHeight = 768;
     private static RenderWindow window;
@@ -60,14 +60,27 @@ public class Driver {
         window = new RenderWindow();
         Entity.setWindow(window);  //important
 
-        window.create(new VideoMode(screenWidth, screenHeight), "Dungeons but not Dragons", WindowStyle.DEFAULT);
+        window.create(new VideoMode(screenWidth, screenHeight), "Dungeons but not Dragons", WindowStyle.TITLEBAR | WindowStyle.CLOSE);
 
         window.setFramerateLimit(30); // Avoid excessive updates
 
-        MainMenu mainMenu = new MainMenu();
+        MainMenu mainMenu;
+
+        for (String cheat : args) {
+            if (cheat.equals("levelcreator")
+                    || cheat.equals("level creator")) {
+
+                new Thread(LevelCreator::new).start(); //who even knew java had this syntax
+            } else if (false) {
+
+            }
+        }
+
+        mainMenu = new MainMenu();
+
         mainMenu.load();
 
-        ArrayList<Drawer> tempDrawers = new ArrayList<>();
+      //  ArrayList<Drawer> tempDrawers = new ArrayList<>();
 
         while (window.isOpen()) {
             window.clear(Color.BLACK);
@@ -75,29 +88,39 @@ public class Driver {
             Iterable<Event> tempEvents = window.pollEvents();
             ArrayList<Event> events = new ArrayList<>();
 
-            for (Event e : tempEvents)
+            for (Event e : tempEvents) {
                 events.add(e);
+            }
 
             for (int i = 0; i < drawers.size(); i++) {
                 drawers.get(i).update(events);
+            }
+
+            try{
+                Thread.sleep(20);
+            } catch (Exception e ) {
+
             }
             window.display();
         }
     }
 
-
     public static void addDrawer(Drawer drawer) {
-        Drawer item;
-        for (int i = 0; i < drawers.size(); i++) {
-            item = drawers.get(i);
-            if (item.getName().equals(drawer.getName())) {
-                drawers.remove(item);
-            }
-        }
+//        Drawer item;
+//        for (int i = 0; i < drawers.size(); i++) {
+//            item = drawers.get(i);
+//            if (item.getName().equals(drawer.getName())) {
+//                drawers.remove(item);
+//            }
+//        }
 
+        //drawers.remove(drawer);
         drawers.add(drawer);
     }
 
+	public static void removeDrawer(Drawer drawer) {
+		drawers.remove(drawer);
+	}
 
     public static Drawer getDrawer(String name, Class type) {
 

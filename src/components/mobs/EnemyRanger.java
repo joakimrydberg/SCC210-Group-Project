@@ -22,8 +22,8 @@ public class EnemyRanger extends Enemy implements CollidingEntity, interfaces.Ra
     private Room room;
     private ArrayList<Projectile> arrows = new ArrayList<>();
 
-    public EnemyRanger(Room room, Player player) {
-        super(room, player);
+    public EnemyRanger(Room room) {
+        super(room);
         setMovementState(BE_CAUTIOUS);
         this.room = room;
 

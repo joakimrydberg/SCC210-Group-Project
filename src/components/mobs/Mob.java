@@ -1,6 +1,7 @@
 package components.mobs;
 
 import components.Animation;
+import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.MovementListener;
 import interfaces.MovingEntity;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public abstract class Mob extends Animation implements MovingEntity, Serializable {
+    protected long timeAtLastDamaged = System.currentTimeMillis();
     private static final long serialVersionUID = 2L;  //actually needed
     public final static int SPEED_CAP = 5;
     public final static int ANIMATE_RIGHT = 2,
@@ -26,18 +28,30 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public int attackPower = 0;
     public int Endurance = 0;
     public int Vitality = 0;
-    public int Health = 100;
+    public int health = 100;
     protected int tempDir = 0;
     public boolean dead = false;
+    public static Animation currentHealthBar;
+
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
     protected int exp = 0;
     // public static Animation currAnimation;
 
-
     public Mob(int x, int y, int w, int h) {
         super(x, y, w, h, new BufferedImage[0], 1);
+    }
+
+    public Mob() {
+
+    }
+
+    public void create(int x, int y, int w, int h) {
+        setWidthHeight(w, h);
+
+        setCenterX(x);
+        setCenterY(y);
     }
 
     public void setStats(int a, int b, int c , int d, int e){
@@ -54,6 +68,12 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
     }*/
+        public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true, this);
+    }
+    public boolean isPlacable(MovementListener room, int newX, int newY, int w, int h) {
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, this);
+    }
 
     public BufferedImage[] charAttack(BufferedImage character, int dir)
     {
@@ -64,7 +84,9 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public BufferedImage[] charHurt(BufferedImage character, int dir, int dmg)
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
-        this.Health = this.Health-dmg;
+        this.health = this.health - dmg;
+
+
         return characterHurt;
     }
 
@@ -83,7 +105,7 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
                 //checking all the MovementListeners are 'okay' with the proposed move
                 boolean move = true;
                 for (MovementListener listener : listeners) {
-                    move = listener.isMoveAcceptable(newX, newY + getHeight() / 6, getWidth() / 2, getHeight() / 4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
+                    move = isPlacable(listener, newX, newY + getHeight() / 6, getWidth() / 2, getHeight() / 4) // It's so the top half of the player can overlap on the walls etc TODO adjust these values if they aren't great
                             && move;                                             // a little weird but for reasons.
                 }
 
@@ -246,6 +268,30 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     }
     public void setExp(int xp){
         this.exp = xp;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public int getIntellect() {
+        return Intellect;
+    }
+
+    public int getAgility() {
+        return Agility;
+    }
+
+    public int getEndurance() {
+        return Endurance;
+    }
+
+    public int getVitality() {
+        return Vitality;
+    }
+
+    public int getHealth() {
+        return this.health;
     }
 }
 

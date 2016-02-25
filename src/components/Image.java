@@ -53,14 +53,29 @@ public class Image extends Entity implements InteractingEntity {
         if (width >= 0)
             img.setScale((float)(widthTemp / (imgSize.x/1.0)), (float)(heightTemp / (imgSize.y / 1.0)));
 
-
     }
 
     public Image(int x, int y, String textureFile) {
         this(x, y, -1, -1, textureFile);
     }
 
+    public void changeImage(Image img){
 
+        // Load image/ texture
+        Texture imgTexture = new Texture( );
+        try {
+            imgTexture.loadFromFile(Paths.get(img.getName()));
+        } catch (IOException ex) {
+            ex.printStackTrace( );
+        }
+
+        imgTexture.setSmooth(true);
+
+        Sprite img2 = new Sprite(imgTexture);
+
+        removeTransformable(0);
+        addTransformable(img2, 40, 40, 60, 60); //not supplying w and h so the origin will be 0
+    }
 
     @Override
     public boolean checkWithin(Event e) {
@@ -74,18 +89,12 @@ public class Image extends Entity implements InteractingEntity {
                 && getTopLeftY() < y && y < getTopLeftY() + getHeight());
     }
 
-
-
     public void hide(){
-
-
         hidden = true;
-
     }
+
     public void show(){
-
         hidden = false;
-
     }
 
     /**

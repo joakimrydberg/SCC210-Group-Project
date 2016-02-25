@@ -11,26 +11,28 @@ import components.Image;
 import components.Message;
 import components.Node;
 import game.Level;
+import interfaces.ClickListener;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.Event;
 import tools.Constants;
 
 /**
  *
  * @author newby
  */
-public class NodeDescriptor extends Menu {
+public class NodeDescriptor extends Menu implements Clickable {
     private final static String SEP = Constants.SEP;
     //public int loaded = 0;
     private MapMenu mapMenu;
     //ArrayList<ClickListener> clickListeners = new ArrayList<>();
     private static Image smallMenu;
-	private String difficulty;
+	private int difficulty;
     private Node node;
 
-    public NodeDescriptor(String name, String difficulty, Node n, int width, int height, MapMenu map) {
+    public NodeDescriptor(String name, int difficulty, Node n, int width, int height, MapMenu map) {
         super(name);
         this.mapMenu = map;
 		this.difficulty = difficulty;
@@ -50,6 +52,9 @@ public class NodeDescriptor extends Menu {
             centerX -= (rightPoint - w.getSize().x);
         }
 
+        setWidthHeight(width, height);
+        setCenterY(centerY);
+        setCenterX(centerX);
         smallMenu = new components.Image(centerX, centerY, windowSize.x, windowSize.y, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu_titled.png");
         addEntity(smallMenu);
 
@@ -58,18 +63,15 @@ public class NodeDescriptor extends Menu {
         addEntity(new Message(centerX, centerY - 55, 0, name, Color.BLACK, 10)); //title
 
         Color txtCol;
-		switch (this.difficulty) {
-			case "Easy":
-				txtCol = new Color(0, 153, 0);
-				break;
-			case "Medium":
-				txtCol = new Color(255, 51, 0);
-				break;
-			default:
-				txtCol = Color.RED;
-				break;
-		}
-        addEntity(new Message(centerX, centerY - 5, 0, this.difficulty, txtCol, 15));
+        if (difficulty < MapMenu.NUMBER_OF_NODES / 3) {
+            txtCol = new Color(0, 153, 0);
+        } else if ((difficulty < (MapMenu.NUMBER_OF_NODES / 3) * 2)) {
+            txtCol = new Color(255, 51, 0);
+        } else {
+            txtCol = Color.RED;
+        }
+
+        addEntity(new Message(centerX, centerY - 5, 0, "Difficulty: " + this.difficulty, txtCol, 15));
 
         Button btnClose = new Button(centerX - 50, centerY + 35, 30, 30, "RED", 200 , "<", 15 );
         btnClose.addClickListener(this);
@@ -88,7 +90,7 @@ public class NodeDescriptor extends Menu {
                 this.unload();
                 mapMenu.unload();
 
-                new Level(this.getName(), difficulty);
+                new Level(this.getName(), difficulty, mapMenu);
 
                 System.out.println("Play clicked");
             }
@@ -101,6 +103,43 @@ public class NodeDescriptor extends Menu {
 
     public Node getNode() {
         return node;
+    }
+
+    @Override
+    public void clicked(Event e) {
+        //do nothing
+    }
+
+    @Override
+    public void addClickListener(ClickListener clickListener) {
+        //do nothing
+    }
+
+    /**
+     * Checks whether the x and y parameters
+     *
+     * @param x - X coordinate to check
+     * @param y - Y coordinate to check
+     * @return - true if checkWithin, false if not;
+     */
+    @Override
+    public boolean checkWithin(int x, int y) {
+        return  getTopLeftX() < x
+                && x < getTopLeftX() + getWidth()
+                && getTopLeftY() < y
+                && y < getTopLeftY() + getHeight();
+    }
+
+    /**
+     * Checks whether the x and y parameters passed in an Event obj
+     *
+     * @param e - the Event that caused this method call
+     * @return - true if checkWithin, false if not;
+     */
+    @Override
+    public boolean checkWithin(Event e) {
+        Vector2i v = e.asMouseButtonEvent().position;
+        return checkWithin(v.x, v.y);
     }
 }
 	

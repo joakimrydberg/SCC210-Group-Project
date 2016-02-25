@@ -17,8 +17,8 @@ public class DeathBall extends Enemy {
             SPEEDLIMIT = 5;
     private int tempDir = 0;
 
-    public DeathBall(Room room, Player player) {
-        super(room, player);
+    public DeathBall(Room room) {
+        super(room);
 
     }
 

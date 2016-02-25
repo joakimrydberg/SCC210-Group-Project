@@ -17,19 +17,19 @@ import java.util.ArrayList;
  * Created by millsr3 on 20/02/2016.
  */
 public class Ranger extends Player implements ClickListener, interfaces.Ranger {
+    private int timesClicked = 0;
+
     private Room room;
     private ArrayList<Projectile> arrows = new ArrayList<>();
-    private long timeAtLastShot = System.currentTimeMillis();
+    protected Long timeAtLastShot = System.currentTimeMillis();
 
     public Ranger(){
         create();
     }
 
-    public Ranger(Room room){
+    public void setRoom(Room room){
         room.addClickListener(this);
         this.room = room;
-
-        create();
     }
 
     public void create() {
@@ -72,28 +72,33 @@ public class Ranger extends Player implements ClickListener, interfaces.Ranger {
 
     @Override
     public void buttonClicked(Clickable button, Object[] args) {
+        if(timesClicked != 0) {
+            if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
+                timeAtLastShot = System.currentTimeMillis();
+                Arrow arrow = new Arrow();
 
-        if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
-            timeAtLastShot = System.currentTimeMillis();
-            Arrow arrow = new Arrow();
+                if (args.length == 1) {
+                    Event e = (Event) args[0];
 
-            if (args.length == 1) {
-                Event e = (Event) args[0];
+                    Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                    Vector2i to = e.asMouseEvent().position;
 
-                Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
-                Vector2i to = e.asMouseEvent().position;
+                    System.out.println("Player: " + getCenterX() + " " + getCenterY());
+                    arrow.setCenterX(from.x);
+                    arrow.setCenterY(from.y);
 
-                arrow.setCenterX(from.x);
-                arrow.setCenterY(from.y);
+                    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                    arrow.correctDirection();
+                    //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
 
-                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-                arrow.correctDirection();
-                //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-
-                arrow.addMovementListener(room);
-                arrows.add(arrow);
-                room.addEntity(arrow);
+                    arrow.addMovementListener(room);
+                    arrows.add(arrow);
+                    room.addEntity(arrow);
+                }
             }
+        }
+        else {
+            timesClicked++;
         }
     }
 

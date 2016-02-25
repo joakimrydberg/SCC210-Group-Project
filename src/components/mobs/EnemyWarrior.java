@@ -19,8 +19,8 @@ public class EnemyWarrior extends Enemy {
 
     public boolean attacking = false;
 
-    public EnemyWarrior(Room room, Player player) {
-        super(room, player);
+    public EnemyWarrior(Room room) {
+        super(room);
         setMovementState(FOLLOW_PLAYER);
 
         setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMaleSheet"));

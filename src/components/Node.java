@@ -34,22 +34,16 @@ public class Node extends Entity implements Clickable, MotionListener {
     public int visitTime = Integer.MAX_VALUE;  //used by map menu
     private ArrayList<Rect> lines = new ArrayList<>();
     private boolean hovered = false;
+    private ArrayList<Node> links = new ArrayList<>();
 
     public Node(String name, int x, int y, int radius, Color fillC, Color lineC, float pt, int transparency) {
         super(name);
-
-        // Load circle for node
-        CircleShape circle = new CircleShape(radius);
-        circle.setFillColor(new Color(fillC, transparency));
-        circle.setOutlineColor(lineC);
-        circle.setOutlineThickness(pt);
-        circle.setOrigin(radius, radius);
 
         super.setWidthHeight(radius * 2, radius * 2);
         super.setCenterX(x);
         super.setCenterY(y);
 
-        super.addTransformable(circle, radius, radius, radius * 2, radius * 2);
+        setColour(fillC, lineC, pt, transparency);
 
         // Load image / texture
         Texture imgTexture = new Texture( );
@@ -141,20 +135,42 @@ public class Node extends Entity implements Clickable, MotionListener {
         }
     }
 
-    public void addLines(ArrayList<Rect> lines) {
-        for (Rect line : lines) {
-            line.hidden = true;
-        }
-        this.lines.addAll(lines);
-    }
-
-    public void addLine(Rect line) {
-        line.hidden = true;
-        this.lines.add(line);
-    }
 
     public void clearLines() {
         this.lines = new ArrayList<>();
     }
+
+    public void setColour(Color fillC, Color lineC, float pt, int transparency) {
+        int radius = getWidth() / 2;
+        // Load circle for node
+        CircleShape circle = new CircleShape(radius);
+        circle.setFillColor(new Color(fillC, transparency));
+        circle.setOutlineColor(lineC);
+        circle.setOutlineThickness(pt);
+        circle.setOrigin(radius, radius);
+
+
+        super.addTransformable(circle, radius, radius, radius * 2, radius * 2);
+    }
+
+    public void addNodeLinks(ArrayList<Rect> lines, Node node) {
+        for (Rect line : lines) {
+            line.hidden = true;
+        }
+        this.lines.addAll(lines);
+
+        this.links.add(node);
+    }
+
+    public void addNodeLink(Rect line, Node node) {
+        line.hidden = true;
+        this.lines.add(line);
+        this.links.add(node);
+    }
+
+    public ArrayList<Node> getLinks() {
+        return links;
+    }
+
 }
 	

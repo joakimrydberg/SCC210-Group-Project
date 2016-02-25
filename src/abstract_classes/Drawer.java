@@ -1,11 +1,14 @@
 package abstract_classes;
 
+import controllers.MapMenu;
 import game.Driver;
 import interfaces.Clickable;
 import interfaces.KeyListener;
 import interfaces.MotionListener;
 import interfaces.MovingEntity;
 import org.jsfml.window.event.Event;
+import tools.Constants;
+import tools.FileHandling;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,8 +33,23 @@ public abstract class Drawer extends Entity implements Serializable {
             drawAll();
 
             for (Event event : events) {
-                if (event.type == Event.Type.CLOSED)      // the user pressed the close button
+                if (event.type == Event.Type.CLOSED) {// the user pressed the close button
+
+                    ArrayList<Object> objs = new ArrayList<>();
+                    if(MapMenu.getPlayer() != null) {
+
+                        objs.add(MapMenu.getPlayer().level);
+                        objs.add(MapMenu.getPlayer().getExp());
+                        objs.add(MapMenu.getPlayer().Vitality);
+                        objs.add(MapMenu.getPlayer().Endurance);
+                        objs.add(MapMenu.getPlayer().Intellect);
+                        objs.add(MapMenu.getPlayer().attackPower);
+                        objs.add(MapMenu.getPlayer().Agility);
+
+                        FileHandling.writeToFile(objs, "assets" + Constants.SEP + "save_games" + Constants.SEP + "player_state");
+                    }
                     getWindow().close();
+                }
 
                 if (event.type == Event.Type.MOUSE_BUTTON_PRESSED) {
                     //   if(event.asMouseButtonEvent()){
@@ -134,11 +152,13 @@ public abstract class Drawer extends Entity implements Serializable {
 
         for (int j = 0; j < entities.size(); j++) {
             if (j == i) {
-                entities.add(entity);
+                newEntities.add(entity);
             } else {
                 newEntities.add(entities.get(j));
             }
         }
+
+        entities = newEntities;
     }
 
 }

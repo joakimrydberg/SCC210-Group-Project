@@ -1,19 +1,41 @@
 package components.mobs;
 
+import components.Arrow;
+import components.Fireball;
+import components.Projectile;
+import game.Room;
 import game.SpriteSheetLoad;
+import interfaces.ClickListener;
+import interfaces.Clickable;
 import interfaces.KeyListener;
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.event.Event;
+import tools.Navigator;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 /**
  * Created by millsr3 on 20/02/2016.
  */
-public class Mage extends Player implements KeyListener {
+public class Mage extends Player implements ClickListener, KeyListener {
+
+    final static int RECHARGE = 750;
+    private int timesClicked = 0;
+    private ArrayList<Projectile> fireballs = new ArrayList<>();
+    private Room room;
+    protected long timeAtLastShot = System.currentTimeMillis();
 
     public Mage() {
         create();
-    }
 
+    }
+    public void setRoom(Room room){
+        room.addClickListener(this);
+        this.room = room;
+    }
 
     public void create(){
 
@@ -57,56 +79,61 @@ public class Mage extends Player implements KeyListener {
 
     }
 
-    @Override
-    public void keyPressed(org.jsfml.window.event.KeyEvent event) {
 
-        switch(event.key){
+    public void buttonClicked(Clickable button, Object[] args) {
+        if(timesClicked != 0) {
+            if (System.currentTimeMillis() - timeAtLastShot > RECHARGE) {
+                timeAtLastShot = System.currentTimeMillis();
 
-            case SPACE:
+                Fireball arrow = new Fireball();
+                Navigator n = new Navigator(room);
+                n.populateNavPixels();
+                if (args.length == 1) {
+                    Event e = (Event) args[0];
 
-                if(tempDir == 2 && !attacking){
-                    attack(ATTACK_RIGHT);
-                    attacking = true;
-                    break;
+                    Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                    Vector2i to = e.asMouseEvent().position;
+                    Vector2f too = new Vector2f(to.x, to.y);
+                    Vector2f fromm = new Vector2f(from.x, from.y);
+
+                    if (n.inLineOfSight(too, fromm)) {
+                        arrow.setCenterX(to.x);
+                        arrow.setCenterY(to.y);
+                        arrow.setCenterX(to.x);
+                        arrow.setCenterY(to.y);
+
+                        //    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                        //     arrow.correctDirection();
+                        //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                        arrow.show();
+                        //  arrow.addMovementListener(room);
+                        fireballs.add(arrow);
+                        room.addEntity(arrow);
+                    }
                 }
-                if(tempDir == 1 && !attacking){
-                    attack(ATTACK_LEFT);
-                    attacking = true;
-                    break;
-                }
-                if(tempDir == 3 && !attacking){
-                    attack(ATTACK_UP);
-                    attacking = true;
-                    break;
-                }
-                else if (tempDir == 0 && !attacking){
-                    attack(ATTACK_DOWN);
-                    attacking = true;
-                    break;
-                }
+            }
         }
-
-        super.keyPressed(event);
-
-
+        else {
+            timesClicked++;
+        }
     }
 
-    @Override
-    public void keyReleased(org.jsfml.window.event.KeyEvent event) {
 
+    public ArrayList<Projectile> getProjectiles() {
+        clearBrokenProjectiles();
 
-        this.setFrames(characterStill);
-        super.keyReleased(event);
-        if (rightPressed){
-            setAnimation(ANIMATE_RIGHT);
-        } else if (downPressed){
-            setAnimation(ANIMATE_DOWN);
-        } else if (leftPressed){
-            setAnimation(ANIMATE_LEFT);
-        } else if (upPressed){
-            setAnimation(ANIMATE_UP);
-        }
-        attacking = false;
-
+        return fireballs;
     }
+
+
+    public void clearBrokenProjectiles() {
+        for (int i = 0; i < fireballs.size(); i++) {
+            Projectile arrow = fireballs.get(i);
+            if (arrow.getState() == Projectile.BROKEN) {
+                fireballs.remove(arrow);
+            }
+        }
+    }
+
+
 }
