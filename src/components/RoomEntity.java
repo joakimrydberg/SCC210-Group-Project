@@ -19,7 +19,7 @@ public class RoomEntity extends Drawer {
     float partWidth = getWindow().getSize().x / numberOfParts,
             partHeight = getWindow().getSize().y / numberOfParts;
     
-    static int roomCounter = 0;
+    public static int roomCounter = 0;
 
 
     public RoomEntity() {
@@ -125,4 +125,8 @@ public class RoomEntity extends Drawer {
 
         return new Vector2i(wSize.x / numberOfParts, wSize.y / numberOfParts);
     }
+
+	public void resetCounter() {
+		roomCounter = 0;
+	}
 }
