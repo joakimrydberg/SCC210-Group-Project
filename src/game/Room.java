@@ -315,7 +315,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
             //debugging
             MapMenu.getPlayer().printInventory();
-            MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0));
+            MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0)); //shouldnt need this but its there as a quick fix for now
             MapMenu.getPlayer().printEquipped();
             pauseMenu.loadInPlayer(MapMenu.getPlayer());
             pauseMenu.load();

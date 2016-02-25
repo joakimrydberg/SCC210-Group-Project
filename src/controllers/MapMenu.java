@@ -44,6 +44,8 @@ public class MapMenu extends Menu implements Clickable, Serializable {
     //private Node currentNode;
     private NodeDescriptor currNodeDescriptor;
     private static Player player = null;
+    private PauseMenuMap pauseMenuMap = new PauseMenuMap();
+
     /**
      *
      */
@@ -63,6 +65,12 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         Button btnQuit = new Button(140, 30, 140, 40, "RED", 200, "QUIT GAME", 15);
         btnQuit.addClickListener(this);
         addEntity(btnQuit);
+
+        //PLAYER button
+        addEntity(new Image(750, 755, 150, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
+        Button btnPlayer = new Button(750, 740, 100, 40, "BROWN", 200, "PLAYER", 15);
+        btnPlayer.addClickListener(this);
+        addEntity(btnPlayer);
 
         //SHOP button
         addEntity(new Image(900, 755, 130, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
@@ -316,6 +324,14 @@ public class MapMenu extends Menu implements Clickable, Serializable {
                 }
 
                 System.out.println("QUIT GAME clicked");
+            } else if (button.getName().equals("PLAYER")) {
+                MapMenu.getPlayer().printInventory();
+                MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0)); //shouldnt need this but its there as a quick fix for now
+                MapMenu.getPlayer().printEquipped();
+                pauseMenuMap.loadInPlayer(MapMenu.getPlayer());
+                pauseMenuMap.load();
+
+                System.out.println("PLAYER clicked");
             } else if (button.getName().equals("SHOP")) {
                 this.unload();
 

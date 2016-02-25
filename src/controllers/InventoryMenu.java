@@ -118,6 +118,8 @@ public class InventoryMenu extends Menu {
             Entity button = (Button) clickable;
 
             if (button.getName().equals("EQUIPT")) {
+                MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(clickedSlot.getItem()));
+                //populateEquipped(MapMenu.getPlayer().getEquippedItems());
                 System.out.println("EQUIPT clicked");
             } else if (button.getName().equals("DISCARD")) {
                 System.out.println("DISCARD clicked");

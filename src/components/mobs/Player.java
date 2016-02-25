@@ -85,6 +85,16 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
         return null;
     }
 
+    public Item getFromInventory(Item item){
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i) == item) {
+                inventory.remove(i);
+                return inventory.get(i);
+            }
+        }
+        return null;
+    }
+
     public void printInventory(){
         System.out.println("--Inventory-------");
         for(int i = 0; i < inventory.size(); i++){

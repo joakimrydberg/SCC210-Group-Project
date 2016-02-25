@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by Ross on 21/02/2016.
  */
-public class PauseMenu extends Menu {
+public class PauseMenuMap extends Menu {
     public final static String NAME = "Pause Menu";
     private int btnX = 170, btnY = 150;
     private PlayerMenu pMenu = new PlayerMenu();
@@ -31,7 +31,7 @@ public class PauseMenu extends Menu {
     /**
      *
      */
-    public PauseMenu() {
+    public PauseMenuMap() {
         super(NAME);
 
         RenderWindow w = getWindow();
@@ -59,9 +59,9 @@ public class PauseMenu extends Menu {
         addOption("INVENTORY", "BROWN");
         addOption("STATS", "BROWN");
         addOption("DUNGEON MAP", "BROWN");
-        addOption("RESUME", "GREEN");
+
         addOption("SAVE GAME", 550, saveColour);
-        addOption("QUIT DUNGEON", 600, "RED");
+        addOption("CLOSE", 600, "RED");
 
         addEntity(new Rect(null, 300, centerY, 2, 600, new Color(117, 62, 29), 250)); //seperation border
 
@@ -118,19 +118,12 @@ public class PauseMenu extends Menu {
                 unloadMenus();
                 System.out.println("DUNGEON MAP clicked");
             }
-            else if (button.getName().equals("RESUME"))
-            {
-                this.unload();
-                unloadMenus();
-                loadDrawer(Room.class);
-                System.out.println("RESUME clicked");
-            }
-            else if (button.getName().equals("QUIT DUNGEON"))
+            else if (button.getName().equals("CLOSE"))
             {
                 this.unload();
                 unloadMenus();
                 loadDrawer(MapMenu.class);
-                System.out.println("QUIT DUNGEON clicked");
+                System.out.println("CLOSE clicked");
             }
             else if (button.getName().equals("SAVE GAME"))
             {

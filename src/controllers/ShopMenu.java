@@ -255,6 +255,8 @@ public class ShopMenu extends Menu {
                 loadDrawer(MapMenu.class);
                 System.out.println("EXIT SHOP clicked");
             } else if (button.getName().equals("BUY")) {
+                MapMenu.getPlayer().addToInventory(clickedSlot.getItem());
+
                 System.out.println("BUY clicked");
             }
         }
