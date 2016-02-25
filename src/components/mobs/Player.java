@@ -88,8 +88,9 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public Item getFromInventory(Item item){
         for(int i = 0; i < inventory.size(); i++){
             if(inventory.get(i) == item) {
+                Item rtn = inventory.get(i);
                 inventory.remove(i);
-                return inventory.get(i);
+                return rtn;
             }
         }
         return null;
@@ -118,18 +119,53 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public void equipt(Item item){
         if(item.getType().equals("HELMET")){
             equippedItems[0] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
         } else if(item.getType().equals("ARM")){
             equippedItems[1] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
         } else if(item.getType().equals("TORSO")){
             equippedItems[2] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
         } else if(item.getType().equals("BOOT")){
             equippedItems[3] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
         } else if(item.getType().equals("WEAPON")){
             equippedItems[4] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
         } else if(item.getType().equals("SHIELD")){
             equippedItems[5] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
         } else if(item.getType().equals("POTION")){
             equippedItems[6] = item;
+            for(int i = 0; i < inventory.size(); i++){
+                if(inventory.get(i) == item){
+                    inventory.remove(i);
+                }
+            }
         }
     }
 

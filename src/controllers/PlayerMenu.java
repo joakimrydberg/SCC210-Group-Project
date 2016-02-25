@@ -32,12 +32,12 @@ public class PlayerMenu extends Menu
     private Animation rangerWalk = new Animation(680, 355, 64, 128, ranger, 3);
     private Animation mageWalk = new Animation(680, 355, 64, 128, mageA, 3);
 
-    Message atMsg = new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12);
-    Message inMsg = new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12);
-    Message agMsg = new Message(500, 600, 0, "Agility : " + ag, Color.WHITE, 12);
-    Message enMsg = new Message(700, 550, 0, "Endurance : " + en, Color.WHITE, 12);
-    Message viMsg = new Message(700, 575, 0, "Vitality : " + vi, Color.WHITE, 12);
-    Message heMsg = new Message(700, 600, 0, "health : " + he, Color.WHITE, 12);
+//    Message atMsg = new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12);
+//    Message inMsg = new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12);
+//    Message agMsg = new Message(500, 600, 0, "Agility : " + ag, Color.WHITE, 12);
+//    Message enMsg = new Message(700, 550, 0, "Endurance : " + en, Color.WHITE, 12);
+//    Message viMsg = new Message(700, 575, 0, "Vitality : " + vi, Color.WHITE, 12);
+//    Message heMsg = new Message(700, 600, 0, "health : " + he, Color.WHITE, 12);
 
     public PlayerMenu() {
         super(NAME);
@@ -75,14 +75,12 @@ public class PlayerMenu extends Menu
         //bottom bar //TODO dont know what to populate this or if its needed but its here to loog good tbh
         addSlot("LONG2", 625, 580, 520, 120); //TODO resize / edit this with info
 
-
-
-        addEntity(atMsg);
-        addEntity(inMsg);
-        addEntity(agMsg);
-        addEntity(enMsg);
-        addEntity(viMsg);
-        addEntity(heMsg);
+//        addEntity(atMsg);
+//        addEntity(inMsg);
+//        addEntity(agMsg);
+//        addEntity(enMsg);
+//        addEntity(viMsg);
+//        addEntity(heMsg);
 
         if(player.getClassType().equals("warrior")){
             warriorWalk.stop();
@@ -108,12 +106,26 @@ public class PlayerMenu extends Menu
         vi = player.getVitality();
         he = player.getHealth();
 
-        atMsg.setText("Attack power : " + at);
-        inMsg.setText("Intellect : " + in);
-        agMsg.setText("Agility : " + ag);
-        enMsg.setText("Endurance : " + en);
-        viMsg.setText("Vitality : " + vi);
-        heMsg.setText("health : " + he);
+//        atMsg.setText("Attack power : " + at);
+//        inMsg.setText("Intellect : " + in);
+//        agMsg.setText("Agility : " + ag);
+//        enMsg.setText("Endurance : " + en);
+//        viMsg.setText("Vitality : " + vi);
+//        heMsg.setText("health : " + he);
+
+        Message atMsg = new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12);
+        Message inMsg = new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12);
+        Message agMsg = new Message(500, 600, 0, "Agility : " + ag, Color.WHITE, 12);
+        Message enMsg = new Message(700, 550, 0, "Endurance : " + en, Color.WHITE, 12);
+        Message viMsg = new Message(700, 575, 0, "Vitality : " + vi, Color.WHITE, 12);
+        Message heMsg = new Message(700, 600, 0, "health : " + he, Color.WHITE, 12);
+
+        addEntity(atMsg);
+        addEntity(inMsg);
+        addEntity(agMsg);
+        addEntity(enMsg);
+        addEntity(viMsg);
+        addEntity(heMsg);
 
         for(int i = 0; i < items.length; i++){ //display items the player has equipped
             if(items[i] != null) {

@@ -21,6 +21,7 @@ public class InventoryMenu extends Menu {
 
     private int count = 0;
     private Button btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
+    private Button btnUnequipt = new Button(800, 595, 90, 30, "BLUE", 200, "UNEQUIPT", 15);
     private Button btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
     private Message n = null, d = null;
     private Image img = new Image(450, 610, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
@@ -33,35 +34,60 @@ public class InventoryMenu extends Menu {
         addSlot("LONG2", 625, 610, 520, 100);
 
         addSlot("EMPTY", 450, 610, 70, 70);
+
         n = new Message(550, 590, 0, "Select an Item!", Color.WHITE, 12);
-        d = new Message(550, 620, 0, "Select an Item!", Color.WHITE, 12);
         addEntity(n);
+        d = new Message(550, 620, 0, "Select an Item!", Color.WHITE, 12);
         addEntity(d);
+
         btnEquipt.addClickListener(this);
+        btnUnequipt.addClickListener(this);
         btnDiscard.addClickListener(this);
         addEntity(btnEquipt);
+        addEntity(btnUnequipt);
         addEntity(btnDiscard);
         btnEquipt.hide();
+        btnUnequipt.hide();
         btnDiscard.hide();
     }
 
     public void populateMenu(ArrayList<Item> inventory){
+//        for(int i = 7; i < slots.length; i++){ //display items in playes inventory
+//            if(slots[i].hasItem()) {
+//                slots[i].removeItem();
+//            }
+//        }
+
+        for(int i = 0; i < inventory.size(); i++){ //display items in playes inventory
+            slots[i + 7].addItem(inventory.get(i));
+        }
+    }
+
+    public void populateEquipped(Item[] items){
+        for(int i = 0; i < items.length; i++){ //display items player has equipped
+            if(items[i] != null) {
+                System.out.println(items[i].getName()); //debug
+                slots[i].addItem(items[i]);
+            }
+        }
+    }
+
+    public void updateSlots(ArrayList<Item> inventory, Item[] items){
+        //make all slots empty
         for(int i = 7; i < slots.length; i++){ //display items in playes inventory
             if(slots[i].hasItem()) {
                 slots[i].removeItem();
             }
         }
 
-        for(int i = 0; i < inventory.size(); i++){ //display items in playes inventory
-            //System.out.println(inventory.get(i).getName()); //debug
-            slots[i + 7].addItem(inventory.get(i));
+        //add inventory passed in to slots
+        for(int i = 7; i < inventory.size(); i++){ //display items in playes inventory
+            slots[i].addItem(inventory.get(i));
         }
-    }
 
-    public void populateEquipped(Item[] items){
-        for(int i = 0; i < items.length; i++){ //display items in playes inventory
+        //add equipped items to slots
+        for(int i = 0; i < items.length; i++){
             if(items[i] != null) {
-                System.out.println(items[i].getName()); //debug
                 slots[i].addItem(items[i]);
             }
         }
@@ -73,29 +99,31 @@ public class InventoryMenu extends Menu {
             Slot slot = (Slot) clickable;
             clickedSlot = (Slot) clickable;
 
-            if (slot.hasItem()) {
-                btnEquipt.show();
-                btnDiscard.show();
-
-                img.changeImage(slot.getItem().getItemIcon());
-                addEntity(img);
-                img.show();
-
-                n.setText(slot.getItem().getName());
-                d.setText(slot.getItem().getDescription());
-            }else {
-                img.hide();
-                btnEquipt.hide();
-                btnDiscard.hide();
-                n.setText("Empty Inventory Slot!");
-                d.setText("");
-            }
+            boolean equippedSlot = true;
 
             for(int i = 1; i < 36; i++) {
                 if (slot.getName().equals("" + i)) {
-                    //loadDrawer(ItemMenu.class);
-                    //itemMenu.load();
                     System.out.println("Slot " + i + " clicked");
+
+                    if (slot.hasItem()) {
+                        btnEquipt.show();
+                        btnDiscard.show();
+
+                        img.changeImage(slot.getItem().getItemIcon());
+                        addEntity(img);
+                        img.show();
+
+                        n.setText(slot.getItem().getName());
+                        d.setText(slot.getItem().getDescription());
+                    }else {
+                        img.hide();
+                        btnEquipt.hide();
+                        btnDiscard.hide();
+                        n.setText("Empty Inventory Slot!");
+                        d.setText("");
+                    }
+
+                    equippedSlot = false;
                 }
             }
 
@@ -114,6 +142,28 @@ public class InventoryMenu extends Menu {
             } else if (slot.getName().equals("P")) {
                 System.out.println("POTION clicked");
             }
+
+            if (equippedSlot) {
+                if (slot.hasItem()) {
+                    btnEquipt.hide();
+                    //btnUnequipt.show();
+                    btnDiscard.show();
+
+                    img.changeImage(slot.getItem().getItemIcon());
+                    addEntity(img);
+                    img.show();
+
+                    n.setText(slot.getItem().getName());
+                    d.setText(slot.getItem().getDescription());
+                } else {
+                    img.hide();
+                    btnUnequipt.hide();
+                    btnDiscard.hide();
+                    n.setText("Equipt an item!");
+                    d.setText("");
+                }
+            }
+
         } else if (clickable instanceof Button) {
             Entity button = (Button) clickable;
 
@@ -121,7 +171,9 @@ public class InventoryMenu extends Menu {
                 MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(clickedSlot.getItem()));
                 //populateEquipped(MapMenu.getPlayer().getEquippedItems());
                 System.out.println("EQUIPT clicked");
-            } else if (button.getName().equals("DISCARD")) {
+            } else if (button.getName().equals("UNEQUIPT")) {
+                System.out.println("UNEQUIPT clicked : FUNCTIONALITY NOT YET IMPLEMENTED");
+            }else if (button.getName().equals("DISCARD")) {
                 System.out.println("DISCARD clicked");
             }
         }
