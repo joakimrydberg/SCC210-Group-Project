@@ -58,7 +58,6 @@ public class PauseMenuMap extends Menu {
         addOption("PLAYER", "BROWN");
         addOption("INVENTORY", "BROWN");
         addOption("STATS", "BROWN");
-        addOption("DUNGEON MAP", "BROWN");
 
         addOption("SAVE GAME", 550, saveColour);
         addOption("CLOSE", 600, "RED");
@@ -93,8 +92,11 @@ public class PauseMenuMap extends Menu {
             if (button.getName().equals("PLAYER"))
             {
                 unloadMenus();
+
                 pMenu.load();
+                pMenu.loadInPlayer(player);
                 pMenu.populateMenu(player.getEquippedItems());
+
                 System.out.println("PLAYER clicked");
             }
             else if (button.getName().equals("INVENTORY"))

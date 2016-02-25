@@ -124,7 +124,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
 
     public void damaged(){
 
-        if (MapMenu.getPlayer() instanceof Ranger){
+        if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage){
 
             BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 5);
             setFrames(a);
@@ -132,7 +132,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
         }
         else {
 
-            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 3);
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 10);
             setFrames(a);
         }
 

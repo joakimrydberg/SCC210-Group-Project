@@ -317,7 +317,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
         if(System.currentTimeMillis() - timeAtLastDamaged > 500){
             timeAtLastDamaged = System.currentTimeMillis();
-            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 15);
+            BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 10);
             setFrames(a);
 
         }
@@ -336,6 +336,10 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public ArrayList<Item> getInventory() {
         return inventory;
+    }
+
+    public static String getClassType() {
+        return classType;
     }
 }
 
