@@ -18,7 +18,7 @@ public class Level {
     private Room startRoom = new Room(this);
     private Room endRoom = null;
     private Room currentRoom;
-	private int availableRooms = 2;
+	private int availableRooms = 9;
 	private int availableEndRooms = 8;
 
     public Level(String name, int diff, MapMenu map) {
