@@ -83,7 +83,7 @@ public abstract class Projectile extends Image implements MovingEntity {
         //      System.out.println(angle * (180 / Math.PI)+ 90);
         getTransformable(0).setOrigin(getWidth() / 2, getHeight());
         super.rotate(((float)(angle * (180 / Math.PI) + 90)),true);
-        getTransformable(0).setOrigin(0,0);
+        getTransformable(0).setOrigin(0,0);//
     }
 
 
