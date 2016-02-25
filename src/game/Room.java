@@ -37,10 +37,9 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
 
     public Room(Level level) {
+        super(true);
+
         this.level = level;
-
-        addEntity(this);
-
     }
 
     public void create(String roomID) {
@@ -89,26 +88,26 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
                         LevelPart replacementPart = null, temp;
 
-                        switch ( (int) tile.getRotation() ) {
-                            case 0:    case 180:
-                                if ((temp = (LevelPart) objects.get(i * 11 + j - 1)).getType().equals("Wall")) {
-                                    replacementPart = temp;
-                                } else if ((temp = (LevelPart) objects.get(i * 11 + j + 1)).getType().equals("Wall")) {
-                                    replacementPart = temp;
-                                }
-                                break;
-                            case 90:     case 270:
-                                if ((temp = (LevelPart) objects.get((i - 1) * 11 + j )).getType().equals("Wall")) {
-                                    replacementPart = temp;
-                                } else if ((temp = (LevelPart) objects.get((i + 1) * 11 + j)).getType().equals("Wall")) {
-                                    replacementPart = temp;
-                                }
-                                break;
-                            default:
-                                throw new RuntimeException("AHHH invalid rotation" + (int)tile.getRotation());
-                        }
+                        replacementPart = new LevelPart("dungeon_wall.png", tile.getRotation(), (short)tile.getRowNo(), (short)tile.getColNo());
 
-                        replacementPart = (replacementPart == null) ? temp : replacementPart;
+//                        switch ( (int) tile.getRotation() ) {
+//                            case 0:    case 180:
+//                                if ((temp = (LevelPart) objects.get(i * 11 + j - 1)).getType().equals("Wall")) {
+//                                    replacementPart = temp;
+//                                } else if ((temp = (LevelPart) objects.get(i * 11 + j + 1)).getType().equals("Wall")) {
+//                                    replacementPart = temp;
+//                                }
+//                                break;
+//                            case 90:     case 270:
+//                                if ((temp = (LevelPart) objects.get((i - 1) * 11 + j )).getType().equals("Wall")) {
+//                                    replacementPart = temp;
+//                                } else if ((temp = (LevelPart) objects.get((i + 1) * 11 + j)).getType().equals("Wall")) {
+//                                    replacementPart = temp;
+//                                }
+//                                break;
+//                            default:
+//                                throw new RuntimeException("AHHH invalid rotation" + (int)tile.getRotation());
+//                        }
 
                         replacementPart.setRowNo(i);
                         replacementPart.setColNo(j);
@@ -162,29 +161,35 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             }
         }
 
-        { //populating with enemies
+        DeathBall deathBall = new DeathBall(this);
+        deathBall.setClass("ranger");
+        addEntity(deathBall);
 
-            EnemyWarrior enemyWarrior;
-            for (int i = 0; i < enemyWarriors; i++) {
-                enemyWarrior = new EnemyWarrior(this);
-                enemyWarrior.addMovementListener(this);
-                addEntity(enemyWarrior);
-            }
+//        { //populating with enemies
+//
+//            EnemyWarrior enemyWarrior;
+//            for (int i = 0; i < enemyWarriors; i++) {
+//                enemyWarrior = new EnemyWarrior(this);
+//                enemyWarrior.addMovementListener(this);
+//                addEntity(enemyWarrior);
+//            }
+//
+//            EnemyMage enemyMage;
+//            for (int i = 0; i < enemyMages; i++) {
+//                enemyMage = new EnemyMage(this);
+//                enemyMage.addMovementListener(this);
+//                addEntity(enemyMage);
+//            }
+//
+//            EnemyRanger enemyRanger;
+//            for (int i = 0; i < enemyRangers; i++) {
+//                enemyRanger = new EnemyRanger(this);
+//                enemyRanger.addMovementListener(this);
+//                addEntity(enemyRanger);
+//            }
+//        }
 
-            EnemyMage enemyMage;
-            for (int i = 0; i < enemyMages; i++) {
-                enemyMage = new EnemyMage(this);
-                enemyMage.addMovementListener(this);
-                addEntity(enemyMage);
-            }
-
-            EnemyRanger enemyRanger;
-            for (int i = 0; i < enemyRangers; i++) {
-                enemyRanger = new EnemyRanger(this);
-                enemyRanger.addMovementListener(this);
-                addEntity(enemyRanger);
-            }
-        }
+        addEntity(this);
     }
 
     public void addDoor(String direction) {
@@ -265,8 +270,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                     Vector2i partSize = getPartSize();
 
                     if (door.displayed) {
-                        double dist = Math.sqrt(Math.pow(MapMenu.getPlayer().getCenterX() - (door.getColNo() * partSize.x + partSize.x), 2)
-                                + Math.pow(MapMenu.getPlayer().getCenterY() - (door.getRowNo() * partSize.y + partSize.y), 2));
+                        double dist = Math.sqrt(Math.pow(MapMenu.getPlayer().getCenterX() - (door.getColNo() * partSize.x + partSize.x / 2), 2)
+                                + Math.pow(MapMenu.getPlayer().getCenterY() - (door.getRowNo() * partSize.y + partSize.y / 2), 2));
 
                         // System.out.println(dist);
                         int i = door.getRowNo(), j = door.getRowNo();
@@ -275,20 +280,13 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                                 partBottom = (i + 1) * partSize.y,
                                 partTop = i * partSize.y;
 
-//                    //col * w + w/2, row * h + h/2
-//                    if (w == 1) {
-//                        System.out.format("l: %d, r: %d, t: %d, b %d, pl: %d, pr: %d, pt: %d, pb %d\n"
-//                                , left, right, top, bottom,
-//                                partLeft, partRight, partTop, partBottom);
-//                    }
-                        if (MapMenu.getPlayer().getCenterX() < partRight
-                                && MapMenu.getPlayer().getCenterX() > partLeft
-                                && MapMenu.getPlayer().getCenterY() > partTop
-                                && MapMenu.getPlayer().getCenterY() < partBottom) {
+
+                        System.out.println(dist);
+                        if (dist < partSize.x / 4) {
 
                             for (String key : potentialDoors.keySet()) {
                                 if (potentialDoors.get(key).equals(door)) {
-                                    //System.out.println("Move Rooms");
+                                    System.out.println("Move Rooms");
                                     level.moveRooms(this, key);
                                 }
                             }

@@ -1,6 +1,5 @@
 package game;
 
-import abstract_classes.Drawer;
 import controllers.MapMenu;
 import org.jsfml.system.Vector2i;
 
@@ -37,7 +36,13 @@ public class Level {
 				startRoom.resetCounter();
 			}
 		}
-
+        for (int i = 0; i < 10; i++){
+            for (int j = 0; j < 10; j++){
+                if (rooms[i][j] != null) {
+					Driver.addDrawer(rooms[i][j]);
+				}
+            }
+        }
 		currentRoom = startRoom;
 		currentRoom.load();
 
@@ -51,14 +56,14 @@ public class Level {
     }
 
     private void generateLevel() {
-        for (int i = 0; i < 10; i++){
-            for (int j = 0; j < 10; j++){
-                if (rooms[i][j] != null) {
-					Driver.removeDrawer(rooms[i][j]);
-					rooms[i][j] = null;
-				}
-            }
-        }
+//        for (int i = 0; i < 10; i++){
+//            for (int j = 0; j < 10; j++){
+//                if (rooms[i][j] != null) {
+//					Driver.removeDrawer(rooms[i][j]);
+//					rooms[i][j] = null;
+//				}
+//            }
+//        }
 
 		Random rn = new Random();
 		startRoom = new Room(this);
@@ -162,7 +167,7 @@ public class Level {
 					break;
 				}
 			}
-			if (!roomFound) Driver.removeDrawer(newRoom);
+			//if (!roomFound) Driver.removeDrawer(newRoom);
 		}
 		rooms[x][y] = newRoom;
 		newRoom.addDoor(entrance);
@@ -185,7 +190,7 @@ public class Level {
 					break;
 				}
 			}
-			if (!roomFound) Driver.removeDrawer(newRoom);
+			//if (!roomFound) Driver.removeDrawer(newRoom);
 		}
 		endRoom = newRoom;
 		rooms[x][y] = endRoom;
@@ -204,6 +209,8 @@ public class Level {
     }
 
     public void moveRooms(Room room, String direction) {
+        System.out.println("Moving " + direction);
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (rooms[i][j] != null && rooms[i][j].equals(room)) {
@@ -226,6 +233,7 @@ public class Level {
                     }
                     room.unload();
                     rooms[i + changeI][j + changeJ].load();
+                    break;
                 }
 
             }

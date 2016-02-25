@@ -21,9 +21,16 @@ public class RoomEntity extends Drawer {
     
     public static int roomCounter = 0;
 
-
     public RoomEntity() {
         super("Room" + roomCounter++);
+
+        setTopLeftX(0);
+        setTopLeftY(0);
+    }
+
+
+    public RoomEntity(boolean override) {
+        super("Room" + roomCounter++, override);
 
         setTopLeftX(0);
         setTopLeftY(0);

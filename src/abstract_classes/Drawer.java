@@ -28,6 +28,10 @@ public abstract class Drawer extends Entity implements Serializable {
         Driver.addDrawer(this);
     }
 
+    public Drawer(String name, boolean override) {
+        super(name);
+    }
+
     public void update(Iterable<Event> events) {
         if (loaded) {
             drawAll();
