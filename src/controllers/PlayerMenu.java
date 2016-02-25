@@ -16,6 +16,13 @@ public class PlayerMenu extends Menu {
     private Slot[] slots = new Slot[7];
     private int count = 0;
 
+    Message atMsg = new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12);
+    Message inMsg = new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12);
+    Message agMsg = new Message(500, 600, 0, "Agility : " + ag, Color.WHITE, 12);
+    Message enMsg = new Message(700, 550, 0, "Endurance : " + en, Color.WHITE, 12);
+    Message viMsg = new Message(700, 575, 0, "Vitality : " + vi, Color.WHITE, 12);
+    Message heMsg = new Message(700, 600, 0, "health : " + he, Color.WHITE, 12);
+
     public PlayerMenu() {
         super(NAME);
 
@@ -50,18 +57,20 @@ public class PlayerMenu extends Menu {
         //bottom bar //TODO dont know what to populate this or if its needed but its here to loog good tbh
         addSlot("LONG2", 625, 580, 520, 120); //TODO resize / edit this with info
 
-        addEntity(new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12));
-        addEntity(new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12));
-        addEntity(new Message(500, 600, 0, "Agility : " + ag, Color.WHITE, 12));
-        addEntity(new Message(700, 550, 0, "Endurance : " + en, Color.WHITE, 12));
-        addEntity(new Message(700, 575, 0, "Vitality : " + vi, Color.WHITE, 12));
-        addEntity(new Message(700, 600, 0, "health : " + he, Color.WHITE, 12));
+        addEntity(atMsg);
+        addEntity(inMsg);
+        addEntity(agMsg);
+        addEntity(enMsg);
+        addEntity(viMsg);
+        addEntity(heMsg);
     }
 
     public void populateMenu(Item[] items){
-        for(int i = 0; i < items.length; i++){ //display items in playes inventory
+
+
+        for(int i = 0; i < items.length; i++){ //display items the player has equipped
             if(items[i] != null) {
-                System.out.println(items[i].getName()); //debug
+                //System.out.println(items[i].getName()); //debug
                 slots[i].addItem(items[i]);
             }
         }

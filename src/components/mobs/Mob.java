@@ -69,11 +69,7 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
     }*/
-    public int getHealth() {
-        return this.health;
-    }
-
-    public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
+        public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
         return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true, this);
     }
     public boolean isPlacable(MovementListener room, int newX, int newY, int w, int h) {
@@ -286,6 +282,30 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     }
     public void setExp(int xp){
         this.exp = xp;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public int getIntellect() {
+        return Intellect;
+    }
+
+    public int getAgility() {
+        return Agility;
+    }
+
+    public int getEndurance() {
+        return Endurance;
+    }
+
+    public int getVitality() {
+        return Vitality;
+    }
+
+    public int getHealth() {
+        return this.health;
     }
 }
 
