@@ -420,6 +420,12 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                     levelUp = new Message(MapMenu.getPlayer().getCenterX(), MapMenu.getPlayer().getCenterY() - 50, 0, "LEVEL UP", Color.RED, 20);
                     addEntity(levelUp);
                     x = 0;
+                    MapMenu.getPlayer().attackPower++;
+                    MapMenu.getPlayer().Vitality++;
+                    MapMenu.getPlayer().Endurance++;
+                    MapMenu.getPlayer().Intellect++;
+                    MapMenu.getPlayer().Intellect++;
+                    MapMenu.getPlayer().Agility++;
                     MapMenu.getPlayer().setExp(0);
                     MapMenu.getPlayer().level++;
 

@@ -9,8 +9,11 @@ import interfaces.CollidingEntity;
 import interfaces.KeyListener;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
+import tools.Constants;
+import tools.FileHandling;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -45,6 +48,22 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
         //initialise equipped items array
         for(int i = 0; i < 7; i++){
             equippedItems[i] = null;
+        }
+        File save = new File("assets" + Constants.SEP + "save_games" + Constants.SEP + "player_state");
+        if(save.exists()){
+
+            ArrayList<Object> objs = new ArrayList<>();
+            objs = FileHandling.readFile("assets" + Constants.SEP + "save_games" + Constants.SEP + "player_state");
+            Object obj[] = objs.toArray();
+            this.level = (int) obj[0];
+            setExp((int) obj[1]);
+            this.Vitality = (int) obj[2];
+            this.Endurance = (int) obj[3];
+            this.Intellect = (int) obj[4];
+            this.attackPower = (int) obj[5];
+            this.Agility = (int) obj[6];
+
+           System.out.format("%d", (int) obj[0]);
         }
     }
 
@@ -382,6 +401,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public static String getClassType() {
         return classType;
     }
+
     public void drinkHealthPotion(){
         if(this.health + 50 > 100){
             this.health = 100;

@@ -27,20 +27,18 @@ public class Level {
         this.difficulty = diff;
 
 		int failedLevels = 0;
-		while (endRoom == null) {
+	/*	while (endRoom == null) {
 			generateLevel();
 
 			if (endRoom == null) System.out.println("Failed levels: " + (++failedLevels));
 		}
 
 		currentRoom = startRoom;
-		currentRoom.load();
+		currentRoom.load();*/
 
-/*
         Room testRoom = new Room(this);
-        testRoom.create("room_9");
-        testRoom.load();
-*/
+		testRoom.create("room_8");
+		testRoom.load();
 
     //    testRoom.addDoor(testRoom.getPotentialDoors().keySet().iterator().next());
     }
