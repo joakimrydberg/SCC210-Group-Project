@@ -37,6 +37,8 @@ public class InventoryMenu extends Menu {
         d = new Message(550, 620, 0, "Select an Item!", Color.WHITE, 12);
         addEntity(n);
         addEntity(d);
+        btnEquipt.addClickListener(this);
+        btnDiscard.addClickListener(this);
         addEntity(btnEquipt);
         addEntity(btnDiscard);
         btnEquipt.hide();
@@ -44,11 +46,11 @@ public class InventoryMenu extends Menu {
     }
 
     public void populateMenu(ArrayList<Item> inventory){
-//        for(int i = 0; i < slots.length; i++){ //display items in playes inventory
-//            if(slots[i+7].hasItem()) {
-//                slots[i + 7].removeItem();
-//            }
-//        }
+        for(int i = 7; i < slots.length; i++){ //display items in playes inventory
+            if(slots[i].hasItem()) {
+                slots[i].removeItem();
+            }
+        }
 
         for(int i = 0; i < inventory.size(); i++){ //display items in playes inventory
             //System.out.println(inventory.get(i).getName()); //debug
