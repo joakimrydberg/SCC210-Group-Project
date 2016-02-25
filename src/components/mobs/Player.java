@@ -32,7 +32,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             downPressed = false,
             leftPressed = false,
             rightPressed = false;
-
+    public int healthPotions = 0;
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
@@ -243,6 +243,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                     tempDir = 0;
                     setAnimation(ANIMATE_DOWN);
                 }
+
                 break;
         }
 
@@ -288,7 +289,10 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                     setCharacterStill(tempDir);
                     super.stopCharacter(); //@see Mob
                 }
-
+            case H:
+                if(healthPotions > 0){
+                    drinkHealthPotion();
+                }
                 break;
         }
 
@@ -376,6 +380,14 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
     public static String getClassType() {
         return classType;
+    }
+    public void drinkHealthPotion(){
+        if(this.health + 50 > 100){
+            this.health = 100;
+        }
+        else {
+            this.health = this.health + 50;
+        }
     }
 }
 
