@@ -32,7 +32,10 @@ public class Level {
 		while (endRoom == null) {
 			generateLevel();
 
-			if (endRoom == null) System.out.println("\nFailed levels: " + (++failedLevels));
+			if (endRoom == null) {
+				System.out.println("\nFailed levels: " + (++failedLevels));
+				startRoom.resetCounter();
+			}
 		}
 
 		currentRoom = startRoom;
