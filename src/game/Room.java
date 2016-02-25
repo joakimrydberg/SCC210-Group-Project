@@ -204,6 +204,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         return isMoveAcceptable(x, y, w, h, false, movingEntity);
     }
 
+
     public boolean isMoveAcceptable(int x, int y, int w, int h, boolean override, MovingEntity entity) {
         if (isLoaded() || override) {
             Vector2i wSize = getWindow().getSize();

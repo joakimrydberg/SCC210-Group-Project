@@ -355,6 +355,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             timeAtLastDamaged = System.currentTimeMillis();
             BufferedImage[] a = charHurt(getTheSpriteSheet(), tempDir, 10);
             setFrames(a);
+
         }
 
     }
