@@ -143,7 +143,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         LevelPart levelPart;
         ArrayList<LevelPart> levelPartArrayList = new ArrayList<>();
 
-        //populating arraylist with values in combo boxes
+        //populating arraylist with values in combo boxes /
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
                 levelPart = new LevelPart();

@@ -11,9 +11,11 @@ import interfaces.KeyListener;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
+import tools.Navigator;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 /**
  * Created by millsr3 on 20/02/2016.
@@ -84,23 +86,30 @@ public class Mage extends Player implements ClickListener, KeyListener {
             timeAtLastShot = System.currentTimeMillis();
 
             Fireball arrow = new Fireball();
-
-            if (args.length == 1) {
+            Navigator n = new Navigator(room);
+            n.populateNavPixels();
+            if (args.length == 1 ) {
                 Event e = (Event) args[0];
 
                 Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
                 Vector2i to = e.asMouseEvent().position;
+                Vector2f too = new Vector2f(to.x, to.y);
+                Vector2f fromm = new Vector2f(from.x, from.y);
 
-                arrow.setCenterX(from.x);
-                arrow.setCenterY(from.y);
+                if( n.inLineOfSight(too,fromm)) {
+                    arrow.setCenterX(to.x);
+                    arrow.setCenterY(to.y);
+                    arrow.setCenterX(to.x);
+                    arrow.setCenterY(to.y);
 
-                arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-                arrow.correctDirection();
-                //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
-
-                arrow.addMovementListener(room);
-                fireballs.add(arrow);
-                room.addEntity(arrow);
+                    //    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                    //     arrow.correctDirection();
+                    //arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                    arrow.show();
+                    //  arrow.addMovementListener(room);
+                    fireballs.add(arrow);
+                    room.addEntity(arrow);
+                }
             }
         }
     }

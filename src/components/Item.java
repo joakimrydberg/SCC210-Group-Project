@@ -6,12 +6,16 @@ package components;
 public class Item {
 
     private Image itemIcon;
-    private String name = "Not Set", description = "Not Set";
+    private String name = "Not Set", description = "Not Set", type = "HELMET";
+    private int price = 1, value = 1;
 
-    public Item(String n, Image icon, String desc){
+    public Item(String n, Image icon, String desc, String ty, int pr, int val){
         name = n;
         itemIcon = icon;
         description = desc;
+        type = ty;
+        price = pr;
+        value = val;
     }
 
     public String getName(){
@@ -24,5 +28,17 @@ public class Item {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

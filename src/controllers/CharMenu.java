@@ -183,7 +183,7 @@ public class CharMenu extends Menu {
                 this.setStats(0, 10, 0, 3, 2);
                 p.setStats(0, 10, 0, 3, 2);
                 p.setClass("mage");
-                p.addToInventory(new Item("Basic Staff", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_staff.png"), "A basic staff"));
+                p.addToInventory(new Item("Basic Staff", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "staff0.png"), "A basic staff", "WEAPON", 100, 50));
                 //range.hide();
                 //warr.hide();
                 //mage.show();
@@ -198,12 +198,12 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "ranged selected");
                 this.setStats(0, 0, 5, 5, 5);
                 p.setStats(0, 0, 5, 5, 5);
-                // range.show();
+               // range.show();
                 //warr.hide();
-                // mage.hide();
+               // mage.hide();
                 p.setClass("ranger");
-                p.addToInventory(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
-                // p.printInventory();//debug
+                p.addToInventory(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "bow0.png"), "A basic bow", "WEAPON", 100, 50));
+               // p.printInventory();//debug
                 className = "ranged";
                 currAnimation.stop();
                 currAnimation = rangerWalk;
@@ -218,7 +218,7 @@ public class CharMenu extends Menu {
                 //warr.show();
                 //mage.hide();
                 p.setClass("warrior");
-                p.addToInventory(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
+                p.addToInventory(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "sword0.png"), "A basic sword", "WEAPON", 100, 50));
                 className = "warr";
                 currAnimation.stop();
                 currAnimation = warriorWalk;

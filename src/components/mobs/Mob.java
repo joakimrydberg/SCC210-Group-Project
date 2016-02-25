@@ -95,8 +95,9 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
         BufferedImage[] currentHealth;
         if(currHealth > 35)
             {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 0, character)};}
-        else if(currHealth > 20)
-        {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 1, character)};}
+        else if(currHealth > 20) {
+            {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 0, character)};}
+        }
         else if(currHealth > 5)
         {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 2, character)};}
         else{currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 3, character)};}

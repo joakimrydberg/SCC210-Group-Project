@@ -35,6 +35,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private boolean endRoom = false;
     private PauseMenu pauseMenu = new PauseMenu();
 
+
     public Room(Level level) {
         this.level = level;
 
@@ -344,7 +345,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public void drawAll() {
         if (isLoaded()) {
             draw();
-
+            MapMenu.getPlayer().dead = false;
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
 
@@ -379,14 +380,14 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 //                        }
 //                    }
 
-//                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
-//                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
-//                            if (projectile.getState() == Projectile.OKAY
-//                                    &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
-//                                ((Enemy) entity).damaged();
-//                            }
-//                        }
-//                    }
+                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
+                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
+                            if (projectile.getState() == Projectile.OKAY
+                                    &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+                                ((Enemy) entity).damaged();
+                            }
+                        }
+                    }
 
 
                 }

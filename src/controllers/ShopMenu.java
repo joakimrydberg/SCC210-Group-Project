@@ -21,9 +21,9 @@ public class ShopMenu extends Menu {
     private int btnX = 170, btnY = 150;
 
     private Button btnBuy = new Button(800, 450, 90, 30, "GREEN", 200, "BUY", 15);
-    private Message n = null, d = null;
+    private Message n = null, d = null, price = null;
     private Image img = new Image(450, 440, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
-    private Image coins = new Image(800, 405, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "coins.png");
+    private Image coins = new Image(825, 420, 20, 20, "assets" + Constants.SEP + "art" + Constants.SEP + "coin.png");
 
     private Slot clickedSlot = null;
 
@@ -60,10 +60,14 @@ public class ShopMenu extends Menu {
 
         drawSlots();
 
+        populateMenu(helmets);
+
         addSlot("LONG2", 625, 440, 520, 100);
         addSlot("EMPTY", 450, 440, 70, 70);
         n = new Message(550, 420, 0, "Select an Item!", Color.WHITE, 12);
         d = new Message(550, 450, 0, "Select an Item!", Color.WHITE, 12);
+        price = new Message(775, 410, 0, "", Color.WHITE, 12);
+        addEntity(price);
         addEntity(n);
         addEntity(d);
         addEntity(btnBuy);
@@ -84,9 +88,67 @@ public class ShopMenu extends Menu {
     }
 
     public void createItems(){
-        weapons.add(new Item("Basic Staff", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_staff.png"), "A basic staff"));
-        weapons.add(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
-        weapons.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
+        String path = "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP;
+
+        //HELMETS
+        helmets.add(new Item("Basic Helmet", new Image(10, 10, path + "helmet1.png"), "A basic helmet.", "HELMET", 100, 50));
+        helmets.add(new Item("Beginners Helmet", new Image(10, 10, path + "helmet2.png"), "A warrior's first helm.", "HELMET", 100, 50));
+        helmets.add(new Item("Hardened Helmet", new Image(10, 10, path + "helmet3.png"), "Protect your head.", "HELMET", 100, 50));
+        helmets.add(new Item("Swift Helmet", new Image(10, 10, path + "helmet4.png"), "Keep your head on a swivel.", "HELMET", 100, 50));
+        helmets.add(new Item("Warrior's Helmet", new Image(10, 10, path + "helmet5.png"), "A true warrior's helmet.", "HELMET", 100, 50));
+        helmets.add(new Item("The Bull", new Image(10, 10, path + "helmet6.png"), "Gendry?", "HELMET", 100, 50));
+        helmets.add(new Item("Mo's Helmet", new Image(10, 10, path + "helmetS.png"), "Sweet.", "HELMET", 100, 50));
+        helmets.add(new Item("The Skull", new Image(10, 10, path + "helmetS2.png"), "Never end up like Oberyn!", "HELMET", 100, 50));
+
+        //TORSOS
+        torsos.add(new Item("Basic Armor", new Image(10, 10, path + "torso0.png"), "Basic chain mail.", "TORSO", 100, 50));
+        torsos.add(new Item("Advanced Armor", new Image(10, 10, path + "torsoS.png"), "No blade shall penetrate it.", "TORSO", 100, 50));
+
+        //ARMS
+        arms.add(new Item("Basic Gloves", new Image(10, 10, path + "arms0.png"), "Basic gloves.", "ARM", 100, 50));
+        arms.add(new Item("Metal Gloves", new Image(10, 10, path + "armsS.png"), "Never lose a finger again.", "ARM", 100, 50));
+
+        //BOOTS
+        boots.add(new Item("Basic Shoes", new Image(10, 10, path + "boots0.png"), "A basic shoe.", "BOOT", 100, 50));
+        boots.add(new Item("Beginners Boots", new Image(10, 10, path + "boots1.png"), "Basic boots.", "BOOT", 100, 50));
+        boots.add(new Item("Hardened Boots", new Image(10, 10, path + "boots2.png"), "Boots that'll last the distance.", "BOOT", 100, 50));
+        boots.add(new Item("Toughened Boots", new Image(10, 10, path + "boots3.png"), "When you need excellent foot protection.", "BOOT", 100, 50));
+        boots.add(new Item("Warrior's Slip On's", new Image(10, 10, path + "boots4.png"), "A warrior's basic.", "BOOT", 100, 50));
+        boots.add(new Item("Mo's Boots", new Image(10, 10, path + "bootsS.png"), "What are THOOOSE!", "BOOT", 100, 50));
+
+        //WEAPONS
+        weapons.add(new Item("Basic Staff", new Image(10, 10,  path + "staff0.png"), "A basic staff.", "WEAPON", 100, 50));
+        weapons.add(new Item("Beginners Staff", new Image(10, 10,  path + "staff1.png"), "Every mage started with one.", "WEAPON", 100, 50));
+        weapons.add(new Item("Hardened Staff", new Image(10, 10,  path + "staff2.png"), "For that extra kick.", "WEAPON", 100, 50));
+        weapons.add(new Item("Wizard's Staff", new Image(10, 10,  path + "staff3.png"), "A true wizard's staff", "WEAPON", 100, 50));
+        weapons.add(new Item("Mo's Staff", new Image(10, 10,  path + "staff4.png"), "Wow.", "WEAPON", 100, 50));
+
+        weapons.add(new Item("Basic Bow", new Image(10, 10, path + "bow0.png"), "A basic bow", "WEAPON", 100, 50));
+
+        weapons.add(new Item("Basic Sword", new Image(10, 10, path + "sword0.png"), "A basic sword.", "WEAPON", 100, 50));
+        weapons.add(new Item("Beginners Sword", new Image(10, 10, path + "sword1.png"), "A beginners sword.", "WEAPON", 100, 50));
+        weapons.add(new Item("Hardened Sword", new Image(10, 10, path + "sword2.png"), "This'll do some damage.", "WEAPON", 100, 50));
+        weapons.add(new Item("Warrior's Sword", new Image(10, 10, path + "sword3.png"), "A true warrior never leaves home without it.", "WEAPON", 100, 50));
+        weapons.add(new Item("Mo's Sword", new Image(10, 10, path + "sword4.png"), "Oooh.", "WEAPON", 100, 50));
+        weapons.add(new Item("Matilda", new Image(10, 10, path + "swordS.png"), "A new prototype, it packs a punch.", "WEAPON", 100, 50));
+
+        //SHIELDS
+        shields.add(new Item("Basic Shield", new Image(10, 10, path + "shield0.png"), "A basic shield.", "SHIELD", 100, 50));
+        shields.add(new Item("Beginners Shield", new Image(10, 10, path + "shield1.png"), "A classic for a newbie.", "SHIELD", 100, 50));
+        shields.add(new Item("Advanced Shield", new Image(10, 10, path + "shield2.png"), "Toughen yourself up.", "SHIELD", 100, 50));
+        shields.add(new Item("Mo's Shield", new Image(10, 10, path + "shield3.png"), "Nice.", "SHIELD", 100, 50));
+        shields.add(new Item("The Wall", new Image(10, 10, path + "shield4.png"), "The best shield on the market.", "SHIELD", 100, 50));
+
+        //POTIONS
+        potions.add(new Item("Health Potion", new Image(10, 10, path + "potion_red.png"), "Heals you ..", "POTION", 100, 50));
+        potions.add(new Item("Vitality Boost", new Image(10, 10, path + "potion_blue.png"), "Increases your vitality.", "POTION", 100, 50));
+        potions.add(new Item("Strength Potion", new Image(10, 10, path + "potion_black.png"), "Increases your attack.", "POTION", 100, 50));
+        potions.add(new Item("Toughness Potion", new Image(10, 10, path + "potion_brown.png"), "Increases your endurance.", "POTION", 100, 50));
+        potions.add(new Item("Wisdom Potion", new Image(10, 10, path + "potion_green.png"), "Gives you an xp boost.", "POTION", 100, 50));
+        potions.add(new Item("Brains Potion", new Image(10, 10, path + "potion_purple.png"), "Increases your intellect.", "POTION", 100, 50));
+        potions.add(new Item("Swiftness Potion", new Image(10, 10, path + "potion_white.png"), "Increases your agility.", "POTION", 100, 50));
+        potions.add(new Item("Magic Elixr", new Image(10, 10, path + "potion_yellow.png"), "Boost all stats.", "POTION", 100, 50));
+        potions.add(new Item("Mo's Special Blend", new Image(10, 10, path + "potion_S.png"), "Hmmm... It cant hurt to try it.", "POTION", 100, 50));
     }
 
     private void drawSlots(){
@@ -147,6 +209,7 @@ public class ShopMenu extends Menu {
 
                 n.setText(slot.getItem().getName());
                 d.setText(slot.getItem().getDescription());
+                price.setText("" + slot.getItem().getPrice());
 
             } else {
                 img.hide();
@@ -154,6 +217,7 @@ public class ShopMenu extends Menu {
                 btnBuy.hide();
                 n.setText("Theres Nothing for Sale in that Slot!");
                 d.setText("");
+                price.setText("");
             }
 
             for (int i = 1; i < 36; i++) {
