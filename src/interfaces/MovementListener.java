@@ -6,7 +6,7 @@ package interfaces;
  */
 public interface MovementListener {
 
-    boolean isMoveAcceptable(int newX, int newY, int w, int h);
+    boolean isMoveAcceptable(int newX, int newY, int w, int h, MovingEntity movingEntity);
 
     void onMove(MovingEntity mover);
 }

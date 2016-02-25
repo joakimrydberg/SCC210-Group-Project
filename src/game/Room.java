@@ -35,10 +35,12 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private boolean endRoom = false;
     private PauseMenu pauseMenu = new PauseMenu();
 
+
     public Room(Level level) {
         this.level = level;
 
         addEntity(this);
+
     }
 
     public void create(String roomID) {
@@ -121,8 +123,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         create(tiles);
 
         { //adding the player
-
             MapMenu.getPlayer().addMovementListener(this);
+            MapMenu.getPlayer().place(this);
             addEntity(MapMenu.getPlayer());
         }
 
@@ -198,11 +200,11 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     }
 
     @Override
-    public boolean isMoveAcceptable(int x, int y, int w, int h) {
-        return isMoveAcceptable(x, y, w, h, false);
+    public boolean isMoveAcceptable(int x, int y, int w, int h, MovingEntity movingEntity) {
+        return isMoveAcceptable(x, y, w, h, false, movingEntity);
     }
 
-    public boolean isMoveAcceptable(int x, int y, int w, int h, boolean override) {
+    public boolean isMoveAcceptable(int x, int y, int w, int h, boolean override, MovingEntity entity) {
         if (isLoaded() || override) {
             Vector2i wSize = getWindow().getSize();
 
@@ -222,11 +224,14 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 for (int j = 0; j < 11; j++) {
                     part = getPart(i, j);
 
-                    if (part.getType().equals("Wall")) {
-                        final int partLeft = j * partSize.x,
-                                partRight = (j + 1) * partSize.x,
-                                partBottom = (i + 1) * partSize.y,
-                                partTop = i * partSize.y;
+
+                    if (!(part.getType().equals("Blank") && entity instanceof Projectile)) {
+                        if (part.getType().equals("Wall") || (part.getType().equals("Blank")) ) {
+
+                            final int partLeft = j * partSize.x,
+                                    partRight = (j + 1) * partSize.x,
+                                    partBottom = (i + 1) * partSize.y,
+                                    partTop = i * partSize.y;
 
 //                    //col * w + w/2, row * h + h/2
 //                    if (w == 1) {
@@ -234,12 +239,13 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 //                                , left, right, top, bottom,
 //                                partLeft, partRight, partTop, partBottom);
 //                    }
-                        if (left < partRight
-                                && right > partLeft
-                                && bottom > partTop
-                                && top < partBottom) {
+                            if (left < partRight
+                                    && right > partLeft
+                                    && bottom > partTop
+                                    && top < partBottom) {
 
-                            return false;
+                                return false;
+                            }
                         }
                     }
                 }
@@ -306,6 +312,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public void keyPressed(KeyEvent event) {
         if (event.asKeyEvent().key == Keyboard.Key.P) {
             //loadDrawer(PauseMenu.class);
+            MapMenu.getPlayer().printInventory();
             pauseMenu.loadInPlayer(MapMenu.getPlayer());
             pauseMenu.load();
             unload();
@@ -338,7 +345,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     public void drawAll() {
         if (isLoaded()) {
             draw();
-
+            MapMenu.getPlayer().dead = false;
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
 
@@ -357,38 +364,38 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                     if (((CollidingEntity) entity).checkWithin(MapMenu.getPlayer().getCenterX(), MapMenu.getPlayer().getCenterY()) && MapMenu.getPlayer().attacking) {
                         ((Enemy) entity).damaged();
                     }
-
-                    if (entity instanceof EnemyWarrior) {
-                        if (((CollidingEntity) MapMenu.getPlayer()).checkWithin(entity.getCenterX(), entity.getCenterY()) && ((EnemyWarrior)entity).attacking) {
-                            (MapMenu.getPlayer()).damaged();
-                        }
-                    }
-
-                    if (entity instanceof EnemyRanger) { //and maybe mage?
-                        for (Projectile projectile : ((EnemyRanger) entity).getProjectiles()) {
-                            if (projectile.getState() == Projectile.OKAY
-                                    && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
-                                (MapMenu.getPlayer()).damaged();
-                            }
-                        }
-                    }
-
-//                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
-//                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
+//
+//                    if (entity instanceof EnemyWarrior) {
+//                        if (((CollidingEntity) MapMenu.getPlayer()).checkWithin(entity.getCenterX(), entity.getCenterY()) && ((EnemyWarrior)entity).attacking) {
+//                            (MapMenu.getPlayer()).damaged();
+//                        }
+//                    }
+//
+//                    if (entity instanceof EnemyRanger) { //and maybe mage?
+//                        for (Projectile projectile : ((EnemyRanger) entity).getProjectiles()) {
 //                            if (projectile.getState() == Projectile.OKAY
-//                                    &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
-//                                ((Enemy) entity).damaged();
+//                                    && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+//                                (MapMenu.getPlayer()).damaged();
 //                            }
 //                        }
 //                    }
 
+                    if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
+                        for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {
+                            if (projectile.getState() == Projectile.OKAY
+                                    &&((CollidingEntity) entity).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
+                                ((Enemy) entity).damaged();
+                            }
+                        }
+                    }
+
 
                 }
 
-                if(entity instanceof Enemy && ((Enemy)entity).Health < 0 && !((Enemy)entity).dead){
+                if(entity instanceof Enemy && ((Enemy)entity).health < 0 && !((Enemy)entity).dead){
                     ((Enemy)entity).die();
                 }
-                if(entity instanceof Player && ((Player)entity).Health < 0 && !((Player)entity).dead){
+                if(entity instanceof Player && ((Player)entity).health < 0 && !((Player)entity).dead){
                     ((Player)entity).die();
                     loadDrawer(GameOverMenu.class);
                     unload();

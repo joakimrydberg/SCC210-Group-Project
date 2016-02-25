@@ -6,10 +6,7 @@
 package controllers;
 
 import abstract_classes.Entity;
-import components.Button;
-import components.Image;
-import components.Node;
-import components.Rect;
+import components.*;
 import components.mobs.Mage;
 import components.mobs.Player;
 import components.mobs.Ranger;
@@ -50,7 +47,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
     /**
      *
      */
-    public MapMenu() {
+    public MapMenu(Player p) {
         super(NAME);
 
         super.addEntity(this);  //do first for events
@@ -64,6 +61,11 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         Button backButton = new Button(50, 40, 80, 50, "BROWN", 200, "BACK", 15);
         backButton.addClickListener(this);
         addEntity(backButton);
+
+        Button btnShop = new Button(900, 600, 80, 50, "BROWN", 200, "SHOP", 15);
+        btnShop.addClickListener(this);
+        addEntity(btnShop);
+
         this.addClickListener(this);
         Node start = null, end;
         //generating map
@@ -79,6 +81,11 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         if (Player.classType.equals("ranger")) {
             player = new Ranger();
         }
+        for (Item item : p.getInventory()) {
+            player.addToInventory(item);
+        }
+        System.out.println("From map menu..");
+        p.printInventory();//debug
         player.dead = false;
         // p.setClass(Player.classType);
         do {
@@ -234,18 +241,15 @@ public class MapMenu extends Menu implements Clickable, Serializable {
             }
         }
 
-        int fails = 0;
         if (all) {
             for (Node node : nodes) {
                 clearTimes(nodes);
                 if (navigateTo(start, node, 0, nodes) < 0) {
-                    fails++;
+                    return false;
                 }
             }
 
-            System.out.println("fails " + fails);
-
-            return (fails == 0);
+            return true;
         } else {
             return navigateTo(start, end, 0, nodes) > 0;
         }
@@ -307,7 +311,20 @@ public class MapMenu extends Menu implements Clickable, Serializable {
                     }
                 }
 
-                System.out.println("Back clicked");
+                System.out.println("BACK clicked");
+            } else if (button.getName().equals("SHOP")) {
+                this.unload();
+
+                loadDrawer(ShopMenu.class);
+
+                //close any node descriptors that are open
+                for(int i = 0; i < 10; i++){
+                    if (nodeDesc[i].isLoaded()){
+                        nodeDesc[i].unload();
+                    }
+                }
+
+                System.out.println("SHOP clicked");
             }
         }
         else if (clickable instanceof Node){

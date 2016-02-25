@@ -100,14 +100,9 @@ public class PauseMenu extends Menu {
             {
                 unloadMenus();
 
-                ArrayList<Item> inventory = new ArrayList<Item>();
-                inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_sword.png"), "A basic sword"));
-                inventory.add(new Item("Basic Staff", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_staff.png"), "A basic staff"));
-                inventory.add(new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "basic_bow.png"), "A basic bow"));
-
                 iMenu.load();
-                //iMenu.populateMenu(player.getInventory());
-                iMenu.populateMenu(inventory);
+                iMenu.populateMenu(player.getInventory());
+                //iMenu.populateMenu(inventory);
                 System.out.println("INVENTORY clicked");
             }
             else if (button.getName().equals("STATS"))

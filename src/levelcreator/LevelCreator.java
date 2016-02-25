@@ -45,7 +45,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
     private int selectedSquareRotation = -4; //invalid rotation
 
     public LevelCreator() {
-
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         create();
 
         this.setSize(1000,900);
@@ -143,7 +143,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
         LevelPart levelPart;
         ArrayList<LevelPart> levelPartArrayList = new ArrayList<>();
 
-        //populating arraylist with values in combo boxes
+        //populating arraylist with values in combo boxes /
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
                 levelPart = new LevelPart();
@@ -606,7 +606,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
             }
         }
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
 
         jLabel1.setText("Level Name: ");
 
@@ -666,7 +666,7 @@ public class LevelCreator extends JFrame implements TreeSelectionListener, Mouse
     }
 
     public static void main(String[] args) {
-        new LevelCreator();
+        throw new RuntimeException("Please use the appropriate cheat... in game or via program args (or I guess edit this line)");
     }
 
     /**

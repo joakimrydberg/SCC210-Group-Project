@@ -81,6 +81,7 @@ public class Ranger extends Player implements ClickListener, interfaces.Ranger {
                 Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
                 Vector2i to = e.asMouseEvent().position;
 
+                System.out.println("Player: " + getCenterX() + " " + getCenterY());
                 arrow.setCenterX(from.x);
                 arrow.setCenterY(from.y);
 

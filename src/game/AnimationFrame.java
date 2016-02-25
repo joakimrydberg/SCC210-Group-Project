@@ -38,6 +38,7 @@ public class AnimationFrame {
 
         Sprite sprite = new Sprite(t);
 
+       // sprite.setOrigin(0 + width / 2,0 + height / 2);
         Vector2i imgSize = t.getSize();
 
         int widthTemp = (width < 0) ? imgSize.x : width;

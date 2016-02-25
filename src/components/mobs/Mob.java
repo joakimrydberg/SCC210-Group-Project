@@ -28,9 +28,12 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public int attackPower = 0;
     public int Endurance = 0;
     public int Vitality = 0;
-    public int Health = 100;
+    public int health = 100;
     protected int tempDir = 0;
     public boolean dead = false;
+    private BufferedImage newMageSheet = SpriteSheetLoad.loadSprite("HealthSheet");
+    public static Animation currentHealthBar;
+
     // SpriteSheetLoad ourSpriteSheet = new SpriteSheetLoad(64, 128);
     protected BufferedImage theSpriteSheet;
     public BufferedImage[] characterStill;
@@ -66,12 +69,15 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 /*    public static BufferedImage[] charMove(BufferedImage character, int dir)
     {
     }*/
+    public int getHealth() {
+        return this.health;
+    }
 
     public boolean isPlacable(Room room, int newX, int newY, int w, int h) {
-        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true);
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, true, this);
     }
     public boolean isPlacable(MovementListener room, int newX, int newY, int w, int h) {
-        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4);
+        return room.isMoveAcceptable(newX, newY + h / 6, w / 2, h / 4, this);
     }
 
     public BufferedImage[] charAttack(BufferedImage character, int dir)
@@ -83,8 +89,23 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
     public BufferedImage[] charHurt(BufferedImage character, int dir, int dmg)
     {
         BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
-        this.Health = this.Health-dmg;
+        this.health = this.health -dmg;
+        int currHealth = (int) Math.floor(this.health/2);
+        int sheetPos = 50 - currHealth;
+        BufferedImage[] currentHealth;
+        if(currHealth > 35)
+            {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 0, character)};}
+        else if(currHealth > 20) {
+            {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 0, character)};}
+        }
+        else if(currHealth > 5)
+        {currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 2, character)};}
+        else{currentHealth = new BufferedImage[]{SpriteSheetLoad.getSprite(sheetPos, 3, character)};}
+        currentHealthBar = new Animation(200, 200, 64, 128, currentHealth, 3);
+
+
         return characterHurt;
+
     }
 
 

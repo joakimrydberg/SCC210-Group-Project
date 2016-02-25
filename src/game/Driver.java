@@ -3,6 +3,7 @@ package game;
 import abstract_classes.Drawer;
 import abstract_classes.Entity;
 import controllers.MainMenu;
+import levelcreator.LevelCreator;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
@@ -64,7 +65,20 @@ public class Driver {
 
         window.setFramerateLimit(30); // Avoid excessive updates
 
-        MainMenu mainMenu = new MainMenu();
+        MainMenu mainMenu;
+
+        for (String cheat : args) {
+            if (cheat.equals("levelcreator")
+                    || cheat.equals("level creator")) {
+
+                new Thread(LevelCreator::new).start(); //who even knew java had this syntax
+            } else if (false) {
+
+            }
+        }
+
+        mainMenu = new MainMenu();
+
         mainMenu.load();
 
         ArrayList<Drawer> tempDrawers = new ArrayList<>();
