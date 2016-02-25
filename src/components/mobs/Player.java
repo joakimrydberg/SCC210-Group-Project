@@ -36,12 +36,29 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
-    ArrayList<Item> inventory = new ArrayList<Item>();
-    ArrayList<Item> equippedItems = new ArrayList<Item>();
+    private ArrayList<Item> inventory = new ArrayList<Item>();
+    //ArrayList<Item> equippedItems = new ArrayList<Item>();
+    private Item[] equippedItems = new Item[7]; //7 slots for each equipped item
     public int level = 1;
 
     public Player() {
-        //inventory.add(new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "sword0.png"), "A basic sword"));
+        //initialise equipped items array
+        for(int i = 0; i < 7; i++){
+            equippedItems[i] = null;
+        }
+    }
+
+    public void place(Room room) {
+        int x = 400,
+                y = 400;
+
+        //randomise position until we get a suitable one
+        while (!isPlacable(room, x , y, 64, 128)) {
+            x = MapMenu.randomInt(0, getWindow().getSize().x);
+            y = MapMenu.randomInt(0, getWindow().getSize().y);
+        }
+
+        super.create(x, y, 64, 128);
     }
 
     public void addToInventory(Item item){
@@ -54,18 +71,6 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                 inventory.remove(i);
             }
         }
-    }
-    public void place(Room room) {
-        int x = 400,
-                y = 400;
-
-        //randomise position until we get a suitable one
-        while (!isPlacable(room, x , y, 64, 128)) {
-            x = MapMenu.randomInt(0, getWindow().getSize().x);
-            y = MapMenu.randomInt(0, getWindow().getSize().y);
-        }
-
-        super.create(x, y, 64, 128);
     }
 
     public Item getFromInventory(Item item){
@@ -84,6 +89,32 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             System.out.println(inventory.get(i).getName());
         }
         System.out.println("------------------");
+    }
+
+    public void printEquipped(){
+        System.out.println("--Equipped-------");
+        for(int i = 0; i < 7; i++){
+            System.out.println(i + ": " + equippedItems[i]);
+        }
+        System.out.println("------------------");
+    }
+
+    public void equipt(Item item){
+        if(item.getType().equals("HELMET")){
+            equippedItems[0] = item;
+        } else if(item.getType().equals("ARM")){
+            equippedItems[1] = item;
+        } else if(item.getType().equals("TORSO")){
+            equippedItems[2] = item;
+        } else if(item.getType().equals("BOOT")){
+            equippedItems[3] = item;
+        } else if(item.getType().equals("WEAPON")){
+            equippedItems[4] = item;
+        } else if(item.getType().equals("SHIELD")){
+            equippedItems[5] = item;
+        } else if(item.getType().equals("POTION")){
+            equippedItems[6] = item;
+        }
     }
 
     public void setClass(String c) {
