@@ -69,7 +69,8 @@ public class EnemyMage extends Enemy implements CollidingEntity {
                     arrow.setCenterY(to.y + dfy);
                     arrow.setCenterX(to.x + dfx);
                     arrow.setCenterY(to.y + dfy);
-                    if(room.isMoveAcceptable(to.x, to.y, this.getWidth(), this.getHeight(), this)){
+
+                    if(room.isMoveAcceptable(to.x, to.y, this.getWidth() - 20, this.getHeight()- 20, this)){
                         arrow.show();
                         arrows.add(arrow);
                         room.addEntity(arrow);

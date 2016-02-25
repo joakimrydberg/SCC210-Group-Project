@@ -38,7 +38,7 @@ public class Level {
 
 /*
         Room testRoom = new Room(this);
-        testRoom.create("end_room_1");
+        testRoom.create("room_9");
         testRoom.load();
 */
 
