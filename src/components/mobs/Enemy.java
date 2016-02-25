@@ -19,7 +19,7 @@ import java.util.Random;
  * @date 20/02/16.
  */
 public abstract class Enemy extends Mob implements MovementListener, CollidingEntity {
-    private long timeAtMove = System.currentTimeMillis();
+    private long timeAtMove = System.currentTimeMillis() + (long)(Math.random() * 1000);
     protected boolean colliding = false;
     private Room room;
     public final static int IDLE = 0,
@@ -48,6 +48,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
         this.room = room;
         navigator = new Navigator(room);
         MapMenu.getPlayer().addMovementListener(this);
+        onMove(MapMenu.getPlayer());
     }
 
     @Override
@@ -147,7 +148,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
 
     @Override
     public void onMove(MovingEntity mover) {
-        if (!processingMove && timeAtMove - System.currentTimeMillis() > 500) {
+        if (!processingMove && System.currentTimeMillis() - timeAtMove > 1000) {
             processingMove = true;
 
             switch (movementState) {
