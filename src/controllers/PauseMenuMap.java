@@ -3,19 +3,13 @@ package controllers;
 import abstract_classes.Entity;
 import components.Button;
 import components.Image;
-import components.Item;
 import components.Rect;
 import components.mobs.Player;
-import game.Driver;
-import game.Room;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
 import tools.Constants;
-import tools.FileHandling;
-
-import java.util.ArrayList;
 
 /**
  * Created by Ross on 21/02/2016.
@@ -118,6 +112,7 @@ public class PauseMenuMap extends Menu {
             else if (button.getName().equals("DUNGEON MAP"))
             {
                 unloadMenus();
+
                 System.out.println("DUNGEON MAP clicked");
             }
             else if (button.getName().equals("CLOSE"))

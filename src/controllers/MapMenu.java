@@ -96,6 +96,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         for (Item item : p.getInventory()) {
             player.addToInventory(item);
         }
+
         System.out.println("From map menu..");
         p.printInventory();//debug
         player.dead = false;

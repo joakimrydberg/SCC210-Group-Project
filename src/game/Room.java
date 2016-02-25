@@ -33,7 +33,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private Message levelUp = null;
     int x = 0;
     private boolean endRoom = false;
-    private PauseMenu pauseMenu = new PauseMenu();
+    private PauseMenu pauseMenu;
 
 
     public Room(Level level) {
@@ -318,6 +318,12 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             MapMenu.getPlayer().printInventory();
             //MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0)); //shouldnt need this but its there as a quick fix for now
             MapMenu.getPlayer().printEquipped();
+            pauseMenu = (PauseMenu) Driver.getDrawer(null, PauseMenu.class);
+
+            if (pauseMenu == null) {
+                pauseMenu = new PauseMenu(level);
+            }
+
             pauseMenu.loadInPlayer(MapMenu.getPlayer());
             pauseMenu.load();
             unload();

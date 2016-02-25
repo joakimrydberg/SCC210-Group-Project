@@ -15,28 +15,42 @@ public class RoomEntity extends Drawer {
     private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
     private final static String LEVELPARTS =  "assets" + Constants.SEP + "levelparts"  + Constants.SEP;
     private LevelPart[][] levelParts;
+    private int numberOfParts = 11;
+    float partWidth = getWindow().getSize().x / numberOfParts,
+            partHeight = getWindow().getSize().y / numberOfParts;
+    
     static int roomCounter = 0;
-    float partWidth,
-            partHeight;
+
 
     public RoomEntity() {
         super("Room" + roomCounter++);
+
+        setTopLeftX(0);
+        setTopLeftY(0);
+    }
+
+    public RoomEntity(int numberOfParts, int x, int y, int w, int h) {
+        super("Not a room, a map");
+        this.numberOfParts = numberOfParts;
+
+        setCenterX(x);
+        setCenterY(y);
+        setWidthHeight(w, h);
+
+        partWidth = w / numberOfParts;
+        partHeight = h / numberOfParts;
     }
 
     public RoomEntity create(LevelPart[][] levelPartsPassed) {
         this.levelParts = levelPartsPassed;
 
-        if (levelParts.length != 11 || levelParts[0].length != 11 )
+        if (levelParts.length != numberOfParts || levelParts[0].length != numberOfParts )
             throw new IllegalArgumentException();
 
 
-        final Vector2i wSize = getWindow().getSize();
-        partWidth = wSize.x / 11;
-        partHeight = wSize.y / 11;
-
         DisplayedImagePart img;
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
+        for (int i = 0; i < numberOfParts; i++) {
+            for (int j = 0; j < numberOfParts; j++) {
                 img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelParts[i][j].getSpriteFileName());
                 addPart(img);
                 levelParts[i][j].displayed = true;
@@ -53,11 +67,11 @@ public class RoomEntity extends Drawer {
             throw new IllegalArgumentException("Invalid ArrayList");
         }
 
-        LevelPart[][] levelParts = new LevelPart[11][11];
+        LevelPart[][] levelParts = new LevelPart[numberOfParts][numberOfParts];
 
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
-                levelParts[i][j] = (LevelPart) levelPartsPassed.get(i*11 + j);
+        for (int i = 0; i < numberOfParts; i++) {
+            for (int j = 0; j < numberOfParts; j++) {
+                levelParts[i][j] = (LevelPart) levelPartsPassed.get(i*numberOfParts + j);
             }
         }
         return create(levelParts);
@@ -78,7 +92,7 @@ public class RoomEntity extends Drawer {
         img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelPart.getSpriteFileName());
         img.rotate(levelPart.getRotation());
 
-        replaceEntity(i * 11 + j, img);
+        replaceEntity(i * numberOfParts + j, img);
         levelParts[i][j] = levelPart;
     }
 
@@ -91,7 +105,12 @@ public class RoomEntity extends Drawer {
                 col = -1;
 
         public DisplayedImagePart(int row, int col, float w, float h, String fileName) {
-            super((int)(col * w + w/2), (int)(row * h + h/2), (int)w, (int)h, fileName);
+            super(RoomEntity.this.getTopLeftX() + (int)(col * w + w/2),
+                    RoomEntity.this.getTopLeftY() + (int)(row * h + h/2),
+                    (int)w,
+                    (int)h,
+                    fileName);
+
             this.row = row;
             this.col = col;
         }
@@ -104,6 +123,6 @@ public class RoomEntity extends Drawer {
     public Vector2i getPartSize() {
         Vector2i wSize = getWindow().getSize();
 
-        return new Vector2i(wSize.x / 11, wSize.y / 11);
+        return new Vector2i(wSize.x / numberOfParts, wSize.y / numberOfParts);
     }
 }

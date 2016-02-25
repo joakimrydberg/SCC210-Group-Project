@@ -1,6 +1,7 @@
 package game;
 
 import controllers.MapMenu;
+import org.jsfml.system.Vector2i;
 
 import java.util.Random;
 
@@ -13,7 +14,7 @@ public class Level {
     private String levelName = "";
     private int difficulty;
     private int numberOfRooms = 0;
-    private int maxRooms = 10;
+    public final static int MAX_ROOMS = 10;
     private Room[][] rooms = new Room[10][10];
     private Room startRoom = new Room(this);
     private Room endRoom = null;
@@ -27,21 +28,21 @@ public class Level {
         this.difficulty = diff;
 
 		int failedLevels = 0;
-	/*	while (endRoom == null) {
+		while (endRoom == null) {
 			generateLevel();
 
 			if (endRoom == null) System.out.println("Failed levels: " + (++failedLevels));
 		}
 
 		currentRoom = startRoom;
-		currentRoom.load();*/
+		currentRoom.load();
 
-        Room testRoom = new Room(this);
-		testRoom.create("room_8");
-		testRoom.load();
+//        Room testRoom = new Room(this);
+//		testRoom.create("room_8");
+//		testRoom.load();
 
     //    testRoom.addDoor(testRoom.getPotentialDoors().keySet().iterator().next());
-    }
+    }//
 
     private void generateLevel() {
         for (int i = 0; i < 10; i++){
@@ -58,7 +59,7 @@ public class Level {
 	}
 
 	private void setLayout(int x, int y, int stepsFromStart) {
-		if (numberOfRooms < maxRooms) {
+		if (numberOfRooms < MAX_ROOMS) {
 			Random rn = new Random();
 			for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
 				if (rn.nextInt(3) == 0) {
@@ -209,5 +210,27 @@ public class Level {
 
     public int getDifficulty(String roomID) {
         return difficulty;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public Vector2i getCurrentRoomIndex() {
+        return findRoom(currentRoom);
+    }
+    public Room[][] getRooms() {
+        return rooms;
+    }
+
+    public Vector2i findRoom(Room room) {
+        for (int i = 0; i < MAX_ROOMS; i++) {
+            for (int j = 0; j < MAX_ROOMS; j++) {
+                if (rooms[i][j] != null && rooms[i][j].equals(room)) {
+                    return new Vector2i(i, j);
+                }
+            }
+        }
+        return null;
     }
 }

@@ -3,19 +3,15 @@ package controllers;
 import abstract_classes.Entity;
 import components.Button;
 import components.Image;
-import components.Item;
 import components.Rect;
 import components.mobs.Player;
-import game.Driver;
+import game.Level;
 import game.Room;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Vector2i;
 import tools.Constants;
-import tools.FileHandling;
-
-import java.util.ArrayList;
 
 /**
  * Created by Ross on 21/02/2016.
@@ -27,13 +23,15 @@ public class PauseMenu extends Menu {
     private InventoryMenu iMenu = new InventoryMenu();
     private StatsMenu sMenu = new StatsMenu();
     private Player player = null;
+    private Level level = null;
 
     /**
      *
      */
-    public PauseMenu() {
+    public PauseMenu(Level level) {
         super(NAME);
 
+        this.level = level;
         RenderWindow w = getWindow();
         final Vector2i windowSize = w.getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
@@ -116,6 +114,10 @@ public class PauseMenu extends Menu {
             else if (button.getName().equals("DUNGEON MAP"))
             {
                 unloadMenus();
+
+                MiniMap miniMap = (MiniMap)loadDrawer(MiniMap.class);
+                miniMap.update(level, 625, 350, 520, 470);
+                miniMap.load();
                 System.out.println("DUNGEON MAP clicked");
             }
             else if (button.getName().equals("RESUME"))

@@ -7,7 +7,6 @@ import interfaces.KeyListener;
 import interfaces.MotionListener;
 import interfaces.MovingEntity;
 import org.jsfml.window.event.Event;
-import tools.ConcurrentSafeArrayList;
 import tools.Constants;
 import tools.FileHandling;
 
@@ -153,11 +152,13 @@ public abstract class Drawer extends Entity implements Serializable {
 
         for (int j = 0; j < entities.size(); j++) {
             if (j == i) {
-                entities.add(entity);
+                newEntities.add(entity);
             } else {
                 newEntities.add(entities.get(j));
             }
         }
+
+        entities = newEntities;
     }
 
 }

@@ -9,7 +9,6 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.WindowStyle;
 import org.jsfml.window.event.Event;
-import tools.ConcurrentSafeArrayList;
 import tools.Constants;
 import tools.DebugPrinter;
 
@@ -21,7 +20,7 @@ import java.util.ArrayList;
  *
  */
 public class Driver {
-    private static ConcurrentSafeArrayList<Drawer> drawers = new ConcurrentSafeArrayList<>( );
+    private static ArrayList<Drawer> drawers = new ArrayList<>( );
     private static int screenWidth = 1024,
             screenHeight = 768;
     private static RenderWindow window;
@@ -81,7 +80,7 @@ public class Driver {
 
         mainMenu.load();
 
-        ArrayList<Drawer> tempDrawers = new ArrayList<>();
+      //  ArrayList<Drawer> tempDrawers = new ArrayList<>();
 
         while (window.isOpen()) {
             window.clear(Color.BLACK);
@@ -91,10 +90,6 @@ public class Driver {
 
             for (Event e : tempEvents) {
                 events.add(e);
-
-                if (e.type == Event.Type.RESIZED) {
-
-                }
             }
 
             for (int i = 0; i < drawers.size(); i++) {
@@ -103,7 +98,6 @@ public class Driver {
             window.display();
         }
     }
-
 
     public static void addDrawer(Drawer drawer) {
         Drawer item;
@@ -114,6 +108,7 @@ public class Driver {
             }
         }
 
+        //drawers.remove(drawer);
         drawers.add(drawer);
     }
 
