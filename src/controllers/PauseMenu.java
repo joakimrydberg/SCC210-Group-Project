@@ -94,6 +94,7 @@ public class PauseMenu extends Menu {
             {
                 unloadMenus();
                 pMenu.load();
+                pMenu.populateMenu(player.getEquippedItems());
                 System.out.println("PLAYER clicked");
             }
             else if (button.getName().equals("INVENTORY"))
@@ -102,6 +103,7 @@ public class PauseMenu extends Menu {
 
                 iMenu.load();
                 iMenu.populateMenu(player.getInventory());
+                iMenu.populateEquipped(player.getEquippedItems());
                 //iMenu.populateMenu(inventory);
                 System.out.println("INVENTORY clicked");
             }

@@ -30,7 +30,7 @@ public class Slot extends ClickableImage implements MotionListener {
 
     public void addItem(Item i){
         item = i;
-        img = item.getItemIcon().getTransformable(0);
+        this.img = i.getItemIcon().getTransformable(0);
         addTransformable(img, 40, 40, 60, 60);
         itemDesc.setTitle(item.getName());
     }

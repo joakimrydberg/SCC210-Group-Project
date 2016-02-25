@@ -58,6 +58,15 @@ public class PlayerMenu extends Menu {
         addEntity(new Message(700, 600, 0, "health : " + he, Color.WHITE, 12));
     }
 
+    public void populateMenu(Item[] items){
+        for(int i = 0; i < items.length; i++){ //display items in playes inventory
+            if(items[i] != null) {
+                System.out.println(items[i].getName()); //debug
+                slots[i].addItem(items[i]);
+            }
+        }
+    }
+
     @Override
     public void buttonClicked(Clickable clickable, Object[] args) {
         if (clickable instanceof ClickableImage) {

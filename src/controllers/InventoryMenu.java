@@ -44,9 +44,24 @@ public class InventoryMenu extends Menu {
     }
 
     public void populateMenu(ArrayList<Item> inventory){
+//        for(int i = 0; i < slots.length; i++){ //display items in playes inventory
+//            if(slots[i+7].hasItem()) {
+//                slots[i + 7].removeItem();
+//            }
+//        }
+
         for(int i = 0; i < inventory.size(); i++){ //display items in playes inventory
-            System.out.println(inventory.get(i).getName()); //debug
+            //System.out.println(inventory.get(i).getName()); //debug
             slots[i + 7].addItem(inventory.get(i));
+        }
+    }
+
+    public void populateEquipped(Item[] items){
+        for(int i = 0; i < items.length; i++){ //display items in playes inventory
+            if(items[i] != null) {
+                System.out.println(items[i].getName()); //debug
+                slots[i].addItem(items[i]);
+            }
         }
     }
 
@@ -97,12 +112,12 @@ public class InventoryMenu extends Menu {
             } else if (slot.getName().equals("P")) {
                 System.out.println("POTION clicked");
             }
-        }else if (clickable instanceof Button) {
+        } else if (clickable instanceof Button) {
             Entity button = (Button) clickable;
 
             if (button.getName().equals("EQUIPT")) {
                 System.out.println("EQUIPT clicked");
-            }else if (button.getName().equals("DISCARD")) {
+            } else if (button.getName().equals("DISCARD")) {
                 System.out.println("DISCARD clicked");
             }
         }
@@ -154,9 +169,9 @@ public class InventoryMenu extends Menu {
     private void addSlot(String slot, int x, int y, String name) {
         itemDesc[count] = new ItemDescriptor(slot, x, y);
 
-        Slot s = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, itemDesc[count]);
-        s.addClickListener(this);
-        addEntity(s);
+        slots[count] = new Slot(x, y, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + slot + ".png", name, itemDesc[count]);
+        slots[count].addClickListener(this);
+        addEntity(slots[count]);
 
         count++;
     }

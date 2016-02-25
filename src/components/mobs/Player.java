@@ -73,11 +73,13 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
         }
     }
 
-    public Item getFromInventory(Item item){
+    public Item getFromInventory(int j){
         for(int i = 0; i < inventory.size(); i++){
-            if(inventory.get(i) == item){
-                inventory.remove(i);
-                return item;
+            if(inventory.get(j) != null) {
+                if (inventory.get(i) == inventory.get(j)) {
+                    //inventory.remove(i);
+                    return inventory.get(i);
+                }
             }
         }
         return null;
@@ -94,7 +96,11 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     public void printEquipped(){
         System.out.println("--Equipped-------");
         for(int i = 0; i < 7; i++){
-            System.out.println(i + ": " + equippedItems[i]);
+            System.out.print(i + 1 + ": ");
+            if(equippedItems[i] != null) {
+                System.out.print(equippedItems[i].getName());
+            }
+            System.out.print("\n");
         }
         System.out.println("------------------");
     }
@@ -115,6 +121,10 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
         } else if(item.getType().equals("POTION")){
             equippedItems[6] = item;
         }
+    }
+
+    public Item[] getEquippedItems() {
+        return equippedItems;
     }
 
     public void setClass(String c) {
