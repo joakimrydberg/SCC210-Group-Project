@@ -95,6 +95,12 @@ public class Driver {
             for (int i = 0; i < drawers.size(); i++) {
                 drawers.get(i).update(events);
             }
+
+            try{
+                Thread.sleep(20);
+            } catch (Exception e ) {
+
+            }
             window.display();
         }
     }
