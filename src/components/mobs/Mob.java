@@ -84,7 +84,7 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 
     public BufferedImage[] charHurt(BufferedImage character, int dir, int dmg)
     {
-        BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
+       /* BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
         this.health = this.health -dmg;
         int currHealth = (int) Math.floor(this.health/2);
         int sheetPos = 50 - currHealth;
@@ -101,7 +101,10 @@ public abstract class Mob extends Animation implements MovingEntity, Serializabl
 
 
         return characterHurt;
-
+*/
+        BufferedImage[] characterHurt = {SpriteSheetLoad.getSprite(3, dir, character)};
+        this.health = this.health -dmg;
+        return characterHurt;
     }
 
 
