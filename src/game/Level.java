@@ -26,7 +26,6 @@ public class Level {
         this.levelName = name;
         this.difficulty = diff;
 
-/*
 		int failedLevels = 0;
 		while (endRoom == null) {
 			generateLevel();
@@ -36,11 +35,12 @@ public class Level {
 
 		currentRoom = startRoom;
 		currentRoom.load();
-*/
 
+/*
         Room testRoom = new Room(this);
         testRoom.create("end_room_1");
         testRoom.load();
+*/
 
     //    testRoom.addDoor(testRoom.getPotentialDoors().keySet().iterator().next());
     }
@@ -63,7 +63,7 @@ public class Level {
 		if (numberOfRooms < maxRooms) {
 			Random rn = new Random();
 			for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
-				if (rn.nextInt(4) == 0) {
+				if (rn.nextInt(3) == 0) {
 					switch (potentialDoor) {
 						case "North":
 							if (x > 0) {

@@ -15,11 +15,12 @@ public class RoomEntity extends Drawer {
     private final static String LEVEL_ID_DIR =  "assets" + Constants.SEP + "levels"  + Constants.SEP;
     private final static String LEVELPARTS =  "assets" + Constants.SEP + "levelparts"  + Constants.SEP;
     private LevelPart[][] levelParts;
+    static int roomCounter = 0;
     float partWidth,
             partHeight;
 
     public RoomEntity() {
-        super("Room");
+        super("Room" + roomCounter++);
     }
 
     public RoomEntity create(LevelPart[][] levelPartsPassed) {
