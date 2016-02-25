@@ -1,6 +1,7 @@
 package controllers;
 
 import abstract_classes.Drawer;
+import abstract_classes.Entity;
 import components.Rect;
 import game.Level;
 import game.LevelPart;
@@ -74,10 +75,18 @@ public class MiniMap extends Drawer/*extends RoomEntity*/ {
             levelPart.displayed = true;
 
             DisplayedImagePart img;
-            img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelPart.getSpriteFileName(), Color.BLUE);
+            img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelPart.getSpriteFileName()+"cows", Color.BLUE);
             //img.rotate(levelPart.getRotation());
 
-            replaceEntity(i * numberOfParts + j, img);
+            int index = 0;
+            for (Entity entity : getEntities()) {
+                DisplayedImagePart imagePart = (DisplayedImagePart) entity;
+                if (imagePart.row == i && imagePart.col == j) {
+                    break;
+                }
+                index++;
+            }
+            replaceEntity(index, img);
             // levelParts[i][j] = levelPart;
         }
     }
@@ -93,7 +102,7 @@ public class MiniMap extends Drawer/*extends RoomEntity*/ {
         for (int i = 0; i < numberOfParts; i++) {
             for (int j = 0; j < numberOfParts; j++) {
                 if (levelParts[i][j] != null) {
-                    img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelParts[i][j].getSpriteFileName(), Color.MAGENTA);
+                    img = new DisplayedImagePart(i, j, partWidth, partHeight, LEVELPARTS + levelParts[i][j].getSpriteFileName(), Color.BLACK);
                     addPart(img);
                     levelParts[i][j].displayed = true;
                     //img.rotate(levelParts[i][j].getRotation());
