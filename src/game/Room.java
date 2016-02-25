@@ -134,7 +134,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         int diff = level.getDifficulty(getName());
 
         { //difficulty tweaks //todo make better, much better
-            System.out.print(diff);
+            System.out.print(getName() + ", ");
             if (diff == 1) {
                 enemyWarriors = MapMenu.randomInt(0, 3);
                 enemyRangers = MapMenu.randomInt(0, 1);
@@ -308,7 +308,6 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
         super.load();
     }
-//
 
     public void keyPressed(KeyEvent event) {
         if (event.asKeyEvent().key == Keyboard.Key.P) {

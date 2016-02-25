@@ -100,18 +100,21 @@ public class Driver {
     }
 
     public static void addDrawer(Drawer drawer) {
-        Drawer item;
-        for (int i = 0; i < drawers.size(); i++) {
-            item = drawers.get(i);
-            if (item.getName().equals(drawer.getName())) {
-                drawers.remove(item);
-            }
-        }
+//        Drawer item;
+//        for (int i = 0; i < drawers.size(); i++) {
+//            item = drawers.get(i);
+//            if (item.getName().equals(drawer.getName())) {
+//                drawers.remove(item);
+//            }
+//        }
 
         //drawers.remove(drawer);
         drawers.add(drawer);
     }
 
+	public static void removeDrawer(Drawer drawer) {
+		drawers.remove(drawer);
+	}
 
     public static Drawer getDrawer(String name, Class type) {
 

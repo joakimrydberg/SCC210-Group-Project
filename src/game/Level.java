@@ -1,5 +1,6 @@
 package game;
 
+import abstract_classes.Drawer;
 import controllers.MapMenu;
 import org.jsfml.system.Vector2i;
 
@@ -16,7 +17,7 @@ public class Level {
     private int numberOfRooms = 0;
     public final static int MAX_ROOMS = 10;
     private Room[][] rooms = new Room[10][10];
-    private Room startRoom = new Room(this);
+    private Room startRoom = null;
     private Room endRoom = null;
     private Room currentRoom;
 	private int availableRooms = 9;
@@ -31,37 +32,54 @@ public class Level {
 		while (endRoom == null) {
 			generateLevel();
 
-			if (endRoom == null) System.out.println("Failed levels: " + (++failedLevels));
+			if (endRoom == null) System.out.println("\nFailed levels: " + (++failedLevels));
 		}
 
 		currentRoom = startRoom;
 		currentRoom.load();
 
-//        Room testRoom = new Room(this);
-//		testRoom.create("room_8");
-//		testRoom.load();
+/*
+        Room testRoom = new Room(this);
+        testRoom.create("end_room_1");
+        testRoom.load();
+*/
 
     //    testRoom.addDoor(testRoom.getPotentialDoors().keySet().iterator().next());
-    }//
+    }
 
     private void generateLevel() {
         for (int i = 0; i < 10; i++){
             for (int j = 0; j < 10; j++){
-                rooms[i][j] = null;
+                if (rooms[i][j] != null) {
+					Driver.removeDrawer(rooms[i][j]);
+					rooms[i][j] = null;
+				}
             }
         }
 
-		startRoom.create("start_room");
-		rooms[3][5] = startRoom;
+		Random rn = new Random();
+		startRoom = new Room(this);
+		numberOfRooms = 1;
 
-		startRoom.addDoor("South");
-		setRoom(4, 5, "North", 0);
+		if (rn.nextInt(1) == 1) {
+			rooms[3][5] = startRoom;
+			startRoom.create("start_room_south");
+			startRoom.addDoor("South");
+			startRoom.addDoor("North");
+			setRoom(4, 5, "North", 0);
+		} else {
+			rooms[6][5] = startRoom;
+			startRoom.create("start_room_north");
+			startRoom.addDoor("North");
+			startRoom.addDoor("South");
+			setRoom(5, 5, "South", 0);
+		}
 	}
 
 	private void setLayout(int x, int y, int stepsFromStart) {
-		if (numberOfRooms < MAX_ROOMS) {
-			Random rn = new Random();
-			for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
+		Random rn = new Random();
+		for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
+			if (numberOfRooms < MAX_ROOMS) {
 				if (rn.nextInt(3) == 0) {
 					switch (potentialDoor) {
 						case "North":
@@ -136,8 +154,12 @@ public class Level {
 			String newRoomID = "room_" + String.valueOf(rn.nextInt(availableRooms) + 1);
 			newRoom.create(newRoomID);
 			for (String potentialDoor : newRoom.getPotentialDoors().keySet()) {
-				if(potentialDoor.equals(entrance)) roomFound = true;
+				if(potentialDoor.equals(entrance)) {
+					roomFound = true;
+					break;
+				}
 			}
+			if (!roomFound) Driver.removeDrawer(newRoom);
 		}
 		rooms[x][y] = newRoom;
 		newRoom.addDoor(entrance);
@@ -155,12 +177,17 @@ public class Level {
 			String newRoomID = "end_room_" + String.valueOf(rn.nextInt(availableEndRooms) + 1);
 			newRoom.create(newRoomID);
 			for (String potentialDoor : newRoom.getPotentialDoors().keySet()) {
-				if(potentialDoor.equals(entrance)) roomFound = true;
+				if(potentialDoor.equals(entrance)) {
+					roomFound = true;
+					break;
+				}
 			}
+			if (!roomFound) Driver.removeDrawer(newRoom);
 		}
 		endRoom = newRoom;
 		rooms[x][y] = endRoom;
 		endRoom.addDoor(entrance);
+		numberOfRooms++;
 	}
 
     private boolean connectRoom(int x, int y, String entrance) {
