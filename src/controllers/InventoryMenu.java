@@ -25,7 +25,7 @@ public class InventoryMenu extends Menu {
     private int count = 0;
     private Button btnEquipt = new Button(800, 595, 90, 30, "YELLOW", 200, "EQUIPT", 15);
     private Button btnUnequipt = new Button(800, 595, 90, 30, "BLUE", 200, "UNEQUIPT", 15);
-    private Button btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
+    //private Button btnDiscard = new Button(800, 630, 90, 30, "RED", 200, "DISCARD", 15);
     private Message n = null, d = null;
     private Image img = new Image(450, 610, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
 
@@ -45,13 +45,13 @@ public class InventoryMenu extends Menu {
 
         btnEquipt.addClickListener(this);
         btnUnequipt.addClickListener(this);
-        btnDiscard.addClickListener(this);
+        //btnDiscard.addClickListener(this);
         addEntity(btnEquipt);
         addEntity(btnUnequipt);
-        addEntity(btnDiscard);
+        //addEntity(btnDiscard);
         btnEquipt.hide();
         btnUnequipt.hide();
-        btnDiscard.hide();
+        //btnDiscard.hide();
     }
 
     public void populateMenu(ArrayList<Item> inventory){
@@ -110,7 +110,7 @@ public class InventoryMenu extends Menu {
 
                     if (slot.hasItem()) {
                         btnEquipt.show();
-                        btnDiscard.show();
+                        //btnDiscard.show();
 
                         img.changeImage(slot.getItem().getItemIcon());
                         addEntity(img);
@@ -121,7 +121,7 @@ public class InventoryMenu extends Menu {
                     }else {
                         img.hide();
                         btnEquipt.hide();
-                        btnDiscard.hide();
+                        //btnDiscard.hide();
                         n.setText("Empty Inventory Slot!");
                         d.setText("");
                     }
@@ -150,7 +150,7 @@ public class InventoryMenu extends Menu {
                 if (slot.hasItem()) {
                     btnEquipt.hide();
                     //btnUnequipt.show();
-                    btnDiscard.show();
+                    //btnDiscard.show();
 
                     img.changeImage(slot.getItem().getItemIcon());
                     addEntity(img);
@@ -161,7 +161,7 @@ public class InventoryMenu extends Menu {
                 } else {
                     img.hide();
                     btnUnequipt.hide();
-                    btnDiscard.hide();
+                    //btnDiscard.hide();
                     n.setText("Equipt an item!");
                     d.setText("");
                 }
@@ -179,6 +179,8 @@ public class InventoryMenu extends Menu {
                     MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(clickedSlot.getItem()));
 
                     updateSlots(player.getInventory(), player.getEquippedItems());
+
+                    btnEquipt.hide();
 
                     System.out.println("EQUIPT clicked");
                 } else if (button.getName().equals("UNEQUIPT")) {
