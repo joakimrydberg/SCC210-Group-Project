@@ -259,9 +259,9 @@ public class Level {
         }
     }
 
-    public void endRoomExited() {
+    public void endRoomExited(Room room) {
         if (currentRoom.equals(endRoom)) {
-            map.levelComplete();
+            map.levelComplete(room);
         }
     }
 

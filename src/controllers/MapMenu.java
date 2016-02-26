@@ -11,6 +11,7 @@ import components.mobs.Mage;
 import components.mobs.Player;
 import components.mobs.Ranger;
 import components.mobs.Warrior;
+import game.Room;
 import interfaces.ClickListener;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
@@ -303,7 +304,8 @@ public class MapMenu extends Menu implements Clickable, Serializable {
         }
     }
 
-    public void levelComplete() {
+    public void levelComplete(Room room) {
+        room.unload();
         this.load();
         setCurrNodeDescriptor(currNodeDescriptor, false);
     }

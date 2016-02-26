@@ -136,8 +136,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         int enemyWarriors = 0,
                 enemyMages = 0,
                 enemyRangers = 0;
-/*
         int diff = level.getDifficulty(getName());
+/*
 
         { //difficulty tweaks //todo make better, much better
             System.out.print(getName() + ", ");
@@ -302,7 +302,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 										if (level.getCurrentRoom().equals(level.getStartRoom())) {
 
 										} else if (level.getCurrentRoom().equals(level.getEndRoom())) {
-											level.endRoomExited();
+											level.endRoomExited(this);
 										}
 									} else {
 										System.out.println("Move Rooms");
