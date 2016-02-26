@@ -35,7 +35,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             downPressed = false,
             leftPressed = false,
             rightPressed = false;
-    public int healthPotions = 0;
+    public int healthPotions = 3;
     private Room room;
     protected int dir = 0;
     public boolean attacking = false;
@@ -309,9 +309,11 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
                     setCharacterStill(tempDir);
                     super.stopCharacter(); //@see Mob
                 }
+                break;
             case H:
                 if(healthPotions > 0){
                     drinkHealthPotion();
+                    healthPotions--;
                 }
                 break;
         }
