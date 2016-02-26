@@ -237,61 +237,64 @@ public class ShopMenu extends Menu {
             Entity button = (Button) clickable;
             errorMess.setText("");
 
-            if (button.getName().equals("HELMETS")) {
-                populateMenu(helmets);
-                System.out.println("HELMETS clicked");
-            } else if (button.getName().equals("TORSOS")) {
-                populateMenu(torsos);
-                System.out.println("TORSOS clicked");
-            } else if (button.getName().equals("ARMS")) {
-                populateMenu(arms);
-                System.out.println("ARMS clicked");
-            } else if (button.getName().equals("BOOTS")) {
-                populateMenu(boots);
-                System.out.println("BOOTS clicked");
-            } else if (button.getName().equals("WEAPONS")) {
-                populateMenu(weapons);
-                System.out.println("WEAPONS clicked");
-            } else if (button.getName().equals("SHIELDS")) {
-                populateMenu(shields);
-                System.out.println("SHIELDS clicked");
-            } else if (button.getName().equals("POTIONS")) {
-                populateMenu(potions);
-                System.out.println("POTIONS clicked");
-            } else if (button.getName().equals("EXIT SHOP")) {
-                this.unload();
-                loadDrawer(MapMenu.class);
-                System.out.println("EXIT SHOP clicked");
-            } else if (button.getName().equals("BUY"))
-            {
-                if(MapMenu.getPlayer().getCoins() > clickedSlot.getItem().getPrice()) {
-                    MapMenu.getPlayer().addToInventory(clickedSlot.getItem()); //add the item to the players inventory
+            if(!button.hidden) {
+                if (button.getName().equals("HELMETS")) {
+                    populateMenu(helmets);
+                    System.out.println("HELMETS clicked");
+                } else if (button.getName().equals("TORSOS")) {
+                    populateMenu(torsos);
+                    System.out.println("TORSOS clicked");
+                } else if (button.getName().equals("ARMS")) {
+                    populateMenu(arms);
+                    System.out.println("ARMS clicked");
+                } else if (button.getName().equals("BOOTS")) {
+                    populateMenu(boots);
+                    System.out.println("BOOTS clicked");
+                } else if (button.getName().equals("WEAPONS")) {
+                    populateMenu(weapons);
+                    System.out.println("WEAPONS clicked");
+                } else if (button.getName().equals("SHIELDS")) {
+                    populateMenu(shields);
+                    System.out.println("SHIELDS clicked");
+                } else if (button.getName().equals("POTIONS")) {
+                    populateMenu(potions);
+                    System.out.println("POTIONS clicked");
+                } else if (button.getName().equals("EXIT SHOP")) {
+                    this.unload();
+                    loadDrawer(MapMenu.class);
+                    System.out.println("EXIT SHOP clicked");
+                } else if (button.getName().equals("BUY")) {
+                    if (MapMenu.getPlayer().getCoins() > clickedSlot.getItem().getPrice()) {
+                        MapMenu.getPlayer().addToInventory(clickedSlot.getItem()); //add the item to the players inventory
 
-                    MapMenu.getPlayer().setCoins(MapMenu.getPlayer().getCoins()-clickedSlot.getItem().getPrice());
+                        MapMenu.getPlayer().setCoins(MapMenu.getPlayer().getCoins() - clickedSlot.getItem().getPrice());
 
-                    //remove the item from being purchasable
-                    for (int i = 0; i < lastList.size(); i++) {
-                        if (lastList.get(i) == clickedSlot.getItem()) {
-                            lastList.remove(i);
+                        //remove the item from being purchasable
+                        for (int i = 0; i < lastList.size(); i++) {
+                            if (lastList.get(i) == clickedSlot.getItem()) {
+                                lastList.remove(i);
+                            }
                         }
+                        populateMenu(lastList);
+
+                        //Output to screen that the item has been bought successfully
+                        img.hide();
+                        coins.hide();
+                        btnBuy.hide();
+                        n.setText("Bought!");
+                        d.setText("");
+                        price.setText("");
+
+                        errorMess.setText("");
+
+                        System.out.println("BUY clicked");
+                    } else {
+                        errorMess.setText("Not enough Money");
+                        n.setText("");
+                        d.setText("");
+                        addEntity(errorMess);
                     }
-                    populateMenu(lastList);
-
-                    //Output to screen that the item has been bought successfully
-                    img.hide();
-                    coins.hide();
-                    btnBuy.hide();
-                    n.setText("Bought!");
-                    d.setText("");
-                    price.setText("");
-
-                    errorMess.setText("");
-
-                    System.out.println("BUY clicked");
-                }else{errorMess.setText("Not enough Money");
-                    n.setText("");
-                    d.setText("");
-                    addEntity(errorMess);}
+                }
             }
         }
     }

@@ -135,6 +135,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         int enemyWarriors = 0,
                 enemyMages = 0,
                 enemyRangers = 0;
+/*
         int diff = level.getDifficulty(getName());
 
         { //difficulty tweaks //todo make better, much better
@@ -165,6 +166,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                 enemyMages = MapMenu.randomInt(0, 8);
             }
         }
+*/
 
 /*        DeathBall deathBall = new DeathBall(this);
         deathBall.setClass("ranger");
@@ -295,8 +297,16 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
                             for (String key : potentialDoors.keySet()) {
                                 if (potentialDoors.get(key).equals(door)) {
-                                    System.out.println("Move Rooms");
-                                    level.moveRooms(this, key);
+									if (potentialDoors.get(key).getSpriteFileName().contains("end")) {
+										if (level.getCurrentRoom().equals(level.getStartRoom())) {
+
+										} else if (level.getCurrentRoom().equals(level.getEndRoom())) {
+											level.endRoomExited();
+										}
+									} else {
+										System.out.println("Move Rooms");
+										level.moveRooms(this, key);
+									}
                                 }
                             }
                         }
