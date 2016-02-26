@@ -6,7 +6,6 @@ import components.Projectile;
 import controllers.MapMenu;
 import game.Room;
 import game.SpriteSheetLoad;
-import interfaces.CollidingEntity;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import tools.Navigator;
@@ -15,36 +14,36 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
- * @author josh
- * @date 21/02/16.
+ * Created by Ryan on 26/02/2016.
  */
-public class EnemyMage extends Enemy implements CollidingEntity {
+public class Boss extends Enemy {
     private long timeAtLastShot = System.currentTimeMillis();
+    private long timeAtLastFlamed = System.currentTimeMillis();
     private Navigator navigator;
     private Room room;
     private ArrayList<Projectile> arrows = new ArrayList<>();
 
-
-    public EnemyMage(Room room) {
+    public Boss(Room room) {
         super(room);
-        setMovementState(FLEE_PLAYER);  //temp value
+        setMovementState(BE_CAUTIOUS);
+        this.room = room;
+        this.health = 300;
 
-        setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMageSheet"));
+        setSpriteSheet(SpriteSheetLoad.loadSprite("BossSheetStart"));
         setCharacterStill(0);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
         // currAnimation = warriorWalk;
         BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
 
         super.stop(); //@see Mob , must be before we set the frames
         this.setFrames(mageA);
-        this.room = room;
-        this.start();
-        navigator = new Navigator(room);
-  //      navigator.populateNavPixels();
 
+        this.start();
+
+        navigator = new Navigator(room);
 
         onMove(getPlayer());
-
     }
+
     public void move() {
         if(!stopped) {
 
@@ -53,29 +52,48 @@ public class EnemyMage extends Enemy implements CollidingEntity {
                     new Vector2f(getPlayer().getCenterX(), getPlayer().getCenterY()))) {
 
                 if (System.currentTimeMillis() - timeAtLastShot >  2000) { // a bit slower than that for player for the sake of fun
-
                     timeAtLastShot = System.currentTimeMillis();
-                    Fireball arrow = new Fireball();
+                    Arrow arrow = new Arrow();
 
-                 //   Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+
+                    Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
                     Vector2i to = new Vector2i(getPlayer().getCenterX(), getPlayer().getCenterY());
 
-                    int dfx = MapMenu.randomInt(0, 100);
-                    int dfy = MapMenu.randomInt(0, 100);
-                    dfx = dfx - 50;
-                    dfx = dfx - 50;
+                    arrow.setCenterX(from.x);
+                    arrow.setCenterY(from.y);
 
-                    arrow.setCenterX(to.x + dfx);
-                    arrow.setCenterY(to.y + dfy);
-                    arrow.setCenterX(to.x + dfx);
-                    arrow.setCenterY(to.y + dfy);
+                    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
+                    arrow.correctDirection();
+                    arrow.setSpeed(new Vector2f(to.x - from.x, to.y - from.y));
 
-                    if(room.isMoveAcceptable(to.x, to.y, this.getWidth() - 20, this.getHeight()- 20, this)){
-                        arrow.show();
-                        arrows.add(arrow);
-                        room.addEntity(arrow);
-                    }
+                    arrow.addMovementListener(room);
+                    arrows.add(arrow);
+                    room.addEntity(arrow);
+                }
 
+            }
+            if (System.currentTimeMillis() - timeAtLastFlamed >  3000) { // a bit slower than that for player for the sake of fun
+
+                timeAtLastFlamed = System.currentTimeMillis();
+                Fireball arrow = new Fireball();
+
+                //   Vector2i from = new Vector2i(this.getCenterX(), this.getCenterY());
+                Vector2i to = new Vector2i(getPlayer().getCenterX(), getPlayer().getCenterY());
+
+                int dfx = MapMenu.randomInt(0, 100);
+                int dfy = MapMenu.randomInt(0, 100);
+                dfx = dfx - 50;
+                dfx = dfx - 50;
+
+                arrow.setCenterX(to.x + dfx);
+                arrow.setCenterY(to.y + dfy);
+                arrow.setCenterX(to.x + dfx);
+                arrow.setCenterY(to.y + dfy);
+
+                if(room.isMoveAcceptable(to.x, to.y, this.getWidth() - 20, this.getHeight()- 20, this)){
+                    arrow.show();
+                    arrows.add(arrow);
+                    room.addEntity(arrow);
                 }
 
             }
@@ -84,12 +102,15 @@ public class EnemyMage extends Enemy implements CollidingEntity {
         super.move();
 
     }
+
+
     @Override
     public ArrayList<Projectile> getProjectiles() {
         clearBrokenProjectiles();
 
         return arrows;
     }
+
 
     public void clearBrokenProjectiles() {
         for (int i = 0; i < arrows.size(); i++) {
@@ -99,5 +120,4 @@ public class EnemyMage extends Enemy implements CollidingEntity {
             }
         }
     }
-
 }

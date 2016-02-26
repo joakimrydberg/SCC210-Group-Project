@@ -162,10 +162,13 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
             }
         }
 
-        DeathBall deathBall = new DeathBall(this);
+/*        DeathBall deathBall = new DeathBall(this);
         deathBall.setClass("ranger");
-        addEntity(deathBall);
+        addEntity(deathBall);*/
+        Boss b = new Boss(this);
+        addEntity(b);
         makeHearts();
+
 
 //        { //populating with enemies
 //
@@ -390,22 +393,22 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                         }
                     }
 
-                    if (entity instanceof EnemyRanger) { //and maybe mage?
-                        for (Projectile projectile : ((EnemyRanger) entity).getProjectiles()) {
+                    if (entity instanceof EnemyRanger || entity instanceof EnemyMage || entity instanceof Boss) { //and maybe mage?
+                        for (Projectile projectile : ((Enemy) entity).getProjectiles()) {
                             if (projectile.getState() == Projectile.OKAY
                                     && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
                                 (MapMenu.getPlayer()).damaged();
                             }
                         }
                     }
-                    if (entity instanceof EnemyMage) { //and maybe mage?
+/*                    if (entity instanceof EnemyMage) { //and maybe mage?
                         for (Projectile projectile : ((EnemyMage) entity).getProjectiles()) {
                             if (projectile.getState() == Projectile.OKAY
                                     && ((CollidingEntity) MapMenu.getPlayer()).checkWithin(projectile.getCenterX(), projectile.getCenterY())) {
                                 (MapMenu.getPlayer()).damaged();
                             }
                         }
-                    }
+                    }*/
 
                     if (MapMenu.getPlayer() instanceof Ranger || MapMenu.getPlayer() instanceof Mage) { //and maybe mage?
                         for (Projectile projectile : ((Player) MapMenu.getPlayer()).getProjectiles()) {

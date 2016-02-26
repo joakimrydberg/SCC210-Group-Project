@@ -1,5 +1,6 @@
 package components.mobs;
 
+import components.Projectile;
 import controllers.MapMenu;
 import game.Room;
 import interfaces.CollidingEntity;
@@ -257,6 +258,11 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
         stopCharacter();
         MapMenu.getPlayer().exp = MapMenu.getPlayer().exp + this.exp;
         dead = true;
+    }
+    public ArrayList<Projectile> getProjectiles() {
+
+
+        return new ArrayList<>();
     }
 
 }
