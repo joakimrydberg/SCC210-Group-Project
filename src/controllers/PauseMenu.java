@@ -59,7 +59,7 @@ public class PauseMenu extends Menu {
         addOption("STATS", "BROWN");
         addOption("DUNGEON MAP", "BROWN");
         addOption("RESUME", "GREEN");
-        addOption("SAVE GAME", 550, saveColour);
+        //addOption("SAVE GAME", 550, saveColour);
         addOption("QUIT DUNGEON", 600, "RED");
 
         addEntity(new Rect(null, 300, centerY, 2, 600, new Color(117, 62, 29), 250)); //seperation border

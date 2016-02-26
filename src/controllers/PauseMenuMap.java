@@ -53,7 +53,7 @@ public class PauseMenuMap extends Menu {
         addOption("INVENTORY", "BROWN");
         addOption("STATS", "BROWN");
 
-        addOption("SAVE GAME", 550, saveColour);
+        //addOption("SAVE GAME", 550, saveColour);
         addOption("CLOSE", 600, "RED");
 
         addEntity(new Rect(null, 300, centerY, 2, 600, new Color(117, 62, 29), 250)); //seperation border

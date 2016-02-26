@@ -56,7 +56,7 @@ public class MainMenu extends Menu implements KeyListener {
         btnNewGame.addClickListener(this);
         addEntity(btnNewGame);
         btnLoadGame.addClickListener(this);
-        addEntity(btnLoadGame);
+        //addEntity(btnLoadGame);
         btnInstructions.addClickListener(this);
         addEntity(btnInstructions);
         btnOptions.addClickListener(this);
