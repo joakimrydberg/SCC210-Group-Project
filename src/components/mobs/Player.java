@@ -42,7 +42,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     //ArrayList<Item> equippedItems = new ArrayList<Item>();
     private Item[] equippedItems = new Item[7]; //7 slots for each equipped item
     public int level = 1;
-    public int coins = 0;
+    public int coins = 9000;
 
     public Player() {
         //initialise equipped items array
@@ -187,6 +187,31 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
             }
         }
 
+    }
+
+    public void unEquipt(String itemName){
+        if(itemName.equals("HELMET")){
+            inventory.add(equippedItems[0]);
+            equippedItems[0] = null;
+        } else if(itemName.equals("ARM")){
+            inventory.add(equippedItems[1]);
+            equippedItems[1] = null;
+        } else if(itemName.equals("TORSO")){
+            inventory.add(equippedItems[2]);
+            equippedItems[2] = null;
+        } else if(itemName.equals("BOOT")){
+            inventory.add(equippedItems[3]);
+            equippedItems[3] = null;
+        } else if(itemName.equals("WEAPON")){
+            inventory.add(equippedItems[4]);
+            equippedItems[4] = null;
+        } else if(itemName.equals("SHIELD")){
+            inventory.add(equippedItems[5]);
+            equippedItems[5] = null;
+        } else if(itemName.equals("POTION")){
+            inventory.add(equippedItems[6]);
+            equippedItems[6] = null;
+        }
     }
 
     public Item[] getEquippedItems() {

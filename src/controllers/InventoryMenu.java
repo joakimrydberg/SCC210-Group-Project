@@ -172,25 +172,24 @@ public class InventoryMenu extends Menu {
 
             player = MapMenu.getPlayer();
 
-            if (button.getName().equals("EQUIPT"))
-            {
-                MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(clickedSlot.getItem()));
+            if(!button.hidden) {
+                if (button.getName().equals("EQUIPT")) {
+                    //player.unEquipt(clickedSlot.getItem().getType());
 
-                updateSlots(player.getInventory(), player.getEquippedItems());
+                    MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(clickedSlot.getItem()));
 
-                System.out.println("EQUIPT clicked");
-            }
-            else if (button.getName().equals("UNEQUIPT"))
-            {
-                System.out.println("UNEQUIPT clicked : FUNCTIONALITY NOT YET IMPLEMENTED");
-            }
-            else if (button.getName().equals("DISCARD"))
-            {
-                player.removeFromInventory(clickedSlot.getItem());
+                    updateSlots(player.getInventory(), player.getEquippedItems());
 
-                updateSlots(player.getInventory(), player.getEquippedItems());
+                    System.out.println("EQUIPT clicked");
+                } else if (button.getName().equals("UNEQUIPT")) {
+                    System.out.println("UNEQUIPT clicked : FUNCTIONALITY NOT YET IMPLEMENTED");
+                } else if (button.getName().equals("DISCARD")) {
+                    player.removeFromInventory(clickedSlot.getItem());
 
-                System.out.println("DISCARD clicked");
+                    updateSlots(player.getInventory(), player.getEquippedItems());
+
+                    System.out.println("DISCARD clicked");
+                }
             }
         }
     }

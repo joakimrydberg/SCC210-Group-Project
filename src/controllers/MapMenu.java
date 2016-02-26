@@ -326,7 +326,7 @@ public class MapMenu extends Menu implements Clickable, Serializable {
 
                 System.out.println("QUIT GAME clicked");
             } else if (button.getName().equals("PLAYER")) {
-                MapMenu.getPlayer().printInventory();
+                //MapMenu.getPlayer().printInventory();
                 //MapMenu.getPlayer().equipt(MapMenu.getPlayer().getFromInventory(0)); //shouldnt need this but its there as a quick fix for now
                 MapMenu.getPlayer().printEquipped();
                 pauseMenuMap.loadInPlayer(MapMenu.getPlayer());
