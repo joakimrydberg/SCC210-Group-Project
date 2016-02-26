@@ -37,11 +37,14 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     private PauseMenu pauseMenu;
     ArrayList<Image> hearts = new ArrayList<>();
 
+
     public Room(Level level) {
         super(true);
 
         this.level = level;
     }
+
+
 
     public void create(String roomID) {
         this.roomID = roomID;
@@ -84,6 +87,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                         }
 
                         if (noPreviousDoors) {
+                            tile.displayed = false;
                             potentialDoors.put(key, tile);
                         }
 
@@ -286,8 +290,8 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
                                 partTop = i * partSize.y;
 
 
-                        System.out.println(dist);
-                        if (dist < partSize.x / 4) {
+                       // System.out.println(dist);
+                        if (dist < partSize.x / 2) {
 
                             for (String key : potentialDoors.keySet()) {
                                 if (potentialDoors.get(key).equals(door)) {
@@ -308,6 +312,12 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         }
         if (MapMenu.getPlayer() instanceof Mage) {((Mage) MapMenu.getPlayer()).setRoom(this);}
 
+        System.out.println("Doors:");
+        for (LevelPart door : potentialDoors.values()) {
+            if (door.displayed) {
+                System.out.println("\t" + door.getRotation());
+            }
+        }
 
         super.load();
     }
@@ -494,6 +504,12 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     public boolean getEndRoom() {
         return this.endRoom;
+    }
+
+    public Vector2i getDoorLoc(String dir) {
+        Vector2i size = getPartSize();
+        return new Vector2i(potentialDoors.get(dir).getColNo() * size.x + size.x / 2,
+                potentialDoors.get(dir).getRowNo() * size.y + size.y / 2);
     }
     public void makeHearts(){
 

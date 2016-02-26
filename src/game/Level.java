@@ -36,6 +36,7 @@ public class Level {
 				startRoom.resetCounter();
 			}
 		}
+
         for (int i = 0; i < 10; i++){
             for (int j = 0; j < 10; j++){
                 if (rooms[i][j] != null) {
@@ -43,6 +44,7 @@ public class Level {
 				}
             }
         }
+
 		currentRoom = startRoom;
 		currentRoom.load();
 
@@ -56,20 +58,20 @@ public class Level {
     }
 
     private void generateLevel() {
-//        for (int i = 0; i < 10; i++){
-//            for (int j = 0; j < 10; j++){
-//                if (rooms[i][j] != null) {
-//					Driver.removeDrawer(rooms[i][j]);
-//					rooms[i][j] = null;
-//				}
-//            }
-//        }
+        for (int i = 0; i < 10; i++){
+            for (int j = 0; j < 10; j++){
+                if (rooms[i][j] != null) {
+					Driver.removeDrawer(rooms[i][j]);
+					rooms[i][j] = null;
+				}
+            }
+        }
 
 		Random rn = new Random();
 		startRoom = new Room(this);
 		numberOfRooms = 1;
 
-		if (rn.nextInt(1) == 1) {
+		if (rn.nextInt(2) == 1) {
 			rooms[3][5] = startRoom;
 			startRoom.create("start_room_south");
 			startRoom.addDoor("South");
@@ -86,6 +88,7 @@ public class Level {
 
 	private void setLayout(int x, int y, int stepsFromStart) {
 		Random rn = new Random();
+
 		for (String potentialDoor : rooms[x][y].getPotentialDoors().keySet()) {
 			if (numberOfRooms < MAX_ROOMS) {
 				if (rn.nextInt(3) == 0) {
@@ -215,22 +218,34 @@ public class Level {
             for (int j = 0; j < 10; j++) {
                 if (rooms[i][j] != null && rooms[i][j].equals(room)) {
                     int changeI = 0, changeJ = 0;
+                    int changeX = 0, changeY = 0;
+                    String nextDir;
                     switch (direction) {
                         case "North":
+                            nextDir = "South";
+                            changeY = -50;
                             changeI = -1;
                             break;
                         case "East":
+                            nextDir = "West";
+                            changeX = 50;
                             changeJ = 1;
                             break;
                         case "South":
+                            nextDir = "North";
+                            changeY = +50;
                             changeI = 1;
                             break;
                         case "West":
+                            nextDir = "East";
+                            changeX = -50;
                             changeJ = -1;
                             break;
                         default:
                             throw new RuntimeException("Invalid rotation" + direction);
                     }
+                    MapMenu.getPlayer().setCenterX(rooms[i + changeI][j + changeJ].getDoorLoc(nextDir).x + changeX);
+                    MapMenu.getPlayer().setCenterY(rooms[i + changeI][j + changeJ].getDoorLoc(nextDir).y + changeY);
                     room.unload();
                     rooms[i + changeI][j + changeJ].load();
                     break;

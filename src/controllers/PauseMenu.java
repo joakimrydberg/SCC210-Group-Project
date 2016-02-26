@@ -6,7 +6,6 @@ import components.Image;
 import components.Rect;
 import components.mobs.Player;
 import game.Level;
-import game.Room;
 import interfaces.Clickable;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
@@ -124,7 +123,8 @@ public class PauseMenu extends Menu {
             {
                 this.unload();
                 unloadMenus();
-                loadDrawer(Room.class);
+                //loadDrawer(Room.class);
+                level.getCurrentRoom().load();
                 System.out.println("RESUME clicked");
             }
             else if (button.getName().equals("QUIT DUNGEON"))
