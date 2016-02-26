@@ -267,6 +267,8 @@ public class ShopMenu extends Menu {
                 if(MapMenu.getPlayer().getCoins() > clickedSlot.getItem().getPrice()) {
                     MapMenu.getPlayer().addToInventory(clickedSlot.getItem()); //add the item to the players inventory
 
+                    MapMenu.getPlayer().setCoins(MapMenu.getPlayer().getCoins()-clickedSlot.getItem().getPrice());
+
                     //remove the item from being purchasable
                     for (int i = 0; i < lastList.size(); i++) {
                         if (lastList.get(i) == clickedSlot.getItem()) {
