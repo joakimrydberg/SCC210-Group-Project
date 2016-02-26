@@ -74,11 +74,6 @@ public class CharMenu extends Menu {
             e.printStackTrace();
         }
 
-        //back button
-//        Button backButton = new Button(70, 40, 100, 50, "BROWN", 200 , "BACK", 15 );
-//        backButton.addClickListener(this);
-//        addEntity(backButton);
-
         addEntity(new Image(centerX, centerY, 520, windowSize.y - 100, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "PANEL.png"));
 
         //QUIT button
@@ -87,23 +82,11 @@ public class CharMenu extends Menu {
         btnQuit.addClickListener(this);
         addEntity(btnQuit);
 
-        //hairCol = new Message(700, 242, 0, "Red", Color.BLACK, 11);
-
-        //addEntity(new Rect(null, centerX, centerY, windowSize.x, windowSize.y, Color.BLACK, 128));
-//        addEntity(new Rect(null, 725, 375, 350, 700, Color.WHITE, 128));
-//        addEntity(new Rect(null, 725, 500, 350, 220, Color.WHITE, 128));
-
-//        Button createButton = new Button(685, 650, 100, 50, "BROWN", 100, "CREATE", 11);
-//        addEntity(createButton);
-//        createButton.addClickListener(this);
-
         //CREATE button
         addEntity(new Image(750, 725, 200, 110, "assets" + Constants.SEP + "art" + Constants.SEP + "game_menu.png")); //background to button - just to look good
         Button createButton = new Button(750, 710, 140, 40, "GREEN", 200, "CREATE", 15);
         createButton.addClickListener(this);
         addEntity(createButton);
-
-        //URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 
         final String artLoc = "assets" + SEP + "art" + SEP;
 
@@ -144,20 +127,6 @@ public class CharMenu extends Menu {
         addEntity(messages[4]);
         addEntity(messages[5]);
 
-//        hairCols[0] = "Red";
-//        hairCols[1] = "Blue";
-//        hairCols[2] = "Green";
-//
-//        Button tempButton;
-//
-//        tempButton = new Button(775, 250, 25, 25, "BROWN", 100, ">>", 9 );
-//        tempButton.addClickListener(this);
-//        addEntity(tempButton);
-//
-//        tempButton = new Button(650, 250, 25, 25, "BROWN", 100, "<<", 9 );
-//        tempButton.addClickListener(this);
-//        addEntity(tempButton);
-
         //addEntity(hairCol);
         addEntity(mageWalk);
         addEntity(rangerWalk);
@@ -176,18 +145,7 @@ public class CharMenu extends Menu {
 
                 //  loadDrawer(MapMenu.class);
                 new MapMenu(p).load();
-//            } else if (button.getName().equals(">>")) {
-//                //  System.out.format("%d", this.i);
-//                if (this.i < 2) {
-//                    this.i++;
-//                    this.moveRight();
-//                }
-//            } else if (button.getName().equals("<<")) {
-//                // System.out.format("%d", this.i);
-//                if (this.i > 0) {
-//                    this.i--;
-//                    this.moveLeft();
-//                }
+
             } else if (button.getName().equals("BACK")) {
                 this.unload();
 
@@ -209,10 +167,6 @@ public class CharMenu extends Menu {
                 p.addToInventory(item);
                 p.equipt(item);
 
-                //range.hide();
-                //warr.hide();
-                //mage.show();
-
                 className = "mage";
                 currAnimation.stop();
                 currAnimation = mageWalk;
@@ -223,9 +177,7 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "ranged selected");
                 this.setStats(0, 0, 5, 5, 5);
                 p.setStats(0, 0, 5, 5, 5);
-               // range.show();
-                //warr.hide();
-               // mage.hide();
+
                 p.setClass("ranger");
 
                 Item item = new Item("Basic Bow", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "bow0.png"), "A basic bow", "WEAPON", 100, 50);
@@ -242,9 +194,7 @@ public class CharMenu extends Menu {
                 DebugPrinter.debugPrint(this, "Strength selected");
                 this.setStats(5, 0, 0, 5, 5);
                 p.setStats(5, 0, 0, 5, 5);
-                //range.hide();
-                //warr.show();
-                //mage.hide();
+
                 p.setClass("warrior");
 
                 Item item = new Item("Basic Sword", new Image(10, 10, "assets" + Constants.SEP + "art" + Constants.SEP + "items" + Constants.SEP + "sword0.png"), "A basic sword", "WEAPON", 100, 50);
@@ -261,15 +211,6 @@ public class CharMenu extends Menu {
 
         }
     }
-
-
-//    public void moveRight(){
-//        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
-//    }
-//
-//    public void moveLeft(){
-//        (((Text)hairCol.getTransformable(0))).setString(hairCols[i]);
-//    }
 
     public void setStats(int a, int b, int c , int d, int e){
         ((Text)messages[1].getTransformable(0)).setString("Attack power : " + a);
