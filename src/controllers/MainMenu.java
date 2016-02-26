@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import abstract_classes.Drawer;
 import abstract_classes.Entity;
 import components.Button;
 import components.Image;
@@ -42,8 +43,9 @@ public class MainMenu extends Menu implements KeyListener {
 
         Button btnNewGame = new Button(centerX, 250, 250, 60, "BROWN", 200, "NEW GAME", 20);
         Button btnLoadGame = new Button( centerX, 330, 250, 60, "BROWN", 200, "LOAD GAME", 20);
-        Button btnOptions = new Button(centerX, 450, 250, 60, "BROWN", 200, "OPTIONS", 20);
-        Button btnCredits = new Button( centerX, 530, 250, 60, "BROWN", 200, "CREDITS", 20);
+        Button btnInstructions = new Button(centerX, 410, 250, 60, "BROWN", 200, "HOW TO PLAY", 20);
+        Button btnOptions = new Button(centerX, 490, 250, 60, "BROWN", 200, "OPTIONS", 20);
+        Button btnCredits = new Button( centerX, 570, 250, 60, "BROWN", 200, "CREDITS", 20);
         Button btnQuit = new Button( centerX, 650, 250, 60, "RED", 200, "QUIT", 20);
 
         //temo button for testing pause menu - removed in finished game
@@ -55,6 +57,8 @@ public class MainMenu extends Menu implements KeyListener {
         addEntity(btnNewGame);
         btnLoadGame.addClickListener(this);
         addEntity(btnLoadGame);
+        btnInstructions.addClickListener(this);
+        addEntity(btnInstructions);
         btnOptions.addClickListener(this);
         addEntity(btnOptions);
         btnCredits.addClickListener(this);
@@ -81,6 +85,10 @@ public class MainMenu extends Menu implements KeyListener {
             }
             else if (button.getName().equals("LOAD GAME")){
                 System.out.println("LOAD GAME clicked");
+            }
+            else if (button.getName().equals("HOW TO PLAY")){
+                loadDrawer(Instructions.class);
+                System.out.println("HOW TO PLAY clicked");
             }
             else if (button.getName().equals("OPTIONS")){
                 System.out.println("OPTIONS clicked");
