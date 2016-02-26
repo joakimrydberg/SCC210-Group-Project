@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
 public class PlayerMenu extends Menu
 {
     public final static String NAME = "Player Menu";
-    private int money = 100, lvl = 1, ag = 0, in = 0, at = 0, en = 0, vi = 0, he = 100;
+    private int coins = 0, lvl = 1, ag = 0, in = 0, at = 0, en = 0, vi = 0, he = 100;
     private ItemDescriptor[] itemDesc = new ItemDescriptor[7];
     private Slot[] slots = new Slot[7];
     private int count = 0;
@@ -36,6 +36,7 @@ public class PlayerMenu extends Menu
     private Animation warriorWalk = new Animation(680, 355, 64, 128, warrior, 3);
     private Animation rangerWalk = new Animation(680, 355, 64, 128, ranger, 3);
     private Animation mageWalk = new Animation(680, 355, 64, 128, mageA, 3);
+    Message coinMess = new Message(430, 145, 0, Integer.toString(coins), Color.WHITE, 20);
 
 //    Message atMsg = new Message(500, 550, 0, "Attack power : " + at, Color.WHITE, 12);
 //    Message inMsg = new Message(500, 575, 0, "Intellect : " + in, Color.WHITE, 12);
@@ -52,7 +53,8 @@ public class PlayerMenu extends Menu
         addSlot("LONG", 625, 150, 520, 70); //top panel
 
         //add the players money
-        addEntity(new Message(430, 145, 0, Integer.toString(money), Color.WHITE, 20)); //TODO pass in actual currency
+
+        addEntity(coinMess); //TODO pass in actual currency
         addEntity(new Image(500, 150, "assets" + Constants.SEP + "art" + Constants.SEP + "coins.png"));
 
         addSlot("LVL", 585, 150, 85, 85); //level box
@@ -135,6 +137,9 @@ public class PlayerMenu extends Menu
         lvl = player.getLevel();
         Message lvlMsg = new Message(585, 150, 0, Integer.toString(lvl), Color.WHITE, 30);
         addEntity(lvlMsg);
+        coins = player.getCoins();
+        coinMess.setText(Integer.toString(coins));
+
 
         //display xp
         int barSize = ((player.getExp() - MIN_XP) / (MIN_XP - MAX_XP)) * (MAX_SIZE - MIN_XP) + MIN_SIZE;

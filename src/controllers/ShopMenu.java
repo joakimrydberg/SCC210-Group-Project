@@ -21,7 +21,7 @@ public class ShopMenu extends Menu {
     private int btnX = 170, btnY = 150;
 
     private Button btnBuy = new Button(800, 450, 90, 30, "GREEN", 200, "BUY", 15);
-    private Message n = null, d = null, price = null;
+    private Message n = null, d = null, price = null, errorMess = null;
     private Image img = new Image(450, 440, "assets" + Constants.SEP + "art" + Constants.SEP + "slots" + Constants.SEP + "EMPTY.png");
     private Image coins = new Image(825, 420, 20, 20, "assets" + Constants.SEP + "art" + Constants.SEP + "coin.png");
 
@@ -68,6 +68,7 @@ public class ShopMenu extends Menu {
         addSlot("EMPTY", 450, 440, 70, 70);
         n = new Message(550, 420, 0, "Select an Item!", Color.WHITE, 12);
         d = new Message(550, 450, 0, "Select an Item!", Color.WHITE, 12);
+        errorMess = new Message(550, 420, 0, "Not enough money", Color.WHITE, 12);
         price = new Message(775, 410, 0, "", Color.WHITE, 12);
         btnBuy.addClickListener(this);
         addEntity(price);
@@ -202,6 +203,8 @@ public class ShopMenu extends Menu {
             Slot slot = (Slot) clickable;
             clickedSlot = (Slot) clickable;
 
+            errorMess.setText("");
+
             if (slot.hasItem()) {
                 btnBuy.show();
 
@@ -232,6 +235,7 @@ public class ShopMenu extends Menu {
             }
         } else if (clickable instanceof Button) {
             Entity button = (Button) clickable;
+            errorMess.setText("");
 
             if (button.getName().equals("HELMETS")) {
                 populateMenu(helmets);
@@ -260,25 +264,32 @@ public class ShopMenu extends Menu {
                 System.out.println("EXIT SHOP clicked");
             } else if (button.getName().equals("BUY"))
             {
-                MapMenu.getPlayer().addToInventory(clickedSlot.getItem()); //add the item to the players inventory
+                if(MapMenu.getPlayer().getCoins() > clickedSlot.getItem().getPrice()) {
+                    MapMenu.getPlayer().addToInventory(clickedSlot.getItem()); //add the item to the players inventory
 
-                //remove the item from being purchasable
-                for(int i = 0; i < lastList.size(); i++){
-                    if (lastList.get(i) == clickedSlot.getItem()){
-                        lastList.remove(i);
+                    //remove the item from being purchasable
+                    for (int i = 0; i < lastList.size(); i++) {
+                        if (lastList.get(i) == clickedSlot.getItem()) {
+                            lastList.remove(i);
+                        }
                     }
-                }
-                populateMenu(lastList);
+                    populateMenu(lastList);
 
-                //Output to screen that the item has been bought successfully
-                img.hide();
-                coins.hide();
-                btnBuy.hide();
-                n.setText("Bought!");
-                d.setText("");
-                price.setText("");
+                    //Output to screen that the item has been bought successfully
+                    img.hide();
+                    coins.hide();
+                    btnBuy.hide();
+                    n.setText("Bought!");
+                    d.setText("");
+                    price.setText("");
 
-                System.out.println("BUY clicked");
+                    errorMess.setText("");
+
+                    System.out.println("BUY clicked");
+                }else{errorMess.setText("Not enough Money");
+                    n.setText("");
+                    d.setText("");
+                    addEntity(errorMess);}
             }
         }
     }

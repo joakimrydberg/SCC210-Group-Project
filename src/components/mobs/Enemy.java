@@ -258,6 +258,7 @@ public abstract class Enemy extends Mob implements MovementListener, CollidingEn
         stopCharacter();
         MapMenu.getPlayer().exp = MapMenu.getPlayer().exp + this.exp;
         dead = true;
+        MapMenu.getPlayer().coins = MapMenu.getPlayer().coins+100;
     }
     public ArrayList<Projectile> getProjectiles() {
 

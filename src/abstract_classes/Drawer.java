@@ -42,6 +42,7 @@ public abstract class Drawer extends Entity implements Serializable {
                     ArrayList<Object> objs = new ArrayList<>();
                     if(MapMenu.getPlayer() != null) {
 
+                        objs.add(MapMenu.getPlayer().coins);
                         objs.add(MapMenu.getPlayer().level);
                         objs.add(MapMenu.getPlayer().getExp());
                         objs.add(MapMenu.getPlayer().Vitality);

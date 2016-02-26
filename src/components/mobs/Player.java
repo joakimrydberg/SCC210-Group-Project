@@ -43,6 +43,7 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     //ArrayList<Item> equippedItems = new ArrayList<Item>();
     private Item[] equippedItems = new Item[7]; //7 slots for each equipped item
     public int level = 1;
+    public int coins = 0;
 
     public Player() {
         //initialise equipped items array
@@ -391,6 +392,9 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
 
 
     }
+
+    public int getCoins()
+    {return this.coins;}
 
     public ArrayList<Projectile> getProjectiles(){
         return new ArrayList<>();
