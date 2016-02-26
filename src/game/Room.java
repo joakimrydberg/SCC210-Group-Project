@@ -1,6 +1,7 @@
 package game;
 
 import abstract_classes.Entity;
+import components.Image;
 import components.Message;
 import components.Projectile;
 import components.RoomEntity;
@@ -34,7 +35,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
     int x = 0;
     private boolean endRoom = false;
     private PauseMenu pauseMenu;
-
+    ArrayList<Image> hearts = new ArrayList<>();
 
     public Room(Level level) {
         super(true);
@@ -164,6 +165,7 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         DeathBall deathBall = new DeathBall(this);
         deathBall.setClass("ranger");
         addEntity(deathBall);
+        makeHearts();
 
 //        { //populating with enemies
 //
@@ -354,6 +356,15 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         if (isLoaded()) {
             draw();
             MapMenu.getPlayer().dead = false;
+
+            for(Image images : hearts){
+
+                images.follow();
+
+            }
+
+            updateHealth();
+
             for (int i = 0; i < getEntities().size(); i++) {   //done properly to avoid co-modification
                 Entity entity = getEntity(i);
 
@@ -480,5 +491,62 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
 
     public boolean getEndRoom() {
         return this.endRoom;
+    }
+    public void makeHearts(){
+
+        Image h1 = new Image(500, 500, 15, 15, "assets" + Constants.SEP + "art" + Constants.SEP + "Heart.gif", 1);
+        Image h2 = new Image(500, 500, 15, 15, "assets" + Constants.SEP + "art" + Constants.SEP + "Heart.gif", 2);
+        Image h3 = new Image(500, 500, 15, 15, "assets" + Constants.SEP + "art" + Constants.SEP + "Heart.gif", 3);
+        Image h4 = new Image(500, 500, 15, 15, "assets" + Constants.SEP + "art" + Constants.SEP + "Heart.gif", 4);
+        Image h5 = new Image(500, 500, 15, 15, "assets" + Constants.SEP + "art" + Constants.SEP + "Heart.gif", 5);
+        hearts.add(h1);
+        hearts.add(h2);
+        hearts.add(h3);
+        hearts.add(h4);
+        hearts.add(h5);
+        addEntity(h1);
+        addEntity(h2);
+        addEntity(h3);
+        addEntity(h4);
+        addEntity(h5);
+
+    }
+    private void updateHealth(){
+        Object[] health = hearts.toArray();
+        if(MapMenu.getPlayer().health <= 80 && MapMenu.getPlayer().health > 50){
+            ((Image) health[0]).hidden = false;
+            ((Image) health[1]).hidden = false;
+            ((Image) health[2]).hidden = false;
+            ((Image) health[3]).hidden = false;
+            ((Image) health[4]).hidden = true;
+        }
+        else if(MapMenu.getPlayer().health <= 50 && MapMenu.getPlayer().health > 40){
+            ((Image) health[0]).hidden = false;
+            ((Image) health[1]).hidden = false;
+            ((Image) health[2]).hidden = false;
+            ((Image) health[3]).hidden = true;
+            ((Image) health[4]).hidden = true;
+        }
+        else   if(MapMenu.getPlayer().health <= 40 && MapMenu.getPlayer().health > 30){
+            ((Image) health[0]).hidden = false;
+            ((Image) health[1]).hidden = false;
+            ((Image) health[2]).hidden = true;
+            ((Image) health[3]).hidden = true;
+            ((Image) health[4]).hidden = true;
+        }
+        else if(MapMenu.getPlayer().health <= 30){
+            ((Image) health[0]).hidden = false;
+            ((Image) health[1]).hidden = true;
+            ((Image) health[2]).hidden = true;
+            ((Image) health[3]).hidden = true;
+            ((Image) health[4]).hidden = true;
+        }
+        else {
+            ((Image) health[0]).hidden = false;
+            ((Image) health[1]).hidden = false;
+            ((Image) health[2]).hidden = false;
+            ((Image) health[3]).hidden = false;
+            ((Image) health[4]).hidden = false;
+        }
     }
 }
