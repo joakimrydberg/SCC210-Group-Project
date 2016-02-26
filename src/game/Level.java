@@ -19,7 +19,7 @@ public class Level {
     private Room startRoom = null;
     private Room endRoom = null;
     private Room currentRoom;
-	private int availableRooms = 9;
+	private int availableRooms = 11;
 	private int availableEndRooms = 8;
 
     public Level(String name, int diff, MapMenu map) {
@@ -197,7 +197,10 @@ public class Level {
 		}
 		endRoom = newRoom;
 		rooms[x][y] = endRoom;
-		endRoom.addDoor(entrance);
+		for (String potentialDoor : endRoom.getPotentialDoors().keySet()) {
+			endRoom.addDoor(potentialDoor);
+		}
+		//endRoom.addDoor(entrance);
 		numberOfRooms++;
 	}
 
@@ -256,8 +259,8 @@ public class Level {
         }
     }
 
-    public void endRoomExited(Room room) {
-        if (room.getEndRoom()) {
+    public void endRoomExited() {
+        if (currentRoom.equals(endRoom)) {
             map.levelComplete();
         }
     }
@@ -269,6 +272,14 @@ public class Level {
     public Room getCurrentRoom() {
         return currentRoom;
     }
+
+	public Room getStartRoom() {
+		return startRoom;
+	}
+
+	public Room getEndRoom() {
+		return endRoom;
+	}
 
     public Vector2i getCurrentRoomIndex() {
         return findRoom(currentRoom);
