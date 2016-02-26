@@ -2,7 +2,6 @@ package components.mobs;
 
 import components.Item;
 import components.Projectile;
-import controllers.MapMenu;
 import game.Room;
 import game.SpriteSheetLoad;
 import interfaces.CollidingEntity;
@@ -69,19 +68,19 @@ public class Player extends Mob implements KeyListener, CollidingEntity {
     }
 
     public void place(Room room) {
-        int x = 400,
-                y = 400;
-
-        //randomise position until we get a suitable one
-        while (!isPlacable(room, x , y, 64, 128)) {
-            x = MapMenu.randomInt(0, getWindow().getSize().x);
-            y = MapMenu.randomInt(0, getWindow().getSize().y);
-        }
+        int x = getWindow().getSize().x / 2,
+                y = getWindow().getSize().y / 2;
+//
+//        //randomise position until we get a suitable one
+//        while (!isPlacable(room, x , y, 64, 128)) {
+//            x = MapMenu.randomInt(0, getWindow().getSize().x);
+//            y = MapMenu.randomInt(0, getWindow().getSize().y);
+//        }
 
         super.create(x, y, 64, 128);
     }
 
-    public void addToInventory(Item item){
+    public void addToInventory(Item item) {
         inventory.add(item);
     }
 

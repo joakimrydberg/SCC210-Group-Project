@@ -174,29 +174,29 @@ public class Room extends RoomEntity implements MovementListener, ClickListener,
         makeHearts();
 
 
-//        { //populating with enemies
-//
-//            EnemyWarrior enemyWarrior;
-//            for (int i = 0; i < enemyWarriors; i++) {
-//                enemyWarrior = new EnemyWarrior(this);
-//                enemyWarrior.addMovementListener(this);
-//                addEntity(enemyWarrior);
-//            }
-//
-//            EnemyMage enemyMage;
-//            for (int i = 0; i < enemyMages; i++) {
-//                enemyMage = new EnemyMage(this);
-//                enemyMage.addMovementListener(this);
-//                addEntity(enemyMage);
-//            }
-//
-//            EnemyRanger enemyRanger;
-//            for (int i = 0; i < enemyRangers; i++) {
-//                enemyRanger = new EnemyRanger(this);
-//                enemyRanger.addMovementListener(this);
-//                addEntity(enemyRanger);
-//            }
-//        }
+        { //populating with enemies
+
+            EnemyWarrior enemyWarrior;
+            for (int i = 0; i < enemyWarriors; i++) {
+                enemyWarrior = new EnemyWarrior(this);
+                enemyWarrior.addMovementListener(this);
+                addEntity(enemyWarrior);
+            }
+
+            EnemyMage enemyMage;
+            for (int i = 0; i < enemyMages; i++) {
+                enemyMage = new EnemyMage(this);
+                enemyMage.addMovementListener(this);
+                addEntity(enemyMage);
+            }
+
+            EnemyRanger enemyRanger;
+            for (int i = 0; i < enemyRangers; i++) {
+                enemyRanger = new EnemyRanger(this);
+                enemyRanger.addMovementListener(this);
+                addEntity(enemyRanger);
+            }
+        }
 
         addEntity(this);
     }
