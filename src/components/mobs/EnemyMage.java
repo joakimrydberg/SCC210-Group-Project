@@ -29,7 +29,7 @@ public class EnemyMage extends Enemy implements CollidingEntity {
         super(room);
         setMovementState(FLEE_PLAYER);  //temp value
 
-        setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMaleSheet"));
+        setSpriteSheet(SpriteSheetLoad.loadSprite("EnemyMageSheet"));
         setCharacterStill(0);            //warriorWalk = new Animation(200, 200, 64, 128, characterStill, 1);
         // currAnimation = warriorWalk;
         BufferedImage[] mageA = {SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(1, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(0, 0, getTheSpriteSheet()), SpriteSheetLoad.getSprite(2, 0, getTheSpriteSheet())};
