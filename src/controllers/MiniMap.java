@@ -32,6 +32,14 @@ public class MiniMap extends Drawer/*extends RoomEntity*/ {
 
     public void update(Level level, int x, int y, int w, int h) {
 
+
+        clearEntities();
+
+//        for (int i = 0; i < Level.MAX_ROOMS; i++) {
+//            for (int j = 0; j < Level.MAX_ROOMS; j++) {
+//                getEntities().remove(i * Level.MAX_ROOMS + j);
+//            }
+//        }
         setWidthHeight(w, h);
         setCenterX(x);
         setCenterY(y);

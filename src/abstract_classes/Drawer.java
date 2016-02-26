@@ -165,4 +165,8 @@ public abstract class Drawer extends Entity implements Serializable {
         entities = newEntities;
     }
 
+    public void clearEntities() {
+        entities = new ArrayList<>();
+    }
+
 }

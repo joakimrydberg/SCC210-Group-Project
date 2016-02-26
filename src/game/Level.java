@@ -247,6 +247,7 @@ public class Level {
                     MapMenu.getPlayer().setCenterX(rooms[i + changeI][j + changeJ].getDoorLoc(nextDir).x + changeX);
                     MapMenu.getPlayer().setCenterY(rooms[i + changeI][j + changeJ].getDoorLoc(nextDir).y + changeY);
                     room.unload();
+                    currentRoom = rooms[i + changeI][j + changeJ];
                     rooms[i + changeI][j + changeJ].load();
                     break;
                 }

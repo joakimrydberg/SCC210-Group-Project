@@ -23,6 +23,7 @@ public class PauseMenu extends Menu {
     private StatsMenu sMenu = new StatsMenu();
     private Player player = null;
     private Level level = null;
+    private MiniMap miniMap = (MiniMap)loadDrawer(MiniMap.class);
 
     /**
      *
@@ -31,6 +32,7 @@ public class PauseMenu extends Menu {
         super(NAME);
 
         this.level = level;
+
         RenderWindow w = getWindow();
         final Vector2i windowSize = w.getSize();
         final int centerX = windowSize.x / 2, centerY = windowSize.y / 2;
@@ -114,7 +116,11 @@ public class PauseMenu extends Menu {
             {
                 unloadMenus();
 
-                MiniMap miniMap = (MiniMap)loadDrawer(MiniMap.class);
+                miniMap.update(level, 625, 350, 520, 470);
+                miniMap.setCurrentRoom(level.getCurrentRoomIndex());
+
+                miniMap.unload();
+                miniMap = new MiniMap();
                 miniMap.update(level, 625, 350, 520, 470);
                 miniMap.load();
                 System.out.println("DUNGEON MAP clicked");
@@ -156,6 +162,7 @@ public class PauseMenu extends Menu {
         pMenu.unload();
         sMenu.unload();
         iMenu.unload();
+        miniMap.unload();
     }
 
 }
