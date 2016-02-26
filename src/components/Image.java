@@ -6,6 +6,7 @@
 package components;
 
 import abstract_classes.Entity;
+import controllers.MapMenu;
 import interfaces.InteractingEntity;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
 public class Image extends Entity implements InteractingEntity {
     private float rotation = 0;
     private Vector2i imgSize; //original size
+    private int heartID = 0;
 
     public Image(int x, int y, int width, int height,  String textureFile) {
         super(textureFile);
@@ -57,6 +59,11 @@ public class Image extends Entity implements InteractingEntity {
 
     public Image(int x, int y, String textureFile) {
         this(x, y, -1, -1, textureFile);
+    }
+    public Image(int x, int y, int width, int height,  String textureFile, int i) {
+        this(x, y, width, height, textureFile);
+        this.heartID = i;
+
     }
 
     public void changeImage(Image img){
@@ -144,6 +151,20 @@ public class Image extends Entity implements InteractingEntity {
             rotate(v);
         } else {
             super.rotate(v);
+        }
+    }
+
+    public void follow(){
+        if (heartID != 0) {
+            switch (heartID) {
+                case 1:  setCenterX(MapMenu.getPlayer().getCenterX() - 30); setCenterY(MapMenu.getPlayer().getCenterY() - 50); break;
+                case 2:  setCenterX(MapMenu.getPlayer().getCenterX() - 15); setCenterY(MapMenu.getPlayer().getCenterY() - 50);break;
+                case 3:  setCenterX(MapMenu.getPlayer().getCenterX() ); setCenterY(MapMenu.getPlayer().getCenterY() - 50);break;
+                case 4:  setCenterX(MapMenu.getPlayer().getCenterX() + 15); setCenterY(MapMenu.getPlayer().getCenterY() - 50);break;
+                case 5:  setCenterX(MapMenu.getPlayer().getCenterX() + 30); setCenterY(MapMenu.getPlayer().getCenterY() - 50);break;
+            }
+
+
         }
     }
 
